@@ -1,0 +1,80 @@
+{
+    "tags": [
+        "All",
+        "JavaScript",
+        "TypeScript",
+        "Icon",
+        "SVG",
+        "XSS",
+        "不可变更新",
+        "校验库",
+        "图标",
+        "截图",
+        "动画",
+        "拖放",
+        "高精度计算",
+        "货币"
+    ],
+    "bookmarks": [
+        {
+            "title": "Mutative",
+            "url": "https://github.com/unadlib/mutative",
+            "description": "一个用于高效不可变更新的JavaScript库，其速度比手动编写的简单reducer快2-6倍，比Immer快10倍以上。",
+            "tags": ["JavaScript", "不可变更新"]
+        },
+        {
+            "title": "Valibot",
+            "url": "https://github.com/fabian-hiller/valibot",
+            "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
+            "tags": ["TypeScript", "校验库"]
+        },
+        {
+            "title": "Mage Icons",
+            "url": "https://github.com/Mage-Icons/mage-icons",
+            "description": "Mage Icons是一个精心策划的图标库，专为网页和移动应用的用户界面设计而打造。",
+            "tags": ["Icon", "SVG", "图标"]
+        },
+        {
+            "title": "DOMPurify",
+            "url": "https://github.com/cure53/DOMPurify",
+            "description": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS（跨站脚本）清理器，可用于HTML、MathML和SVG。",
+            "tags": ["JavaScript", "XSS"]
+        },
+        {
+            "title": "SnapDOM",
+            "url": "https://github.com/zumerlab/snapdom",
+            "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片，同时支持伪元素、Shadow DOM、网页字体等。",
+            "tags": ["JavaScript", "截图"]
+        },
+        {
+            "title": "Animejs",
+            "url": "https://github.com/juliangarnier/anime",
+            "description": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
+            "tags": ["JavaScript", "动画"]
+        },
+        {
+            "title": "Interact.js",
+            "url": "https://github.com/taye/interact.js",
+            "description": "一个支持拖放、调整大小和多点触控手势的 JavaScript 库，它为现代浏览器（以及IE9及以上版本）提供了惯性（inertia）和吸附（snapping）功能。",
+            "tags": ["JavaScript", "拖放"]
+        },
+        {
+            "title": "JSON Editor",
+            "url": "https://github.com/josdejong/jsoneditor",
+            "description": "一个基于网页的工具，用于查看、编辑、格式化和验证JSON。",
+            "tags": ["JavaScript", "JSON"]
+        },
+        {
+            "title": "Bignumber.js",
+            "url": "https://github.com/MikeMcl/bignumber.js",
+            "description": "一个用于任意精度十进制和非十进制算术的JavaScript库。",
+            "tags": ["JSON", "高精度计算"]
+        },
+        {
+            "title": "Dinero.js",
+            "url": "https://github.com/dinerojs/dinero.js",
+            "description": "在JavaScript和Typescript中创建，计算和格式化货币。",
+            "tags": ["JavaScript", "TypeScript", "货币"]
+        }
+    ]
+}
