@@ -58,23 +58,23 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="max-w-6xl mx-auto px-4 py-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
                 {/* 头部 */}
-                <header className="mb-8">
-                    <div className="flex items-center justify-between mb-4">
+                <header className="mb-6 sm:mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                                 <span className="text-white text-lg">🔗</span>
                             </div>
-                            <h1 className="text-2xl font-bold text-gray-900">URL Collection</h1>
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">URL Collection</h1>
                         </div>
 
                         {/* GitHub 仓库链接 */}
-                        <a
+                        {/* <a
                             href="https://github.com/maxlongint/maxlongint.github.io"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+                            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-200 self-start sm:self-auto"
                             title="查看项目源代码"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -84,15 +84,15 @@ export default function Home() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                            <span>GitHub</span>
-                        </a>
+                            <span className="hidden sm:inline">GitHub</span>
+                        </a> */}
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">My URLs</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">My URLs</h2>
                 </header>
 
                 {/* 搜索框 */}
-                <div className="mb-6 flex justify-end">
-                    <div className="relative max-w-md">
+                <div className="mb-6">
+                    <div className="relative w-full max-w-md sm:max-w-lg mx-auto sm:mx-0 sm:ml-auto">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg
                                 className="w-5 h-5 text-gray-400"
@@ -113,12 +113,12 @@ export default function Home() {
                             placeholder="搜索书签标题、描述、URL或标签..."
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full pl-10 pr-12 py-3 text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                         />
                         {searchQuery && (
                             <button
                                 onClick={() => setSearchQuery('')}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path
@@ -134,15 +134,17 @@ export default function Home() {
                 </div>
 
                 {/* 标签筛选 */}
-                <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
-                        <span className="text-gray-600 font-medium min-w-32">Filter by tag:</span>
+                <div className="mb-6 sm:mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 mb-4">
+                        <span className="text-gray-600 font-medium text-sm sm:text-base sm:min-w-32">
+                            Filter by tag:
+                        </span>
                         <div className="flex flex-wrap gap-2">
                             {bookmarksData.tags.map(tag => (
                                 <button
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
+                                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] ${
                                         selectedTag === tag
                                             ? 'bg-blue-500 text-white shadow-md'
                                             : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -156,7 +158,7 @@ export default function Home() {
 
                     {/* 搜索和筛选状态提示 */}
                     {(searchQuery || selectedTag !== 'All') && (
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
                             <span>
                                 显示 {filteredBookmarks.length} 个结果
                                 {searchQuery && <span className="font-medium"> 包含 &quot;{searchQuery}&quot;</span>}
@@ -164,7 +166,7 @@ export default function Home() {
                             </span>
                             <button
                                 onClick={clearFilters}
-                                className="ml-2 text-blue-500 hover:text-blue-700 font-medium underline"
+                                className="sm:ml-2 text-blue-500 hover:text-blue-700 font-medium underline self-start min-h-[44px] flex items-center"
                             >
                                 清除筛选
                             </button>
@@ -177,21 +179,64 @@ export default function Home() {
                     {filteredBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
                         <div
                             key={bookmark.title}
-                            className="bookmark-card bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200"
+                            className="bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200"
                         >
-                            <div className="flex items-start gap-4">
+                            {/* 移动端布局 */}
+                            <div className="block sm:hidden">
+                                <div className="flex items-start gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <span className="text-blue-500 text-lg">🔗</span>
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
+                                        <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
+                                        <p className="text-gray-600 mb-4 leading-relaxed text-sm">
+                                            {bookmark.description}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {bookmark.tags.map((tag, index) => (
+                                                <span
+                                                    key={`${bookmarkIndex}-${tag}-${index}`}
+                                                    className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(
+                                                        tag
+                                                    )}`}
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <a
+                                    href={bookmark.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px]"
+                                >
+                                    访问
+                                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+
+                            {/* PC端布局 */}
+                            <div className="hidden sm:flex sm:items-start sm:gap-4">
                                 {/* 链接图标 */}
-                                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <span className="text-blue-500 text-lg">🔗</span>
                                 </div>
 
-                                {/* 内容 */}
+                                {/* 内容区域 */}
                                 <div className="flex-1 min-w-0">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
                                     <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
                                     <p className="text-gray-600 mb-4 leading-relaxed">{bookmark.description}</p>
-
-                                    {/* 标签 */}
                                     <div className="flex flex-wrap gap-2">
                                         {bookmark.tags.map((tag, index) => (
                                             <span
@@ -206,7 +251,7 @@ export default function Home() {
                                     </div>
                                 </div>
 
-                                {/* 访问按钮 */}
+                                {/* 访问按钮 - PC端右对齐 */}
                                 <div className="flex-shrink-0">
                                     <a
                                         href={bookmark.url}
@@ -237,20 +282,20 @@ export default function Home() {
 
                 {/* 空状态 */}
                 {filteredBookmarks.length === 0 && (
-                    <div className="text-center py-12">
+                    <div className="text-center py-8 sm:py-12 px-4">
                         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <span className="text-gray-400 text-2xl">🔍</span>
                         </div>
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
                             {searchQuery ? '没有找到匹配的书签' : '没有找到相关书签'}
                         </h3>
-                        <p className="text-gray-500 mb-4">
+                        <p className="text-gray-500 mb-4 text-sm sm:text-base">
                             {searchQuery ? `没有书签包含 &quot;${searchQuery}&quot;` : '尝试选择其他标签或查看所有书签'}
                         </p>
                         {(searchQuery || selectedTag !== 'All') && (
                             <button
                                 onClick={clearFilters}
-                                className="inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                                className="inline-flex items-center justify-center px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px]"
                             >
                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path
@@ -268,8 +313,8 @@ export default function Home() {
             </div>
 
             {/* 页脚 */}
-            <footer className="mt-16 py-8 border-t border-gray-200">
-                <div className="text-center">
+            <footer className="mt-12 sm:mt-16 py-6 sm:py-8 border-t border-gray-200">
+                <div className="text-center px-4">
                     <p className="text-gray-500 text-sm">
                         Created by <span className="font-medium text-gray-700">Cyclone77</span>
                     </p>
