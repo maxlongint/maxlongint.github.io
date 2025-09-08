@@ -6,14 +6,30 @@
         "Icon",
         "SVG",
         "XSS",
+        "CSS",
+        "uuid",
+        "Tooltip",
+        "Popover",
+        "Dropdown",
+        "Menu",
         "不可变更新",
-        "校验库",
+        "校验",
         "图标",
         "截图",
         "动画",
         "拖放",
         "高精度计算",
-        "货币"
+        "货币",
+        "音频",
+        "浏览器存储",
+        "颜色",
+        "滚动条",
+        "签名",
+        "虚拟键盘",
+        "工具提示",
+        "气泡框",
+        "下拉菜单",
+        "普通菜单"
     ],
     "bookmarks": [
         {
@@ -26,7 +42,13 @@
             "title": "Valibot",
             "url": "https://github.com/fabian-hiller/valibot",
             "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
-            "tags": ["TypeScript", "校验库"]
+            "tags": ["TypeScript", "校验"]
+        },
+        {
+            "title": "class-validator",
+            "url": "https://github.com/typestack/class-validator",
+            "description": "该库支持基于装饰器和非基于装饰器的验证方式。它内部使用 validator.js 来执行验证。Class-validator 可以在浏览器和 Node.js 平台上使用。",
+            "tags": ["JavaScript", "校验"]
         },
         {
             "title": "Mage Icons",
@@ -53,6 +75,24 @@
             "tags": ["JavaScript", "动画"]
         },
         {
+            "title": "Animate.css",
+            "url": "https://github.com/animate-css/animate.css",
+            "description": "一个跨浏览器的 CSS 动画库，使用起来非常简单。",
+            "tags": ["JavaScript", "CSS", "动画"]
+        },
+        {
+            "title": "CountUp.js",
+            "url": "https://github.com/inorganik/CountUp.js",
+            "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库，可用于快速创建动画，以一种更有趣的方式展示数值数据。",
+            "tags": ["JavaScript", "动画"]
+        },
+        {
+            "title": "SortableJS",
+            "url": "https://github.com/SortableJS/Sortable",
+            "description": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。",
+            "tags": ["JavaScript", "拖放"]
+        },
+        {
             "title": "Interact.js",
             "url": "https://github.com/taye/interact.js",
             "description": "一个支持拖放、调整大小和多点触控手势的 JavaScript 库，它为现代浏览器（以及IE9及以上版本）提供了惯性（inertia）和吸附（snapping）功能。",
@@ -71,10 +111,80 @@
             "tags": ["JSON", "高精度计算"]
         },
         {
+            "title": "decimal.js",
+            "url": "https://github.com/MikeMcl/decimal.js",
+            "description": "一个用于 JavaScript 的任意精度 Decimal 类型库。",
+            "tags": ["JavaScript", "高精度计算"]
+        },
+        {
             "title": "Dinero.js",
             "url": "https://github.com/dinerojs/dinero.js",
             "description": "在JavaScript和Typescript中创建，计算和格式化货币。",
             "tags": ["JavaScript", "TypeScript", "货币"]
+        },
+        {
+            "title": "Wavesurfer.js",
+            "url": "https://github.com/katspaugh/wavesurfer.js",
+            "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
+            "tags": ["JavaScript", "音频"]
+        },
+        {
+            "title": "Store.js",
+            "url": "https://github.com/marcuswestin/store.js",
+            "description": "Store.js 是一个通用的跨浏览器存储库。",
+            "tags": ["JavaScript", "浏览器存储"]
+        },
+        {
+            "title": "iro.js",
+            "url": "https://github.com/jaames/iro.js",
+            "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
+            "tags": ["JavaScript", "颜色"]
+        },
+        {
+            "title": "Pickr",
+            "url": "https://github.com/simonwep/pickr",
+            "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
+            "tags": ["JavaScript", "颜色"]
+        },
+        {
+            "title": "OverlayScrollbars",
+            "url": "https://github.com/KingSora/OverlayScrollbars",
+            "description": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
+            "tags": ["JavaScript", "滚动条"]
+        },
+        {
+            "title": "Signature Pad",
+            "url": "https://github.com/szimek/signature_pad",
+            "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。",
+            "tags": ["JavaScript", "签名"]
+        },
+        {
+            "title": "simple-keyboard",
+            "url": "https://github.com/hodgef/simple-keyboard",
+            "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
+            "tags": ["JavaScript", "虚拟键盘"]
+        },
+        {
+            "title": "uuid",
+            "url": "https://github.com/uuidjs/uuid",
+            "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
+            "tags": ["JavaScript", "uuid"]
+        },
+        {
+            "title": "Tippy.js",
+            "url": "https://github.com/atomiks/tippyjs",
+            "description": "一个用于制作工具提示（Tooltip）、气泡框（Popover）、下拉菜单（Dropdown）和普通菜单（Menu）的库。",
+            "tags": [
+                "JavaScript",
+                "Tooltip",
+                "Popover",
+                "Dropdown",
+                "Menu",
+                "工具提示",
+                "气泡框",
+                "下拉菜单",
+                "普通菜单"
+            ]
         }
     ]
 }
