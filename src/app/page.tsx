@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import bookmarksData from '@/data/bookmarks.json';
 
 interface Bookmark {
-    id: string;
     title: string;
     url: string;
     description: string;
@@ -140,7 +139,7 @@ export default function Home() {
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                             <span>
                                 显示 {filteredBookmarks.length} 个结果
-                                {searchQuery && <span className="font-medium"> 包含 "{searchQuery}"</span>}
+                                {searchQuery && <span className="font-medium"> 包含 &quot;{searchQuery}&quot;</span>}
                                 {selectedTag !== 'All' && <span className="font-medium"> 标签: {selectedTag}</span>}
                             </span>
                             <button
@@ -155,7 +154,7 @@ export default function Home() {
 
                 {/* 书签列表 */}
                 <div className="space-y-4">
-                    {filteredBookmarks.map((bookmark: Bookmark) => (
+                    {filteredBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
                         <div
                             key={bookmark.title}
                             className="bookmark-card bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200"
@@ -176,7 +175,7 @@ export default function Home() {
                                     <div className="flex flex-wrap gap-2">
                                         {bookmark.tags.map((tag, index) => (
                                             <span
-                                                key={`${bookmark.id}-${tag}-${index}`}
+                                                key={`${bookmarkIndex}-${tag}-${index}`}
                                                 className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(
                                                     tag
                                                 )}`}
@@ -226,7 +225,7 @@ export default function Home() {
                             {searchQuery ? '没有找到匹配的书签' : '没有找到相关书签'}
                         </h3>
                         <p className="text-gray-500 mb-4">
-                            {searchQuery ? `没有书签包含 "${searchQuery}"` : '尝试选择其他标签或查看所有书签'}
+                            {searchQuery ? `没有书签包含 &quot;${searchQuery}&quot;` : '尝试选择其他标签或查看所有书签'}
                         </p>
                         {(searchQuery || selectedTag !== 'All') && (
                             <button
