@@ -136,7 +136,7 @@ export default function Home() {
                 {/* 标签筛选 */}
                 <div className="mb-8">
                     <div className="flex items-center gap-2 mb-4">
-                        <span className="text-gray-600 font-medium">Filter by tag:</span>
+                        <span className="text-gray-600 font-medium min-w-32">Filter by tag:</span>
                         <div className="flex flex-wrap gap-2">
                             {bookmarksData.tags.map(tag => (
                                 <button
@@ -266,6 +266,15 @@ export default function Home() {
                     </div>
                 )}
             </div>
+
+            {/* 页脚 */}
+            <footer className="mt-16 py-8 border-t border-gray-200">
+                <div className="text-center">
+                    <p className="text-gray-500 text-sm">
+                        Created by <span className="font-medium text-gray-700">Cyclone77</span>
+                    </p>
+                </div>
+            </footer>
         </div>
     );
 }
