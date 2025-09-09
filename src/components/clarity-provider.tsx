@@ -43,12 +43,7 @@ export default function ClarityProvider() {
         try {
             // 初始化 Clarity
             clarity.init(clarityProjectId);
-            console.log(
-                `Microsoft Clarity initialized successfully in ${
-                    isProduction ? 'production' : 'development'
-                } mode with project ID:`,
-                clarityProjectId
-            );
+            // 成功初始化，不输出日志以保持控制台清洁
         } catch (error) {
             console.error('Failed to initialize Microsoft Clarity:', error);
             console.info('This might be due to network issues, ad blockers, or invalid project ID.');
