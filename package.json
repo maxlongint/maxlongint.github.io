@@ -5,8 +5,8 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "build:prod": "cross-env NEXT_PUBLIC_CLARITY_ENABLE_DEV=true NODE_ENV=production next build",
-        "build:prod:win": "set NEXT_PUBLIC_CLARITY_ENABLE_DEV=true&& set NODE_ENV=production&& next build",
+        "build:prod": "cross-env NEXT_PUBLIC_CLARITY_PROJECT_ID=t7y8qtm5hl NEXT_PUBLIC_CLARITY_ENABLE_DEV=true NODE_ENV=production next build",
+        "build:prod:win": "set NEXT_PUBLIC_CLARITY_PROJECT_ID=t7y8qtm5hl&& set NEXT_PUBLIC_CLARITY_ENABLE_DEV=true&& set NODE_ENV=production&& next build",
         "start": "next start",
         "lint": "next lint",
         "export": "next build && next export"
