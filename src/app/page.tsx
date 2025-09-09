@@ -74,22 +74,24 @@ const LazyBookmarkCard = ({
                 viewMode === 'grid' ? 'h-full flex flex-col' : ''
             }`}
         >
-            {/* 移动端布局 */}
+            {/* 网格模式布局 */}
             <div className={viewMode === 'grid' ? 'flex flex-col h-full' : 'block sm:hidden'}>
-                <div className="flex items-start gap-3 mb-4">
-                    <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-blue-500 text-lg">🔗</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
-                        <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
-                        <p
-                            className={`text-gray-600 leading-relaxed text-sm mb-4 ${
-                                viewMode === 'grid' ? 'flex-1' : ''
-                            }`}
-                        >
-                            {bookmark.description}
-                        </p>
+                {viewMode === 'grid' ? (
+                    // 网格模式：标题、URL、说明分别占一行
+                    <>
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span className="text-blue-500 text-lg">🔗</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                {/* 标题单独一行 */}
+                                <h3 className="text-lg font-semibold text-gray-900">{bookmark.title}</h3>
+                            </div>
+                        </div>
+                        {/* URL单独一行，占满宽度 */}
+                        <p className="text-blue-600 text-sm break-all mb-3">{bookmark.url}</p>
+                        {/* 说明占满宽度的一行 */}
+                        <p className="text-gray-600 leading-relaxed text-sm mb-4 flex-1">{bookmark.description}</p>
                         <div className="flex flex-wrap gap-2 mb-4">
                             {bookmark.tags.map((tag, index) => (
                                 <span
@@ -100,24 +102,64 @@ const LazyBookmarkCard = ({
                                 </span>
                             ))}
                         </div>
-                    </div>
-                </div>
-                <a
-                    href={bookmark.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px] mt-auto"
-                >
-                    访问
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                    </svg>
-                </a>
+                        <a
+                            href={bookmark.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px] mt-auto"
+                        >
+                            访问
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                />
+                            </svg>
+                        </a>
+                    </>
+                ) : (
+                    // 移动端布局保持原样
+                    <>
+                        <div className="flex items-start gap-3 mb-4">
+                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span className="text-blue-500 text-lg">🔗</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
+                                <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
+                                <p className="text-gray-600 leading-relaxed text-sm mb-4">{bookmark.description}</p>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    {bookmark.tags.map((tag, index) => (
+                                        <span
+                                            key={`${bookmarkIndex}-${tag}-${index}`}
+                                            className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <a
+                            href={bookmark.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px] mt-auto"
+                        >
+                            访问
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                />
+                            </svg>
+                        </a>
+                    </>
+                )}
             </div>
 
             {/* PC端布局 */}
@@ -291,23 +333,23 @@ export default function Home() {
                     {/* 视图模式切换 */}
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-600">视图模式:</span>
-                        <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+                        <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
                                     viewMode === 'list'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                                        ? 'bg-blue-500 text-white shadow-sm'
+                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
                                 }`}
                             >
                                 列表
                             </button>
                             <button
                                 onClick={() => setViewMode('grid')}
-                                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
                                     viewMode === 'grid'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                                        ? 'bg-blue-500 text-white shadow-sm'
+                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
                                 }`}
                             >
                                 网格
