@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import bookmarksData from '@/data/bookmarks.json';
 
 interface Bookmark {
@@ -13,6 +13,26 @@ interface Bookmark {
 export default function Home() {
     const [selectedTag, setSelectedTag] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    // 监听滚动事件，控制回到顶部按钮显示
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            setShowScrollTop(scrollTop > 300);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // 回到顶部函数
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
 
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
@@ -320,6 +340,30 @@ export default function Home() {
                     </p>
                 </div>
             </footer>
+
+            {/* 回到顶部按钮 */}
+            {showScrollTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+                    title="回到顶部"
+                    aria-label="回到顶部"
+                >
+                    <svg
+                        className="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 10l7-7m0 0l7 7m-7-7v18"
+                        />
+                    </svg>
+                </button>
+            )}
         </div>
     );
 }
