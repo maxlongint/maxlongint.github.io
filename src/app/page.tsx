@@ -120,28 +120,35 @@ const LazyBookmarkCard = ({
                         </a>
                     </>
                 ) : (
-                    // 移动端布局保持原样
+                    // 移动端列表模式布局：图标和标题占一行，URL占一行，说明占满宽度
                     <>
-                        <div className="flex items-start gap-3 mb-4">
+                        {/* 图标和标题占一行 */}
+                        <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span className="text-blue-500 text-lg">🔗</span>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
-                                <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
-                                <p className="text-gray-600 leading-relaxed text-sm mb-4">{bookmark.description}</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {bookmark.tags.map((tag, index) => (
-                                        <span
-                                            key={`${bookmarkIndex}-${tag}-${index}`}
-                                            className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900 flex-1">{bookmark.title}</h3>
                         </div>
+
+                        {/* URL占一行 */}
+                        <p className="text-blue-600 text-sm break-all mb-3">{bookmark.url}</p>
+
+                        {/* 说明占满宽度 */}
+                        <p className="text-gray-600 leading-relaxed text-sm mb-4">{bookmark.description}</p>
+
+                        {/* 标签 */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {bookmark.tags.map((tag, index) => (
+                                <span
+                                    key={`${bookmarkIndex}-${tag}-${index}`}
+                                    className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* 访问按钮 */}
                         <a
                             href={bookmark.url}
                             target="_blank"
