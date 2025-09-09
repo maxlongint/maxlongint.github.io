@@ -48,7 +48,7 @@ const LazyBookmarkCard = ({
             <div
                 ref={cardRef}
                 className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 transition-all duration-200 ${
-                    viewMode === 'grid' ? 'h-full flex flex-col' : ''
+                    viewMode === 'grid' ? 'flex flex-col' : ''
                 } animate-pulse`}
             >
                 <div className="flex items-start gap-3">
@@ -71,7 +71,7 @@ const LazyBookmarkCard = ({
         <div
             ref={cardRef}
             className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${
-                viewMode === 'grid' ? 'h-full flex flex-col' : ''
+                viewMode === 'grid' ? 'flex flex-col' : ''
             }`}
         >
             {/* 网格模式布局 */}
@@ -442,19 +442,18 @@ export default function Home() {
                 {/* 书签列表 */}
                 <div
                     className={
-                        viewMode === 'grid'
-                            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
-                            : 'space-y-4'
+                        viewMode === 'grid' ? 'masonry-container columns-1 sm:columns-2 lg:columns-3' : 'space-y-4'
                     }
                 >
                     {filteredBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
-                        <LazyBookmarkCard
-                            key={bookmark.title}
-                            bookmark={bookmark}
-                            bookmarkIndex={bookmarkIndex}
-                            viewMode={viewMode}
-                            getTagColor={getTagColor}
-                        />
+                        <div key={bookmark.title} className={viewMode === 'grid' ? 'masonry-item' : ''}>
+                            <LazyBookmarkCard
+                                bookmark={bookmark}
+                                bookmarkIndex={bookmarkIndex}
+                                viewMode={viewMode}
+                                getTagColor={getTagColor}
+                            />
+                        </div>
                     ))}
                 </div>
 

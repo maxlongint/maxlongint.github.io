@@ -93,6 +93,30 @@ body {
     background: #a8a8a8;
 }
 
+/* 瀑布流布局优化 */
+.masonry-container {
+    column-gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .masonry-container {
+        column-gap: 1rem;
+    }
+}
+
+.masonry-item {
+    break-inside: avoid;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .masonry-item {
+        margin-bottom: 1rem;
+    }
+}
+
 /* 网格布局优化 */
 .grid-card {
     display: flex;
