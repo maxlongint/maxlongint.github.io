@@ -46,8 +46,14 @@ npm run dev
 ### 构建
 
 ```bash
-# 构建生产版本
+# 构建生产版本（自动禁用 Clarity）
 npm run build
+
+# 构建生产版本（自动启用 Clarity）
+npm run build:prod
+
+# Windows 系统下构建生产版本（自动启用 Clarity）
+npm run build:prod:win
 
 # 启动生产服务器
 npm run start
@@ -90,6 +96,44 @@ npm run lint
     ]
 }
 ```
+
+## 📊 分析配置
+
+### Microsoft Clarity
+
+项目已集成 Microsoft Clarity 用于网站分析。要启用 Clarity 分析：
+
+1. 访问 [Microsoft Clarity](https://clarity.microsoft.com/) 注册账号
+2. 创建新项目并获取项目 ID
+3. 创建 `.env.local` 文件并添加配置：
+
+```bash
+# Microsoft Clarity 项目 ID
+NEXT_PUBLIC_CLARITY_PROJECT_ID=your_clarity_project_id_here
+
+# 在开发环境中启用 Clarity（可选）
+NEXT_PUBLIC_CLARITY_ENABLE_DEV=true
+```
+
+4. 重启开发服务器，Clarity 将自动开始收集数据
+
+#### 常见问题解决
+
+**网络连接错误** (`net::ERR_CONNECTION_CLOSED`)：
+
+-   检查网络连接是否正常
+-   确认防火墙或代理设置未阻止 `clarity.ms` 域名
+-   检查浏览器广告屏蔽插件是否阻止了 Clarity
+-   验证项目 ID 是否正确（应为 10 位字母数字组合）
+-   在开发环境下可以设置 `NEXT_PUBLIC_CLARITY_ENABLE_DEV=false` 禁用 Clarity
+
+**自动部署配置**：
+
+-   GitHub Actions 自动部署时会自动启用 Microsoft Clarity
+-   本地构建生产版本时使用 `npm run build:prod` 命令
+-   生产环境下 Clarity 会自动启用，无需手动配置
+
+**注意**: 环境变量名必须以 `NEXT_PUBLIC_` 开头才能在客户端使用。
 
 ## 📁 项目结构
 

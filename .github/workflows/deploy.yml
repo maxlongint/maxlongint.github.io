@@ -44,7 +44,7 @@ jobs:
                   static_site_generator: next
 
             - name: 构建 Next.js 应用
-              run: npm run build
+              run: npm run build:prod
 
             - name: 上传构建产物
               uses: actions/upload-pages-artifact@v3

@@ -5,11 +5,14 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
+        "build:prod": "cross-env NEXT_PUBLIC_CLARITY_ENABLE_DEV=true NODE_ENV=production next build",
+        "build:prod:win": "set NEXT_PUBLIC_CLARITY_ENABLE_DEV=true&& set NODE_ENV=production&& next build",
         "start": "next start",
         "lint": "next lint",
         "export": "next build && next export"
     },
     "dependencies": {
+        "@microsoft/clarity": "^1.0.0",
         "@types/node": "^24.3.1",
         "@types/react": "^19.1.12",
         "@types/react-dom": "^19.1.9",
@@ -22,6 +25,7 @@
     },
     "devDependencies": {
         "autoprefixer": "^10.4.21",
+        "cross-env": "^10.0.0",
         "postcss": "^8.5.6",
         "tailwindcss": "^3.4.17"
     }
