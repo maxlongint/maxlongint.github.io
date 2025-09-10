@@ -3,6 +3,10 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import bookmarksData from '@/data/bookmarks.json';
 
+// 性能优化配置
+const ITEMS_PER_PAGE = 20; // 每页显示的书签数量
+const INTERSECTION_THRESHOLD = 0.1; // IntersectionObserver 触发阈值
+
 interface Bookmark {
     title: string;
     url: string;
@@ -10,7 +14,7 @@ interface Bookmark {
     tags: string[];
 }
 
-// 懒加载书签卡片组件
+// 优化的懒加载书签卡片组件
 const LazyBookmarkCard = ({
     bookmark,
     bookmarkIndex,
@@ -32,13 +36,17 @@ const LazyBookmarkCard = ({
                 if (entry.isIntersecting) {
                     setIsVisible(true);
                     // 优化动画时间，减少延迟以提升流畅度
+                    const delay = Math.min(bookmarkIndex * 20, 100); // 减少延迟到20ms，最大100ms
                     setTimeout(() => {
                         setIsAnimated(true);
-                    }, Math.min(bookmarkIndex * 30, 200)); // 减少延迟到30ms，最大200ms
+                    }, delay);
                     observer.disconnect();
                 }
             },
-            { threshold: 0.1, rootMargin: '40px' } // 提前触发动画
+            {
+                threshold: INTERSECTION_THRESHOLD,
+                rootMargin: '50px', // 提前触发动画
+            }
         );
 
         if (cardRef.current) {
@@ -48,23 +56,25 @@ const LazyBookmarkCard = ({
         return () => observer.disconnect();
     }, [bookmarkIndex]);
 
+    // 优化的骨架屏
     if (!isVisible) {
         return (
             <div
                 ref={cardRef}
                 className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 transition-all duration-200 ${
                     viewMode === 'grid' ? 'flex flex-col' : ''
-                } animate-pulse`}
+                }`}
+                style={{ minHeight: '200px' }} // 固定骨架屏高度防止布局移位
             >
                 <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
+                    <div className="w-10 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
                     <div className="flex-1">
-                        <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded mb-3"></div>
-                        <div className="h-16 bg-gray-200 rounded mb-4"></div>
+                        <div className="h-6 bg-gray-200 rounded mb-2 animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 rounded mb-3 w-3/4 animate-pulse"></div>
+                        <div className="h-16 bg-gray-200 rounded mb-4 animate-pulse"></div>
                         <div className="flex gap-2">
-                            <div className="h-6 w-16 bg-gray-200 rounded"></div>
-                            <div className="h-6 w-20 bg-gray-200 rounded"></div>
+                            <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+                            <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
                         </div>
                     </div>
                 </div>
@@ -75,14 +85,14 @@ const LazyBookmarkCard = ({
     return (
         <div
             ref={cardRef}
-            className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-500 ${
+            className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 ${
                 viewMode === 'grid' ? 'flex flex-col' : ''
             } ${
                 isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
             } transform-gpu will-change-transform`}
             style={{
                 transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: isAnimated ? '0ms' : `${Math.min(bookmarkIndex * 20, 150)}ms`,
+                transitionDelay: isAnimated ? '0ms' : `${Math.min(bookmarkIndex * 15, 100)}ms`, // 进一步减少延迟
             }}
         >
             {/* 网格模式布局 */}
@@ -236,9 +246,94 @@ export default function Home() {
     const [isSearching, setIsSearching] = useState(false); // 标记是否正在搜索
     const [isFixedSearchFocused, setIsFixedSearchFocused] = useState(false); // 标记固定搜索框是否有焦点
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+    const [currentPage, setCurrentPage] = useState(1); // 当前页数
+    const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE); // 当前可见项目数
     const searchSectionRef = useRef<HTMLDivElement>(null);
     const fixedSearchInputRef = useRef<HTMLInputElement>(null);
+    const loadMoreRef = useRef<HTMLDivElement>(null);
     const [hasTriggeredFixed, setHasTriggeredFixed] = useState(false); // 标记是否已经触发过固定搜索框
+
+    // JSON-LD 结构化数据
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: '前端利器库',
+        description: '精心整理的前端开发工具与资源，让你的开发更高效',
+        url: 'https://maxlongint.github.io',
+        author: {
+            '@type': 'Person',
+            name: 'Cyclone77',
+        },
+        potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://maxlongint.github.io?search={search_term_string}',
+            'query-input': 'required name=search_term_string',
+        },
+        mainEntity: {
+            '@type': 'ItemList',
+            name: '前端开发工具书签',
+            numberOfItems: bookmarksData.bookmarks.length,
+            itemListElement: bookmarksData.bookmarks.slice(0, 10).map((bookmark, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                    '@type': 'WebSite',
+                    name: bookmark.title,
+                    description: bookmark.description,
+                    url: bookmark.url,
+                },
+            })),
+        },
+    };
+
+    // 基础的书签数据筛选（用于统计）
+    const filteredBookmarks = useMemo(() => {
+        let bookmarks = bookmarksData.bookmarks;
+
+        // 根据标签筛选
+        if (selectedTag !== 'All') {
+            bookmarks = bookmarks.filter(bookmark => bookmark.tags.includes(selectedTag));
+        }
+
+        // 根据搜索关键词筛选
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            bookmarks = bookmarks.filter(
+                bookmark =>
+                    bookmark.title.toLowerCase().includes(query) ||
+                    bookmark.description.toLowerCase().includes(query) ||
+                    bookmark.url.toLowerCase().includes(query) ||
+                    bookmark.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+        }
+
+        return bookmarks;
+    }, [selectedTag, searchQuery]);
+
+    // 无限滚动加载更多书签
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                const target = entries[0];
+                if (target.isIntersecting && visibleItems < filteredBookmarks.length) {
+                    setVisibleItems(prev => Math.min(prev + ITEMS_PER_PAGE, filteredBookmarks.length));
+                }
+            },
+            { threshold: INTERSECTION_THRESHOLD }
+        );
+
+        if (loadMoreRef.current) {
+            observer.observe(loadMoreRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [visibleItems, filteredBookmarks.length]);
+
+    // 重置可见项目数当筛选条件变化时
+    useEffect(() => {
+        setVisibleItems(ITEMS_PER_PAGE);
+        setCurrentPage(1);
+    }, [selectedTag, searchQuery]);
 
     // 监听滚动事件，控制回到顶部按钮和固定搜索框显示
     useEffect(() => {
@@ -284,28 +379,13 @@ export default function Home() {
         });
     };
 
-    const filteredBookmarks = useMemo(() => {
-        let bookmarks = bookmarksData.bookmarks;
-
-        // 根据标签筛选
-        if (selectedTag !== 'All') {
-            bookmarks = bookmarks.filter(bookmark => bookmark.tags.includes(selectedTag));
-        }
-
-        // 根据搜索关键词筛选
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase().trim();
-            bookmarks = bookmarks.filter(
-                bookmark =>
-                    bookmark.title.toLowerCase().includes(query) ||
-                    bookmark.description.toLowerCase().includes(query) ||
-                    bookmark.url.toLowerCase().includes(query) ||
-                    bookmark.tags.some(tag => tag.toLowerCase().includes(query))
-            );
-        }
-
-        return bookmarks;
-    }, [selectedTag, searchQuery]);
+    // 优化的书签数据筛选和分页
+    const { displayedBookmarks, hasMore } = useMemo(() => {
+        return {
+            displayedBookmarks: filteredBookmarks.slice(0, visibleItems),
+            hasMore: visibleItems < filteredBookmarks.length,
+        };
+    }, [filteredBookmarks, visibleItems]);
 
     // 统计信息
     const stats = useMemo(() => {
@@ -396,6 +476,9 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* JSON-LD 结构化数据 */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
                 {/* 头部 */}
                 <header className="mb-6 sm:mb-8">
@@ -547,7 +630,7 @@ export default function Home() {
                     {(searchQuery || selectedTag !== 'All') && (
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
                             <span>
-                                显示 {filteredBookmarks.length} 个结果
+                                显示 {displayedBookmarks.length} / {filteredBookmarks.length} 个结果
                                 {searchQuery && <span className="font-medium"> 包含 &quot;{searchQuery}&quot;</span>}
                                 {selectedTag !== 'All' && <span className="font-medium"> 标签: {selectedTag}</span>}
                             </span>
@@ -567,8 +650,11 @@ export default function Home() {
                         viewMode === 'grid' ? 'masonry-container columns-1 sm:columns-2 lg:columns-3' : 'space-y-4'
                     }
                 >
-                    {filteredBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
-                        <div key={bookmark.title} className={viewMode === 'grid' ? 'masonry-item' : ''}>
+                    {displayedBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
+                        <div
+                            key={`${bookmark.title}-${bookmarkIndex}`}
+                            className={viewMode === 'grid' ? 'masonry-item' : ''}
+                        >
                             <LazyBookmarkCard
                                 bookmark={bookmark}
                                 bookmarkIndex={bookmarkIndex}
@@ -579,8 +665,18 @@ export default function Home() {
                     ))}
                 </div>
 
+                {/* 加载更多触发器 */}
+                {hasMore && (
+                    <div ref={loadMoreRef} className="flex justify-center items-center py-8">
+                        <div className="flex items-center gap-2 text-gray-500">
+                            <div className="animate-spin w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                            <span>加载更多...</span>
+                        </div>
+                    </div>
+                )}
+
                 {/* 空状态 */}
-                {filteredBookmarks.length === 0 && (
+                {displayedBookmarks.length === 0 && filteredBookmarks.length === 0 && (
                     <div className="text-center py-8 sm:py-12 px-4">
                         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <span className="text-gray-400 text-2xl">🔍</span>
