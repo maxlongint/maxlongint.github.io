@@ -16,6 +16,7 @@
         "Cookie",
         "loading",
         "Markdown",
+        "DOM-diffing",
         "不可变更新",
         "校验",
         "图标",
@@ -398,6 +399,12 @@
             "url": "https://github.com/TahaSh/swapy",
             "description": "一款与框架无关的工具，只需几行代码就能将任何布局转换为可拖动替换的布局形式。",
             "tags": ["JavaScript", "拖放"]
+        },
+        {
+            "title": "morphdom",
+            "url": "https://github.com/patrick-steele-idem/morphdom",
+            "description": "快速且轻量级的 DOM 差异对比/补丁处理（无需虚拟 DOM）。",
+            "tags": ["JavaScript", "DOM-diffing"]
         }
     ]
 }
