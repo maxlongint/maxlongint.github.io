@@ -25,12 +25,34 @@ body {
 
 /* 书签卡片动画效果 */
 .bookmark-card {
-    transition: all 0.2s ease-in-out;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+    transform: translateZ(0); /* 强制GPU加速 */
+    backface-visibility: hidden; /* 避免闪烁 */
 }
 
 .bookmark-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动淡入动画 */
+.fade-in-scroll {
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+.fade-in-scroll.animate {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+}
+
+/* 交错动画效果 */
+.stagger-animation {
+    animation-delay: var(--stagger-delay, 0ms);
+    transform: translateZ(0);
 }
 
 /* 标签悬停效果 */
@@ -44,6 +66,11 @@ body {
 
 /* 移动端优化：减少卡片悬停效果 */
 @media (max-width: 640px) {
+    .bookmark-card {
+        /* 移动端减少GPU使用，提升性能 */
+        will-change: auto;
+    }
+
     .bookmark-card:hover {
         transform: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -52,6 +79,32 @@ body {
     .tag:hover {
         transform: none;
     }
+
+    /* 移动端动画优化 */
+    .fade-in-scroll {
+        transition-duration: 0.4s; /* 移动端动画更快 */
+    }
+}
+
+/* 固定搜索框样式 */
+.fixed-search-bar {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 固定搜索框动画 */
+.fixed-search-enter {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.fixed-search-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
 }
 
 /* 优化触摸目标大小 */

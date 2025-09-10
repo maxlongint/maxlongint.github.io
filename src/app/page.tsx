@@ -23,6 +23,7 @@ const LazyBookmarkCard = ({
     getTagColor: (tag: string) => string;
 }) => {
     const [isVisible, setIsVisible] = useState(false);
+    const [isAnimated, setIsAnimated] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -30,10 +31,14 @@ const LazyBookmarkCard = ({
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsVisible(true);
+                    // 优化动画时间，减少延迟以提升流畅度
+                    setTimeout(() => {
+                        setIsAnimated(true);
+                    }, Math.min(bookmarkIndex * 30, 200)); // 减少延迟到30ms，最大200ms
                     observer.disconnect();
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0.1, rootMargin: '40px' } // 提前触发动画
         );
 
         if (cardRef.current) {
@@ -41,7 +46,7 @@ const LazyBookmarkCard = ({
         }
 
         return () => observer.disconnect();
-    }, []);
+    }, [bookmarkIndex]);
 
     if (!isVisible) {
         return (
@@ -70,9 +75,15 @@ const LazyBookmarkCard = ({
     return (
         <div
             ref={cardRef}
-            className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 ${
+            className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-500 ${
                 viewMode === 'grid' ? 'flex flex-col' : ''
-            }`}
+            } ${
+                isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+            } transform-gpu will-change-transform`}
+            style={{
+                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                transitionDelay: isAnimated ? '0ms' : `${Math.min(bookmarkIndex * 20, 150)}ms`,
+            }}
         >
             {/* 网格模式布局 */}
             <div className={viewMode === 'grid' ? 'flex flex-col h-full' : 'block sm:hidden'}>
@@ -221,18 +232,49 @@ export default function Home() {
     const [selectedTag, setSelectedTag] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [showFixedSearch, setShowFixedSearch] = useState(false);
+    const [isSearching, setIsSearching] = useState(false); // 标记是否正在搜索
+    const [isFixedSearchFocused, setIsFixedSearchFocused] = useState(false); // 标记固定搜索框是否有焦点
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+    const searchSectionRef = useRef<HTMLDivElement>(null);
+    const fixedSearchInputRef = useRef<HTMLInputElement>(null);
+    const [hasTriggeredFixed, setHasTriggeredFixed] = useState(false); // 标记是否已经触发过固定搜索框
 
-    // 监听滚动事件，控制回到顶部按钮显示
+    // 监听滚动事件，控制回到顶部按钮和固定搜索框显示
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             setShowScrollTop(scrollTop > 300);
+
+            // 如果固定搜索框有焦点或正在输入，不执行隐藏逻辑
+            if (isFixedSearchFocused || isSearching) {
+                return;
+            }
+
+            // 检查搜索框区域是否滚出视窗
+            if (searchSectionRef.current) {
+                const searchSectionRect = searchSectionRef.current.getBoundingClientRect();
+                const shouldShowFixed = searchSectionRect.bottom < -50;
+
+                // 如果应该显示固定搜索框，标记为已触发
+                if (shouldShowFixed) {
+                    setHasTriggeredFixed(true);
+                }
+
+                // 只有在用户滚回到很顶部时才隐藏固定搜索框
+                if (scrollTop < 100) {
+                    setShowFixedSearch(false);
+                    setHasTriggeredFixed(false);
+                } else if (hasTriggeredFixed || shouldShowFixed) {
+                    // 一旦触发过固定搜索框，或者当前应该显示，就保持显示状态
+                    setShowFixedSearch(true);
+                }
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [hasTriggeredFixed, isFixedSearchFocused, isSearching]);
 
     // 回到顶部函数
     const scrollToTop = () => {
@@ -299,6 +341,57 @@ export default function Home() {
     const clearFilters = useCallback(() => {
         setSearchQuery('');
         setSelectedTag('All');
+        setIsSearching(false);
+        setIsFixedSearchFocused(false);
+    }, []);
+
+    // 处理搜索输入
+    const handleSearchChange = useCallback(
+        (value: string) => {
+            setSearchQuery(value);
+            const isCurrentlySearching = value.trim().length > 0;
+            setIsSearching(isCurrentlySearching);
+
+            // 如果正在使用固定搜索框且有内容，确保固定搜索框保持显示
+            if (isCurrentlySearching && showFixedSearch) {
+                setHasTriggeredFixed(true);
+            }
+        },
+        [showFixedSearch]
+    );
+
+    // 处理固定搜索框的输入和焦点保持
+    const handleFixedSearchChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            handleSearchChange(value);
+
+            // 在输入过程中强制保持固定搜索框显示
+            setHasTriggeredFixed(true);
+            setShowFixedSearch(true);
+
+            // 保持焦点在固定搜索框上
+            setTimeout(() => {
+                if (fixedSearchInputRef.current) {
+                    fixedSearchInputRef.current.focus();
+                }
+            }, 0);
+        },
+        [handleSearchChange]
+    );
+
+    // 处理固定搜索框的焦点事件
+    const handleFixedSearchFocus = useCallback(() => {
+        setIsFixedSearchFocused(true);
+        setHasTriggeredFixed(true);
+        setShowFixedSearch(true);
+    }, []);
+
+    const handleFixedSearchBlur = useCallback(() => {
+        // 延迟设置以防止快速焦点切换时的闪烁
+        setTimeout(() => {
+            setIsFixedSearchFocused(false);
+        }, 100);
     }, []);
 
     return (
@@ -336,9 +429,26 @@ export default function Home() {
                 </header>
 
                 {/* 搜索框和视图模式 */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div
+                    ref={searchSectionRef}
+                    className={`flex flex-col sm:flex-row sm:items-center gap-4 mb-6 ${
+                        showFixedSearch ? 'sm:justify-start' : 'sm:justify-between'
+                    }`}
+                >
                     {/* 视图模式切换 */}
                     <div className="flex items-center gap-2">
+                        {showFixedSearch && (
+                            <div className="flex items-center gap-1 mr-2 px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                使用顶部搜索
+                            </div>
+                        )}
                         <span className="text-sm text-gray-600">视图模式:</span>
                         <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
                             <button
@@ -364,46 +474,52 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* 搜索框 */}
-                    <div className="relative w-full max-w-md sm:max-w-lg">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg
-                                className="w-5 h-5 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </div>
-                        <input
-                            type="text"
-                            placeholder="搜索书签标题、描述、URL或标签..."
-                            value={searchQuery}
-                            onChange={e => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-12 py-3 text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                        />
-                        {searchQuery && (
-                            <button
-                                onClick={() => setSearchQuery('')}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {/* 搜索框 - 只在固定搜索框未显示时显示 */}
+                    {!showFixedSearch && (
+                        <div className="relative w-full max-w-md sm:max-w-lg">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg
+                                    className="w-5 h-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
-                                        d="M6 18L18 6M6 6l12 12"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                     />
                                 </svg>
-                            </button>
-                        )}
-                    </div>
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="搜索书签标题、描述、URL或标签..."
+                                value={searchQuery}
+                                onChange={e => handleSearchChange(e.target.value)}
+                                className="w-full pl-10 pr-12 py-3 text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            />
+                            {searchQuery && (
+                                <button
+                                    onClick={() => {
+                                        setSearchQuery('');
+                                        setIsSearching(false);
+                                        setIsFixedSearchFocused(false);
+                                    }}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <div className="mb-6 sm:mb-8">
@@ -504,6 +620,95 @@ export default function Home() {
                     </p>
                 </div>
             </footer>
+
+            {/* 固定搜索框 */}
+            {showFixedSearch && (
+                <div className="fixed top-0 left-0 right-0 z-40 fixed-search-bar transition-all duration-300">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                        <div className="flex items-center justify-between gap-4">
+                            {/* Logo 和标题 */}
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                                <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
+                                    <span className="text-white text-sm">🔗</span>
+                                </div>
+                                <h1 className="text-lg font-bold text-gray-900 hidden sm:block">URL Collection</h1>
+                            </div>
+
+                            {/* 固定搜索框 */}
+                            <div className="relative flex-1 max-w-md sm:max-w-lg">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg
+                                        className="w-4 h-4 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                        />
+                                    </svg>
+                                </div>
+                                <input
+                                    ref={fixedSearchInputRef}
+                                    type="text"
+                                    placeholder="搜索书签..."
+                                    value={searchQuery}
+                                    onChange={handleFixedSearchChange}
+                                    onFocus={handleFixedSearchFocus}
+                                    onBlur={handleFixedSearchBlur}
+                                    className="w-full pl-10 pr-10 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => {
+                                            setSearchQuery('');
+                                            setIsSearching(false);
+                                            setIsFixedSearchFocused(false);
+                                            // 保持焦点在固定搜索框上
+                                            setTimeout(() => {
+                                                if (fixedSearchInputRef.current) {
+                                                    fixedSearchInputRef.current.focus();
+                                                }
+                                            }, 0);
+                                        }}
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 min-w-[40px] min-h-[40px] justify-center"
+                                        aria-label="清除搜索"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* 回到顶部按钮（小尺寸） */}
+                            <button
+                                onClick={scrollToTop}
+                                className="flex-shrink-0 w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
+                                title="回到顶部"
+                                aria-label="回到顶部"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* 回到顶部按钮 */}
             {showScrollTop && (
