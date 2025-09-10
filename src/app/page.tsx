@@ -404,7 +404,7 @@ export default function Home() {
                             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                                 <span className="text-white text-lg">🔗</span>
                             </div>
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">URL Collection</h1>
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">前端利器库</h1>
                         </div>
 
                         {/* GitHub 仓库链接 */}
@@ -425,7 +425,6 @@ export default function Home() {
                             <span className="hidden sm:inline">GitHub</span>
                         </a> */}
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">My URLs</h2>
                 </header>
 
                 {/* 搜索框和视图模式 */}
@@ -631,7 +630,7 @@ export default function Home() {
                                 <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
                                     <span className="text-white text-sm">🔗</span>
                                 </div>
-                                <h1 className="text-lg font-bold text-gray-900 hidden sm:block">URL Collection</h1>
+                                <h1 className="text-lg font-bold text-gray-900 hidden sm:block">前端利器库</h1>
                             </div>
 
                             {/* 固定搜索框 */}
