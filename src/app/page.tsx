@@ -675,21 +675,30 @@ const LazyBookmarkCard = ({
             }}
         >
             {/* 网格模式布局 */}
-            <div className={viewMode === 'grid' ? 'flex flex-col h-full' : 'block sm:hidden'}>
+            <div className={viewMode === 'grid' ? 'flex flex-col h-full' : 'block lg:hidden'}>
                 {viewMode === 'grid' ? (
                     // 网格模式：标题、URL、说明分别占一行
                     <>
                         <div className="flex items-start gap-3 mb-3">
-                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span className="text-blue-500 text-lg">🔗</span>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                {/* 标题和 GitHub 统计信息在同一行 */}
-                                <div className="flex items-center justify-between gap-2 mb-1">
-                                    <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1">
+                            <div className="flex-1 min-w-0 h-12 flex flex-col justify-between">
+                                {/* 桌面端：标题和 GitHub 统计信息在同一行 */}
+                                <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-2 h-12">
+                                    <h3 className="text-lg font-bold text-gray-900 leading-tight flex-1 truncate">
                                         {bookmark.title}
                                     </h3>
                                     <GitHubStats url={bookmark.url} />
+                                </div>
+                                {/* 移动端：标题单独一行，GitHub 统计信息单独一行 */}
+                                <div className="block lg:hidden h-12 flex flex-col justify-between">
+                                    <h3 className="text-lg font-bold text-gray-900 leading-tight truncate">
+                                        {bookmark.title}
+                                    </h3>
+                                    <div className="flex items-center">
+                                        <GitHubStats url={bookmark.url} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -698,7 +707,7 @@ const LazyBookmarkCard = ({
                             href={bookmark.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 mt-1 inline-flex items-center gap-1 transition-colors font-medium"
                         >
                             {bookmark.url.replace(/^https?:\/\//, '')}
                             <ExternalLinkIcon />
@@ -728,13 +737,22 @@ const LazyBookmarkCard = ({
                                     {bookmark.title.charAt(0).toUpperCase()}
                                 </span>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                {/* 标题和 GitHub 统计信息在同一行 */}
-                                <div className="flex items-center justify-between gap-2">
-                                    <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">
+                            <div className="flex-1 min-w-0 h-12 flex flex-col justify-between">
+                                {/* 桌面端：标题和 GitHub 统计信息在同一行 */}
+                                <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-2 h-12">
+                                    <h3 className="text-lg font-bold text-gray-900 flex-1 leading-tight truncate">
                                         {bookmark.title}
                                     </h3>
                                     <GitHubStats url={bookmark.url} />
+                                </div>
+                                {/* 移动端：标题单独一行，GitHub 统计信息单独一行 */}
+                                <div className="block lg:hidden h-12 flex flex-col justify-between">
+                                    <h3 className="text-lg font-bold text-gray-900 leading-tight truncate">
+                                        {bookmark.title}
+                                    </h3>
+                                    <div className="flex items-center">
+                                        <GitHubStats url={bookmark.url} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -744,7 +762,7 @@ const LazyBookmarkCard = ({
                             href={bookmark.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 mt-1 inline-flex items-center gap-1 transition-colors font-medium"
                         >
                             {bookmark.url.replace(/^https?:\/\//, '')}
                             <ExternalLinkIcon />
@@ -771,7 +789,7 @@ const LazyBookmarkCard = ({
             </div>
 
             {/* PC端布局 */}
-            <div className={viewMode === 'grid' ? 'hidden' : 'hidden sm:flex sm:items-start sm:gap-4'}>
+            <div className={viewMode === 'grid' ? 'hidden' : 'hidden lg:flex lg:items-start lg:gap-4'}>
                 {/* 链接图标 */}
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
                     <span className="text-blue-600 text-xl font-semibold">
@@ -782,20 +800,22 @@ const LazyBookmarkCard = ({
                 {/* 内容区域 */}
                 <div className="flex-1 min-w-0">
                     {/* 标题和 GitHub 统计信息在同一行 */}
-                    <div className="flex items-center justify-between gap-4 mb-2">
-                        <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1">{bookmark.title}</h3>
+                    <div className="flex items-center justify-between gap-4 h-6">
+                        <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1 truncate">
+                            {bookmark.title}
+                        </h3>
                         <GitHubStats url={bookmark.url} />
                     </div>
                     <a
                         href={bookmark.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
+                        className="text-blue-600 hover:text-blue-800 text-sm break-all mb-1 inline-flex items-center gap-1 transition-colors font-medium h-6 leading-6"
                     >
                         {bookmark.url.replace(/^https?:\/\//, '')}
                         <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
                     </a>
-                    <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
+                    <p className="text-gray-600 mb-4 leading-relaxed text-base mt-1">{bookmark.description}</p>
                     <div className="flex flex-wrap gap-2">
                         {bookmark.tags.map((tag, index) => (
                             <span
@@ -1204,7 +1224,7 @@ export default function Home() {
                 {/* 书签列表 */}
                 <div
                     className={
-                        viewMode === 'grid' ? 'masonry-container columns-1 sm:columns-2 lg:columns-3' : 'space-y-4'
+                        viewMode === 'grid' ? 'masonry-container columns-1 lg:columns-2 xl:columns-3' : 'space-y-4'
                     }
                 >
                     {displayedBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
