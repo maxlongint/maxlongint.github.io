@@ -679,16 +679,19 @@ const LazyBookmarkCard = ({
                 {viewMode === 'grid' ? (
                     // 网格模式：标题、URL、说明分别占一行
                     <>
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex items-start gap-3 mb-3">
                             <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <span className="text-blue-500 text-lg">🔗</span>
                             </div>
                             <div className="flex-1 min-w-0">
-                                {/* 标题单独一行 */}
-                                <h3 className="text-xl font-bold text-gray-900 leading-tight">{bookmark.title}</h3>
+                                {/* 标题和 GitHub 统计信息在同一行 */}
+                                <div className="flex items-center justify-between gap-2 mb-1">
+                                    <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1">
+                                        {bookmark.title}
+                                    </h3>
+                                    <GitHubStats url={bookmark.url} />
+                                </div>
                             </div>
-                            {/* GitHub 统计信息 */}
-                            <GitHubStats url={bookmark.url} />
                         </div>
                         {/* URL单独一行，占满宽度，可点击跳转 */}
                         <a
@@ -719,15 +722,21 @@ const LazyBookmarkCard = ({
                     // 移动端列表模式布局：图标和标题占一行，URL占一行，说明占满宽度
                     <>
                         {/* 图标和标题占一行 */}
-                        <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-start gap-3 mb-4">
                             <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
                                 <span className="text-blue-600 text-xl font-semibold">
                                     {bookmark.title.charAt(0).toUpperCase()}
                                 </span>
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">{bookmark.title}</h3>
-                            {/* GitHub 统计信息 */}
-                            <GitHubStats url={bookmark.url} />
+                            <div className="flex-1 min-w-0">
+                                {/* 标题和 GitHub 统计信息在同一行 */}
+                                <div className="flex items-center justify-between gap-2">
+                                    <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">
+                                        {bookmark.title}
+                                    </h3>
+                                    <GitHubStats url={bookmark.url} />
+                                </div>
+                            </div>
                         </div>
 
                         {/* URL占一行，可点击跳转 */}
@@ -772,34 +781,30 @@ const LazyBookmarkCard = ({
 
                 {/* 内容区域 */}
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{bookmark.title}</h3>
-                            <a
-                                href={bookmark.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
+                    {/* 标题和 GitHub 统计信息在同一行 */}
+                    <div className="flex items-center justify-between gap-4 mb-2">
+                        <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1">{bookmark.title}</h3>
+                        <GitHubStats url={bookmark.url} />
+                    </div>
+                    <a
+                        href={bookmark.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
+                    >
+                        {bookmark.url.replace(/^https?:\/\//, '')}
+                        <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
+                    </a>
+                    <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                        {bookmark.tags.map((tag, index) => (
+                            <span
+                                key={`${bookmarkIndex}-${tag}-${index}`}
+                                className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
                             >
-                                {bookmark.url.replace(/^https?:\/\//, '')}
-                                <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
-                            </a>
-                            <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
-                            <div className="flex flex-wrap gap-2">
-                                {bookmark.tags.map((tag, index) => (
-                                    <span
-                                        key={`${bookmarkIndex}-${tag}-${index}`}
-                                        className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                        {/* GitHub 统计信息 */}
-                        <div className="flex-shrink-0">
-                            <GitHubStats url={bookmark.url} />
-                        </div>
+                                {tag}
+                            </span>
+                        ))}
                     </div>
                 </div>
             </div>
