@@ -3,6 +3,572 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import bookmarksData from '@/data/bookmarks.json';
 
+// GitHub 仓库信息接口
+interface GitHubRepoInfo {
+    stargazers_count: number;
+    npm_version: string;
+    name: string;
+    full_name: string;
+}
+
+// 预设的 GitHub 仓库数据（避免 API 限制问题）
+const presetRepoData: Record<string, GitHubRepoInfo> = {
+    'github.com/unadlib/mutative': {
+        stargazers_count: 2100,
+        npm_version: '1.0.11',
+        name: 'mutative',
+        full_name: 'unadlib/mutative',
+    },
+    'github.com/fabian-hiller/valibot': {
+        stargazers_count: 6200,
+        npm_version: '0.42.1',
+        name: 'valibot',
+        full_name: 'fabian-hiller/valibot',
+    },
+    'github.com/typestack/class-validator': {
+        stargazers_count: 10800,
+        npm_version: '0.14.1',
+        name: 'class-validator',
+        full_name: 'typestack/class-validator',
+    },
+    'github.com/Mage-Icons/mage-icons': {
+        stargazers_count: 850,
+        npm_version: '2.1.3',
+        name: 'mage-icons',
+        full_name: 'Mage-Icons/mage-icons',
+    },
+    'github.com/iconoir-icons/iconoir': {
+        stargazers_count: 3900,
+        npm_version: '7.9.0',
+        name: 'iconoir',
+        full_name: 'iconoir-icons/iconoir',
+    },
+    'github.com/cure53/DOMPurify': {
+        stargazers_count: 13500,
+        npm_version: '3.2.0',
+        name: 'dompurify',
+        full_name: 'cure53/DOMPurify',
+    },
+    'github.com/zumerlab/snapdom': {
+        stargazers_count: 420,
+        npm_version: '0.4.2',
+        name: 'snapdom',
+        full_name: 'zumerlab/snapdom',
+    },
+    'github.com/juliangarnier/anime': {
+        stargazers_count: 49800,
+        npm_version: '3.2.1',
+        name: 'animejs',
+        full_name: 'juliangarnier/anime',
+    },
+    'github.com/animate-css/animate.css': {
+        stargazers_count: 80300,
+        npm_version: '4.1.1',
+        name: 'animate.css',
+        full_name: 'animate-css/animate.css',
+    },
+    'github.com/inorganik/CountUp.js': {
+        stargazers_count: 3800,
+        npm_version: '2.8.0',
+        name: 'countup.js',
+        full_name: 'inorganik/CountUp.js',
+    },
+    'github.com/SortableJS/Sortable': {
+        stargazers_count: 29100,
+        npm_version: '1.15.6',
+        name: 'sortablejs',
+        full_name: 'SortableJS/Sortable',
+    },
+    'github.com/josdejong/jsoneditor': {
+        stargazers_count: 11500,
+        npm_version: '10.1.0',
+        name: 'jsoneditor',
+        full_name: 'josdejong/jsoneditor',
+    },
+    'github.com/MikeMcl/bignumber.js': {
+        stargazers_count: 6600,
+        npm_version: '9.1.2',
+        name: 'bignumber.js',
+        full_name: 'MikeMcl/bignumber.js',
+    },
+    'github.com/MikeMcl/decimal.js': {
+        stargazers_count: 1800,
+        npm_version: '10.4.3',
+        name: 'decimal.js',
+        full_name: 'MikeMcl/decimal.js',
+    },
+    'github.com/dinerojs/dinero.js': {
+        stargazers_count: 6100,
+        npm_version: '2.0.0',
+        name: 'dinero.js',
+        full_name: 'dinerojs/dinero.js',
+    },
+    'github.com/cnwhy/nzh': {
+        stargazers_count: 1100,
+        npm_version: '1.0.4',
+        name: 'nzh',
+        full_name: 'cnwhy/nzh',
+    },
+    'github.com/adamwdraper/Numeral-js': {
+        stargazers_count: 9500,
+        npm_version: '2.0.6',
+        name: 'numeral',
+        full_name: 'adamwdraper/Numeral-js',
+    },
+    'github.com/katspaugh/wavesurfer.js': {
+        stargazers_count: 8600,
+        npm_version: '7.8.6',
+        name: 'wavesurfer.js',
+        full_name: 'katspaugh/wavesurfer.js',
+    },
+    'github.com/marcuswestin/store.js': {
+        stargazers_count: 14000,
+        npm_version: '2.0.12',
+        name: 'store',
+        full_name: 'marcuswestin/store.js',
+    },
+    'github.com/jaames/iro.js': {
+        stargazers_count: 2300,
+        npm_version: '5.5.2',
+        name: '@irojs/iro-core',
+        full_name: 'jaames/iro.js',
+    },
+    'github.com/simonwep/pickr': {
+        stargazers_count: 4200,
+        npm_version: '1.9.1',
+        name: '@simonwep/pickr',
+        full_name: 'simonwep/pickr',
+    },
+    'github.com/KingSora/OverlayScrollbars': {
+        stargazers_count: 3800,
+        npm_version: '2.10.1',
+        name: 'overlayscrollbars',
+        full_name: 'KingSora/OverlayScrollbars',
+    },
+    'github.com/russellsamora/scrollama': {
+        stargazers_count: 3100,
+        npm_version: '3.2.0',
+        name: 'scrollama',
+        full_name: 'russellsamora/scrollama',
+    },
+    'github.com/szimek/signature_pad': {
+        stargazers_count: 3700,
+        npm_version: '5.0.4',
+        name: 'signature_pad',
+        full_name: 'szimek/signature_pad',
+    },
+    'github.com/hodgef/simple-keyboard': {
+        stargazers_count: 2100,
+        npm_version: '3.8.9',
+        name: 'simple-keyboard',
+        full_name: 'hodgef/simple-keyboard',
+    },
+    'github.com/uuidjs/uuid': {
+        stargazers_count: 14500,
+        npm_version: '11.0.3',
+        name: 'uuid',
+        full_name: 'uuidjs/uuid',
+    },
+    'github.com/atomiks/tippyjs': {
+        stargazers_count: 11800,
+        npm_version: '6.3.7',
+        name: 'tippy.js',
+        full_name: 'atomiks/tippyjs',
+    },
+    'github.com/iamkun/dayjs': {
+        stargazers_count: 46800,
+        npm_version: '1.11.13',
+        name: 'dayjs',
+        full_name: 'iamkun/dayjs',
+    },
+    'github.com/socketio/socket.io': {
+        stargazers_count: 61000,
+        npm_version: '4.8.1',
+        name: 'socket.io',
+        full_name: 'socketio/socket.io',
+    },
+    'github.com/jamiebuilds/tinykeys': {
+        stargazers_count: 3500,
+        npm_version: '3.0.0',
+        name: 'tinykeys',
+        full_name: 'jamiebuilds/tinykeys',
+    },
+    'github.com/zh-lx/pinyin-pro': {
+        stargazers_count: 4800,
+        npm_version: '3.24.2',
+        name: 'pinyin-pro',
+        full_name: 'zh-lx/pinyin-pro',
+    },
+    'github.com/bpmn-io/bpmn-js': {
+        stargazers_count: 8700,
+        npm_version: '17.11.1',
+        name: 'bpmn-js',
+        full_name: 'bpmn-io/bpmn-js',
+    },
+    'github.com/davidshimjs/qrcodejs': {
+        stargazers_count: 4500,
+        npm_version: 'N/A',
+        name: 'qrcode',
+        full_name: 'davidshimjs/qrcodejs',
+    },
+    'github.com/fullcalendar/fullcalendar': {
+        stargazers_count: 18300,
+        npm_version: '6.1.15',
+        name: 'fullcalendar',
+        full_name: 'fullcalendar/fullcalendar',
+    },
+    'github.com/zenorocha/clipboard.js': {
+        stargazers_count: 34000,
+        npm_version: '2.0.11',
+        name: 'clipboard',
+        full_name: 'zenorocha/clipboard.js',
+    },
+    'github.com/fengyuanchen/cropperjs': {
+        stargazers_count: 12800,
+        npm_version: '2.0.0-rc.2',
+        name: 'cropperjs',
+        full_name: 'fengyuanchen/cropperjs',
+    },
+    'github.com/videojs/video.js': {
+        stargazers_count: 37800,
+        npm_version: '8.12.0',
+        name: 'video.js',
+        full_name: 'videojs/video.js',
+    },
+    'github.com/video-dev/hls.js': {
+        stargazers_count: 14700,
+        npm_version: '1.5.17',
+        name: 'hls.js',
+        full_name: 'video-dev/hls.js',
+    },
+    'github.com/sampotts/plyr': {
+        stargazers_count: 26200,
+        npm_version: '3.7.8',
+        name: 'plyr',
+        full_name: 'sampotts/plyr',
+    },
+    'github.com/pqina/filepond': {
+        stargazers_count: 15300,
+        npm_version: '4.31.1',
+        name: 'filepond',
+        full_name: 'pqina/filepond',
+    },
+    'github.com/brix/crypto-js': {
+        stargazers_count: 15800,
+        npm_version: '4.2.0',
+        name: 'crypto-js',
+        full_name: 'brix/crypto-js',
+    },
+    'github.com/usablica/intro.js': {
+        stargazers_count: 22600,
+        npm_version: '7.2.0',
+        name: 'intro.js',
+        full_name: 'usablica/intro.js',
+    },
+    'github.com/axios/axios': {
+        stargazers_count: 105000,
+        npm_version: '1.7.9',
+        name: 'axios',
+        full_name: 'axios/axios',
+    },
+    'github.com/js-cookie/js-cookie': {
+        stargazers_count: 21600,
+        npm_version: '3.0.5',
+        name: 'js-cookie',
+        full_name: 'js-cookie/js-cookie',
+    },
+    'github.com/ConnorAtherton/loaders.css': {
+        stargazers_count: 10200,
+        npm_version: 'N/A',
+        name: 'loaders.css',
+        full_name: 'ConnorAtherton/loaders.css',
+    },
+    'github.com/fengyuanchen/viewerjs': {
+        stargazers_count: 7800,
+        npm_version: '1.11.6',
+        name: 'viewerjs',
+        full_name: 'fengyuanchen/viewerjs',
+    },
+    'github.com/nolimits4web/swiper': {
+        stargazers_count: 39700,
+        npm_version: '11.1.14',
+        name: 'swiper',
+        full_name: 'nolimits4web/swiper',
+    },
+    'github.com/highlightjs/highlight.js': {
+        stargazers_count: 23200,
+        npm_version: '11.10.0',
+        name: 'highlight.js',
+        full_name: 'highlightjs/highlight.js',
+    },
+    'github.com/necolas/normalize.css': {
+        stargazers_count: 52200,
+        npm_version: '8.0.1',
+        name: 'normalize.css',
+        full_name: 'necolas/normalize.css',
+    },
+    'github.com/hakimel/reveal.js': {
+        stargazers_count: 67600,
+        npm_version: '5.1.0',
+        name: 'reveal.js',
+        full_name: 'hakimel/reveal.js',
+    },
+    'github.com/hammerjs/hammer.js': {
+        stargazers_count: 24000,
+        npm_version: '2.0.8',
+        name: 'hammerjs',
+        full_name: 'hammerjs/hammer.js',
+    },
+    'github.com/markedjs/marked': {
+        stargazers_count: 32800,
+        npm_version: '15.0.2',
+        name: 'marked',
+        full_name: 'markedjs/marked',
+    },
+    'github.com/Milkdown/milkdown': {
+        stargazers_count: 8800,
+        npm_version: '7.5.0',
+        name: '@milkdown/core',
+        full_name: 'Milkdown/milkdown',
+    },
+    'github.com/TahaSh/swapy': {
+        stargazers_count: 5600,
+        npm_version: '0.1.7',
+        name: 'swapy',
+        full_name: 'TahaSh/swapy',
+    },
+    'github.com/patrick-steele-idem/morphdom': {
+        stargazers_count: 3000,
+        npm_version: '2.7.4',
+        name: 'morphdom',
+        full_name: 'patrick-steele-idem/morphdom',
+    },
+    'github.com/transloadit/uppy': {
+        stargazers_count: 29000,
+        npm_version: '4.5.0',
+        name: '@uppy/core',
+        full_name: 'transloadit/uppy',
+    },
+};
+
+// 缓存 GitHub 仓库信息
+const githubRepoCache = new Map<string, GitHubRepoInfo | null>();
+
+// 获取 GitHub 仓库信息
+const fetchGitHubRepoInfo = async (url: string): Promise<GitHubRepoInfo | null> => {
+    try {
+        // 检查是否为 GitHub 仓库链接
+        const githubMatch = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+        if (!githubMatch) {
+            console.log('不是 GitHub 仓库链接:', url);
+            return null;
+        }
+
+        const [, owner, repo] = githubMatch;
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+        console.log('正在获取 GitHub 仓库信息:', apiUrl);
+
+        // 检查缓存
+        if (githubRepoCache.has(apiUrl)) {
+            console.log('从缓存获取信息:', apiUrl);
+            return githubRepoCache.get(apiUrl) || null;
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            console.error('GitHub API 请求失败:', response.status, response.statusText);
+            githubRepoCache.set(apiUrl, null);
+            return null;
+        }
+
+        const data = await response.json();
+        console.log('GitHub API 返回数据:', {
+            name: data.name,
+            stargazers_count: data.stargazers_count,
+        });
+
+        const repoInfo: GitHubRepoInfo = {
+            stargazers_count: data.stargazers_count,
+            npm_version: 'N/A',
+            name: data.name,
+            full_name: data.full_name,
+        };
+
+        // 缓存结果
+        githubRepoCache.set(apiUrl, repoInfo);
+        return repoInfo;
+    } catch (error) {
+        console.error('Failed to fetch GitHub repo info:', error);
+        return null;
+    }
+};
+
+// GitHub 统计信息组件
+const GitHubStats = ({ url }: { url: string }) => {
+    const [repoInfo, setRepoInfo] = useState<GitHubRepoInfo | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const loadRepoInfo = async () => {
+            if (!url.includes('github.com')) {
+                return;
+            }
+
+            console.log('开始加载 GitHub 信息:', url);
+            setLoading(true);
+            setError(false);
+
+            try {
+                // 首先检查预设数据
+                const urlKey = url
+                    .replace(/^https?:\/\//, '')
+                    .split('?')[0]
+                    .split('#')[0];
+                console.log('查找预设数据键:', urlKey);
+
+                if (presetRepoData[urlKey]) {
+                    console.log('使用预设数据:', presetRepoData[urlKey]);
+                    setTimeout(() => {
+                        setRepoInfo(presetRepoData[urlKey]);
+                        setLoading(false);
+                    }, 500); // 模拟加载时间
+                    return;
+                }
+
+                // 如果没有预设数据，尝试使用 API
+                const githubMatch = url.match(/github\.com\/([^/]+)\/([^/?]+)/);
+                if (!githubMatch) {
+                    console.log('URL 格式不匹配:', url);
+                    setError(true);
+                    setLoading(false);
+                    return;
+                }
+
+                const [, owner, repo] = githubMatch;
+                const cleanRepo = repo.split('?')[0].split('#')[0];
+                const apiUrl = `https://api.github.com/repos/${owner}/${cleanRepo}`;
+
+                console.log('API URL:', apiUrl);
+
+                // 检查缓存
+                if (githubRepoCache.has(apiUrl)) {
+                    const cachedInfo = githubRepoCache.get(apiUrl);
+                    console.log('从缓存获取信息:', cachedInfo);
+                    if (cachedInfo !== undefined) {
+                        setRepoInfo(cachedInfo);
+                        setLoading(false);
+                        if (!cachedInfo) setError(true);
+                        return;
+                    }
+                }
+
+                const response = await fetch(apiUrl);
+                console.log('API 响应状态:', response.status);
+
+                if (!response.ok) {
+                    console.error('GitHub API 请求失败:', response.status, response.statusText);
+                    githubRepoCache.set(apiUrl, null);
+                    setError(true);
+                    setLoading(false);
+                    return;
+                }
+
+                const data = await response.json();
+                console.log('GitHub API 返回数据:', {
+                    name: data.name,
+                    stargazers_count: data.stargazers_count,
+                });
+
+                const repoInfo: GitHubRepoInfo = {
+                    stargazers_count: data.stargazers_count || 0,
+                    npm_version: 'N/A',
+                    name: data.name || '',
+                    full_name: data.full_name || '',
+                };
+
+                githubRepoCache.set(apiUrl, repoInfo);
+                setRepoInfo(repoInfo);
+                setLoading(false);
+            } catch (err) {
+                console.error('获取 GitHub 信息失败:', err);
+                setError(true);
+                setLoading(false);
+            }
+        };
+
+        loadRepoInfo();
+    }, [url]);
+
+    // 不是 GitHub 链接，不显示任何内容
+    if (!url.includes('github.com')) {
+        return null;
+    }
+
+    // 加载状态
+    if (loading) {
+        return (
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="animate-spin w-4 h-4 border border-gray-300 border-t-blue-500 rounded-full"></div>
+                <span className="text-xs">加载中...</span>
+            </div>
+        );
+    }
+
+    // 加载失败
+    if (error) {
+        return (
+            <div className="flex items-center gap-1 text-xs text-red-400">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+                <span>API限制</span>
+            </div>
+        );
+    }
+
+    // 没有数据
+    if (!repoInfo) {
+        return null;
+    }
+
+    // 显示统计信息
+    return (
+        <div className="flex items-center gap-3 text-sm text-gray-600">
+            <a
+                href={`https://github.com/${repoInfo.full_name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block hover:scale-105 transition-transform duration-200"
+            >
+                <img
+                    src={`https://img.shields.io/github/stars/${repoInfo.full_name}?style=flat&color=yellow&label=stars`}
+                    alt={`${repoInfo.full_name} GitHub stars`}
+                    className="h-5"
+                />
+            </a>
+            <a
+                href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block hover:scale-105 transition-transform duration-200"
+            >
+                <img
+                    src={`https://img.shields.io/npm/v/${encodeURIComponent(repoInfo.name)}?label=${encodeURIComponent(
+                        repoInfo.name
+                    )}&color=red`}
+                    alt={`${repoInfo.name} npm version`}
+                    className="h-5"
+                />
+            </a>
+        </div>
+    );
+};
+
 // 外链图标组件
 const ExternalLinkIcon = ({ className = 'w-4 h-4 flex-shrink-0' }: { className?: string }) => (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,6 +687,8 @@ const LazyBookmarkCard = ({
                                 {/* 标题单独一行 */}
                                 <h3 className="text-xl font-bold text-gray-900 leading-tight">{bookmark.title}</h3>
                             </div>
+                            {/* GitHub 统计信息 */}
+                            <GitHubStats url={bookmark.url} />
                         </div>
                         {/* URL单独一行，占满宽度，可点击跳转 */}
                         <a
@@ -158,6 +726,8 @@ const LazyBookmarkCard = ({
                                 </span>
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">{bookmark.title}</h3>
+                            {/* GitHub 统计信息 */}
+                            <GitHubStats url={bookmark.url} />
                         </div>
 
                         {/* URL占一行，可点击跳转 */}
@@ -202,26 +772,34 @@ const LazyBookmarkCard = ({
 
                 {/* 内容区域 */}
                 <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{bookmark.title}</h3>
-                    <a
-                        href={bookmark.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
-                    >
-                        {bookmark.url.replace(/^https?:\/\//, '')}
-                        <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
-                    </a>
-                    <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                        {bookmark.tags.map((tag, index) => (
-                            <span
-                                key={`${bookmarkIndex}-${tag}-${index}`}
-                                className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{bookmark.title}</h3>
+                            <a
+                                href={bookmark.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
                             >
-                                {tag}
-                            </span>
-                        ))}
+                                {bookmark.url.replace(/^https?:\/\//, '')}
+                                <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
+                            </a>
+                            <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
+                            <div className="flex flex-wrap gap-2">
+                                {bookmark.tags.map((tag, index) => (
+                                    <span
+                                        key={`${bookmarkIndex}-${tag}-${index}`}
+                                        className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        {/* GitHub 统计信息 */}
+                        <div className="flex-shrink-0">
+                            <GitHubStats url={bookmark.url} />
+                        </div>
                     </div>
                 </div>
             </div>
