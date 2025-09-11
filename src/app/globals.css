@@ -65,28 +65,6 @@ body {
     filter: brightness(0.95);
 }
 
-/* 移动端优化：减少卡片悬停效果 */
-@media (max-width: 640px) {
-    .bookmark-card {
-        /* 移动端减少GPU使用，提升性能 */
-        will-change: auto;
-    }
-
-    .bookmark-card:hover {
-        transform: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .tag:hover {
-        transform: none;
-    }
-
-    /* 移动端动画优化 */
-    .fade-in-scroll {
-        transition-duration: 0.4s; /* 移动端动画更快 */
-    }
-}
-
 /* 固定搜索框样式 */
 .fixed-search-bar {
     backdrop-filter: blur(12px);
@@ -106,21 +84,6 @@ body {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 300ms ease-out, transform 300ms ease-out;
-}
-
-/* 优化触摸目标大小 */
-@media (max-width: 768px) {
-    /* 确保可点击元素至少 44px */
-    button,
-    a {
-        min-height: 44px;
-        min-width: 44px;
-    }
-
-    /* 优化输入框在移动端的体验 */
-    input[type='text'] {
-        font-size: 16px; /* 防止iOS自动缩放 */
-    }
 }
 
 /* 改善焦点样式 */
@@ -150,12 +113,6 @@ body {
 /* 瀑布流布局优化 */
 .masonry-container {
     column-gap: 1.5rem;
-}
-
-@media (max-width: 640px) {
-    .masonry-container {
-        column-gap: 1rem;
-    }
 }
 
 .masonry-item {
@@ -205,24 +162,4 @@ body {
 
 .pagination-button:active {
     transform: translateY(0);
-}
-
-/* 响应式网格优化 */
-@media (max-width: 640px) {
-    .pagination-controls {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .pagination-controls .pagination-info {
-        order: 1;
-    }
-
-    .pagination-controls .pagination-buttons {
-        order: 2;
-    }
-
-    .pagination-controls .pagination-jump {
-        order: 3;
-    }
 }
