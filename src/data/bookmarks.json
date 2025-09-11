@@ -17,6 +17,7 @@
         "loading": "bg-amber-100 text-amber-800",
         "Markdown": "bg-gray-200 text-gray-700",
         "DOM-diffing": "bg-yellow-200 text-yellow-700",
+        "JSON": "bg-gray-300 text-gray-600",
         "不可变更新": "bg-blue-200 text-blue-700",
         "校验": "bg-purple-200 text-purple-700",
         "图标": "bg-green-200 text-green-700",
@@ -58,12 +59,8 @@
         "触摸式滑动效果": "bg-cyan-400 text-cyan-100",
         "代码高亮": "bg-emerald-400 text-emerald-100",
         "触摸手势": "bg-lime-400 text-lime-100",
-        "HTML": "bg-rose-100 text-rose-800",
-        "XML": "bg-sky-100 text-sky-800",
-        "解析": "bg-slate-100 text-slate-800",
-        "引导": "bg-zinc-100 text-zinc-800",
-        "JSON": "bg-stone-100 text-stone-800",
-        "演示文稿": "bg-fuchsia-100 text-fuchsia-800"
+        "引导": "bg-gray-200 text-gray-700",
+        "演示文稿": "bg-purple-100 text-purple-800"
     },
     "bookmarks": [
         {
@@ -321,12 +318,6 @@
             "url": "https://github.com/brix/crypto-js",
             "description": "加密标准的 JavaScript 库。",
             "tags": ["JavaScript", "加密"]
-        },
-        {
-            "title": "cheerio",
-            "url": "https://github.com/cheeriojs/cheerio",
-            "description": "一个快速、灵活且优雅的库，用于解析和操作HTML和XML。它实现了核心jQuery的子集，专为服务器端使用而设计。",
-            "tags": ["JavaScript", "HTML", "XML", "解析"]
         },
         {
             "title": "Intro.js",
