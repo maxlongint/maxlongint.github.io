@@ -965,13 +965,34 @@ export default function Home() {
         };
     }, [filteredBookmarks, visibleItems]);
 
-    // 统计信息
+    // 统计信息和标签数量
     const stats = useMemo(() => {
         const allBookmarks = bookmarksData.bookmarks;
+
+        // 统计每个标签的书签数量
+        const tagCounts: Record<string, number> = {};
+
+        // 初始化所有标签计数为0
+        Object.keys(bookmarksData.tagColors).forEach(tag => {
+            tagCounts[tag] = 0;
+        });
+
+        // 统计每个标签在书签中出现的次数
+        allBookmarks.forEach(bookmark => {
+            bookmark.tags.forEach(tag => {
+                if (tagCounts.hasOwnProperty(tag)) {
+                    tagCounts[tag]++;
+                }
+            });
+        });
+
+        // All标签显示总数
+        tagCounts['All'] = allBookmarks.length;
 
         return {
             total: allBookmarks.length,
             tags: Object.keys(bookmarksData.tagColors).length,
+            tagCounts,
         };
     }, []);
 
@@ -1146,7 +1167,18 @@ export default function Home() {
                                         : `${getTagColor(tag)} border-gray-200 hover:border-blue-300 hover:shadow-sm`
                                 }`}
                             >
-                                {tag}
+                                <span className="flex items-center gap-2">
+                                    {tag}
+                                    <span
+                                        className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs rounded-full font-semibold ${
+                                            selectedTag === tag
+                                                ? 'bg-white/20 text-white'
+                                                : 'bg-gray-500/10 text-gray-600'
+                                        }`}
+                                    >
+                                        {stats.tagCounts[tag] || 0}
+                                    </span>
+                                </span>
                             </button>
                         ))}
                     </div>
