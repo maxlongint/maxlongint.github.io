@@ -415,28 +415,70 @@ export default function Home() {
     }, []);
 
     const getTagColor = (tag: string) => {
-        const colors = {
-            All: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
-            JavaScript: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
-            TypeScript: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
-            Icon: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
-            SVG: 'bg-green-100 text-green-800 hover:bg-green-200',
-            CSS: 'bg-pink-100 text-pink-800 hover:bg-pink-200',
-            ui: 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200',
-            tooltip: 'bg-orange-100 text-orange-800 hover:bg-orange-200',
-            Popover: 'bg-teal-100 text-teal-800 hover:bg-teal-200',
-            Dropdown: 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200',
-            Menu: 'bg-red-100 text-red-800 hover:bg-red-200',
-            loading: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200',
-            Markdown: 'bg-slate-100 text-slate-800 hover:bg-slate-200',
-            校验: 'bg-violet-100 text-violet-800 hover:bg-violet-200',
-            图标: 'bg-rose-100 text-rose-800 hover:bg-rose-200',
-            截图: 'bg-lime-100 text-lime-800 hover:bg-lime-200',
-            动画: 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-200',
-            拖放: 'bg-amber-100 text-amber-800 hover:bg-amber-200',
-            高精度计算: 'bg-sky-100 text-sky-800 hover:bg-sky-200',
+        // 直接定义颜色映射以确保颜色类被正确识别
+        const tagColorMap: Record<string, string> = {
+            All: 'bg-gray-100 text-gray-800',
+            JavaScript: 'bg-yellow-100 text-yellow-800',
+            TypeScript: 'bg-blue-100 text-blue-800',
+            Icon: 'bg-purple-100 text-purple-800',
+            SVG: 'bg-green-100 text-green-800',
+            XSS: 'bg-red-100 text-red-800',
+            CSS: 'bg-pink-100 text-pink-800',
+            uuid: 'bg-indigo-100 text-indigo-800',
+            Tooltip: 'bg-orange-100 text-orange-800',
+            Popover: 'bg-teal-100 text-teal-800',
+            Dropdown: 'bg-cyan-100 text-cyan-800',
+            Menu: 'bg-emerald-100 text-emerald-800',
+            XMLHttpRequest: 'bg-lime-100 text-lime-800',
+            Cookie: 'bg-violet-100 text-violet-800',
+            loading: 'bg-amber-100 text-amber-800',
+            Markdown: 'bg-gray-200 text-gray-700',
+            'DOM-diffing': 'bg-yellow-200 text-yellow-700',
+            不可变更新: 'bg-blue-200 text-blue-700',
+            校验: 'bg-purple-200 text-purple-700',
+            图标: 'bg-green-200 text-green-700',
+            截图: 'bg-red-200 text-red-700',
+            动画: 'bg-pink-200 text-pink-700',
+            拖放: 'bg-indigo-200 text-indigo-700',
+            高精度计算: 'bg-orange-200 text-orange-700',
+            货币: 'bg-teal-200 text-teal-700',
+            音频: 'bg-cyan-200 text-cyan-700',
+            浏览器存储: 'bg-emerald-200 text-emerald-700',
+            颜色: 'bg-lime-200 text-lime-700',
+            滚动条: 'bg-violet-200 text-violet-700',
+            滚动事件: 'bg-amber-200 text-amber-700',
+            签名: 'bg-gray-300 text-gray-600',
+            虚拟键盘: 'bg-yellow-300 text-yellow-600',
+            工具提示: 'bg-blue-300 text-blue-600',
+            气泡框: 'bg-purple-300 text-purple-600',
+            下拉菜单: 'bg-green-300 text-green-600',
+            普通菜单: 'bg-red-300 text-red-600',
+            时间: 'bg-pink-300 text-pink-600',
+            中文数字: 'bg-indigo-300 text-indigo-600',
+            中文金额: 'bg-orange-300 text-orange-600',
+            数字格式化: 'bg-teal-300 text-teal-600',
+            事件通信: 'bg-cyan-300 text-cyan-600',
+            键盘快捷键: 'bg-emerald-300 text-emerald-600',
+            中文转拼音: 'bg-lime-300 text-lime-600',
+            流程图: 'bg-violet-300 text-violet-600',
+            二维码: 'bg-amber-300 text-amber-600',
+            日历: 'bg-gray-400 text-gray-100',
+            复制: 'bg-yellow-400 text-yellow-100',
+            图像裁剪: 'bg-blue-400 text-blue-100',
+            视频播放器: 'bg-purple-400 text-purple-100',
+            直播流: 'bg-green-400 text-green-100',
+            文件上传: 'bg-red-400 text-red-100',
+            加密: 'bg-pink-400 text-pink-100',
+            HTTP请求: 'bg-indigo-400 text-indigo-100',
+            加载动画: 'bg-orange-400 text-orange-100',
+            图片查看: 'bg-teal-400 text-teal-100',
+            触摸式滑动效果: 'bg-cyan-400 text-cyan-100',
+            代码高亮: 'bg-emerald-400 text-emerald-100',
+            触摸手势: 'bg-lime-400 text-lime-100',
         };
-        return colors[tag as keyof typeof colors] || 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+
+        const result = tagColorMap[tag] || 'bg-gray-100 text-gray-800';
+        return result;
     };
 
     // 清除搜索和筛选
@@ -600,10 +642,10 @@ export default function Home() {
                             <button
                                 key={tag}
                                 onClick={() => setSelectedTag(tag)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] ${
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] border ${
                                     selectedTag === tag
-                                        ? 'bg-blue-500 text-white shadow-md transform scale-105'
-                                        : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 hover:border-blue-300 hover:shadow-sm'
+                                        ? 'bg-blue-500 text-white shadow-md transform scale-105 border-blue-500'
+                                        : `${getTagColor(tag)} border-gray-200 hover:border-blue-300 hover:shadow-sm`
                                 }`}
                             >
                                 {tag}
