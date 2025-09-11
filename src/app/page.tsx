@@ -772,22 +772,25 @@ const LazyBookmarkCard = ({
                 )}
             </div>
 
-            {/* PC端布局 */}
+            {/* PC端列表模式布局 */}
             <div className={viewMode === 'grid' ? 'hidden' : 'hidden lg:flex lg:items-start lg:gap-4'}>
                 {/* 链接图标 */}
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100 min-h-[60px]">
                     <span className="text-blue-600 text-xl font-semibold">
                         {bookmark.title.charAt(0).toUpperCase()}
                     </span>
                 </div>
 
-                {/* 内容区域 */}
+                {/* 主要内容区域 */}
                 <div className="flex-1 min-w-0">
-                    {/* 标题单独一行 */}
-                    <h3 className="text-xl font-bold text-gray-900 leading-tight truncate mb-1">{bookmark.title}</h3>
-                    {/* GitHub 统计信息单独一行 */}
-                    <div className="flex items-center mb-1">
-                        <GitHubStats url={bookmark.url} />
+                    {/* 标题和GitHub统计信息在同一行 */}
+                    <div className="flex items-start justify-between gap-4 mb-1">
+                        <h3 className="text-xl font-bold text-gray-900 leading-tight truncate flex-1">
+                            {bookmark.title}
+                        </h3>
+                        <div className="flex-shrink-0">
+                            <GitHubStats url={bookmark.url} />
+                        </div>
                     </div>
                     <a
                         href={bookmark.url}
