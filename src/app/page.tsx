@@ -86,7 +86,7 @@ const LazyBookmarkCard = ({
     return (
         <div
             ref={cardRef}
-            className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 ${
+            className={`bookmark-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300 ${
                 viewMode === 'grid' ? 'flex flex-col' : ''
             } ${
                 isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
@@ -107,7 +107,7 @@ const LazyBookmarkCard = ({
                             </div>
                             <div className="flex-1 min-w-0">
                                 {/* 标题单独一行 */}
-                                <h3 className="text-lg font-semibold text-gray-900">{bookmark.title}</h3>
+                                <h3 className="text-xl font-bold text-gray-900 leading-tight">{bookmark.title}</h3>
                             </div>
                         </div>
                         {/* URL单独一行，占满宽度，可点击跳转 */}
@@ -115,11 +115,11 @@ const LazyBookmarkCard = ({
                             href={bookmark.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-3 inline-flex items-center gap-1 transition-colors"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
                         >
-                            {bookmark.url}
+                            {bookmark.url.replace(/^https?:\/\//, '')}
                             <svg
-                                className="w-3 h-3 flex-shrink-0"
+                                className="w-4 h-4 flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -133,12 +133,14 @@ const LazyBookmarkCard = ({
                             </svg>
                         </a>
                         {/* 说明占满宽度的一行 */}
-                        <p className="text-gray-600 leading-relaxed text-sm mb-4 flex-1">{bookmark.description}</p>
+                        <p className="text-gray-600 leading-relaxed text-base mb-4 flex-1">{bookmark.description}</p>
                         <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => (
                                 <span
                                     key={`${bookmarkIndex}-${tag}-${index}`}
-                                    className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105 ${getTagColor(
+                                        tag
+                                    )}`}
                                 >
                                     {tag}
                                 </span>
@@ -149,11 +151,13 @@ const LazyBookmarkCard = ({
                     // 移动端列表模式布局：图标和标题占一行，URL占一行，说明占满宽度
                     <>
                         {/* 图标和标题占一行 */}
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <span className="text-blue-500 text-lg">🔗</span>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
+                                <span className="text-blue-600 text-xl font-semibold">
+                                    {bookmark.title.charAt(0).toUpperCase()}
+                                </span>
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-900 flex-1">{bookmark.title}</h3>
+                            <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">{bookmark.title}</h3>
                         </div>
 
                         {/* URL占一行，可点击跳转 */}
@@ -161,11 +165,11 @@ const LazyBookmarkCard = ({
                             href={bookmark.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-3 inline-flex items-center gap-1 transition-colors"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
                         >
-                            {bookmark.url}
+                            {bookmark.url.replace(/^https?:\/\//, '')}
                             <svg
-                                className="w-3 h-3 flex-shrink-0"
+                                className="w-4 h-4 flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -180,14 +184,16 @@ const LazyBookmarkCard = ({
                         </a>
 
                         {/* 说明占满宽度 */}
-                        <p className="text-gray-600 leading-relaxed text-sm mb-4">{bookmark.description}</p>
+                        <p className="text-gray-600 leading-relaxed text-base mb-4">{bookmark.description}</p>
 
                         {/* 标签 */}
                         <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => (
                                 <span
                                     key={`${bookmarkIndex}-${tag}-${index}`}
-                                    className={`px-2 py-1 rounded-md text-xs font-medium ${getTagColor(tag)}`}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105 ${getTagColor(
+                                        tag
+                                    )}`}
                                 >
                                     {tag}
                                 </span>
@@ -200,21 +206,23 @@ const LazyBookmarkCard = ({
             {/* PC端布局 */}
             <div className={viewMode === 'grid' ? 'hidden' : 'hidden sm:flex sm:items-start sm:gap-4'}>
                 {/* 链接图标 */}
-                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-blue-500 text-lg">🔗</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
+                    <span className="text-blue-600 text-xl font-semibold">
+                        {bookmark.title.charAt(0).toUpperCase()}
+                    </span>
                 </div>
 
                 {/* 内容区域 */}
                 <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{bookmark.title}</h3>
                     <a
                         href={bookmark.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors"
+                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
                     >
-                        {bookmark.url}
-                        <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {bookmark.url.replace(/^https?:\/\//, '')}
+                        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -223,7 +231,7 @@ const LazyBookmarkCard = ({
                             />
                         </svg>
                     </a>
-                    <p className="text-gray-600 mb-4 leading-relaxed">{bookmark.description}</p>
+                    <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
                     <div className="flex flex-wrap gap-2">
                         {bookmark.tags.map((tag, index) => (
                             <span
@@ -408,15 +416,27 @@ export default function Home() {
 
     const getTagColor = (tag: string) => {
         const colors = {
-            Tech: 'bg-blue-100 text-blue-800',
-            Development: 'bg-green-100 text-green-800',
-            AI: 'bg-purple-100 text-purple-800',
-            Travel: 'bg-yellow-100 text-yellow-800',
-            Food: 'bg-red-100 text-red-800',
-            Health: 'bg-teal-100 text-teal-800',
-            Finance: 'bg-indigo-100 text-indigo-800',
+            All: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
+            JavaScript: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
+            TypeScript: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
+            Icon: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
+            SVG: 'bg-green-100 text-green-800 hover:bg-green-200',
+            CSS: 'bg-pink-100 text-pink-800 hover:bg-pink-200',
+            ui: 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200',
+            tooltip: 'bg-orange-100 text-orange-800 hover:bg-orange-200',
+            Popover: 'bg-teal-100 text-teal-800 hover:bg-teal-200',
+            Dropdown: 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200',
+            Menu: 'bg-red-100 text-red-800 hover:bg-red-200',
+            loading: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200',
+            Markdown: 'bg-slate-100 text-slate-800 hover:bg-slate-200',
+            校验: 'bg-violet-100 text-violet-800 hover:bg-violet-200',
+            图标: 'bg-rose-100 text-rose-800 hover:bg-rose-200',
+            截图: 'bg-lime-100 text-lime-800 hover:bg-lime-200',
+            动画: 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-200',
+            拖放: 'bg-amber-100 text-amber-800 hover:bg-amber-200',
+            高精度计算: 'bg-sky-100 text-sky-800 hover:bg-sky-200',
         };
-        return colors[tag as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+        return colors[tag as keyof typeof colors] || 'bg-gray-100 text-gray-800 hover:bg-gray-200';
     };
 
     // 清除搜索和筛选
@@ -483,85 +503,20 @@ export default function Home() {
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
                 {/* 头部 */}
-                <header className="mb-6 sm:mb-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                <span className="text-white text-lg">🔗</span>
-                            </div>
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">前端利器库</h1>
+                <header className="mb-8">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-xl">✨</span>
                         </div>
-
-                        {/* GitHub 仓库链接 */}
-                        {/* <a
-                            href="https://github.com/maxlongint/maxlongint.github.io"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-200 self-start sm:self-auto"
-                            title="查看项目源代码"
-                        >
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span className="hidden sm:inline">GitHub</span>
-                        </a> */}
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">前端利器库</h1>
                     </div>
                 </header>
 
-                {/* 搜索框和视图模式 */}
-                <div
-                    ref={searchSectionRef}
-                    className={`flex flex-col sm:flex-row sm:items-center gap-4 mb-6 ${
-                        showFixedSearch ? 'sm:justify-start' : 'sm:justify-between'
-                    }`}
-                >
-                    {/* 视图模式切换 */}
-                    <div className="flex items-center gap-2">
-                        {showFixedSearch && (
-                            <div className="flex items-center gap-1 mr-2 px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                                使用顶部搜索
-                            </div>
-                        )}
-                        <span className="text-sm text-gray-600">视图模式:</span>
-                        <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
-                                    viewMode === 'list'
-                                        ? 'bg-blue-500 text-white shadow-sm'
-                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
-                                }`}
-                            >
-                                列表
-                            </button>
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
-                                    viewMode === 'grid'
-                                        ? 'bg-blue-500 text-white shadow-sm'
-                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
-                                }`}
-                            >
-                                网格
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 搜索框 - 只在固定搜索框未显示时显示 */}
+                {/* 搜索框 */}
+                <div ref={searchSectionRef} className="mb-6">
                     {!showFixedSearch && (
-                        <div className="relative w-full max-w-md sm:max-w-lg">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="relative w-full">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <svg
                                     className="w-5 h-5 text-gray-400"
                                     fill="none"
@@ -581,7 +536,7 @@ export default function Home() {
                                 placeholder="搜索书签标题、描述、URL或标签..."
                                 value={searchQuery}
                                 onChange={e => handleSearchChange(e.target.value)}
-                                className="w-full pl-10 pr-12 py-3 text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                                className="w-full pl-12 pr-12 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white shadow-sm"
                             />
                             {searchQuery && (
                                 <button
@@ -590,7 +545,7 @@ export default function Home() {
                                         setIsSearching(false);
                                         setIsFixedSearchFocused(false);
                                     }}
-                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
+                                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path
@@ -606,26 +561,54 @@ export default function Home() {
                     )}
                 </div>
 
-                <div className="mb-6 sm:mb-8">
+                {/* 视图模式切换 */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-700">视图模式:</span>
+                        <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
+                            <button
+                                onClick={() => setViewMode('list')}
+                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                    viewMode === 'list'
+                                        ? 'bg-blue-500 text-white shadow-sm'
+                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
+                                }`}
+                            >
+                                列表
+                            </button>
+                            <button
+                                onClick={() => setViewMode('grid')}
+                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                    viewMode === 'grid'
+                                        ? 'bg-blue-500 text-white shadow-sm'
+                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
+                                }`}
+                            >
+                                网格
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 标签过滤 */}
+                <div className="mb-8">
                     <div className="mb-4">
-                        <div className="mb-3">
-                            <span className="text-gray-600 font-medium text-sm sm:text-base">标签过滤:</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {bookmarksData.tags.map(tag => (
-                                <button
-                                    key={tag}
-                                    onClick={() => setSelectedTag(tag)}
-                                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] ${
-                                        selectedTag === tag
-                                            ? 'bg-blue-500 text-white shadow-md'
-                                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                                    }`}
-                                >
-                                    {tag}
-                                </button>
-                            ))}
-                        </div>
+                        <span className="text-gray-700 font-medium text-base">标签云:</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {bookmarksData.tags.map(tag => (
+                            <button
+                                key={tag}
+                                onClick={() => setSelectedTag(tag)}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] ${
+                                    selectedTag === tag
+                                        ? 'bg-blue-500 text-white shadow-md transform scale-105'
+                                        : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 hover:border-blue-300 hover:shadow-sm'
+                                }`}
+                            >
+                                {tag}
+                            </button>
+                        ))}
                     </div>
 
                     {/* 搜索和筛选状态提示 */}
@@ -725,8 +708,8 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-4">
                             {/* Logo 和标题 */}
                             <div className="flex items-center gap-3 flex-shrink-0">
-                                <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
-                                    <span className="text-white text-sm">🔗</span>
+                                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                                    <span className="text-white text-lg">✨</span>
                                 </div>
                                 <h1 className="text-lg font-bold text-gray-900 hidden sm:block">前端利器库</h1>
                             </div>
