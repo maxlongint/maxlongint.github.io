@@ -872,13 +872,17 @@ export default function Home() {
         // 根据搜索关键词筛选
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase().trim();
-            bookmarks = bookmarks.filter(
-                bookmark =>
+            bookmarks = bookmarks.filter(bookmark => {
+                // 对于 URL 搜索，去掉协议前缀进行匹配，避免搜索 http 时返回所有链接
+                const cleanUrl = bookmark.url.replace(/^https?:\/\//, '').toLowerCase();
+
+                return (
                     bookmark.title.toLowerCase().includes(query) ||
                     bookmark.description.toLowerCase().includes(query) ||
-                    bookmark.url.toLowerCase().includes(query) ||
+                    cleanUrl.includes(query) ||
                     bookmark.tags.some(tag => tag.toLowerCase().includes(query))
-            );
+                );
+            });
         }
 
         return bookmarks;
