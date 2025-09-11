@@ -3,6 +3,18 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import bookmarksData from '@/data/bookmarks.json';
 
+// 外链图标组件
+const ExternalLinkIcon = ({ className = 'w-4 h-4 flex-shrink-0' }: { className?: string }) => (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+        />
+    </svg>
+);
+
 // 性能优化配置
 const ITEMS_PER_PAGE = 20; // 每页显示的书签数量
 const INTERSECTION_THRESHOLD = 0.1; // IntersectionObserver 触发阈值
@@ -118,19 +130,7 @@ const LazyBookmarkCard = ({
                             className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
                         >
                             {bookmark.url.replace(/^https?:\/\//, '')}
-                            <svg
-                                className="w-4 h-4 flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                            </svg>
+                            <ExternalLinkIcon />
                         </a>
                         {/* 说明占满宽度的一行 */}
                         <p className="text-gray-600 leading-relaxed text-base mb-4 flex-1">{bookmark.description}</p>
@@ -168,19 +168,7 @@ const LazyBookmarkCard = ({
                             className="text-blue-600 hover:text-blue-800 text-sm break-all mb-4 inline-flex items-center gap-1 transition-colors font-medium"
                         >
                             {bookmark.url.replace(/^https?:\/\//, '')}
-                            <svg
-                                className="w-4 h-4 flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                            </svg>
+                            <ExternalLinkIcon />
                         </a>
 
                         {/* 说明占满宽度 */}
@@ -222,14 +210,7 @@ const LazyBookmarkCard = ({
                         className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors font-medium"
                     >
                         {bookmark.url.replace(/^https?:\/\//, '')}
-                        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                        </svg>
+                        <ExternalLinkIcon className="w-4 h-4 flex-shrink-0" />
                     </a>
                     <p className="text-gray-600 mb-4 leading-relaxed text-base">{bookmark.description}</p>
                     <div className="flex flex-wrap gap-2">
@@ -400,85 +381,15 @@ export default function Home() {
     // 统计信息
     const stats = useMemo(() => {
         const allBookmarks = bookmarksData.bookmarks;
-        const tagCounts = new Map();
-
-        allBookmarks.forEach(bookmark => {
-            bookmark.tags.forEach(tag => {
-                tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
-            });
-        });
 
         return {
             total: allBookmarks.length,
-            tags: tagCounts.size,
+            tags: Object.keys(bookmarksData.tagColors).length,
         };
     }, []);
 
     const getTagColor = (tag: string) => {
-        // 直接定义颜色映射以确保颜色类被正确识别
-        const tagColorMap: Record<string, string> = {
-            All: 'bg-gray-100 text-gray-800',
-            JavaScript: 'bg-yellow-100 text-yellow-800',
-            TypeScript: 'bg-blue-100 text-blue-800',
-            Icon: 'bg-purple-100 text-purple-800',
-            SVG: 'bg-green-100 text-green-800',
-            XSS: 'bg-red-100 text-red-800',
-            CSS: 'bg-pink-100 text-pink-800',
-            uuid: 'bg-indigo-100 text-indigo-800',
-            Tooltip: 'bg-orange-100 text-orange-800',
-            Popover: 'bg-teal-100 text-teal-800',
-            Dropdown: 'bg-cyan-100 text-cyan-800',
-            Menu: 'bg-emerald-100 text-emerald-800',
-            XMLHttpRequest: 'bg-lime-100 text-lime-800',
-            Cookie: 'bg-violet-100 text-violet-800',
-            loading: 'bg-amber-100 text-amber-800',
-            Markdown: 'bg-gray-200 text-gray-700',
-            'DOM-diffing': 'bg-yellow-200 text-yellow-700',
-            不可变更新: 'bg-blue-200 text-blue-700',
-            校验: 'bg-purple-200 text-purple-700',
-            图标: 'bg-green-200 text-green-700',
-            截图: 'bg-red-200 text-red-700',
-            动画: 'bg-pink-200 text-pink-700',
-            拖放: 'bg-indigo-200 text-indigo-700',
-            高精度计算: 'bg-orange-200 text-orange-700',
-            货币: 'bg-teal-200 text-teal-700',
-            音频: 'bg-cyan-200 text-cyan-700',
-            浏览器存储: 'bg-emerald-200 text-emerald-700',
-            颜色: 'bg-lime-200 text-lime-700',
-            滚动条: 'bg-violet-200 text-violet-700',
-            滚动事件: 'bg-amber-200 text-amber-700',
-            签名: 'bg-gray-300 text-gray-600',
-            虚拟键盘: 'bg-yellow-300 text-yellow-600',
-            工具提示: 'bg-blue-300 text-blue-600',
-            气泡框: 'bg-purple-300 text-purple-600',
-            下拉菜单: 'bg-green-300 text-green-600',
-            普通菜单: 'bg-red-300 text-red-600',
-            时间: 'bg-pink-300 text-pink-600',
-            中文数字: 'bg-indigo-300 text-indigo-600',
-            中文金额: 'bg-orange-300 text-orange-600',
-            数字格式化: 'bg-teal-300 text-teal-600',
-            事件通信: 'bg-cyan-300 text-cyan-600',
-            键盘快捷键: 'bg-emerald-300 text-emerald-600',
-            中文转拼音: 'bg-lime-300 text-lime-600',
-            流程图: 'bg-violet-300 text-violet-600',
-            二维码: 'bg-amber-300 text-amber-600',
-            日历: 'bg-gray-400 text-gray-100',
-            复制: 'bg-yellow-400 text-yellow-100',
-            图像裁剪: 'bg-blue-400 text-blue-100',
-            视频播放器: 'bg-purple-400 text-purple-100',
-            直播流: 'bg-green-400 text-green-100',
-            文件上传: 'bg-red-400 text-red-100',
-            加密: 'bg-pink-400 text-pink-100',
-            HTTP请求: 'bg-indigo-400 text-indigo-100',
-            加载动画: 'bg-orange-400 text-orange-100',
-            图片查看: 'bg-teal-400 text-teal-100',
-            触摸式滑动效果: 'bg-cyan-400 text-cyan-100',
-            代码高亮: 'bg-emerald-400 text-emerald-100',
-            触摸手势: 'bg-lime-400 text-lime-100',
-        };
-
-        const result = tagColorMap[tag] || 'bg-gray-100 text-gray-800';
-        return result;
+        return (bookmarksData.tagColors as Record<string, string>)[tag] || 'bg-gray-100 text-gray-800';
     };
 
     // 清除搜索和筛选
@@ -638,7 +549,7 @@ export default function Home() {
                         <span className="text-gray-700 font-medium text-base">标签云:</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                        {bookmarksData.tags.map(tag => (
+                        {Object.keys(bookmarksData.tagColors).map(tag => (
                             <button
                                 key={tag}
                                 onClick={() => setSelectedTag(tag)}
