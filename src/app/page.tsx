@@ -29,6 +29,7 @@ const LazyBookmarkCard = ({
     const [isVisible, setIsVisible] = useState(false);
     const [isAnimated, setIsAnimated] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
+    const skeletonRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -49,8 +50,8 @@ const LazyBookmarkCard = ({
             }
         );
 
-        if (cardRef.current) {
-            observer.observe(cardRef.current);
+        if (cardRef.current || skeletonRef.current) {
+            observer.observe((cardRef.current || skeletonRef.current)!);
         }
 
         return () => observer.disconnect();
@@ -60,7 +61,7 @@ const LazyBookmarkCard = ({
     if (!isVisible) {
         return (
             <div
-                ref={cardRef}
+                ref={skeletonRef}
                 className={`bookmark-card bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200 transition-all duration-200 ${
                     viewMode === 'grid' ? 'flex flex-col' : ''
                 }`}
@@ -109,11 +110,31 @@ const LazyBookmarkCard = ({
                                 <h3 className="text-lg font-semibold text-gray-900">{bookmark.title}</h3>
                             </div>
                         </div>
-                        {/* URL单独一行，占满宽度 */}
-                        <p className="text-blue-600 text-sm break-all mb-3">{bookmark.url}</p>
+                        {/* URL单独一行，占满宽度，可点击跳转 */}
+                        <a
+                            href={bookmark.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-3 inline-flex items-center gap-1 transition-colors"
+                        >
+                            {bookmark.url}
+                            <svg
+                                className="w-3 h-3 flex-shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                />
+                            </svg>
+                        </a>
                         {/* 说明占满宽度的一行 */}
                         <p className="text-gray-600 leading-relaxed text-sm mb-4 flex-1">{bookmark.description}</p>
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => (
                                 <span
                                     key={`${bookmarkIndex}-${tag}-${index}`}
@@ -123,22 +144,6 @@ const LazyBookmarkCard = ({
                                 </span>
                             ))}
                         </div>
-                        <a
-                            href={bookmark.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px] mt-auto"
-                        >
-                            访问
-                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                            </svg>
-                        </a>
                     </>
                 ) : (
                     // 移动端列表模式布局：图标和标题占一行，URL占一行，说明占满宽度
@@ -151,14 +156,34 @@ const LazyBookmarkCard = ({
                             <h3 className="text-lg font-semibold text-gray-900 flex-1">{bookmark.title}</h3>
                         </div>
 
-                        {/* URL占一行 */}
-                        <p className="text-blue-600 text-sm break-all mb-3">{bookmark.url}</p>
+                        {/* URL占一行，可点击跳转 */}
+                        <a
+                            href={bookmark.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm break-all mb-3 inline-flex items-center gap-1 transition-colors"
+                        >
+                            {bookmark.url}
+                            <svg
+                                className="w-3 h-3 flex-shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                />
+                            </svg>
+                        </a>
 
                         {/* 说明占满宽度 */}
                         <p className="text-gray-600 leading-relaxed text-sm mb-4">{bookmark.description}</p>
 
                         {/* 标签 */}
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => (
                                 <span
                                     key={`${bookmarkIndex}-${tag}-${index}`}
@@ -168,24 +193,6 @@ const LazyBookmarkCard = ({
                                 </span>
                             ))}
                         </div>
-
-                        {/* 访问按钮 */}
-                        <a
-                            href={bookmark.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px] mt-auto"
-                        >
-                            访问
-                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                            </svg>
-                        </a>
                     </>
                 )}
             </div>
@@ -200,7 +207,22 @@ const LazyBookmarkCard = ({
                 {/* 内容区域 */}
                 <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{bookmark.title}</h3>
-                    <p className="text-blue-600 text-sm mb-3 break-all">{bookmark.url}</p>
+                    <a
+                        href={bookmark.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm mb-3 break-all inline-flex items-center gap-1 transition-colors"
+                    >
+                        {bookmark.url}
+                        <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                        </svg>
+                    </a>
                     <p className="text-gray-600 mb-4 leading-relaxed">{bookmark.description}</p>
                     <div className="flex flex-wrap gap-2">
                         {bookmark.tags.map((tag, index) => (
@@ -212,26 +234,6 @@ const LazyBookmarkCard = ({
                             </span>
                         ))}
                     </div>
-                </div>
-
-                {/* 访问按钮 - PC端右对齐 */}
-                <div className="flex-shrink-0">
-                    <a
-                        href={bookmark.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                    >
-                        访问
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>
