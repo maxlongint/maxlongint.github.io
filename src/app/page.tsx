@@ -1072,8 +1072,8 @@ export default function Home() {
                 {/* 头部 */}
                 <header className="mb-8">
                     <div className="flex items-center gap-3 mb-8">
-                        <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xl">✨</span>
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                            <img src="/favicon.png" alt="前端利器库" className="w-10 h-10 rounded-lg" />
                         </div>
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">前端利器库</h1>
                     </div>
@@ -1286,8 +1286,8 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-4">
                             {/* Logo 和标题 */}
                             <div className="flex items-center gap-3 flex-shrink-0">
-                                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                    <span className="text-white text-lg">✨</span>
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                                    <img src="/favicon.png" alt="前端利器库" className="w-8 h-8 rounded-lg" />
                                 </div>
                                 <h1 className="text-lg font-bold text-gray-900 hidden sm:block">前端利器库</h1>
                             </div>
