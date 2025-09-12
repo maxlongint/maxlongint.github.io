@@ -1,7 +1,6 @@
 {
     "tagColors": {
         "All": "bg-gray-100 text-gray-800",
-        "JavaScript": "bg-yellow-100 text-yellow-800",
         "TypeScript": "bg-blue-100 text-blue-800",
         "Icon": "bg-purple-100 text-purple-800",
         "SVG": "bg-green-100 text-green-800",
@@ -67,7 +66,7 @@
             "title": "Mutative",
             "url": "https://github.com/unadlib/mutative",
             "description": "一个用于高效不可变更新的JavaScript库，其速度比手动编写的简单reducer快2-6倍，比Immer快10倍以上。",
-            "tags": ["JavaScript", "不可变更新"]
+            "tags": ["不可变更新"]
         },
         {
             "title": "Valibot",
@@ -79,61 +78,61 @@
             "title": "class-validator",
             "url": "https://github.com/typestack/class-validator",
             "description": "该库支持基于装饰器和非基于装饰器的验证方式。它内部使用 validator.js 来执行验证。Class-validator 可以在浏览器和 Node.js 平台上使用。",
-            "tags": ["JavaScript", "校验"]
+            "tags": ["校验"]
         },
         {
             "title": "Mage Icons",
             "url": "https://github.com/Mage-Icons/mage-icons",
             "description": "Mage Icons是一个精心策划的图标库，专为网页和移动应用的用户界面设计而打造。",
-            "tags": ["JavaScript", "Icon", "SVG", "图标"]
+            "tags": ["Icon", "SVG", "图标"]
         },
         {
             "title": "Iconoir",
             "url": "https://github.com/iconoir-icons/iconoir",
             "description": "一个拥有 1600 多个图标的开源图标库，支持 React、React Native、Flutter、Vue、Figma 和 Framer。",
-            "tags": ["JavaScript", "Icon", "SVG", "图标"]
+            "tags": ["Icon", "SVG", "图标"]
         },
         {
             "title": "DOMPurify",
             "url": "https://github.com/cure53/DOMPurify",
             "description": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS（跨站脚本）清理器，可用于HTML、MathML和SVG。",
-            "tags": ["JavaScript", "XSS"]
+            "tags": ["XSS"]
         },
         {
             "title": "SnapDOM",
             "url": "https://github.com/zumerlab/snapdom",
             "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片，同时支持伪元素、Shadow DOM、网页字体等。",
-            "tags": ["JavaScript", "截图"]
+            "tags": ["截图"]
         },
         {
             "title": "Animejs",
             "url": "https://github.com/juliangarnier/anime",
             "description": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
-            "tags": ["JavaScript", "动画"]
+            "tags": ["动画"]
         },
         {
             "title": "Animate.css",
             "url": "https://github.com/animate-css/animate.css",
             "description": "一个跨浏览器的 CSS 动画库，使用起来非常简单。",
-            "tags": ["JavaScript", "CSS", "动画"]
+            "tags": ["CSS", "动画"]
         },
         {
             "title": "CountUp.js",
             "url": "https://github.com/inorganik/CountUp.js",
             "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库，可用于快速创建动画，以一种更有趣的方式展示数值数据。",
-            "tags": ["JavaScript", "动画"]
+            "tags": ["动画"]
         },
         {
             "title": "SortableJS",
             "url": "https://github.com/SortableJS/Sortable",
             "description": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。",
-            "tags": ["JavaScript", "拖放"]
+            "tags": ["拖放"]
         },
         {
             "title": "JSON Editor",
             "url": "https://github.com/josdejong/jsoneditor",
             "description": "一个基于网页的工具，用于查看、编辑、格式化和验证JSON。",
-            "tags": ["JavaScript", "JSON"]
+            "tags": ["JSON"]
         },
         {
             "title": "Bignumber.js",
@@ -145,221 +144,211 @@
             "title": "decimal.js",
             "url": "https://github.com/MikeMcl/decimal.js",
             "description": "一个用于 JavaScript 的任意精度 Decimal 类型库。",
-            "tags": ["JavaScript", "高精度计算"]
+            "tags": ["高精度计算"]
         },
         {
             "title": "Dinero.js",
             "url": "https://github.com/dinerojs/dinero.js",
             "description": "在JavaScript和Typescript中创建，计算和格式化货币。",
-            "tags": ["JavaScript", "TypeScript", "货币"]
+            "tags": ["TypeScript", "货币"]
         },
         {
             "title": "Nzh",
             "url": "https://github.com/cnwhy/nzh",
             "description": "数字转中文（大写，小写）数字，金额。",
-            "tags": ["JavaScript", "中文数字", "中文金额"]
+            "tags": ["中文数字", "中文金额"]
         },
         {
             "title": "Numeral.js",
             "url": "https://github.com/adamwdraper/Numeral-js",
             "description": "一个用于格式化和操作数字的JavaScript库。",
-            "tags": ["JavaScript", "数字格式化"]
+            "tags": ["数字格式化"]
         },
         {
             "title": "Wavesurfer.js",
             "url": "https://github.com/katspaugh/wavesurfer.js",
             "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
-            "tags": ["JavaScript", "音频"]
+            "tags": ["音频"]
         },
         {
             "title": "Store.js",
             "url": "https://github.com/marcuswestin/store.js",
             "description": "Store.js 是一个通用的跨浏览器存储库。",
-            "tags": ["JavaScript", "浏览器存储"]
+            "tags": ["浏览器存储"]
         },
         {
             "title": "iro.js",
             "url": "https://github.com/jaames/iro.js",
             "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
-            "tags": ["JavaScript", "颜色选择"]
+            "tags": ["颜色选择"]
         },
         {
             "title": "Pickr",
             "url": "https://github.com/simonwep/pickr",
             "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
-            "tags": ["JavaScript", "颜色选择"]
+            "tags": ["颜色选择"]
         },
         {
             "title": "OverlayScrollbars",
             "url": "https://github.com/KingSora/OverlayScrollbars",
             "description": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
-            "tags": ["JavaScript", "滚动条"]
+            "tags": ["滚动条"]
         },
         {
             "title": "Scrollama",
             "url": "https://github.com/russellsamora/scrollama",
             "description": "Scrollama 是一个现代化且轻量级的 JavaScript 库，用于通过使用 IntersectionObserver 来实现滚动式叙事，以替代传统的滚动事件。",
-            "tags": ["JavaScript", "滚动事件"]
+            "tags": ["滚动事件"]
         },
         {
             "title": "Signature Pad",
             "url": "https://github.com/szimek/signature_pad",
             "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。",
-            "tags": ["JavaScript", "签名"]
+            "tags": ["签名"]
         },
         {
             "title": "simple-keyboard",
             "url": "https://github.com/hodgef/simple-keyboard",
             "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
-            "tags": ["JavaScript", "虚拟键盘"]
+            "tags": ["虚拟键盘"]
         },
         {
             "title": "uuid",
             "url": "https://github.com/uuidjs/uuid",
             "description": "在 JavaScript 中生成符合 RFC 标准的 UUID。",
-            "tags": ["JavaScript", "uuid"]
+            "tags": ["uuid"]
         },
         {
             "title": "Tippy.js",
             "url": "https://github.com/atomiks/tippyjs",
             "description": "一个用于制作工具提示（Tooltip）、气泡框（Popover）、下拉菜单（Dropdown）和普通菜单（Menu）的库。",
-            "tags": [
-                "JavaScript",
-                "Tooltip",
-                "Popover",
-                "Dropdown",
-                "Menu",
-                "工具提示",
-                "气泡框",
-                "下拉菜单",
-                "普通菜单"
-            ]
+            "tags": ["Tooltip", "Popover", "Dropdown", "Menu", "工具提示", "气泡框", "下拉菜单", "普通菜单"]
         },
         {
             "title": "Day.js",
             "url": "https://github.com/iamkun/dayjs",
             "description": "Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样. 如果您曾经用过 Moment.js, 那么您已经知道如何使用 Day.js。",
-            "tags": ["JavaScript", "时间"]
+            "tags": ["时间"]
         },
         {
             "title": "Socket.IO",
             "url": "https://github.com/socketio/socket.io",
             "description": "Socket.IO 是一个库，它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。",
-            "tags": ["JavaScript", "事件通信"]
+            "tags": ["事件通信"]
         },
         {
             "title": "tinykeys",
             "url": "https://github.com/jamiebuilds/tinykeys",
             "description": "一个用于键盘绑定的微型（约 650 B）且现代化的库。",
-            "tags": ["JavaScript", "键盘快捷键"]
+            "tags": ["键盘快捷键"]
         },
         {
             "title": "pinyin-pro",
             "url": "https://github.com/zh-lx/pinyin-pro",
             "description": "中文转拼音、拼音音调、拼音声母、拼音韵母、多音字拼音、姓氏拼音、拼音匹配、中文分词。",
-            "tags": ["JavaScript", "中文转拼音"]
+            "tags": ["中文转拼音"]
         },
         {
             "title": "bpmn-js",
             "url": "https://github.com/bpmn-io/bpmn-js",
             "description": "流程图绘制工具库。",
-            "tags": ["JavaScript", "流程图"]
+            "tags": ["流程图"]
         },
         {
             "title": "QRCode.js",
             "url": "https://github.com/davidshimjs/qrcodejs",
             "description": "QRCode.js 是一个用于制作二维码的 JavaScript 库。QRCode.js 支持跨浏览器，可使用 HTML5 Canvas 和 DOM 中的表格标签来生成二维码。此外，它没有任何依赖。",
-            "tags": ["JavaScript", "二维码"]
+            "tags": ["二维码"]
         },
         {
             "title": "FullCalendar",
             "url": "https://github.com/fullcalendar/fullcalendar",
             "description": "一个用 JavaScript 实现的全功能拖放事件日历。",
-            "tags": ["JavaScript", "日历"]
+            "tags": ["日历"]
         },
         {
             "title": "clipboard.js",
             "url": "https://github.com/zenorocha/clipboard.js",
             "description": "现代版可复制到剪贴板。无需 Flash。仅 3kb（已压缩）大小。",
-            "tags": ["JavaScript", "复制剪贴板"]
+            "tags": ["复制剪贴板"]
         },
         {
             "title": "Cropper.js",
             "url": "https://github.com/fengyuanchen/cropperjs",
             "description": "JavaScript 图像裁剪工具。",
-            "tags": ["JavaScript", "图像裁剪"]
+            "tags": ["图像裁剪"]
         },
         {
             "title": "Video.js",
             "url": "https://github.com/videojs/video.js",
             "description": "Video.js 是一款功能齐全的开源视频播放器，适用于所有基于网络的平台。",
-            "tags": ["JavaScript", "视频播放器"]
+            "tags": ["视频播放器"]
         },
         {
             "title": "HLS.js",
             "url": "https://github.com/video-dev/hls.js",
             "description": "HLS.js 是一个 JavaScript 库，它可以在支持 MSE（媒体源扩展）的浏览器中播放 HLS（HTTP 直播流）。",
-            "tags": ["JavaScript", "视频播放器", "直播流"]
+            "tags": ["视频播放器", "直播流"]
         },
         {
             "title": "Plyr",
             "url": "https://github.com/sampotts/plyr",
             "description": "Plyr 是一款简单、轻量、易于使用且可定制的 HTML5、YouTube 和 Vimeo 媒体播放器，支持现代浏览器。",
-            "tags": ["JavaScript", "视频播放器"]
+            "tags": ["视频播放器"]
         },
         {
             "title": "FilePond",
             "url": "https://github.com/pqina/filepond",
             "description": "一款 JavaScript 库，能够处理您所上传的任何内容，会优化图片以加快上传速度，并提供出色、易用且流畅顺滑的用户体验。",
-            "tags": ["JavaScript", "文件上传"]
+            "tags": ["文件上传"]
         },
         {
             "title": "crypto-js",
             "url": "https://github.com/brix/crypto-js",
             "description": "加密标准的 JavaScript 库。",
-            "tags": ["JavaScript", "加密"]
+            "tags": ["加密"]
         },
         {
             "title": "Intro.js",
             "url": "https://github.com/usablica/intro.js",
             "description": "轻量级、用户友好型的上手引导教程库。",
-            "tags": ["JavaScript", "引导"]
+            "tags": ["引导"]
         },
         {
             "title": "Axios",
             "url": "https://github.com/axios/axios",
             "description": "基于承诺的浏览器及 Node.js  HTTP 客户端。 Axios 是一款专为浏览器和 Node.js 设计的基于 Promise 的 HTTP 客户端。Axios 提供了一个小巧且易于使用的库，其接口具有高度的可扩展性。",
-            "tags": ["JavaScript", "XMLHttpRequest", "HTTP请求"]
+            "tags": ["XMLHttpRequest", "HTTP请求"]
         },
         {
             "title": "Cookie",
             "url": "https://github.com/js-cookie/js-cookie",
             "description": "一个简单、轻量级的 JavaScript API，用于处理浏览器中的 Cookie 数据。",
-            "tags": ["JavaScript", "Cookie"]
+            "tags": ["Cookie"]
         },
         {
             "title": "Loaders.css",
             "url": "https://github.com/ConnorAtherton/loaders.css",
             "description": "令人愉悦、以表现力为导向的纯 CSS 加载动画。",
-            "tags": ["JavaScript", "CSS", "loading", "加载动画"]
+            "tags": ["CSS", "loading", "加载动画"]
         },
         {
             "title": "Viewer.js",
             "url": "https://github.com/fengyuanchen/viewerjs",
             "description": "JavaScript 图像查看器。",
-            "tags": ["JavaScript", "图片查看"]
+            "tags": ["图片查看"]
         },
         {
             "title": "Swiper",
             "url": "https://github.com/nolimits4web/swiper",
             "description": "大多数现代的触摸式移动滑动界面都具备硬件加速的过渡效果。",
-            "tags": ["JavaScript", "触摸式滑动效果"]
+            "tags": ["触摸式滑动效果"]
         },
         {
             "title": "Highlight.js",
             "url": "https://github.com/highlightjs/highlight.js",
             "description": "带有语言自动检测功能且无需任何依赖项的 JavaScript 语法高亮显示器。",
-            "tags": ["JavaScript", "代码高亮"]
+            "tags": ["代码高亮"]
         },
         {
             "title": "Normalize.css",
@@ -371,43 +360,43 @@
             "title": "reveal.js",
             "url": "https://github.com/hakimel/reveal.js",
             "description": "reveal.js 是一个开源的 HTML 演示框架。它能让任何拥有网络浏览器的人免费创建出美观的演示文稿。",
-            "tags": ["JavaScript", "演示文稿"]
+            "tags": ["演示文稿"]
         },
         {
             "title": "hammer.js",
             "url": "https://github.com/hammerjs/hammer.js",
             "description": "一个用于检测触摸手势的 JavaScript 库。",
-            "tags": ["JavaScript", "触摸手势"]
+            "tags": ["触摸手势"]
         },
         {
             "title": "Marked",
             "url": "https://github.com/markedjs/marked",
             "description": "一个 Markdown 解析器和编译器。专为提高速度而设计。",
-            "tags": ["JavaScript", "Markdown"]
+            "tags": ["Markdown"]
         },
         {
             "title": "Milkdown",
             "url": "https://github.com/Milkdown/milkdown",
             "description": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
-            "tags": ["JavaScript", "Markdown"]
+            "tags": ["Markdown"]
         },
         {
             "title": "Swapy",
             "url": "https://github.com/TahaSh/swapy",
             "description": "一款与框架无关的工具，只需几行代码就能将任何布局转换为可拖动替换的布局形式。",
-            "tags": ["JavaScript", "拖放"]
+            "tags": ["拖放"]
         },
         {
             "title": "morphdom",
             "url": "https://github.com/patrick-steele-idem/morphdom",
             "description": "快速且轻量级的 DOM 差异对比/补丁处理（无需虚拟 DOM）。",
-            "tags": ["JavaScript", "DOM-diffing"]
+            "tags": ["DOM-diffing"]
         },
         {
             "title": "Uppy",
             "url": "https://github.com/transloadit/uppy",
             "description": "Uppy 是一款时尚、模块化的 JavaScript 文件上传工具，可与任何应用程序无缝集成。它速度快，API 易于理解，让您无需为构建文件上传器而操心，能够专注于更重要的问题。",
-            "tags": ["JavaScript", "文件上传"]
+            "tags": ["文件上传"]
         }
     ]
 }
