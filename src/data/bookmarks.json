@@ -13,6 +13,10 @@
         "Popover": "bg-teal-100 text-teal-800",
         "Dropdown": "bg-cyan-100 text-cyan-800",
         "Menu": "bg-emerald-100 text-emerald-800",
+        "Cookie": "bg-rose-100 text-rose-800",
+        "Store": "bg-sky-100 text-sky-800",
+        "WebSocket": "bg-violet-100 text-violet-800",
+        "DOCX": "bg-amber-200 text-amber-800",
         "数据操作": "bg-indigo-100 text-indigo-800",
         "数据验证": "bg-purple-100 text-purple-800",
         "数据格式化": "bg-teal-100 text-teal-800",
@@ -21,7 +25,7 @@
         "图标": "bg-green-100 text-green-800",
         "弹窗组件": "bg-cyan-100 text-cyan-800",
         "日期时间": "bg-violet-100 text-violet-800",
-        "输入组件": "bg-amber-100 text-amber-800",
+        "颜色选择": "bg-amber-100 text-amber-800",
         "动画效果": "bg-pink-200 text-pink-700",
         "触摸交互": "bg-indigo-200 text-indigo-700",
         "拖拽操作": "bg-orange-200 text-orange-700",
@@ -43,7 +47,12 @@
         "安全防护": "bg-red-300 text-red-600",
         "图表可视化": "bg-cyan-300 text-cyan-600",
         "演示展示": "bg-emerald-300 text-emerald-600",
-        "用户引导": "bg-lime-300 text-lime-600"
+        "用户引导": "bg-lime-300 text-lime-600",
+        "签名绘制": "bg-amber-100 text-amber-800",
+        "虚拟键盘": "bg-fuchsia-100 text-fuchsia-800",
+        "剪贴板": "bg-emerald-100 text-emerald-800",
+        "文档预览": "bg-blue-200 text-blue-800",
+        "数字动画": "bg-yellow-300 text-yellow-800"
     },
     "bookmarks": [
         {
@@ -104,7 +113,7 @@
             "title": "CountUp.js",
             "url": "https://github.com/inorganik/CountUp.js",
             "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库，可用于快速创建动画，以一种更有趣的方式展示数值数据。",
-            "tags": ["动画效果", "数据格式化"]
+            "tags": ["动画效果", "数字动画"]
         },
         {
             "title": "SortableJS",
@@ -158,19 +167,19 @@
             "title": "Store.js",
             "url": "https://github.com/marcuswestin/store.js",
             "description": "Store.js 是一个通用的跨浏览器存储库。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API", "Store"]
         },
         {
             "title": "iro.js",
             "url": "https://github.com/jaames/iro.js",
             "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
-            "tags": ["输入组件"]
+            "tags": ["颜色选择"]
         },
         {
             "title": "Pickr",
             "url": "https://github.com/simonwep/pickr",
             "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
-            "tags": ["输入组件"]
+            "tags": ["颜色选择"]
         },
         {
             "title": "OverlayScrollbars",
@@ -188,13 +197,13 @@
             "title": "Signature Pad",
             "url": "https://github.com/szimek/signature_pad",
             "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。",
-            "tags": ["输入组件"]
+            "tags": ["签名绘制"]
         },
         {
             "title": "simple-keyboard",
             "url": "https://github.com/hodgef/simple-keyboard",
             "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
-            "tags": ["输入组件"]
+            "tags": ["虚拟键盘"]
         },
         {
             "title": "uuid",
@@ -218,7 +227,7 @@
             "title": "Socket.IO",
             "url": "https://github.com/socketio/socket.io",
             "description": "Socket.IO 是一个库，它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。",
-            "tags": ["实时通信"]
+            "tags": ["实时通信", "WebSocket"]
         },
         {
             "title": "tinykeys",
@@ -254,7 +263,7 @@
             "title": "clipboard.js",
             "url": "https://github.com/zenorocha/clipboard.js",
             "description": "现代版可复制到剪贴板。无需 Flash。仅 3kb（已压缩）大小。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API", "剪贴板"]
         },
         {
             "title": "Cropper.js",
@@ -308,7 +317,7 @@
             "title": "Cookie",
             "url": "https://github.com/js-cookie/js-cookie",
             "description": "一个简单、轻量级的 JavaScript API，用于处理浏览器中的 Cookie 数据。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API", "Cookie"]
         },
         {
             "title": "Loaders.css",
@@ -362,7 +371,7 @@
             "title": "Milkdown",
             "url": "https://github.com/Milkdown/milkdown",
             "description": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
-            "tags": ["Markdown", "文档解析", "输入组件"]
+            "tags": ["Markdown", "文档解析"]
         },
         {
             "title": "Swapy",
@@ -387,6 +396,12 @@
             "url": "https://github.com/lucide-icons/lucide",
             "description": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
             "tags": ["Icon", "SVG", "图标"]
+        },
+        {
+            "title": "docxjs",
+            "url": "https://github.com/VolodymyrBaydalka/docxjs",
+            "description": "DOCX 渲染库。",
+            "tags": ["DOCX", "文档预览"]
         }
     ]
 }
