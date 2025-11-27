@@ -1067,6 +1067,16 @@ export default function Home() {
         <div className="min-h-screen bg-gray-50">
             {/* JSON-LD 结构化数据 */}
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+            {!showFixedSearch && (
+                <a
+                    href="https://github.com/maxlongint/maxlongint.github.io"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="fixed top-3 right-3 sm:top-4 sm:right-4 z-40 px-3 py-2 bg-white border border-gray-200 rounded-full shadow-sm text-blue-500 hover:text-blue-700 text-sm"
+                >
+                    GitHub 仓库
+                </a>
+            )}
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
                 {/* 头部 */}
@@ -1270,15 +1280,6 @@ export default function Home() {
                 )}
             </div>
 
-            {/* 页脚 */}
-            <footer className="mt-12 sm:mt-16 py-6 sm:py-8 border-t border-gray-200">
-                <div className="text-center px-4">
-                    <p className="text-gray-500 text-sm">
-                        Created by <span className="font-medium text-gray-700">Cyclone77</span>
-                    </p>
-                </div>
-            </footer>
-
             {/* 固定搜索框 */}
             {showFixedSearch && (
                 <div className="fixed top-0 left-0 right-0 z-40 fixed-search-bar transition-all duration-300">
@@ -1347,22 +1348,31 @@ export default function Home() {
                                 )}
                             </div>
 
-                            {/* 回到顶部按钮（小尺寸） */}
-                            <button
-                                onClick={scrollToTop}
-                                className="flex-shrink-0 w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
-                                title="回到顶部"
-                                aria-label="回到顶部"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M5 10l7-7m0 0l7 7m-7-7v18"
-                                    />
-                                </svg>
-                            </button>
+                            <div className="flex-shrink-0 flex items-center gap-2">
+                                <a
+                                    href="https://github.com/maxlongint/maxlongint.github.io"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hidden sm:inline-flex items-center px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-blue-500 hover:text-blue-700 shadow-sm"
+                                >
+                                    GitHub
+                                </a>
+                                <button
+                                    onClick={scrollToTop}
+                                    className="w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
+                                    title="回到顶部"
+                                    aria-label="回到顶部"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 10l7-7m0 0l7 7m-7-7v18"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1372,7 +1382,7 @@ export default function Home() {
             {showScrollTop && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+                    className="fixed bottom-20 right-6 z-50 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
                     title="回到顶部"
                     aria-label="回到顶部"
                 >
