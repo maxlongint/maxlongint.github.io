@@ -163,3 +163,14 @@ body {
 .pagination-button:active {
     transform: translateY(0);
 }
+
+/* 评论面板与内容位移（桌面端） */
+@media (min-width: 1024px) {
+    .comments-transition {
+        transition: transform 300ms ease;
+    }
+    .comments-panel-lg {
+        width: 640px;
+        max-width: 640px;
+    }
+}

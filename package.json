@@ -12,6 +12,7 @@
         "export": "next build && next export"
     },
     "dependencies": {
+        "@giscus/react": "^3.1.0",
         "@microsoft/clarity": "^1.0.0",
         "@types/node": "^24.3.1",
         "@types/react": "^19.1.12",

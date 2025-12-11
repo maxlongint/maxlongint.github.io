@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import Giscus from '@giscus/react';
 import bookmarksData from '@/data/bookmarks.json';
 
 // GitHub 仓库信息接口
@@ -354,6 +355,52 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
 // 缓存 GitHub 仓库信息
 const githubRepoCache = new Map<string, GitHubRepoInfo | null>();
 
+let activeRequests = 0;
+const requestQueue: Array<() => void> = [];
+const MAX_CONCURRENT = 6;
+const runNext = () => {
+    if (activeRequests >= MAX_CONCURRENT) return;
+    const next = requestQueue.shift();
+    if (!next) return;
+    next();
+};
+const limitedFetch = (input: RequestInfo, init?: RequestInit) =>
+    new Promise<Response>((resolve, reject) => {
+        const start = () => {
+            activeRequests++;
+            fetch(input, init)
+                .then(resolve)
+                .catch(reject)
+                .finally(() => {
+                    activeRequests--;
+                    runNext();
+                });
+        };
+        if (activeRequests < MAX_CONCURRENT) start();
+        else requestQueue.push(start);
+    });
+
+const REPO_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const repoCacheKey = (apiUrl: string) => `repo:${apiUrl}`;
+const readRepoCache = (apiUrl: string): GitHubRepoInfo | null | undefined => {
+    try {
+        const raw = typeof window !== 'undefined' ? localStorage.getItem(repoCacheKey(apiUrl)) : null;
+        if (!raw) return undefined;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.t || parsed.v === undefined) return undefined;
+        if (Date.now() - parsed.t > REPO_CACHE_TTL_MS) return undefined;
+        return parsed.v as GitHubRepoInfo | null;
+    } catch {
+        return undefined;
+    }
+};
+const writeRepoCache = (apiUrl: string, v: GitHubRepoInfo | null) => {
+    try {
+        if (typeof window !== 'undefined')
+            localStorage.setItem(repoCacheKey(apiUrl), JSON.stringify({ t: Date.now(), v }));
+    } catch {}
+};
+
 // 获取 GitHub 仓库信息
 const fetchGitHubRepoInfo = async (url: string): Promise<GitHubRepoInfo | null> => {
     try {
@@ -368,13 +415,16 @@ const fetchGitHubRepoInfo = async (url: string): Promise<GitHubRepoInfo | null> 
         const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
         console.log('正在获取 GitHub 仓库信息:', apiUrl);
 
-        // 检查缓存
         if (githubRepoCache.has(apiUrl)) {
-            console.log('从缓存获取信息:', apiUrl);
             return githubRepoCache.get(apiUrl) || null;
         }
+        const cachedLocal = readRepoCache(apiUrl);
+        if (cachedLocal !== undefined) {
+            githubRepoCache.set(apiUrl, cachedLocal);
+            return cachedLocal;
+        }
 
-        const response = await fetch(apiUrl);
+        const response = await limitedFetch(apiUrl);
         if (!response.ok) {
             console.error('GitHub API 请求失败:', response.status, response.statusText);
             githubRepoCache.set(apiUrl, null);
@@ -396,6 +446,7 @@ const fetchGitHubRepoInfo = async (url: string): Promise<GitHubRepoInfo | null> 
 
         // 缓存结果
         githubRepoCache.set(apiUrl, repoInfo);
+        writeRepoCache(apiUrl, repoInfo);
         return repoInfo;
     } catch (error) {
         console.error('Failed to fetch GitHub repo info:', error);
@@ -451,10 +502,8 @@ const GitHubStats = ({ url }: { url: string }) => {
 
                 console.log('API URL:', apiUrl);
 
-                // 检查缓存
                 if (githubRepoCache.has(apiUrl)) {
                     const cachedInfo = githubRepoCache.get(apiUrl);
-                    console.log('从缓存获取信息:', cachedInfo);
                     if (cachedInfo !== undefined) {
                         setRepoInfo(cachedInfo);
                         setLoading(false);
@@ -462,8 +511,16 @@ const GitHubStats = ({ url }: { url: string }) => {
                         return;
                     }
                 }
+                const cachedLocal = readRepoCache(apiUrl);
+                if (cachedLocal !== undefined) {
+                    githubRepoCache.set(apiUrl, cachedLocal);
+                    setRepoInfo(cachedLocal);
+                    setLoading(false);
+                    if (!cachedLocal) setError(true);
+                    return;
+                }
 
-                const response = await fetch(apiUrl);
+                const response = await limitedFetch(apiUrl);
                 console.log('API 响应状态:', response.status);
 
                 if (!response.ok) {
@@ -488,6 +545,7 @@ const GitHubStats = ({ url }: { url: string }) => {
                 };
 
                 githubRepoCache.set(apiUrl, repoInfo);
+                writeRepoCache(apiUrl, repoInfo);
                 setRepoInfo(repoInfo);
                 setLoading(false);
             } catch (err) {
@@ -546,9 +604,10 @@ const GitHubStats = ({ url }: { url: string }) => {
                 className="inline-block hover:scale-105 transition-transform duration-200"
             >
                 <img
-                    src={`https://img.shields.io/github/stars/${repoInfo.full_name}?style=flat&color=yellow&label=stars`}
+                    src={`https://img.shields.io/github/stars/${repoInfo.full_name}?style=flat&color=yellow&label=stars&cacheSeconds=86400`}
                     alt={`${repoInfo.full_name} GitHub stars`}
                     className="h-5"
+                    loading="lazy"
                 />
             </a>
             <a
@@ -560,9 +619,10 @@ const GitHubStats = ({ url }: { url: string }) => {
                 <img
                     src={`https://img.shields.io/npm/v/${encodeURIComponent(repoInfo.name)}?label=${encodeURIComponent(
                         repoInfo.name
-                    )}&color=red`}
+                    )}&color=red&cacheSeconds=86400`}
                     alt={`${repoInfo.name} npm version`}
                     className="h-5"
+                    loading="lazy"
                 />
             </a>
         </div>
@@ -825,6 +885,8 @@ export default function Home() {
     const [showFixedSearch, setShowFixedSearch] = useState(false);
     const [isSearching, setIsSearching] = useState(false); // 标记是否正在搜索
     const [isFixedSearchFocused, setIsFixedSearchFocused] = useState(false); // 标记固定搜索框是否有焦点
+    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
     const [currentPage, setCurrentPage] = useState(1); // 当前页数
     const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE); // 当前可见项目数
@@ -963,6 +1025,14 @@ export default function Home() {
         });
     };
 
+    const commentsRef = useRef<HTMLDivElement>(null);
+    const scrollToComments = () => {
+        const el = commentsRef.current || document.querySelector('.giscus');
+        if (!el) return;
+        const top = (el as HTMLElement).getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
+    };
+
     // 优化的书签数据筛选和分页
     const { displayedBookmarks, hasMore } = useMemo(() => {
         return {
@@ -1068,216 +1138,233 @@ export default function Home() {
             {/* JSON-LD 结构化数据 */}
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             {!showFixedSearch && (
-                <a
-                    href="https://github.com/maxlongint/maxlongint.github.io"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="fixed top-3 right-3 sm:top-4 sm:right-4 z-40 px-3 py-2 bg-white border border-gray-200 rounded-full shadow-sm text-blue-500 hover:text-blue-700 text-sm"
-                >
-                    GitHub 仓库
-                </a>
+                <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-40 flex gap-2">
+                    <a
+                        href="https://github.com/maxlongint/maxlongint.github.io"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 bg-white border border-gray-200 rounded-full shadow-sm text-blue-500 hover:text-blue-700 text-sm"
+                    >
+                        GitHub 仓库
+                    </a>
+                    <button
+                        onClick={() => setIsCommentsOpen(true)}
+                        className="px-3 py-2 bg-white border border-gray-200 rounded-full shadow-sm text-blue-500 hover:text-blue-700 text-sm"
+                        aria-label="打开评论"
+                    >
+                        评论
+                    </button>
+                </div>
             )}
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-                {/* 头部 */}
-                <header className="mb-8">
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center">
-                            <img src="/favicon.png" alt="前端利器库" className="w-10 h-10 rounded-lg" />
-                        </div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">前端利器库</h1>
-                    </div>
-                </header>
-
-                {/* 搜索框 */}
-                <div ref={searchSectionRef} className="mb-6">
-                    {!showFixedSearch && (
-                        <div className="relative w-full">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg
-                                    className="w-5 h-5 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                    />
-                                </svg>
+            <div ref={containerRef} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+                <div>
+                    {/* 头部 */}
+                    <header className="mb-8">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                                <img src="/favicon.png" alt="前端利器库" className="w-10 h-10 rounded-lg" />
                             </div>
-                            <input
-                                type="text"
-                                placeholder="搜索书签标题、描述、URL或标签..."
-                                value={searchQuery}
-                                onChange={e => handleSearchChange(e.target.value)}
-                                className="w-full pl-12 pr-12 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white shadow-sm"
-                            />
-                            {searchQuery && (
-                                <button
-                                    onClick={() => {
-                                        setSearchQuery('');
-                                        setIsSearching(false);
-                                        setIsFixedSearchFocused(false);
-                                    }}
-                                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">前端利器库</h1>
+                        </div>
+                    </header>
+
+                    {/* 搜索框 */}
+                    <div ref={searchSectionRef} className="mb-6">
+                        {!showFixedSearch && (
+                            <div className="relative w-full">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg
+                                        className="w-5 h-5 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                             strokeWidth={2}
-                                            d="M6 18L18 6M6 6l12 12"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                         />
                                     </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="搜索书签标题、描述、URL或标签..."
+                                    value={searchQuery}
+                                    onChange={e => handleSearchChange(e.target.value)}
+                                    className="w-full pl-12 pr-12 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white shadow-sm"
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => {
+                                            setSearchQuery('');
+                                            setIsSearching(false);
+                                            setIsFixedSearchFocused(false);
+                                        }}
+                                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 min-w-[44px] min-h-[44px] justify-center"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 视图模式切换 */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm font-medium text-gray-700">视图模式:</span>
+                            <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                        viewMode === 'list'
+                                            ? 'bg-blue-500 text-white shadow-sm'
+                                            : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
+                                    }`}
+                                >
+                                    列表
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('grid')}
+                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                        viewMode === 'grid'
+                                            ? 'bg-blue-500 text-white shadow-sm'
+                                            : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
+                                    }`}
+                                >
+                                    网格
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 标签过滤 */}
+                    <div className="mb-8">
+                        <div className="mb-4">
+                            <span className="text-gray-700 font-medium text-base">标签云:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {Object.keys(bookmarksData.tagColors).map(tag => (
+                                <button
+                                    key={tag}
+                                    onClick={() => setSelectedTag(tag)}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] border ${
+                                        selectedTag === tag
+                                            ? 'bg-blue-500 text-white shadow-md transform scale-105 border-blue-500'
+                                            : `${getTagColor(
+                                                  tag
+                                              )} border-gray-200 hover:border-blue-300 hover:shadow-sm`
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        {tag}
+                                        <span
+                                            className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs rounded-full font-semibold ${
+                                                selectedTag === tag
+                                                    ? 'bg-white/20 text-white'
+                                                    : 'bg-gray-500/10 text-gray-600'
+                                            }`}
+                                        >
+                                            {stats.tagCounts[tag] || 0}
+                                        </span>
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* 搜索和筛选状态提示 */}
+                        {(searchQuery || selectedTag !== 'All') && (
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
+                                <span>
+                                    显示 {displayedBookmarks.length} / {filteredBookmarks.length} 个结果
+                                    {searchQuery && (
+                                        <span className="font-medium"> 包含 &quot;{searchQuery}&quot;</span>
+                                    )}
+                                    {selectedTag !== 'All' && <span className="font-medium"> 标签: {selectedTag}</span>}
+                                </span>
+                                <button
+                                    onClick={clearFilters}
+                                    className="sm:ml-2 text-blue-500 hover:text-blue-700 font-medium underline self-start min-h-[44px] flex items-center"
+                                >
+                                    清除筛选
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 书签列表 */}
+                    <div
+                        className={
+                            viewMode === 'grid' ? 'masonry-container columns-1 lg:columns-2 xl:columns-3' : 'space-y-4'
+                        }
+                    >
+                        {displayedBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
+                            <div
+                                key={`${bookmark.title}-${bookmarkIndex}`}
+                                className={viewMode === 'grid' ? 'masonry-item' : ''}
+                            >
+                                <LazyBookmarkCard
+                                    bookmark={bookmark}
+                                    bookmarkIndex={bookmarkIndex}
+                                    viewMode={viewMode}
+                                    getTagColor={getTagColor}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* 加载更多触发器 */}
+                    {hasMore && (
+                        <div ref={loadMoreRef} className="flex justify-center items-center py-8">
+                            <div className="flex items-center gap-2 text-gray-500">
+                                <div className="animate-spin w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                                <span>加载更多...</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 空状态 */}
+                    {displayedBookmarks.length === 0 && filteredBookmarks.length === 0 && (
+                        <div className="text-center py-8 sm:py-12 px-4">
+                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span className="text-gray-400 text-2xl">🔍</span>
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                {searchQuery ? '没有找到匹配的书签' : '没有找到相关书签'}
+                            </h3>
+                            <p className="text-gray-500 mb-4 text-sm sm:text-base">
+                                {searchQuery
+                                    ? `没有书签包含 &quot;${searchQuery}&quot;`
+                                    : '尝试选择其他标签或查看所有书签'}
+                            </p>
+                            {(searchQuery || selectedTag !== 'All') && (
+                                <button
+                                    onClick={clearFilters}
+                                    className="inline-flex items-center justify-center px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px]"
+                                >
+                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                        />
+                                    </svg>
+                                    重置筛选
                                 </button>
                             )}
                         </div>
                     )}
                 </div>
-
-                {/* 视图模式切换 */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-gray-700">视图模式:</span>
-                        <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                                    viewMode === 'list'
-                                        ? 'bg-blue-500 text-white shadow-sm'
-                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
-                                }`}
-                            >
-                                列表
-                            </button>
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                                    viewMode === 'grid'
-                                        ? 'bg-blue-500 text-white shadow-sm'
-                                        : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
-                                }`}
-                            >
-                                网格
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 标签过滤 */}
-                <div className="mb-8">
-                    <div className="mb-4">
-                        <span className="text-gray-700 font-medium text-base">标签云:</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                        {Object.keys(bookmarksData.tagColors).map(tag => (
-                            <button
-                                key={tag}
-                                onClick={() => setSelectedTag(tag)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 min-h-[40px] border ${
-                                    selectedTag === tag
-                                        ? 'bg-blue-500 text-white shadow-md transform scale-105 border-blue-500'
-                                        : `${getTagColor(tag)} border-gray-200 hover:border-blue-300 hover:shadow-sm`
-                                }`}
-                            >
-                                <span className="flex items-center gap-2">
-                                    {tag}
-                                    <span
-                                        className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs rounded-full font-semibold ${
-                                            selectedTag === tag
-                                                ? 'bg-white/20 text-white'
-                                                : 'bg-gray-500/10 text-gray-600'
-                                        }`}
-                                    >
-                                        {stats.tagCounts[tag] || 0}
-                                    </span>
-                                </span>
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* 搜索和筛选状态提示 */}
-                    {(searchQuery || selectedTag !== 'All') && (
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
-                            <span>
-                                显示 {displayedBookmarks.length} / {filteredBookmarks.length} 个结果
-                                {searchQuery && <span className="font-medium"> 包含 &quot;{searchQuery}&quot;</span>}
-                                {selectedTag !== 'All' && <span className="font-medium"> 标签: {selectedTag}</span>}
-                            </span>
-                            <button
-                                onClick={clearFilters}
-                                className="sm:ml-2 text-blue-500 hover:text-blue-700 font-medium underline self-start min-h-[44px] flex items-center"
-                            >
-                                清除筛选
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* 书签列表 */}
-                <div
-                    className={
-                        viewMode === 'grid' ? 'masonry-container columns-1 lg:columns-2 xl:columns-3' : 'space-y-4'
-                    }
-                >
-                    {displayedBookmarks.map((bookmark: Bookmark, bookmarkIndex) => (
-                        <div
-                            key={`${bookmark.title}-${bookmarkIndex}`}
-                            className={viewMode === 'grid' ? 'masonry-item' : ''}
-                        >
-                            <LazyBookmarkCard
-                                bookmark={bookmark}
-                                bookmarkIndex={bookmarkIndex}
-                                viewMode={viewMode}
-                                getTagColor={getTagColor}
-                            />
-                        </div>
-                    ))}
-                </div>
-
-                {/* 加载更多触发器 */}
-                {hasMore && (
-                    <div ref={loadMoreRef} className="flex justify-center items-center py-8">
-                        <div className="flex items-center gap-2 text-gray-500">
-                            <div className="animate-spin w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                            <span>加载更多...</span>
-                        </div>
-                    </div>
-                )}
-
-                {/* 空状态 */}
-                {displayedBookmarks.length === 0 && filteredBookmarks.length === 0 && (
-                    <div className="text-center py-8 sm:py-12 px-4">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span className="text-gray-400 text-2xl">🔍</span>
-                        </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {searchQuery ? '没有找到匹配的书签' : '没有找到相关书签'}
-                        </h3>
-                        <p className="text-gray-500 mb-4 text-sm sm:text-base">
-                            {searchQuery ? `没有书签包含 &quot;${searchQuery}&quot;` : '尝试选择其他标签或查看所有书签'}
-                        </p>
-                        {(searchQuery || selectedTag !== 'All') && (
-                            <button
-                                onClick={clearFilters}
-                                className="inline-flex items-center justify-center px-4 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 min-h-[44px]"
-                            >
-                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                    />
-                                </svg>
-                                重置筛选
-                            </button>
-                        )}
-                    </div>
-                )}
             </div>
 
             {/* 固定搜索框 */}
@@ -1358,6 +1445,12 @@ export default function Home() {
                                     GitHub
                                 </a>
                                 <button
+                                    onClick={() => setIsCommentsOpen(true)}
+                                    className="hidden sm:inline-flex items-center px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-blue-500 hover:text-blue-700 shadow-sm"
+                                >
+                                    评论
+                                </button>
+                                <button
                                     onClick={scrollToTop}
                                     className="w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
                                     title="回到顶部"
@@ -1380,26 +1473,91 @@ export default function Home() {
 
             {/* 回到顶部按钮 */}
             {showScrollTop && (
-                <button
-                    onClick={scrollToTop}
-                    className="fixed bottom-20 right-6 z-50 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
-                    title="回到顶部"
-                    aria-label="回到顶部"
-                >
-                    <svg
-                        className="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                <>
+                    <button
+                        onClick={scrollToTop}
+                        className="fixed bottom-20 right-6 z-50 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+                        title="回到顶部"
+                        aria-label="回到顶部"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 10l7-7m0 0l7 7m-7-7v18"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            className="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-200"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 10l7-7m0 0l7 7m-7-7v18"
+                            />
+                        </svg>
+                    </button>
+                </>
+            )}
+
+            <div
+                className={`fixed right-0 top-0 bottom-0 z-50 bg-white transform transition-transform duration-300 ${
+                    isCommentsOpen ? 'translate-x-0' : 'translate-x-full'
+                } w-full sm:w-[90%] max-w-[640px]`}
+            >
+                <div className="h-full overflow-y-auto p-4 lg:p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <span className="text-sm text-gray-500">评论区</span>
+                        <button
+                            onClick={() => setIsCommentsOpen(false)}
+                            className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600"
+                            aria-label="关闭评论"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-gray-700">
+                        <div className="flex items-start gap-2">
+                            <svg
+                                className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                                />
+                            </svg>
+                            <div>
+                                <span className="font-medium">收录说明：</span>
+                                我们会不定期采纳评论区中大家分享的优质、通用型开源库（非某个框架专属，跨框架或独立使用）。投稿请附上项目链接、简要介绍与适用场景；通过筛选的库将收录到站内书签并适当注明来源。为保证质量与安全，仅面向可通用复用的库，演示模板、强依赖单一框架的插件或存在风险的内容将不予采纳。
+                            </div>
+                        </div>
+                    </div>
+                    <Giscus
+                        repo="maxlongint/maxlongint.github.io"
+                        repoId="MDEwOlJlcG9zaXRvcnkzMjE1ODc3NjI="
+                        category="General"
+                        categoryId="DIC_kwDOEysKMs4Czprq"
+                        mapping="pathname"
+                        strict="0"
+                        reactionsEnabled="1"
+                        emitMetadata="0"
+                        inputPosition="bottom"
+                        theme="preferred_color_scheme"
+                        lang="zh-CN"
+                    />
+                </div>
+            </div>
+            {isCommentsOpen && (
+                <div onClick={() => setIsCommentsOpen(false)} className="fixed inset-0 z-40 bg-black/30" />
             )}
         </div>
     );
