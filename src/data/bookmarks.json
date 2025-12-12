@@ -17,6 +17,7 @@
         "Store": "bg-sky-100 text-sky-800",
         "WebSocket": "bg-violet-100 text-violet-800",
         "DOCX": "bg-amber-200 text-amber-800",
+        "Base64": "bg-yellow-200 text-yellow-800",
         "数据操作": "bg-indigo-100 text-indigo-800",
         "数据验证": "bg-purple-100 text-purple-800",
         "数据格式化": "bg-teal-100 text-teal-800",
@@ -51,8 +52,15 @@
         "签名绘制": "bg-amber-100 text-amber-800",
         "虚拟键盘": "bg-fuchsia-100 text-fuchsia-800",
         "剪贴板": "bg-emerald-100 text-emerald-800",
+        "截图": "bg-yellow-300 text-yellow-800",
         "文档预览": "bg-blue-200 text-blue-800",
-        "数字动画": "bg-yellow-300 text-yellow-800"
+        "数字动画": "bg-yellow-300 text-yellow-800",
+        "工具库": "bg-pink-300 text-pink-800",
+        "代码编辑器": "bg-yellow-300 text-yellow-800",
+        "终端": "bg-fuchsia-300 text-fuchsia-800",
+        "文件类型": "bg-rose-300 text-rose-800",
+        "颜色处理": "bg-rose-200 text-rose-800",
+        "数据可视化": "bg-cyan-200 text-cyan-800"
     },
     "bookmarks": [
         {
@@ -95,7 +103,7 @@
             "title": "SnapDOM",
             "url": "https://github.com/zumerlab/snapdom",
             "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片，同时支持伪元素、Shadow DOM、网页字体等。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理", "截图"]
         },
         {
             "title": "Animejs",
@@ -420,6 +428,60 @@
             "url": "https://github.com/taye/interact.js",
             "description": "适用于现代浏览器（以及 IE9+）的 JavaScript 拖放、调整大小以及具有惯性和捕捉功能的多点触摸手势，支持网格式拖动",
             "tags": ["拖拽操作", "触摸交互"]
+        },
+        {
+            "title": "lodash",
+            "url": "https://github.com/lodash/lodash",
+            "description": "一个一致性、模块化、高性能的 JavaScript 实用工具库。",
+            "tags": ["工具库"]
+        },
+        {
+            "title": "CodeMirror 5",
+            "url": "https://github.com/codemirror/codemirror5",
+            "description": "一个功能强大的文本编辑器，支持语法高亮、代码折叠、自动完成等功能。",
+            "tags": ["代码编辑器"]
+        },
+        {
+            "title": "xterm.js",
+            "url": "https://github.com/xtermjs/xterm.js",
+            "description": "一个功能强大的终端模拟器，支持语法高亮、代码折叠、自动完成等功能。",
+            "tags": ["终端"]
+        },
+        {
+            "title": "file-type",
+            "url": "https://github.com/sindresorhus/file-type",
+            "description": "检测文件、流或数据的文件类型；支持 Node.js、浏览器。",
+            "tags": ["文件类型"]
+        },
+        {
+            "title": "monaco-editor",
+            "url": "https://github.com/microsoft/monaco-editor",
+            "description": "一个基于浏览器的代码编辑器，支持语法高亮、代码折叠、自动完成等功能。",
+            "tags": ["代码编辑器"]
+        },
+        {
+            "title": "TinyColor",
+            "url": "https://github.com/bgrins/TinyColor",
+            "description": "一个用于处理颜色的 JavaScript 库，支持颜色转换、混合、渐变等功能。",
+            "tags": ["颜色处理"]
+        },
+        {
+            "title": "js-base64",
+            "url": "https://github.com/dankogai/js-base64",
+            "description": "一个用于 Base64 编码/解码的 JavaScript 库，支持 Node.js、浏览器。",
+            "tags": ["Base64"]
+        },
+        {
+            "title": "ECharts",
+            "url": "https://github.com/apache/echarts",
+            "description": "一个基于 JavaScript 的开源可视化库，提供了丰富的图表类型和交互功能。",
+            "tags": ["数据可视化"]
+        },
+        {
+            "title": "radash",
+            "url": "https://github.com/sodiray/radash",
+            "description": "一个功能强大的 JavaScript 实用工具库，提供了丰富的功能，如数组操作、对象操作、字符串操作等。",
+            "tags": ["工具库"]
         }
     ]
 }
