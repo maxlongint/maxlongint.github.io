@@ -1225,9 +1225,9 @@ export default function Home() {
                             <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
                                 <button
                                     onClick={() => setViewMode('list')}
-                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none ${
                                         viewMode === 'list'
-                                            ? 'bg-blue-500 text-white shadow-sm'
+                                            ? 'bg-blue-500 text-white shadow-sm -mr-px'
                                             : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
                                     }`}
                                 >
@@ -1235,9 +1235,9 @@ export default function Home() {
                                 </button>
                                 <button
                                     onClick={() => setViewMode('grid')}
-                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none ${
                                         viewMode === 'grid'
-                                            ? 'bg-blue-500 text-white shadow-sm'
+                                            ? 'bg-blue-500 text-white shadow-sm -ml-px'
                                             : 'bg-transparent text-gray-700 hover:bg-white hover:text-gray-900'
                                     }`}
                                 >

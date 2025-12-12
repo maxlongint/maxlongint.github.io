@@ -7,7 +7,6 @@
         "JSON": "bg-gray-200 text-gray-700",
         "SVG": "bg-green-100 text-green-800",
         "Markdown": "bg-gray-300 text-gray-600",
-        "Icon": "bg-purple-100 text-purple-800",
         "uuid": "bg-indigo-100 text-indigo-800",
         "Tooltip": "bg-orange-100 text-orange-800",
         "Popover": "bg-teal-100 text-teal-800",
@@ -46,7 +45,6 @@
         "开发工具": "bg-orange-300 text-orange-600",
         "性能优化": "bg-teal-300 text-teal-600",
         "安全防护": "bg-red-300 text-red-600",
-        "图表可视化": "bg-cyan-300 text-cyan-600",
         "演示展示": "bg-emerald-300 text-emerald-600",
         "用户引导": "bg-lime-300 text-lime-600",
         "签名绘制": "bg-amber-100 text-amber-800",
@@ -61,6 +59,65 @@
         "文件类型": "bg-rose-300 text-rose-800",
         "颜色处理": "bg-rose-200 text-rose-800",
         "数据可视化": "bg-cyan-200 text-cyan-800"
+    },
+    "tagMeta": {
+        "All": { "color": "#9b59b6", "category": "其他>综合" },
+        "Base64": { "color": "#3498db", "category": "技术>数据格式" },
+        "Cookie": { "color": "#3498db", "category": "技术>存储" },
+        "CSS": { "color": "#3498db", "category": "技术>前端基础" },
+        "DOCX": { "color": "#3498db", "category": "技术>文档与预览" },
+        "Dropdown": { "color": "#3498db", "category": "技术>交互组件" },
+        "HTTP请求": { "color": "#3498db", "category": "技术>网络通信" },
+        "JSON": { "color": "#3498db", "category": "技术>数据格式" },
+        "Markdown": { "color": "#3498db", "category": "技术>文本与文档" },
+        "Menu": { "color": "#3498db", "category": "技术>交互组件" },
+        "Popover": { "color": "#3498db", "category": "技术>交互组件" },
+        "SVG": { "color": "#3498db", "category": "技术>图形" },
+        "Store": { "color": "#3498db", "category": "技术>存储" },
+        "Tooltip": { "color": "#3498db", "category": "技术>交互组件" },
+        "TypeScript": { "color": "#3498db", "category": "技术>语言与类型" },
+        "WebSocket": { "color": "#3498db", "category": "技术>网络通信" },
+        "XSS": { "color": "#3498db", "category": "技术>安全" },
+        "uuid": { "color": "#3498db", "category": "技术>标识" },
+        "中文处理": { "color": "#3498db", "category": "技术>国际化" },
+        "代码编辑器": { "color": "#e67e22", "category": "工具>开发环境" },
+        "代码高亮": { "color": "#3498db", "category": "技术>文本与文档" },
+        "剪贴板": { "color": "#3498db", "category": "技术>浏览器API" },
+        "图像处理": { "color": "#3498db", "category": "技术>多媒体" },
+        "图标": { "color": "#2ecc71", "category": "设计>图标" },
+        "弹窗组件": { "color": "#3498db", "category": "技术>交互组件" },
+        "安全防护": { "color": "#3498db", "category": "技术>安全" },
+        "实时通信": { "color": "#3498db", "category": "技术>网络通信" },
+        "数据操作": { "color": "#3498db", "category": "技术>数据处理" },
+        "数据加密": { "color": "#3498db", "category": "技术>数据处理" },
+        "数据可视化": { "color": "#3498db", "category": "技术>可视化" },
+        "数据格式化": { "color": "#3498db", "category": "技术>数据处理" },
+        "数据验证": { "color": "#3498db", "category": "技术>数据处理" },
+        "数字动画": { "color": "#3498db", "category": "技术>动效" },
+        "日期时间": { "color": "#3498db", "category": "技术>时间" },
+        "文档解析": { "color": "#3498db", "category": "技术>文本与文档" },
+        "文档预览": { "color": "#3498db", "category": "技术>文本与文档" },
+        "文件处理": { "color": "#3498db", "category": "技术>存储文件" },
+        "文件类型": { "color": "#3498db", "category": "技术>存储文件" },
+        "滚动处理": { "color": "#3498db", "category": "技术>交互组件" },
+        "用户引导": { "color": "#3498db", "category": "技术>用户体验" },
+        "演示展示": { "color": "#2ecc71", "category": "设计>展示" },
+        "视频音频": { "color": "#3498db", "category": "技术>多媒体" },
+        "颜色处理": { "color": "#2ecc71", "category": "设计>配色" },
+        "颜色选择": { "color": "#2ecc71", "category": "设计>配色" },
+        "触摸交互": { "color": "#3498db", "category": "技术>交互组件" },
+        "拖拽操作": { "color": "#3498db", "category": "技术>交互组件" },
+        "终端": { "color": "#e67e22", "category": "工具>开发环境" },
+        "性能优化": { "color": "#3498db", "category": "技术>性能" },
+        "虚拟键盘": { "color": "#3498db", "category": "技术>交互组件" },
+        "浏览器API": { "color": "#3498db", "category": "技术>浏览器API" },
+        "工具库": { "color": "#e67e22", "category": "工具>类库" },
+        "实用工具": { "color": "#e67e22", "category": "工具>实用" },
+        "开发工具": { "color": "#e67e22", "category": "工具>开发环境" },
+        "二维码": { "color": "#3498db", "category": "技术>标识" },
+        "截图": { "color": "#3498db", "category": "技术>多媒体" },
+        "数学计算": { "color": "#3498db", "category": "技术>数据处理" },
+        "键盘交互": { "color": "#3498db", "category": "技术>交互组件" }
     },
     "bookmarks": [
         {
@@ -85,13 +142,13 @@
             "title": "Mage Icons",
             "url": "https://github.com/Mage-Icons/mage-icons",
             "description": "Mage Icons是一个精心策划的图标库，专为网页和移动应用的用户界面设计而打造。",
-            "tags": ["Icon", "SVG", "图标"]
+            "tags": ["图标", "SVG"]
         },
         {
             "title": "Iconoir",
             "url": "https://github.com/iconoir-icons/iconoir",
             "description": "一个拥有 1600 多个图标的开源图标库，支持 React、React Native、Flutter、Vue、Figma 和 Framer。",
-            "tags": ["Icon", "SVG", "图标"]
+            "tags": ["图标", "SVG"]
         },
         {
             "title": "DOMPurify",
@@ -169,7 +226,7 @@
             "title": "Wavesurfer.js",
             "url": "https://github.com/katspaugh/wavesurfer.js",
             "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
-            "tags": ["视频音频", "图表可视化"]
+            "tags": ["视频音频", "数据可视化"]
         },
         {
             "title": "Store.js",
@@ -253,7 +310,7 @@
             "title": "bpmn-js",
             "url": "https://github.com/bpmn-io/bpmn-js",
             "description": "流程图绘制工具库。",
-            "tags": ["图表可视化"]
+            "tags": ["数据可视化"]
         },
         {
             "title": "QRCode.js",
@@ -409,7 +466,7 @@
             "title": "Lucide",
             "url": "https://github.com/lucide-icons/lucide",
             "description": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
-            "tags": ["Icon", "SVG", "图标"]
+            "tags": ["图标", "SVG"]
         },
         {
             "title": "docxjs",
