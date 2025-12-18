@@ -1,11 +1,17 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-    content: [
-        './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/data/**/*.json',
+    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './src/data/**/*.json'],
+    safelist: [
+        // 确保所有标签颜色类都被包含
+        {
+            pattern:
+                /^bg-(gray|red|blue|green|yellow|indigo|purple|pink|orange|teal|cyan|emerald|violet|fuchsia|rose|amber|lime|sky)-(100|200|300)$/,
+        },
+        {
+            pattern:
+                /^text-(gray|red|blue|green|yellow|indigo|purple|pink|orange|teal|cyan|emerald|violet|fuchsia|rose|amber|lime|sky)-(600|700|800)$/,
+        },
     ],
     theme: {
         extend: {},
