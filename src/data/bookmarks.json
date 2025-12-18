@@ -58,7 +58,8 @@
         "终端": "bg-fuchsia-300 text-fuchsia-800",
         "文件类型": "bg-rose-300 text-rose-800",
         "颜色处理": "bg-rose-200 text-rose-800",
-        "数据可视化": "bg-cyan-200 text-cyan-800"
+        "数据可视化": "bg-cyan-200 text-cyan-800",
+        "数学公式": "bg-amber-300 text-amber-800"
     },
     "tagMeta": {
         "All": { "color": "#9b59b6", "category": "其他>综合" },
@@ -117,7 +118,8 @@
         "二维码": { "color": "#3498db", "category": "技术>标识" },
         "截图": { "color": "#3498db", "category": "技术>多媒体" },
         "数学计算": { "color": "#3498db", "category": "技术>数据处理" },
-        "键盘交互": { "color": "#3498db", "category": "技术>交互组件" }
+        "键盘交互": { "color": "#3498db", "category": "技术>交互组件" },
+        "数学公式": { "color": "#3498db", "category": "技术>数学" }
     },
     "bookmarks": [
         {
@@ -539,6 +541,12 @@
             "url": "https://github.com/sodiray/radash",
             "description": "一个功能强大的 JavaScript 实用工具库，提供了丰富的功能，如数组操作、对象操作、字符串操作等。",
             "tags": ["工具库"]
+        },
+        {
+            "title": "KaTeX",
+            "url": "https://github.com/KaTeX/KaTeX",
+            "description": "KaTeX/KaTeX 是一个快速的数学排版库，用于在网页上展示数学公式。",
+            "tags": ["数学公式"]
         }
     ]
 }
