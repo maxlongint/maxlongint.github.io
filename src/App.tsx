@@ -116,7 +116,8 @@ function App() {
                     selectedTag={selectedTag}
                     setSelectedTag={setSelectedTag}
                     getTagColor={(tag: string) =>
-                        (bookmarksData.tagColors as Record<string, string>)[tag] || 'bg-gray-100 text-gray-800'
+                        (bookmarksData.tags as Record<string, { className: string }>)[tag]?.className ||
+                        'bg-gray-100 text-gray-800'
                     }
                 />
 
@@ -128,7 +129,8 @@ function App() {
                     <BookmarkList
                         bookmarks={filteredBookmarks}
                         getTagColor={(tag: string) =>
-                            (bookmarksData.tagColors as Record<string, string>)[tag] || 'bg-gray-100 text-gray-800'
+                            (bookmarksData.tags as Record<string, { className: string }>)[tag]?.className ||
+                            'bg-gray-100 text-gray-800'
                         }
                     />
                 </div>
