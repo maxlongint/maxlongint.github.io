@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import TagFilter from './components/TagFilter';
@@ -60,24 +60,32 @@ function App() {
         return bookmarks;
     }, [selectedTag, searchQuery]);
 
-    // 监听滚动
+    // 监听滚动（使用 requestAnimationFrame 节流）
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
-            const scrollTop = window.scrollY;
-            // 滚动超过 300px 显示回到顶部按钮
-            setShowScrollTop(scrollTop > 300);
-            // 滚动超过 100px 固定头部
-            setIsHeaderFixed(scrollTop > 100);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollTop = window.scrollY;
+                    // 滚动超过 300px 显示回到顶部按钮
+                    setShowScrollTop(scrollTop > 300);
+                    // 滚动超过 100px 固定头部
+                    setIsHeaderFixed(scrollTop > 100);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     // 滚动到顶部
-    const scrollToTop = () => {
+    const scrollToTop = useCallback(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50">

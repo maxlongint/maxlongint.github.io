@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SearchBarProps {
     searchQuery: string;
@@ -8,6 +8,11 @@ interface SearchBarProps {
 
 export default function SearchBar({ searchQuery, setSearchQuery, compact = false }: SearchBarProps) {
     const [inputValue, setInputValue] = useState(searchQuery);
+
+    // 同步外部 searchQuery 的变化（比如清除搜索时）
+    useEffect(() => {
+        setInputValue(searchQuery);
+    }, [searchQuery]);
 
     const handleSearch = () => {
         setSearchQuery(inputValue);

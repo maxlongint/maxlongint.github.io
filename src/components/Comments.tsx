@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface CommentsProps {
     isOpen: boolean;
@@ -10,24 +10,27 @@ export default function Comments({ isOpen, onClose }: CommentsProps) {
     const giscusLoadedRef = useRef(false);
 
     // 点击外部关闭抽屉
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = useCallback(
+        (event: MouseEvent) => {
             if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
                 onClose();
             }
-        };
+        },
+        [onClose]
+    );
 
+    useEffect(() => {
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             // 禁止背景滚动
             document.body.style.overflow = 'hidden';
-        }
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen, onClose]);
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+                document.body.style.overflow = 'unset';
+            };
+        }
+    }, [isOpen, handleClickOutside]);
 
     // 页面加载时立即预加载 Giscus
     useEffect(() => {
