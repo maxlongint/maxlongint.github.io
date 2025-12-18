@@ -33,7 +33,7 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
     },
     'github.com/Mage-Icons/mage-icons': {
         stargazers_count: 850,
-        npm_version: '2.1.3',
+        npm_version: 'N/A',
         name: 'mage-icons',
         full_name: 'Mage-Icons/mage-icons',
     },
@@ -471,21 +471,23 @@ export default function GitHubStats({ url }: GitHubStatsProps) {
                     loading="lazy"
                 />
             </a>
-            <a
-                href={`https://www.npmjs.com/package/${repoInfo.name}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block hover:opacity-80 transition-opacity"
-            >
-                <img
-                    src={`https://img.shields.io/npm/v/${encodeURIComponent(
-                        repoInfo.name
-                    )}?style=flat-square&color=cb3837&logo=npm&logoColor=white`}
-                    alt={`${repoInfo.name} npm version`}
-                    className="h-4"
-                    loading="lazy"
-                />
-            </a>
+            {repoInfo.npm_version !== 'N/A' && (
+                <a
+                    href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block hover:opacity-80 transition-opacity"
+                >
+                    <img
+                        src={`https://img.shields.io/npm/v/${encodeURIComponent(
+                            repoInfo.name
+                        )}?style=flat-square&color=cb3837&logo=npm&logoColor=white`}
+                        alt={`${repoInfo.name} npm version`}
+                        className="h-4"
+                        loading="lazy"
+                    />
+                </a>
+            )}
         </div>
     );
 }
