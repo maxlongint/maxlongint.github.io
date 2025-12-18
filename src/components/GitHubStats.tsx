@@ -224,6 +224,13 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
         full_name: 'iamkun/dayjs',
         pushed_at: '2024-12-17T10:15:00Z',
     },
+    'github.com/moment/moment': {
+        stargazers_count: 47900,
+        npm_version: '2.30.1',
+        name: 'moment',
+        full_name: 'moment/moment',
+        pushed_at: '2024-07-18T14:20:00Z',
+    },
     'github.com/socketio/socket.io': {
         stargazers_count: 61000,
         npm_version: '4.8.1',
