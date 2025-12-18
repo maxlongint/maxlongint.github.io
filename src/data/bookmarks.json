@@ -69,9 +69,21 @@
             "tags": ["数据操作", "性能优化"]
         },
         {
+            "title": "Immer",
+            "url": "https://github.com/immerjs/immer",
+            "description": "Immer是一个用于JavaScript的库，它允许你以一种简单、直观的方式编写不可变数据更新逻辑。",
+            "tags": ["数据操作", "性能优化"]
+        },
+        {
             "title": "Valibot",
             "url": "https://github.com/fabian-hiller/valibot",
             "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
+            "tags": ["TypeScript", "数据验证"]
+        },
+        {
+            "title": "Zod",
+            "url": "https://github.com/colinhacks/zod",
+            "description": "Zod是一个用于TypeScript的运行时类型检查库，它允许你定义数据结构，并在运行时验证数据是否符合这些结构。",
             "tags": ["TypeScript", "数据验证"]
         },
         {
