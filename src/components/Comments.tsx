@@ -7,7 +7,7 @@ interface CommentsProps {
 
 export default function Comments({ isOpen, onClose }: CommentsProps) {
     const drawerRef = useRef<HTMLDivElement>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isGiscusLoaded, setIsGiscusLoaded] = useState(false);
 
     // 点击外部关闭抽屉
     useEffect(() => {
@@ -31,8 +31,8 @@ export default function Comments({ isOpen, onClose }: CommentsProps) {
 
     // 加载 Giscus
     useEffect(() => {
-        if (isOpen) {
-            setIsLoading(true);
+        if (isOpen && !isGiscusLoaded) {
+            setIsGiscusLoaded(true);
 
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
@@ -47,59 +47,15 @@ export default function Comments({ isOpen, onClose }: CommentsProps) {
             script.setAttribute('data-input-position', 'top');
             script.setAttribute('data-theme', 'light');
             script.setAttribute('data-lang', 'zh-CN');
-            script.setAttribute('data-loading', 'lazy');
             script.crossOrigin = 'anonymous';
             script.async = true;
 
             const container = document.getElementById('giscus-container');
             if (container) {
-                container.innerHTML = ''; // 清空之前的内容
                 container.appendChild(script);
             }
-
-            // 使用 MutationObserver 监听 iframe 的加载并检查其内容
-            const observer = new MutationObserver(() => {
-                const iframe = container?.querySelector('iframe.giscus-frame') as HTMLIFrameElement;
-                if (iframe) {
-                    // 等待 iframe 加载完成
-                    const checkIframeLoaded = () => {
-                        try {
-                            // 检查 iframe 的高度，如果有实际内容高度会大于 0
-                            if (iframe.offsetHeight > 100) {
-                                setIsLoading(false);
-                                observer.disconnect();
-                            }
-                        } catch (e) {
-                            // 跨域限制，使用超时
-                        }
-                    };
-
-                    // iframe load 事件
-                    iframe.addEventListener('load', () => {
-                        // load 后再等一小段时间确保内容渲染
-                        setTimeout(checkIframeLoaded, 500);
-                    });
-
-                    // 立即检查一次
-                    checkIframeLoaded();
-                }
-            });
-
-            if (container) {
-                observer.observe(container, { childList: true, subtree: true });
-            }
-
-            // 2秒后如果还没加载完，也隐藏加载提示
-            const timeout = setTimeout(() => {
-                setIsLoading(false);
-            }, 2000);
-
-            return () => {
-                clearTimeout(timeout);
-                observer.disconnect();
-            };
         }
-    }, [isOpen]);
+    }, [isOpen, isGiscusLoaded]);
 
     if (!isOpen) return null;
 
@@ -134,14 +90,6 @@ export default function Comments({ isOpen, onClose }: CommentsProps) {
 
                 {/* 内容区域 */}
                 <div className="flex-1 overflow-y-auto p-6">
-                    {isLoading && (
-                        <div className="flex items-center justify-center py-12">
-                            <div className="flex flex-col items-center gap-3">
-                                <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                                <p className="text-gray-500 text-sm">评论加载中...</p>
-                            </div>
-                        </div>
-                    )}
                     <div id="giscus-container" className="giscus-container" />
                 </div>
             </div>

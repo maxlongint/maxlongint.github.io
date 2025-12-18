@@ -39,21 +39,14 @@ jobs:
 
             - name: 配置 GitHub Pages
               uses: actions/configure-pages@v4
-              with:
-                  # 自动检测 GitHub Pages 配置
-                  static_site_generator: next
 
-            - name: 构建 Next.js 应用
-              run: npm run build:prod
-              env:
-                  NEXT_PUBLIC_CLARITY_PROJECT_ID: t7y8qtm5hl
-                  NEXT_PUBLIC_CLARITY_ENABLE_DEV: true
-                  NODE_ENV: production
+            - name: 构建 Vite 应用
+              run: npm run build
 
             - name: 上传构建产物
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: ./out
+                  path: ./dist
 
     # 部署作业
     deploy:

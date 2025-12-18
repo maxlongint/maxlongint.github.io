@@ -88,22 +88,13 @@ function App() {
                 }`}
             >
                 <Header onOpenComments={() => setIsCommentsOpen(true)} />
-
-                {isHeaderFixed && (
-                    <div className="bg-gray-50 border-t border-gray-200">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* 占位空间，防止内容跳动 */}
-            {isHeaderFixed && <div className="h-[148px]" />}
+            {isHeaderFixed && <div className="h-[72px]" />}
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* 非固定状态下的搜索栏 */}
-                {!isHeaderFixed && <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
                 <TagFilter
                     tags={Object.keys(tagStats)}
