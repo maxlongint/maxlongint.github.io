@@ -7,57 +7,122 @@ interface BookmarkCardProps {
 }
 
 export default function BookmarkCard({ bookmark, getTagColor }: BookmarkCardProps) {
-    const ExternalLinkIcon = () => (
-        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-            />
-        </svg>
-    );
+    // 提取 GitHub 仓库信息
+    const getGitHubInfo = (url: string) => {
+        const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+        if (match) {
+            return {
+                owner: match[1],
+                repo: match[2].replace(/\.git$/, ''),
+            };
+        }
+        return null;
+    };
+
+    const githubInfo = getGitHubInfo(bookmark.url);
 
     return (
-        <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-lg hover:border-gray-300 transition-all">
-            <div className="flex items-start gap-3">
-                {/* 图标 */}
-                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-lg font-bold">{bookmark.title.charAt(0).toUpperCase()}</span>
+        <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
+            {/* 移动端布局 */}
+            <div className="md:hidden">
+                {/* 第一行：图标、标题和版本号 */}
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
+                        {githubInfo ? (
+                            <img
+                                src={`https://github.com/${githubInfo.owner}.png?size=48`}
+                                alt={`${bookmark.title} icon`}
+                                className="w-full h-full object-cover"
+                                onError={e => {
+                                    e.currentTarget.style.display = 'none';
+                                    if (e.currentTarget.nextSibling) {
+                                        (e.currentTarget.nextSibling as HTMLElement).style.display = 'block';
+                                    }
+                                }}
+                            />
+                        ) : null}
+                        <span className="text-xl font-bold" style={{ display: githubInfo ? 'none' : 'block' }}>
+                            {bookmark.title.charAt(0).toUpperCase()}
+                        </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-bold text-gray-900 mb-1">{bookmark.title}</h3>
+                        <span className="text-xs font-mono text-gray-400">v4.4.1</span>
+                    </div>
                 </div>
 
-                {/* 内容 */}
-                <div className="flex-1 min-w-0">
-                    {/* 标题和 GitHub 统计 */}
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="text-base font-semibold text-gray-900">{bookmark.title}</h3>
-                        <GitHubStats url={bookmark.url} />
-                    </div>
+                {/* 第二行：描述 */}
+                <p className="text-gray-600 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
 
-                    {/* URL */}
-                    <a
-                        href={bookmark.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700 text-sm inline-flex items-center gap-1 transition-colors mb-2"
-                    >
-                        <span className="truncate">{bookmark.url.replace(/^https?:\/\//, '')}</span>
-                        <ExternalLinkIcon />
-                    </a>
-
-                    {/* 描述 */}
-                    <p className="text-gray-600 text-sm leading-relaxed mb-3">{bookmark.description}</p>
-
-                    {/* 标签云 */}
-                    <div className="flex flex-wrap gap-1.5">
-                        {bookmark.tags.map((tag, index) => (
+                {/* 第三行：标签和统计 */}
+                <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap gap-1.5 flex-1">
+                        {bookmark.tags.slice(0, 3).map((tag, index) => (
                             <span
                                 key={`${tag}-${index}`}
-                                className={`px-2.5 py-0.5 rounded text-xs font-medium ${getTagColor(tag)}`}
+                                className={`px-2 py-0.5 rounded text-xs font-semibold ${getTagColor(tag)}`}
                             >
                                 {tag}
                             </span>
                         ))}
+                    </div>
+                    <div className="flex-shrink-0">
+                        <GitHubStats url={bookmark.url} />
+                    </div>
+                </div>
+            </div>
+
+            {/* PC端布局 */}
+            <div className="hidden md:flex items-center gap-4">
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
+                    {githubInfo ? (
+                        <img
+                            src={`https://github.com/${githubInfo.owner}.png?size=48`}
+                            alt={`${bookmark.title} icon`}
+                            className="w-full h-full object-cover"
+                            onError={e => {
+                                e.currentTarget.style.display = 'none';
+                                if (e.currentTarget.nextSibling) {
+                                    (e.currentTarget.nextSibling as HTMLElement).style.display = 'block';
+                                }
+                            }}
+                        />
+                    ) : null}
+                    <span className="text-xl font-bold" style={{ display: githubInfo ? 'none' : 'block' }}>
+                        {bookmark.title.charAt(0).toUpperCase()}
+                    </span>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-4 mb-2">
+                        <div className="flex-1">
+                            <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-1">
+                                {bookmark.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">{bookmark.description}</p>
+                        </div>
+                        <span className="text-xs font-mono font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                            v4.4.1
+                        </span>
+                    </div>
+
+                    {/* Footer: Tags and Stats */}
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-wrap gap-1.5">
+                            {bookmark.tags.slice(0, 3).map((tag, index) => (
+                                <span
+                                    key={`${tag}-${index}`}
+                                    className={`px-2 py-0.5 rounded text-xs font-semibold ${getTagColor(tag)}`}
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="flex-shrink-0">
+                            <GitHubStats url={bookmark.url} />
+                        </div>
                     </div>
                 </div>
             </div>

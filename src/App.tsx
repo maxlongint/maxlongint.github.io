@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import TagFilter from './components/TagFilter';
@@ -6,6 +6,7 @@ import BookmarkList from './components/BookmarkList';
 import Footer from './components/Footer';
 import Comments from './components/Comments';
 import bookmarksData from './data/bookmarks.json';
+import { getGitHubRepoInfo } from './components/GitHubStats';
 
 export interface Bookmark {
     title: string;
@@ -18,8 +19,28 @@ function App() {
     const [selectedTag, setSelectedTag] = useState('全部 (All)');
     const [searchQuery, setSearchQuery] = useState('');
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const [sortOpen, setSortOpen] = useState(false);
+    const [selectedSort, setSelectedSort] = useState('默认');
     const [showScrollTop, setShowScrollTop] = useState(false);
-    const [isHeaderFixed, setIsHeaderFixed] = useState(false);
+    const [isSearchFixed, setIsSearchFixed] = useState(false);
+
+    // 监听滚动
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            setShowScrollTop(scrollY > 300);
+            // 当滚动超过400px时，固定搜索框到Header
+            setIsSearchFixed(scrollY > 400);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // 滚动到顶部
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // 获取所有标签及其数量
     const tagStats = useMemo(() => {
@@ -34,7 +55,7 @@ function App() {
         return stats;
     }, []);
 
-    // 筛选书签
+    // 筛选和排序书签
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
 
@@ -57,59 +78,52 @@ function App() {
             });
         }
 
-        return bookmarks;
-    }, [selectedTag, searchQuery]);
-
-    // 监听滚动（使用 requestAnimationFrame 节流）
-    useEffect(() => {
-        let ticking = false;
-
-        const handleScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const scrollTop = window.scrollY;
-                    // 滚动超过 300px 显示回到顶部按钮
-                    setShowScrollTop(scrollTop > 300);
-                    // 滚动超过 100px 固定头部
-                    setIsHeaderFixed(scrollTop > 100);
-                    ticking = false;
-                });
-                ticking = true;
+        // 排序
+        const sortedBookmarks = [...bookmarks].sort((a, b) => {
+            if (selectedSort === '默认') {
+                // 保持原始顺序
+                return 0;
+            } else if (selectedSort === '名称') {
+                // 按名称字母顺序
+                return a.title.localeCompare(b.title, 'zh-CN');
+            } else if (selectedSort === 'Stars') {
+                // 按Stars数量降序
+                const starsA = getGitHubRepoInfo(a.url)?.stargazers_count || 0;
+                const starsB = getGitHubRepoInfo(b.url)?.stargazers_count || 0;
+                return starsB - starsA;
+            } else if (selectedSort === '更新日期') {
+                // 按更新日期降序（最近的在前）
+                const dateA = getGitHubRepoInfo(a.url)?.pushed_at || '';
+                const dateB = getGitHubRepoInfo(b.url)?.pushed_at || '';
+                return dateB.localeCompare(dateA);
             }
-        };
+            return 0;
+        });
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // 滚动到顶部
-    const scrollToTop = useCallback(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
+        return sortedBookmarks;
+    }, [selectedTag, searchQuery, selectedSort]);
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* 固定的头部区域 */}
-            <div
-                className={`transition-all duration-300 ${
-                    isHeaderFixed ? 'fixed top-0 left-0 right-0 z-30 bg-white shadow-md' : ''
-                }`}
-            >
-                <Header
-                    onOpenComments={() => setIsCommentsOpen(true)}
-                    isFixed={isHeaderFixed}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                />
+            <Header
+                onOpenComments={() => setIsCommentsOpen(true)}
+                isFixed={isSearchFixed}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
+
+            {/* Hero Section */}
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+                <h2 className="text-5xl font-bold text-gray-900 mb-4">找到完美的前端工具。</h2>
+                <p className="text-lg text-gray-600 mb-8">
+                    浏览精选的库、框架和插件集合，
+                    <br />
+                    让您的开发流程更加高效。
+                </p>
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
 
-            {/* 占位空间，防止内容跳动 */}
-            {isHeaderFixed && <div className="h-[72px]" />}
-
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* 非固定状态时显示搜索框 */}
-                {!isHeaderFixed && <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
-
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
                 <TagFilter
                     tags={Object.keys(tagStats)}
                     tagStats={tagStats}
@@ -121,10 +135,77 @@ function App() {
                     }
                 />
 
-                <div className="mt-6">
-                    <p className="text-gray-600 text-sm mb-4">
-                        共找到 <span className="font-semibold text-blue-600">{filteredBookmarks.length}</span> 个工具
-                    </p>
+                <div className="mt-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <p className="text-gray-600 text-sm">
+                            找到 <span className="font-semibold text-gray-900">{filteredBookmarks.length}</span> 个工具
+                        </p>
+                        <div className="flex items-center gap-4">
+                            <div className="relative">
+                                <button
+                                    onClick={() => setSortOpen(!sortOpen)}
+                                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                >
+                                    排序: {selectedSort}
+                                    <svg
+                                        className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
+                                {sortOpen && (
+                                    <div className="absolute top-full mt-2 right-0 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedSort('默认');
+                                                    setSortOpen(false);
+                                                }}
+                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                            >
+                                                默认
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedSort('名称');
+                                                    setSortOpen(false);
+                                                }}
+                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                            >
+                                                名称
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedSort('Stars');
+                                                    setSortOpen(false);
+                                                }}
+                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                            >
+                                                Stars
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedSort('更新日期');
+                                                    setSortOpen(false);
+                                                }}
+                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                            >
+                                                更新日期
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
 
                     <BookmarkList
                         bookmarks={filteredBookmarks}
@@ -144,7 +225,7 @@ function App() {
             {showScrollTop && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-40 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110"
+                    className="fixed bottom-8 right-8 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110"
                     aria-label="回到顶部"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
