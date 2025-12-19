@@ -33,9 +33,31 @@ function App() {
             setIsSearchFixed(scrollY > 400);
         };
 
+        // 初始化时检查当前滚动位置
+        handleScroll();
+
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // 点击空白处关闭下拉框
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            // 如果点击的不是排序按钮或下拉菜单内部，就关闭
+            if (sortOpen && !target.closest('.sort-dropdown')) {
+                setSortOpen(false);
+            }
+        };
+
+        if (sortOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [sortOpen]);
 
     // 滚动到顶部
     const scrollToTop = () => {
@@ -141,7 +163,7 @@ function App() {
                             找到 <span className="font-semibold text-gray-900">{filteredBookmarks.length}</span> 个工具
                         </p>
                         <div className="flex items-center gap-4">
-                            <div className="relative">
+                            <div className="relative sort-dropdown">
                                 <button
                                     onClick={() => setSortOpen(!sortOpen)}
                                     className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"

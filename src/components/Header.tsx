@@ -14,11 +14,7 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                 <div className="flex items-center justify-between">
                     {/* Logo and Title */}
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-black rounded-lg flex items-center justify-center">
-                            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
-                            </svg>
-                        </div>
+                        <img src="/logo.png" alt="前端工具库" className="w-12 h-12 rounded-lg" />
                         <h1 className="text-xl font-bold text-gray-900">前端工具库</h1>
                     </div>
 
