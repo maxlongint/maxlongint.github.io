@@ -6,7 +6,7 @@ import BookmarkList from './components/BookmarkList';
 import Footer from './components/Footer';
 import Comments from './components/Comments';
 import bookmarksData from './data/bookmarks.json';
-import { getGitHubRepoInfo } from './components/GitHubStats';
+import { getGitHubRepoInfo, useIdleGitHubDataUpdate } from './components/GitHubStats';
 
 export interface Bookmark {
     title: string;
@@ -23,6 +23,9 @@ function App() {
     const [selectedSort, setSelectedSort] = useState('默认');
     const [showScrollTop, setShowScrollTop] = useState(false);
     const [isSearchFixed, setIsSearchFixed] = useState(false);
+
+    // 在空闲时更新GitHub数据
+    useIdleGitHubDataUpdate();
 
     // 监听滚动
     useEffect(() => {

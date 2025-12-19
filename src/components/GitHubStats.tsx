@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 
+interface Window {
+    __GITHUB_STATS__?: Record<string, GitHubRepoInfo>;
+}
+
 interface GitHubStatsProps {
     url: string;
 }
@@ -21,7 +25,39 @@ export const getGitHubRepoInfo = (url: string): GitHubRepoInfo | null => {
         .split('?')[0]
         .split('#')[0];
 
+    // 优先从运行时加载的数据获取
+    const runtimeData = (window as Window).__GITHUB_STATS__;
+    if (runtimeData && runtimeData[urlKey]) {
+        return runtimeData[urlKey];
+    }
+
+    // 否则返回预设数据
     return presetRepoData[urlKey] || null;
+};
+
+// 在浏览器空闲时加载最新的GitHub数据
+export const useIdleGitHubDataUpdate = () => {
+    useEffect(() => {
+        // 尝试加载构建时生成的最新数据
+        const loadLatestData = async () => {
+            try {
+                const response = await fetch('/github-stats.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    // 存储到全局变量供getGitHubRepoInfo使用
+                    (window as Window).__GITHUB_STATS__ = data.repos;
+                    console.log(`GitHub stats loaded (updated at: ${data.updated_at})`);
+                } else {
+                    console.log('No github-stats.json found, using preset data');
+                }
+            } catch {
+                console.log('Failed to load github-stats.json, using preset data');
+            }
+        };
+
+        // 页面加载后立即尝试加载
+        loadLatestData();
+    }, []);
 };
 
 // 预设的 GitHub 仓库数据

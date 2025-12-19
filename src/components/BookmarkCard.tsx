@@ -9,7 +9,7 @@ interface BookmarkCardProps {
 export default function BookmarkCard({ bookmark, getTagColor }: BookmarkCardProps) {
     // 提取 GitHub 仓库信息
     const getGitHubInfo = (url: string) => {
-        const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+        const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
         if (match) {
             return {
                 owner: match[1],
