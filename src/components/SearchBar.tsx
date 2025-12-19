@@ -14,11 +14,6 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
         setInputValue(searchQuery);
     }, [searchQuery]);
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        setSearchQuery(inputValue);
-    };
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             setSearchQuery(inputValue);
