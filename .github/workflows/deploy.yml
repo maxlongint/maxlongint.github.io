@@ -4,10 +4,10 @@ on:
     # 每天自动运行一次（UTC时间0点，北京时间8点）
     schedule:
         - cron: '0 0 * * *'
-    # 推送到main分支时运行
+    # 推送到master分支时运行
     push:
         branches:
-            - main
+            - master
     # 允许手动触发
     workflow_dispatch:
 
