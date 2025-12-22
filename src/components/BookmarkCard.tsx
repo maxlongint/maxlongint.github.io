@@ -3,10 +3,11 @@ import GitHubStats from './GitHubStats';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
+    viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string;
 }
 
-export default function BookmarkCard({ bookmark, getTagColor }: BookmarkCardProps) {
+export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
     // 提取 GitHub 仓库信息
     const getGitHubInfo = (url: string) => {
         const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
@@ -23,8 +24,8 @@ export default function BookmarkCard({ bookmark, getTagColor }: BookmarkCardProp
 
     return (
         <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
-            {/* 移动端布局 */}
-            <div className="md:hidden">
+            {/* 网格模式或移动端布局 */}
+            <div className={viewMode === 'grid' ? 'block' : 'md:hidden'}>
                 {/* 第一行：图标、标题和版本号 */}
                 <div className="flex items-center gap-3 mb-3">
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
@@ -72,8 +73,8 @@ export default function BookmarkCard({ bookmark, getTagColor }: BookmarkCardProp
                 </div>
             </div>
 
-            {/* PC端布局 */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* PC端列表模式布局 */}
+            <div className={viewMode === 'list' ? 'hidden md:flex items-center gap-4' : 'hidden'}>
                 {/* Icon */}
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
                     {githubInfo ? (

@@ -3,10 +3,11 @@ import BookmarkCard from './BookmarkCard';
 
 interface BookmarkListProps {
     bookmarks: Bookmark[];
+    viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string;
 }
 
-export default function BookmarkList({ bookmarks, getTagColor }: BookmarkListProps) {
+export default function BookmarkList({ bookmarks, viewMode, getTagColor }: BookmarkListProps) {
     if (bookmarks.length === 0) {
         return (
             <div className="text-center py-12">
@@ -24,9 +25,14 @@ export default function BookmarkList({ bookmarks, getTagColor }: BookmarkListPro
     }
 
     return (
-        <div className="space-y-4">
+        <div className={viewMode === 'grid' ? 'masonry-grid' : 'space-y-4'}>
             {bookmarks.map((bookmark, index) => (
-                <BookmarkCard key={`${bookmark.url}-${index}`} bookmark={bookmark} getTagColor={getTagColor} />
+                <BookmarkCard
+                    key={`${bookmark.url}-${index}`}
+                    bookmark={bookmark}
+                    viewMode={viewMode}
+                    getTagColor={getTagColor}
+                />
             ))}
         </div>
     );
