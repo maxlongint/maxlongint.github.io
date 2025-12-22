@@ -1,5 +1,5 @@
 import { Bookmark } from '../App';
-import GitHubStats from './GitHubStats';
+import GitHubStats, { getGitHubRepoInfo } from './GitHubStats';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -21,6 +21,10 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     };
 
     const githubInfo = getGitHubInfo(bookmark.url);
+
+    // 获取仓库的 npm 版本号
+    const repoInfo = getGitHubRepoInfo(bookmark.url);
+    const npmVersion = repoInfo?.npm_version || 'N/A';
 
     return (
         <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
@@ -48,15 +52,31 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                     </div>
                     <div className="flex-1 min-w-0">
                         <h3 className="text-base font-bold text-gray-900 mb-1">{bookmark.title}</h3>
-                        <span className="text-xs font-mono text-gray-400">v4.4.1</span>
+                        {/* Stars 数量徽章 */}
+                        {repoInfo && repoInfo.stargazers_count > 0 && (
+                            <a
+                                href={`https://github.com/${repoInfo.full_name}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={e => e.stopPropagation()}
+                                className="inline-block hover:opacity-80 transition-opacity"
+                                title="点击查看 GitHub 仓库"
+                            >
+                                <img
+                                    src={`https://img.shields.io/github/stars/${repoInfo.full_name}?style=flat-square&logo=github&label=stars&color=yellow`}
+                                    alt={`GitHub stars ${repoInfo.stargazers_count}`}
+                                    className="h-5"
+                                />
+                            </a>
+                        )}
                     </div>
                 </div>
 
                 {/* 第二行：描述 */}
                 <p className="text-gray-600 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
 
-                {/* 第三行：标签和统计 */}
-                <div className="flex flex-wrap items-center gap-2">
+                {/* 第三行：标签 */}
+                <div className="flex flex-wrap items-center gap-2 mb-3">
                     <div className="flex flex-wrap gap-1.5 flex-1">
                         {bookmark.tags.slice(0, 3).map((tag, index) => (
                             <span
@@ -67,9 +87,11 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                             </span>
                         ))}
                     </div>
-                    <div className="flex-shrink-0">
-                        <GitHubStats url={bookmark.url} />
-                    </div>
+                </div>
+
+                {/* 第四行：统计信息 */}
+                <div className="flex-shrink-0">
+                    <GitHubStats url={bookmark.url} />
                 </div>
             </div>
 
@@ -104,9 +126,23 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                             </h3>
                             <p className="text-gray-600 text-sm">{bookmark.description}</p>
                         </div>
-                        <span className="text-xs font-mono font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded flex-shrink-0">
-                            v4.4.1
-                        </span>
+                        {/* Stars 数量徽章 */}
+                        {repoInfo && repoInfo.stargazers_count > 0 && (
+                            <a
+                                href={`https://github.com/${repoInfo.full_name}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={e => e.stopPropagation()}
+                                className="hover:opacity-80 transition-opacity flex-shrink-0"
+                                title="点击查看 GitHub 仓库"
+                            >
+                                <img
+                                    src={`https://img.shields.io/github/stars/${repoInfo.full_name}?style=flat-square&logo=github&label=stars&color=yellow`}
+                                    alt={`GitHub stars ${repoInfo.stargazers_count}`}
+                                    className="h-5"
+                                />
+                            </a>
+                        )}
                     </div>
 
                     {/* Footer: Tags and Stats */}
