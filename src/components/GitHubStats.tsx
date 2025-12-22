@@ -604,12 +604,20 @@ export default function GitHubStats({ url }: GitHubStatsProps) {
 
     // 格式化更新时间为中文
     const formatUpdateTime = (dateStr: string) => {
+        // 使用 ISO 8601 标准解析日期
         const date = new Date(dateStr);
         const now = new Date();
-        const diffTime = Math.abs(now.getTime() - date.getTime());
+
+        // 检查日期是否有效
+        if (isNaN(date.getTime())) {
+            return '未知';
+        }
+
+        // 计算时差（毫秒）
+        const diffTime = now.getTime() - date.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        if (diffDays === 0) return '今天';
+        if (diffDays <= 0) return '今天';
         if (diffDays === 1) return '昨天';
         if (diffDays < 7) return `${diffDays}天前`;
         if (diffDays < 30) return `${Math.floor(diffDays / 7)}周前`;
