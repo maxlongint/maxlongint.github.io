@@ -22,9 +22,8 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
 
     const githubInfo = getGitHubInfo(bookmark.url);
 
-    // 获取仓库的 npm 版本号
+    // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
-    const npmVersion = repoInfo?.npm_version || 'N/A';
 
     return (
         <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
