@@ -5,6 +5,7 @@ import TagFilter from './components/TagFilter';
 import BookmarkList from './components/BookmarkList';
 import Footer from './components/Footer';
 import Comments from './components/Comments';
+import ClarityProvider from './components/ClarityProvider';
 import bookmarksData from './data/bookmarks.json';
 import { getGitHubRepoInfo, useIdleGitHubDataUpdate } from './components/GitHubStats';
 
@@ -130,6 +131,9 @@ function App() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* Microsoft Clarity - 直接配置 Project ID */}
+            <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
+
             <Header
                 onOpenComments={() => setIsCommentsOpen(true)}
                 isFixed={isSearchFixed}
