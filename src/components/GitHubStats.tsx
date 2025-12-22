@@ -584,6 +584,7 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
 
 export default function GitHubStats({ url }: GitHubStatsProps) {
     const [repoInfo, setRepoInfo] = useState<GitHubRepoInfo | null>(null);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         if (!url.includes('github.com')) return;
@@ -598,29 +599,22 @@ export default function GitHubStats({ url }: GitHubStatsProps) {
         if (runtimeData && runtimeData[urlKey]) {
             setRepoInfo(runtimeData[urlKey]);
         } else if (presetRepoData[urlKey]) {
-            // 改用预设数据
             setRepoInfo(presetRepoData[urlKey]);
         }
-    }, [url]);
+    }, [url, refreshKey]);
 
-    // 监听全局数据变化，实时更新 repoInfo
+    // 监听全局数据变化，检查是否有新数据
     useEffect(() => {
         const checkUpdate = setInterval(() => {
-            if (!url.includes('github.com')) return;
-
-            const urlKey = url
-                .replace(/^https?:\/\//g, '')
-                .split('?')[0]
-                .split('#')[0];
-
             const runtimeData = (window as Window).__GITHUB_STATS__;
-            if (runtimeData && runtimeData[urlKey]) {
-                setRepoInfo(runtimeData[urlKey]);
+            if (runtimeData) {
+                // 触发重新加载
+                setRefreshKey(prev => prev + 1);
             }
-        }, 500);
+        }, 1000);
 
         return () => clearInterval(checkUpdate);
-    }, [url]);
+    }, []);
 
     if (!url.includes('github.com') || !repoInfo) {
         return null;
