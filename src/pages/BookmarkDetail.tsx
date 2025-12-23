@@ -65,7 +65,21 @@ export default function BookmarkDetail() {
 
             try {
                 // === 1. 获取README内容（从预构建数据） ===
-                const readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
+                // 添加重试逻辑，等待数据加载完成
+                let readmeText: string | null = null;
+                let retryCount = 0;
+                const maxRetries = 10; // 最多重试10次
+                const retryDelay = 100; // 每次等待100ms
+
+                while (!readmeText && retryCount < maxRetries) {
+                    readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
+                    if (!readmeText) {
+                        console.log(`[README] Retry ${retryCount + 1}/${maxRetries} for ${githubInfo.owner}/${githubInfo.repo}`);
+                        // 等待一段时间后重试
+                        await new Promise(resolve => setTimeout(resolve, retryDelay));
+                        retryCount++;
+                    }
+                }
 
                 if (readmeText && readmeText.trim().length > 0) {
                     let htmlContent = await marked(readmeText);
