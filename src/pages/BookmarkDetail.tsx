@@ -16,6 +16,7 @@ export default function BookmarkDetail() {
     const [readmeLoaded, setReadmeLoaded] = useState(false);
     const [readmeError, setReadmeError] = useState(false);
     const [showFixedBanner, setShowFixedBanner] = useState(false);
+    const [showBackToTop, setShowBackToTop] = useState(false);
 
     // 根据路由名称查找书签
     const bookmark = bookmarksData.bookmarks.find(b => {
@@ -31,11 +32,24 @@ export default function BookmarkDetail() {
         window.scrollTo(0, 0);
     }, [id]); // 当路由参数变化时触发
 
-    // 监听滚动，控制固定 banner 的显示
+    // 设置页面标题
+    useEffect(() => {
+        if (bookmark) {
+            document.title = `${bookmark.title} - 前端工具库`;
+        }
+        return () => {
+            document.title = '前端工具库';
+        };
+    }, [bookmark]);
+
+    // 监听滚动，控制固定 banner 和回到顶部按钮的显示
     useEffect(() => {
         const handleScroll = () => {
+            const scrollY = window.scrollY;
             // 当滚动超过 300px 时显示固定 banner
-            setShowFixedBanner(window.scrollY > 300);
+            setShowFixedBanner(scrollY > 300);
+            // 当滚动超过 500px 时显示回到顶部按钮
+            setShowBackToTop(scrollY > 500);
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -74,7 +88,9 @@ export default function BookmarkDetail() {
                 while (!readmeText && retryCount < maxRetries) {
                     readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
                     if (!readmeText) {
-                        console.log(`[README] Retry ${retryCount + 1}/${maxRetries} for ${githubInfo.owner}/${githubInfo.repo}`);
+                        console.log(
+                            `[README] Retry ${retryCount + 1}/${maxRetries} for ${githubInfo.owner}/${githubInfo.repo}`
+                        );
                         // 等待一段时间后重试
                         await new Promise(resolve => setTimeout(resolve, retryDelay));
                         retryCount++;
@@ -771,7 +787,24 @@ export default function BookmarkDetail() {
                                     </div>
                                 ) : (
                                     <div
-                                        className="prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100"
+                                        className="prose prose-sm sm:prose-base max-w-none 
+                                        prose-headings:font-bold prose-headings:tracking-tight
+                                        prose-h1:text-3xl prose-h1:border-b prose-h1:pb-2 prose-h1:mb-4
+                                        prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
+                                        prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+                                        prose-p:leading-7 prose-p:text-gray-700
+                                        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                                        prose-code:text-sm prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+                                        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto
+                                        prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4
+                                        prose-ul:my-4 prose-ol:my-4
+                                        prose-li:my-1
+                                        prose-img:rounded-lg prose-img:shadow-md
+                                        prose-table:border-collapse prose-table:w-full
+                                        prose-th:bg-gray-100 prose-th:p-2 prose-th:border prose-th:border-gray-300
+                                        prose-td:p-2 prose-td:border prose-td:border-gray-300
+                                        prose-strong:text-gray-900 prose-strong:font-semibold
+                                        "
                                         dangerouslySetInnerHTML={{ __html: readme }}
                                     />
                                 )}
@@ -953,6 +986,24 @@ export default function BookmarkDetail() {
                     </div>
                 </div>
             </div>
+
+            {/* 回到顶部按钮 */}
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className={`fixed bottom-8 right-8 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-40 flex items-center justify-center ${
+                    showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+                }`}
+                title="回到顶部"
+            >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    />
+                </svg>
+            </button>
         </div>
     );
 }
