@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { marked } from 'marked';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import bookmarksData from '../data/bookmarks.json';
-import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
+import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
 import type { BundleSize, NPMDownloadData } from '../types';
 
 export default function BookmarkDetail() {
@@ -40,108 +40,35 @@ export default function BookmarkDetail() {
             setLoading(true);
 
             // 生成缓存key
-            const readmeCacheKey = `readme_${githubInfo.owner}_${githubInfo.repo}`;
             const npmCacheKey = `npm_${repoInfo?.name}`;
             const bundleCacheKey = `bundle_${repoInfo?.name}`;
 
-            // 缓存有效期：7天（README、NPM、Bundle Size）
+            // 缓存有效期：7天（NPM、Bundle Size）
             const CACHE_EXPIRY_7_DAYS = 7 * 24 * 60 * 60 * 1000;
 
             try {
-                // === 1. 获取README内容（优先使用预构建数据，然后缓存，最后降级） ===
-                const cachedReadme = localStorage.getItem(readmeCacheKey);
-                let shouldFetchReadme = true;
+                // === 1. 获取README内容（从预构建数据） ===
+                const readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
 
-                // 1.1 检查localStorage缓存
-                if (cachedReadme) {
-                    try {
-                        const cacheData = JSON.parse(cachedReadme);
-                        const isExpired = Date.now() - cacheData.timestamp > CACHE_EXPIRY_7_DAYS;
-                        if (!isExpired) {
-                            let htmlContent = await marked(cacheData.content);
+                if (readmeText) {
+                    let htmlContent = await marked(readmeText);
 
-                            // 修复图片路径
-                            htmlContent = htmlContent.replace(
-                                /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
-                                (_match, attrs, src) => {
-                                    const fullSrc = src.startsWith('/')
-                                        ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
-                                        : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
-                                    return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
-                                }
-                            );
-
-                            setReadme(htmlContent);
-                            setReadmeLoaded(true);
-                            setReadmeError(false);
-                            setLoading(false);
-                            shouldFetchReadme = false;
+                    // 修复图片路径：将相对路径转换为 GitHub 绝对路径
+                    htmlContent = htmlContent.replace(
+                        /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
+                        (_match, attrs, src) => {
+                            const fullSrc = src.startsWith('/')
+                                ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
+                                : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
+                            return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
                         }
-                    } catch (e) {
-                        console.warn('Failed to parse README cache:', e);
-                    }
-                }
+                    );
 
-                // 1.2 尝试从预构建的github-readmes.json获取
-                if (shouldFetchReadme) {
-                    try {
-                        // 使用基础路径，兼容 HashRouter
-                        const basePath = import.meta.env.BASE_URL || '/';
-                        const response = await fetch(`${basePath}github-readmes.json`);
-                        if (response.ok) {
-                            const data = await response.json();
-                            const readmeKey = `${githubInfo.owner}/${githubInfo.repo}`;
-                            const readmeText = data.readmes?.[readmeKey];
-
-                            console.log('README fetch attempt:', {
-                                readmeKey,
-                                hasReadme: !!readmeText,
-                                readmeLength: readmeText?.length,
-                                allKeys: Object.keys(data.readmes || {}),
-                            });
-
-                            if (readmeText) {
-                                let htmlContent = await marked(readmeText);
-                                console.log('Markdown converted to HTML, length:', htmlContent.length);
-
-                                // 修复图片路径：将相对路径转换为 GitHub 绝对路径
-                                // 尝试 main 和 master 分支
-                                htmlContent = htmlContent.replace(
-                                    /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
-                                    (_match, attrs, src) => {
-                                        // 处理相对路径，默认使用 main 分支
-                                        const fullSrc = src.startsWith('/')
-                                            ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
-                                            : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
-                                        return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
-                                    }
-                                );
-
-                                setReadme(htmlContent);
-                                setReadmeLoaded(true);
-                                setReadmeError(false);
-                                // 存入localStorage缓存
-                                try {
-                                    localStorage.setItem(
-                                        readmeCacheKey,
-                                        JSON.stringify({
-                                            content: readmeText,
-                                            timestamp: Date.now(),
-                                        })
-                                    );
-                                } catch (e) {
-                                    console.warn('Failed to cache README:', e);
-                                }
-                                shouldFetchReadme = false;
-                            }
-                        }
-                    } catch (error) {
-                        console.warn('Failed to fetch pre-built README data:', error);
-                    }
-                }
-
-                // 1.3 如果预构建数据也没有，显示降级UI
-                if (shouldFetchReadme) {
+                    setReadme(htmlContent);
+                    setReadmeLoaded(true);
+                    setReadmeError(false);
+                } else {
+                    // 如果没有 README 数据，显示降级 UI
                     setReadmeError(true);
                     setReadmeLoaded(true);
                 }

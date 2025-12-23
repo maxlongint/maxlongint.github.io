@@ -31,6 +31,24 @@ export const getGitHubRepoInfo = (url: string): GitHubRepoInfo | null => {
     return presetRepoData[urlKey] || null;
 };
 
+// 获取 GitHub README 内容（从预构建数据）
+export const getGitHubReadme = async (owner: string, repo: string): Promise<string | null> => {
+    try {
+        // 优先从运行时加载的 README 数据获取
+        const runtimeData = (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__;
+        const readmeKey = `${owner}/${repo}`;
+
+        if (runtimeData && runtimeData[readmeKey]) {
+            return runtimeData[readmeKey];
+        }
+
+        return null;
+    } catch (error) {
+        console.warn('Failed to get README:', error);
+        return null;
+    }
+};
+
 // 预设的 GitHub 仓库数据
 const presetRepoData: Record<string, GitHubRepoInfo> = {
     'github.com/unadlib/mutative': {
@@ -553,19 +571,41 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
     },
 };
 
-// 在浏览器空闲时加载最新的GitHub数据
-export const loadGitHubStats = async () => {
+// 统一加载所有 GitHub 预构建数据（stats + readmes）
+export const loadGitHubData = async () => {
     try {
-        const response = await fetch('/github-stats.json');
-        if (response.ok) {
-            const data = await response.json();
-            // 存储到全局变量供getGitHubRepoInfo使用
-            (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ = data.repos;
-            console.log(`GitHub stats loaded (updated at: ${data.updated_at})`);
+        // 使用基础路径，兼容不同的部署环境
+        const basePath = import.meta.env.BASE_URL || '/';
+
+        // 并行加载 stats 和 readmes 数据
+        const [statsResponse, readmesResponse] = await Promise.all([
+            fetch(`${basePath}github-stats.json`).catch(() => null),
+            fetch(`${basePath}github-readmes.json`).catch(() => null),
+        ]);
+
+        // 处理 stats 数据
+        if (statsResponse && statsResponse.ok) {
+            const statsData = await statsResponse.json();
+            (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ =
+                statsData.repos;
+            console.log(`✓ GitHub stats loaded (updated: ${statsData.updated_at})`);
         } else {
-            console.log('No github-stats.json found, using preset data');
+            console.log('Using preset GitHub stats data');
         }
-    } catch {
-        console.log('Failed to load github-stats.json, using preset data');
+
+        // 处理 readmes 数据
+        if (readmesResponse && readmesResponse.ok) {
+            const readmesData = await readmesResponse.json();
+            (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
+                readmesData.readmes;
+            console.log(`✓ GitHub READMEs loaded (updated: ${readmesData.updated_at})`);
+        } else {
+            console.log('No README data available');
+        }
+    } catch (error) {
+        console.warn('Failed to load GitHub data:', error);
     }
 };
+
+// 向后兼容的别名
+export const loadGitHubStats = loadGitHubData;

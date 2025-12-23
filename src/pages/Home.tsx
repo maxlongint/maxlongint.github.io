@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import Comments from '../components/Comments';
 import ClarityProvider from '../components/ClarityProvider';
 import bookmarksData from '../data/bookmarks.json';
-import { getGitHubRepoInfo, loadGitHubStats } from '../utils/github';
+import { getGitHubRepoInfo } from '../utils/github';
 
 function Home() {
     const [selectedTag, setSelectedTag] = useState('全部 (All)');
@@ -36,11 +36,6 @@ function Home() {
             console.error('Failed to save viewMode to localStorage:', error);
         }
     }, [viewMode]);
-
-    // 在空闲时更新GitHub数据
-    useEffect(() => {
-        loadGitHubStats();
-    }, []);
 
     // 监听滚动
     useEffect(() => {
