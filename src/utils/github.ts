@@ -38,10 +38,15 @@ export const getGitHubReadme = async (owner: string, repo: string): Promise<stri
         const runtimeData = (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__;
         const readmeKey = `${owner}/${repo}`;
 
+        console.log(`[README] Fetching README for key: ${readmeKey}`);
+        console.log(`[README] Available keys:`, runtimeData ? Object.keys(runtimeData) : 'No data loaded');
+
         if (runtimeData && runtimeData[readmeKey]) {
+            console.log(`[README] Found README for ${readmeKey}, length: ${runtimeData[readmeKey].length}`);
             return runtimeData[readmeKey];
         }
 
+        console.log(`[README] No README found for ${readmeKey}`);
         return null;
     } catch (error) {
         console.warn('Failed to get README:', error);
@@ -596,9 +601,11 @@ export const loadGitHubData = async () => {
         // 处理 readmes 数据
         if (readmesResponse && readmesResponse.ok) {
             const readmesData = await readmesResponse.json();
+            console.log(`[README] Raw data keys:`, Object.keys(readmesData.readmes || {}));
             (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
                 readmesData.readmes;
             console.log(`✓ GitHub READMEs loaded (updated: ${readmesData.updated_at})`);
+            console.log(`[README] Total READMEs loaded: ${Object.keys(readmesData.readmes || {}).length}`);
         } else {
             console.log('No README data available');
         }
