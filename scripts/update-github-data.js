@@ -74,7 +74,11 @@ async function fetchReadme(owner, repo) {
         }
 
         if (response.ok) {
-            return await response.text();
+            const text = await response.text();
+            // 确保是 Markdown 文件，不是 HTML 404 页面
+            if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
+                return text;
+            }
         }
 
         console.warn(`Failed to fetch README for ${owner}/${repo}: ${response.status}`);
@@ -162,8 +166,8 @@ async function updateAllRepos() {
             console.log(`✗ ${fullName}: failed`);
         }
 
-        // 等待1秒避免触发速率限制
-        await delay(1000);
+        // 等待1.5秒避免触发速率限制（GitHub API 每分钟60次请求）
+        await delay(1500);
     }
 
     console.log(`\nUpdate complete: ${successCount} repos success, ${failCount} failed`);
@@ -204,15 +208,20 @@ async function saveToPublic(repoData, readmeData) {
 // 主函数
 async function main() {
     console.log('Starting GitHub data update...\n');
+    console.log(`GitHub Token available: ${!!token}`);
+    console.log(`Total repos to fetch: ${githubRepos.size}\n`);
 
     const { repoData, readmeData } = await updateAllRepos();
 
-    if (Object.keys(repoData).length > 0) {
+    // 即使部分失败，只要有数据就保存
+    if (Object.keys(repoData).length > 0 || Object.keys(readmeData).length > 0) {
         await saveToPublic(repoData, readmeData);
         console.log('\n✓ All done!');
+        console.log(`Final stats: ${Object.keys(repoData).length} repos, ${Object.keys(readmeData).length} READMEs`);
     } else {
         console.log('\n✗ No data to update');
-        process.exit(1);
+        // 不要失败退出，使用预设数据
+        console.log('Using preset data from source code');
     }
 }
 
