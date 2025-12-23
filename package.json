@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@microsoft/clarity": "^1.0.2",
+        "highlight.js": "^11.11.1",
         "marked": "^17.0.1",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
@@ -19,6 +20,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.17.0",
+        "@types/highlight.js": "^9.12.4",
         "@types/node": "^24.3.1",
         "@types/react": "^19.1.12",
         "@types/react-dom": "^19.1.9",

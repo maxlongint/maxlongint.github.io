@@ -1,10 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { marked } from 'marked';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import java from 'highlight.js/lib/languages/java';
+import css from 'highlight.js/lib/languages/css';
+import xml from 'highlight.js/lib/languages/xml';
+import bash from 'highlight.js/lib/languages/bash';
+import json from 'highlight.js/lib/languages/json';
+import 'highlight.js/styles/github-dark.css';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
 import type { BundleSize, NPMDownloadData } from '../types';
+
+// 注册语言
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('json', json);
 
 export default function BookmarkDetail() {
     const { id } = useParams<{ id: string }>();
@@ -19,6 +39,8 @@ export default function BookmarkDetail() {
     const [showBackToTop, setShowBackToTop] = useState(false);
     const [tocItems, setTocItems] = useState<{ id: string; text: string; level: number }[]>([]);
     const [showToc, setShowToc] = useState(false);
+    const [activeHeading, setActiveHeading] = useState<string>('');
+    const readmeRef = useRef<HTMLDivElement>(null);
 
     // 根据路由名称查找书签
     const bookmark = bookmarksData.bookmarks.find(b => {
@@ -257,6 +279,57 @@ export default function BookmarkDetail() {
 
         fetchData();
     }, [id, bookmark, githubInfo, navigate, readmeLoaded, repoInfo]); // 添加所有依赖项
+
+    useEffect(() => {
+        if (readme && readmeRef.current) {
+            // 为所有代码块添加高亮
+            const codeBlocks = readmeRef.current.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                hljs.highlightElement(block as HTMLElement);
+            });
+
+            // 为没有语言类的代码块添加默认语言
+            const preBlocks = readmeRef.current.querySelectorAll('pre:not(.hljs)');
+            preBlocks.forEach(pre => {
+                const code = pre.querySelector('code');
+                if (code && !code.className.includes('language-')) {
+                    code.className = code.className ? code.className + ' language-plaintext' : 'language-plaintext';
+                }
+            });
+
+            // 再次对更新后的代码块进行高亮
+            const updatedCodeBlocks = readmeRef.current.querySelectorAll('pre code');
+            updatedCodeBlocks.forEach(block => {
+                hljs.highlightElement(block as HTMLElement);
+            });
+        }
+    }, [readme]);
+
+    // 监听滚动，更新活动标题
+    useEffect(() => {
+        if (!readme || tocItems.length === 0) return;
+
+        const handleScroll = () => {
+            const headingElements = tocItems.map(item => document.getElementById(item.id)).filter(Boolean);
+
+            // 找到当前可视区域的标题
+            for (let i = headingElements.length - 1; i >= 0; i--) {
+                const element = headingElements[i];
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100) {
+                        setActiveHeading(element.id);
+                        return;
+                    }
+                }
+            }
+            setActiveHeading('');
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // 初始化
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [readme, tocItems]);
 
     if (!bookmark) {
         return null;
@@ -741,7 +814,8 @@ export default function BookmarkDetail() {
                                 </div>
                             ) : (
                                 <div
-                                    className="prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100"
+                                    ref={readmeRef}
+                                    className="prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
                                     dangerouslySetInnerHTML={{ __html: readme }}
                                 />
                             )}
@@ -755,7 +829,7 @@ export default function BookmarkDetail() {
                     <div className="lg:col-span-3">
                         {/* README内容 */}
                         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-                            <div className="border-b border-gray-200 px-6 py-4 bg-gray-50">
+                            <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 flex items-center justify-between">
                                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                                     <svg
                                         className="w-5 h-5 text-gray-700"
@@ -772,8 +846,26 @@ export default function BookmarkDetail() {
                                     </svg>
                                     README
                                 </h2>
+                                {/* 目录按钮 */}
+                                {tocItems.length > 0 && (
+                                    <button
+                                        onClick={() => setShowToc(!showToc)}
+                                        className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                        title="目录"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M4 6h16M4 12h16M4 18h7"
+                                            />
+                                        </svg>
+                                        目录
+                                    </button>
+                                )}
                             </div>
-                            <div className="p-6">
+                            <div className="p-6 relative">
                                 {loading ? (
                                     <div className="flex items-center justify-center py-16">
                                         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
@@ -810,77 +902,77 @@ export default function BookmarkDetail() {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* 目录 */}
-                                        {tocItems.length > 0 && (
-                                            <div className="mb-6">
-                                                <button
-                                                    onClick={() => setShowToc(!showToc)}
-                                                    className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors mb-3"
-                                                >
-                                                    <svg
-                                                        className={`w-4 h-4 transition-transform ${
-                                                            showToc ? 'rotate-90' : ''
-                                                        }`}
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M9 5l7 7-7 7"
-                                                        />
-                                                    </svg>
-                                                    目录 ({tocItems.length})
-                                                </button>
-                                                {showToc && (
-                                                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                                        <nav className="space-y-1">
-                                                            {tocItems.map((item, index) => (
-                                                                <a
-                                                                    key={index}
-                                                                    href={`#${item.id}`}
-                                                                    onClick={e => {
-                                                                        e.preventDefault();
-                                                                        document
-                                                                            .getElementById(item.id)
-                                                                            ?.scrollIntoView({
-                                                                                behavior: 'smooth',
-                                                                                block: 'start',
-                                                                            });
-                                                                    }}
-                                                                    className="block text-sm hover:text-blue-600 transition-colors py-1"
-                                                                    style={{
-                                                                        paddingLeft: `${(item.level - 1) * 12}px`,
-                                                                    }}
-                                                                >
-                                                                    <span className="hover:underline">{item.text}</span>
-                                                                </a>
-                                                            ))}
-                                                        </nav>
-                                                    </div>
-                                                )}
+                                        {/* 右侧浮动目录 */}
+                                        {showToc && tocItems.length > 0 && (
+                                            <div className="float-right w-64 ml-6 mb-4">
+                                                <div className="sticky top-20 bg-gray-50 rounded-lg border border-gray-200 p-4">
+                                                    <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                                                        <svg
+                                                            className="w-4 h-4"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M4 6h16M4 12h16M4 18h7"
+                                                            />
+                                                        </svg>
+                                                        目录
+                                                    </h3>
+                                                    <nav className="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto">
+                                                        {tocItems.map((item, index) => (
+                                                            <a
+                                                                key={index}
+                                                                href={`#${item.id}`}
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    document.getElementById(item.id)?.scrollIntoView({
+                                                                        behavior: 'smooth',
+                                                                        block: 'start',
+                                                                    });
+                                                                }}
+                                                                className={`block text-sm transition-colors py-1 border-l-2 ${
+                                                                    activeHeading === item.id
+                                                                        ? 'border-blue-600 text-blue-600 font-medium'
+                                                                        : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-gray-300'
+                                                                }`}
+                                                                style={{
+                                                                    paddingLeft: `${(item.level - 1) * 12 + 8}px`,
+                                                                }}
+                                                            >
+                                                                <span className="hover:underline truncate block">
+                                                                    {item.text}
+                                                                </span>
+                                                            </a>
+                                                        ))}
+                                                    </nav>
+                                                </div>
                                             </div>
                                         )}
                                         <div
+                                            ref={readmeRef}
                                             className="prose prose-sm sm:prose-base max-w-none 
                                         prose-headings:font-bold prose-headings:tracking-tight
-                                        prose-h1:text-3xl prose-h1:border-b prose-h1:pb-2 prose-h1:mb-4
-                                        prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
-                                        prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-                                        prose-p:leading-7 prose-p:text-gray-700
-                                        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                                        prose-code:text-sm prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
-                                        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto
-                                        prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4
-                                        prose-ul:my-4 prose-ol:my-4
-                                        prose-li:my-1
-                                        prose-img:rounded-lg prose-img:shadow-md
-                                        prose-table:border-collapse prose-table:w-full
-                                        prose-th:bg-gray-100 prose-th:p-2 prose-th:border prose-th:border-gray-300
-                                        prose-td:p-2 prose-td:border prose-td:border-gray-300
+                                        prose-h1:text-3xl prose-h1:border-b prose-h1:border-gray-200 prose-h1:pb-3 prose-h1:mb-6 prose-h1:mt-0
+                                        prose-h2:text-2xl prose-h2:border-b prose-h2:border-gray-100 prose-h2:pb-2 prose-h2:mt-10 prose-h2:mb-4
+                                        prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                                        prose-p:leading-7 prose-p:text-gray-700 prose-p:my-4
+                                        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-a:font-normal
+                                        prose-code:text-sm prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-code:text-pink-600 prose-code:font-normal
+                                        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto prose-pre:my-6
+                                        prose-pre:shadow-lg
+                                        prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-3 prose-blockquote:px-4 prose-blockquote:my-6 prose-blockquote:not-italic
+                                        prose-ul:my-4 prose-ol:my-4 prose-ul:list-disc prose-ol:list-decimal
+                                        prose-li:my-2 prose-li:text-gray-700
+                                        prose-img:rounded-lg prose-img:shadow-md prose-img:my-6 prose-img:inline-block
+                                        prose-table:border-collapse prose-table:w-full prose-table:my-6
+                                        prose-th:bg-gray-100 prose-th:p-3 prose-th:border prose-th:border-gray-300 prose-th:text-left prose-th:font-semibold
+                                        prose-td:p-3 prose-td:border prose-td:border-gray-300
                                         prose-strong:text-gray-900 prose-strong:font-semibold
+                                        prose-hr:border-gray-200 prose-hr:my-8
                                         "
                                             dangerouslySetInnerHTML={{ __html: readme }}
                                         />
