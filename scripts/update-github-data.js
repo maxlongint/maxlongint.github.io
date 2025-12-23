@@ -63,6 +63,7 @@ async function fetchReadme(owner, repo) {
     // 特殊仓库的 README 路径（针对 monorepo 等情况）
     const specialPaths = {
         'colinhacks/zod': ['packages/zod/README.md'],
+        'fabian-hiller/valibot': ['library/README.md'],
     };
 
     try {
