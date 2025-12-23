@@ -60,8 +60,38 @@ async function fetchReadme(owner, repo) {
     // 可能的分支名
     const branches = ['main', 'master'];
 
+    // 特殊仓库的 README 路径（针对 monorepo 等情况）
+    const specialPaths = {
+        'colinhacks/zod': ['packages/zod/README.md'],
+    };
+
     try {
-        // 遍历所有可能的组合
+        const fullName = `${owner}/${repo}`;
+
+        // 首先尝试特殊路径
+        if (specialPaths[fullName]) {
+            for (const branch of branches) {
+                for (const specialPath of specialPaths[fullName]) {
+                    const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${specialPath}`;
+                    const response = await fetch(url, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'User-Agent': 'GitHub-Pages-Builder',
+                        },
+                    });
+
+                    if (response.ok) {
+                        const text = await response.text();
+                        if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
+                            console.log(`  ✓ Found ${specialPath} in ${branch} branch`);
+                            return text;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 然后尝试根目录的 README
         for (const branch of branches) {
             for (const filename of readmeVariants) {
                 const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filename}`;
