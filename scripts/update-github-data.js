@@ -52,6 +52,39 @@ async function fetchNpmVersion(packageName) {
     }
 }
 
+// 获取仓库README的函数
+async function fetchReadme(owner, repo) {
+    try {
+        // 先尝试main分支
+        let response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
+
+        // 如果main分支不存在，尝试master分支
+        if (!response.ok) {
+            response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/master/README.md`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'User-Agent': 'GitHub-Pages-Builder',
+                },
+            });
+        }
+
+        if (response.ok) {
+            return await response.text();
+        }
+
+        console.warn(`Failed to fetch README for ${owner}/${repo}: ${response.status}`);
+        return null;
+    } catch (error) {
+        console.error(`Error fetching README for ${owner}/${repo}:`, error.message);
+        return null;
+    }
+}
+
 // 获取仓库信息的函数
 async function fetchRepoInfo(fullName) {
     try {
@@ -95,11 +128,13 @@ async function fetchRepoInfo(fullName) {
 // 延迟函数
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-// 批量获取仓库信息
+// 批量获取仓库信息和README
 async function updateAllRepos() {
     const repoData = {};
+    const readmeData = {};
     let successCount = 0;
     let failCount = 0;
+    let readmeSuccessCount = 0;
 
     for (const fullName of githubRepos) {
         console.log(`Fetching ${fullName}...`);
@@ -111,6 +146,17 @@ async function updateAllRepos() {
             repoData[urlKey] = info;
             successCount++;
             console.log(`✓ ${fullName}: ${info.stargazers_count} stars`);
+
+            // 获取README
+            const [owner, repo] = fullName.split('/');
+            const readme = await fetchReadme(owner, repo);
+            if (readme) {
+                readmeData[`${owner}/${repo}`] = readme;
+                readmeSuccessCount++;
+                console.log(`  ✓ README fetched (${readme.length} bytes)`);
+            } else {
+                console.log(`  ✗ README not available`);
+            }
         } else {
             failCount++;
             console.log(`✗ ${fullName}: failed`);
@@ -120,37 +166,49 @@ async function updateAllRepos() {
         await delay(1000);
     }
 
-    console.log(`\nUpdate complete: ${successCount} success, ${failCount} failed`);
+    console.log(`\nUpdate complete: ${successCount} repos success, ${failCount} failed`);
+    console.log(`README fetched: ${readmeSuccessCount}/${githubRepos.size}`);
 
-    return repoData;
+    return { repoData, readmeData };
 }
 
 // 保存数据到public目录（构建时会被复制到dist）
-async function saveToPublic(repoData) {
+async function saveToPublic(repoData, readmeData) {
     const publicDir = path.join(__dirname, '../public');
     if (!fs.existsSync(publicDir)) {
         fs.mkdirSync(publicDir, { recursive: true });
     }
 
-    const outputPath = path.join(publicDir, 'github-stats.json');
-    const outputData = {
+    // 保存GitHub Stats
+    const statsOutputPath = path.join(publicDir, 'github-stats.json');
+    const statsOutputData = {
         updated_at: new Date().toISOString(),
         repos: repoData,
     };
 
-    fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 2), 'utf-8');
-    console.log(`\n✓ Saved GitHub stats to ${outputPath}`);
-    console.log(`✓ Updated at: ${outputData.updated_at}`);
+    fs.writeFileSync(statsOutputPath, JSON.stringify(statsOutputData, null, 2), 'utf-8');
+    console.log(`\n✓ Saved GitHub stats to ${statsOutputPath}`);
+
+    // 保存README数据
+    const readmeOutputPath = path.join(publicDir, 'github-readmes.json');
+    const readmeOutputData = {
+        updated_at: new Date().toISOString(),
+        readmes: readmeData,
+    };
+
+    fs.writeFileSync(readmeOutputPath, JSON.stringify(readmeOutputData, null, 2), 'utf-8');
+    console.log(`✓ Saved README data to ${readmeOutputPath}`);
+    console.log(`✓ Updated at: ${statsOutputData.updated_at}`);
 }
 
 // 主函数
 async function main() {
     console.log('Starting GitHub data update...\n');
 
-    const repoData = await updateAllRepos();
+    const { repoData, readmeData } = await updateAllRepos();
 
     if (Object.keys(repoData).length > 0) {
-        await saveToPublic(repoData);
+        await saveToPublic(repoData, readmeData);
         console.log('\n✓ All done!');
     } else {
         console.log('\n✗ No data to update');

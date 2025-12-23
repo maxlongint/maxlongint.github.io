@@ -1,5 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import { Bookmark } from '../App';
 import GitHubStats, { getGitHubRepoInfo } from './GitHubStats';
+import bookmarksData from '../data/bookmarks.json';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -8,6 +10,8 @@ interface BookmarkCardProps {
 }
 
 export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
+    const navigate = useNavigate();
+
     // 提取 GitHub 仓库信息
     const getGitHubInfo = (url: string) => {
         const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
@@ -25,8 +29,19 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
 
+    // 生成URL友好的路由名称（使用title的小写形式）
+    const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    // 处理卡片点击
+    const handleCardClick = () => {
+        navigate(`/${routeName}`);
+    };
+
     return (
-        <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
+        <div
+            onClick={handleCardClick}
+            className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300 cursor-pointer"
+        >
             {/* 网格模式或移动端布局 */}
             <div className={viewMode === 'grid' ? 'block' : 'md:hidden'}>
                 {/* 第一行：图标、标题和版本号 */}
