@@ -15,7 +15,7 @@ export default function ClarityProvider({ projectId, enabled = true }: ClarityPr
         }
 
         // 避免在开发环境重复初始化
-        if (import.meta.env.DEV && (window as any).clarity) {
+        if (import.meta.env.DEV && (window as Window & { clarity?: unknown }).clarity) {
             console.log('Clarity already initialized');
             return;
         }

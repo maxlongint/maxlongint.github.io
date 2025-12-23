@@ -1,22 +1,15 @@
 import { useState, useMemo, useEffect } from 'react';
-import Header from './components/Header';
-import SearchBar from './components/SearchBar';
-import TagFilter from './components/TagFilter';
-import BookmarkList from './components/BookmarkList';
-import Footer from './components/Footer';
-import Comments from './components/Comments';
-import ClarityProvider from './components/ClarityProvider';
-import bookmarksData from './data/bookmarks.json';
-import { getGitHubRepoInfo, useIdleGitHubDataUpdate } from './components/GitHubStats';
+import Header from '../components/Header';
+import SearchBar from '../components/SearchBar';
+import TagFilter from '../components/TagFilter';
+import BookmarkList from '../components/BookmarkList';
+import Footer from '../components/Footer';
+import Comments from '../components/Comments';
+import ClarityProvider from '../components/ClarityProvider';
+import bookmarksData from '../data/bookmarks.json';
+import { getGitHubRepoInfo, loadGitHubStats } from '../utils/github';
 
-export interface Bookmark {
-    title: string;
-    url: string;
-    description: string;
-    tags: string[];
-}
-
-function App() {
+function Home() {
     const [selectedTag, setSelectedTag] = useState('全部 (All)');
     const [searchQuery, setSearchQuery] = useState('');
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -45,7 +38,9 @@ function App() {
     }, [viewMode]);
 
     // 在空闲时更新GitHub数据
-    useIdleGitHubDataUpdate();
+    useEffect(() => {
+        loadGitHubStats();
+    }, []);
 
     // 监听滚动
     useEffect(() => {
@@ -331,4 +326,4 @@ function App() {
     );
 }
 
-export default App;
+export default Home;

@@ -1,23 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { marked } from 'marked';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import bookmarksData from '../data/bookmarks.json';
-import { getGitHubRepoInfo } from './GitHubStats';
+import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
+import type { BundleSize, NPMDownloadData } from '../types';
 
-interface BookmarkDetailProps {}
-
-interface NPMDownloadData {
-    date: string;
-    downloads: number;
-}
-
-interface BundleSize {
-    gzip: string;
-    raw: string;
-}
-
-export default function BookmarkDetail({}: BookmarkDetailProps) {
+export default function BookmarkDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [readme, setReadme] = useState<string>('');
@@ -33,18 +22,6 @@ export default function BookmarkDetail({}: BookmarkDetailProps) {
         return routeName === id;
     });
     const repoInfo = bookmark ? getGitHubRepoInfo(bookmark.url) : null;
-
-    // 提取GitHub仓库信息
-    const getGitHubInfo = (url: string) => {
-        const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
-        if (match) {
-            return {
-                owner: match[1],
-                repo: match[2].replace(/\.git$/, ''),
-            };
-        }
-        return null;
-    };
 
     const githubInfo = bookmark ? getGitHubInfo(bookmark.url) : null;
 
@@ -167,13 +144,15 @@ export default function BookmarkDetail({}: BookmarkDetailProps) {
                             );
                             if (npmResponse.ok) {
                                 const npmData = await npmResponse.json();
-                                const formattedData = npmData.downloads.map((item: any) => ({
-                                    date: new Date(item.day).toLocaleDateString('zh-CN', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                    }),
-                                    downloads: item.downloads,
-                                }));
+                                const formattedData = npmData.downloads.map(
+                                    (item: { day: string; downloads: number }) => ({
+                                        date: new Date(item.day).toLocaleDateString('zh-CN', {
+                                            month: 'short',
+                                            day: 'numeric',
+                                        }),
+                                        downloads: item.downloads,
+                                    })
+                                );
                                 setNpmDownloads(formattedData);
                                 // 缓存
                                 try {
@@ -250,7 +229,7 @@ export default function BookmarkDetail({}: BookmarkDetailProps) {
         };
 
         fetchData();
-    }, [id]); // 只依赖id变化
+    }, [id, bookmark, githubInfo, navigate, readmeLoaded, repoInfo]); // 添加所有依赖项
 
     if (!bookmark) {
         return null;

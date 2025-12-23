@@ -1,4 +1,4 @@
-import { Bookmark } from '../App';
+import type { Bookmark } from '../types';
 import BookmarkCard from './BookmarkCard';
 
 interface BookmarkListProps {

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { Bookmark } from '../App';
-import GitHubStats, { getGitHubRepoInfo } from './GitHubStats';
-import bookmarksData from '../data/bookmarks.json';
+import type { Bookmark } from '../types';
+import GitHubStats from './GitHubStats';
+import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -11,18 +11,6 @@ interface BookmarkCardProps {
 
 export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
     const navigate = useNavigate();
-
-    // 提取 GitHub 仓库信息
-    const getGitHubInfo = (url: string) => {
-        const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
-        if (match) {
-            return {
-                owner: match[1],
-                repo: match[2].replace(/\.git$/, ''),
-            };
-        }
-        return null;
-    };
 
     const githubInfo = getGitHubInfo(bookmark.url);
 
