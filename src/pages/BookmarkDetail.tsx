@@ -73,7 +73,9 @@ export default function BookmarkDetail() {
                 // 1.2 尝试从预构建的github-readmes.json获取
                 if (shouldFetchReadme) {
                     try {
-                        const response = await fetch('/github-readmes.json');
+                        // 使用基础路径，兼容 HashRouter
+                        const basePath = import.meta.env.BASE_URL || '/';
+                        const response = await fetch(`${basePath}github-readmes.json`);
                         if (response.ok) {
                             const data = await response.json();
                             const readmeKey = `${githubInfo.owner}/${githubInfo.repo}`;
