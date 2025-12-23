@@ -26,3 +26,7 @@ dist-ssr
 # Environment variables
 .env.local
 .env.*.local
+
+# GitHub API 缓存数据（每天自动生成）
+public/github-stats.json
+public/github-readmes.json
