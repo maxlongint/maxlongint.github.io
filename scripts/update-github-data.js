@@ -31,6 +31,27 @@ bookmarksData.bookmarks.forEach(bookmark => {
 
 console.log(`Found ${githubRepos.size} GitHub repositories`);
 
+// 获取npm版本的函数
+async function fetchNpmVersion(packageName) {
+    try {
+        const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
+            headers: {
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
+
+        if (!response.ok) {
+            return 'N/A';
+        }
+
+        const data = await response.json();
+        return data['dist-tags']?.latest || 'N/A';
+    } catch (error) {
+        console.error(`Error fetching npm version for ${packageName}:`, error.message);
+        return 'N/A';
+    }
+}
+
 // 获取仓库信息的函数
 async function fetchRepoInfo(fullName) {
     try {
@@ -52,8 +73,15 @@ async function fetchRepoInfo(fullName) {
         }
 
         const data = await response.json();
+
+        // 尝试获取npm版本
+        let npmVersion = 'N/A';
+        // 使用仓库名作为包名，大多数情况下相同
+        npmVersion = await fetchNpmVersion(data.name);
+
         return {
             stargazers_count: data.stargazers_count || 0,
+            npm_version: npmVersion,
             name: data.name,
             full_name: data.full_name,
             pushed_at: data.pushed_at || new Date().toISOString(),
