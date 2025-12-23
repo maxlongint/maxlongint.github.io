@@ -59,7 +59,7 @@ export default function BookmarkDetail() {
                         const isExpired = Date.now() - cacheData.timestamp > CACHE_EXPIRY_7_DAYS;
                         if (!isExpired) {
                             let htmlContent = await marked(cacheData.content);
-                            
+
                             // 修复图片路径
                             htmlContent = htmlContent.replace(
                                 /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
@@ -70,7 +70,7 @@ export default function BookmarkDetail() {
                                     return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
                                 }
                             );
-                            
+
                             setReadme(htmlContent);
                             setReadmeLoaded(true);
                             setReadmeError(false);
@@ -103,7 +103,7 @@ export default function BookmarkDetail() {
                             if (readmeText) {
                                 let htmlContent = await marked(readmeText);
                                 console.log('Markdown converted to HTML, length:', htmlContent.length);
-                                
+
                                 // 修复图片路径：将相对路径转换为 GitHub 绝对路径
                                 // 尝试 main 和 master 分支
                                 htmlContent = htmlContent.replace(
@@ -116,7 +116,7 @@ export default function BookmarkDetail() {
                                         return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
                                     }
                                 );
-                                
+
                                 setReadme(htmlContent);
                                 setReadmeLoaded(true);
                                 setReadmeError(false);
