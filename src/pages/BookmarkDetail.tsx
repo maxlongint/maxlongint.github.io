@@ -67,7 +67,7 @@ export default function BookmarkDetail() {
                 // === 1. 获取README内容（从预构建数据） ===
                 const readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
 
-                if (readmeText) {
+                if (readmeText && readmeText.trim().length > 0) {
                     let htmlContent = await marked(readmeText);
 
                     // 修复图片路径：将相对路径转换为 GitHub 绝对路径
@@ -84,8 +84,10 @@ export default function BookmarkDetail() {
                     setReadme(htmlContent);
                     setReadmeLoaded(true);
                     setReadmeError(false);
+                    console.log(`✓ README loaded for ${githubInfo.owner}/${githubInfo.repo}`);
                 } else {
                     // 如果没有 README 数据，显示降级 UI
+                    console.log(`✗ No README data for ${githubInfo.owner}/${githubInfo.repo}`);
                     setReadmeError(true);
                     setReadmeLoaded(true);
                 }
@@ -723,10 +725,7 @@ export default function BookmarkDetail() {
                                     <div className="flex items-center justify-center py-16">
                                         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
                                     </div>
-                                ) : !readme ||
-                                  readmeError ||
-                                  readme.trim().length === 0 ||
-                                  readme.includes('README.md') ? (
+                                ) : readmeError || !readme || readme.trim().length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-16 text-center">
                                         <svg
                                             className="w-16 h-16 text-gray-300 mb-4"
