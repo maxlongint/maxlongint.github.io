@@ -15,6 +15,7 @@ export default function BookmarkDetail() {
     const [loading, setLoading] = useState(true);
     const [readmeLoaded, setReadmeLoaded] = useState(false);
     const [readmeError, setReadmeError] = useState(false);
+    const [showFixedBanner, setShowFixedBanner] = useState(false);
 
     // 根据路由名称查找书签
     const bookmark = bookmarksData.bookmarks.find(b => {
@@ -24,6 +25,22 @@ export default function BookmarkDetail() {
     const repoInfo = bookmark ? getGitHubRepoInfo(bookmark.url) : null;
 
     const githubInfo = bookmark ? getGitHubInfo(bookmark.url) : null;
+
+    // 进入详情页时滚动到顶部
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [id]); // 当路由参数变化时触发
+
+    // 监听滚动，控制固定 banner 的显示
+    useEffect(() => {
+        const handleScroll = () => {
+            // 当滚动超过 300px 时显示固定 banner
+            setShowFixedBanner(window.scrollY > 300);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         if (!bookmark || !githubInfo) {
@@ -192,6 +209,110 @@ export default function BookmarkDetail() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* 固定顶部 Banner */}
+            <div
+                className={`fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50 transition-transform duration-300 ${
+                    showFixedBanner ? 'translate-y-0' : '-translate-y-full'
+                }`}
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+                    <div className="flex items-center justify-between gap-4">
+                        {/* 左侧：返回按钮 + 标题 */}
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <button
+                                onClick={() => navigate('/')}
+                                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+                                title="返回首页"
+                            >
+                                <svg
+                                    className="w-5 h-5 text-gray-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                    />
+                                </svg>
+                            </button>
+                            <div className="flex items-center gap-2 min-w-0">
+                                {githubInfo && (
+                                    <img
+                                        src={`https://github.com/${githubInfo.owner}.png?size=32`}
+                                        alt={bookmark.title}
+                                        className="w-8 h-8 rounded-lg flex-shrink-0"
+                                    />
+                                )}
+                                <div className="min-w-0">
+                                    <h2 className="text-sm font-semibold text-gray-900 truncate">{bookmark.title}</h2>
+                                    {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
+                                        <span className="text-xs text-gray-500">v{repoInfo.npm_version}</span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 右侧：操作按钮 */}
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                            <a
+                                href={bookmark.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all text-sm font-medium"
+                            >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                </svg>
+                                <span className="hidden md:inline">GitHub</span>
+                            </a>
+                            {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
+                                <a
+                                    href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all text-sm font-medium"
+                                >
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331zM10.665 10H12v2.667h-1.335V10z" />
+                                    </svg>
+                                    <span className="hidden md:inline">NPM</span>
+                                </a>
+                            )}
+                            {/* 移动端：显示更多按钮 */}
+                            <div className="sm:hidden flex gap-1">
+                                <a
+                                    href={bookmark.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all"
+                                    title="访问 GitHub"
+                                >
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                    </svg>
+                                </a>
+                                {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
+                                    <a
+                                        href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-9 h-9 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all"
+                                        title="访问 NPM"
+                                    >
+                                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331zM10.665 10H12v2.667h-1.335V10z" />
+                                        </svg>
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* 面包屑导航 */}
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">

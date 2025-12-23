@@ -54,34 +54,36 @@ async function fetchNpmVersion(packageName) {
 
 // 获取仓库README的函数
 async function fetchReadme(owner, repo) {
+    // 可能的 README 文件名变体
+    const readmeVariants = ['README.md', 'readme.md', 'Readme.md', 'README.MD', 'readme.MD', 'README', 'readme'];
+
+    // 可能的分支名
+    const branches = ['main', 'master'];
+
     try {
-        // 先尝试main分支
-        let response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'User-Agent': 'GitHub-Pages-Builder',
-            },
-        });
+        // 遍历所有可能的组合
+        for (const branch of branches) {
+            for (const filename of readmeVariants) {
+                const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filename}`;
+                const response = await fetch(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'User-Agent': 'GitHub-Pages-Builder',
+                    },
+                });
 
-        // 如果main分支不存在，尝试master分支
-        if (!response.ok) {
-            response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/master/README.md`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'User-Agent': 'GitHub-Pages-Builder',
-                },
-            });
-        }
-
-        if (response.ok) {
-            const text = await response.text();
-            // 确保是 Markdown 文件，不是 HTML 404 页面
-            if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
-                return text;
+                if (response.ok) {
+                    const text = await response.text();
+                    // 确保是有效内容，不是 HTML 404 页面
+                    if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
+                        console.log(`  ✓ Found ${filename} in ${branch} branch`);
+                        return text;
+                    }
+                }
             }
         }
 
-        console.warn(`Failed to fetch README for ${owner}/${repo}: ${response.status}`);
+        console.warn(`Failed to fetch README for ${owner}/${repo}: no valid README found`);
         return null;
     } catch (error) {
         console.error(`Error fetching README for ${owner}/${repo}:`, error.message);

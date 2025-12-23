@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
@@ -10,8 +9,6 @@ interface BookmarkCardProps {
 }
 
 export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
-    const navigate = useNavigate();
-
     const githubInfo = getGitHubInfo(bookmark.url);
 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
@@ -20,9 +17,9 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     // 生成URL友好的路由名称（使用title的小写形式）
     const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-    // 处理卡片点击
+    // 处理卡片点击 - 在新标签页打开详情页
     const handleCardClick = () => {
-        navigate(`/${routeName}`);
+        window.open(`#/${routeName}`, '_blank');
     };
 
     return (
