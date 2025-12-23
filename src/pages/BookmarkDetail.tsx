@@ -17,6 +17,8 @@ export default function BookmarkDetail() {
     const [readmeError, setReadmeError] = useState(false);
     const [showFixedBanner, setShowFixedBanner] = useState(false);
     const [showBackToTop, setShowBackToTop] = useState(false);
+    const [tocItems, setTocItems] = useState<{ id: string; text: string; level: number }[]>([]);
+    const [showToc, setShowToc] = useState(false);
 
     // 根据路由名称查找书签
     const bookmark = bookmarksData.bookmarks.find(b => {
@@ -111,6 +113,27 @@ export default function BookmarkDetail() {
                         }
                     );
 
+                    // 生成目录：从 HTML 中提取所有标题
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = htmlContent;
+                    const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                    const toc: { id: string; text: string; level: number }[] = [];
+
+                    headings.forEach((heading, index) => {
+                        const level = parseInt(heading.tagName.substring(1));
+                        const text = heading.textContent || '';
+                        const id = `heading-${index}`;
+
+                        // 为标题添加 ID
+                        heading.id = id;
+
+                        toc.push({ id, text, level });
+                    });
+
+                    // 更新 HTML 内容
+                    htmlContent = tempDiv.innerHTML;
+
+                    setTocItems(toc);
                     setReadme(htmlContent);
                     setReadmeLoaded(true);
                     setReadmeError(false);
@@ -786,8 +809,62 @@ export default function BookmarkDetail() {
                                         </a>
                                     </div>
                                 ) : (
-                                    <div
-                                        className="prose prose-sm sm:prose-base max-w-none 
+                                    <>
+                                        {/* 目录 */}
+                                        {tocItems.length > 0 && (
+                                            <div className="mb-6">
+                                                <button
+                                                    onClick={() => setShowToc(!showToc)}
+                                                    className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors mb-3"
+                                                >
+                                                    <svg
+                                                        className={`w-4 h-4 transition-transform ${
+                                                            showToc ? 'rotate-90' : ''
+                                                        }`}
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M9 5l7 7-7 7"
+                                                        />
+                                                    </svg>
+                                                    目录 ({tocItems.length})
+                                                </button>
+                                                {showToc && (
+                                                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                                        <nav className="space-y-1">
+                                                            {tocItems.map((item, index) => (
+                                                                <a
+                                                                    key={index}
+                                                                    href={`#${item.id}`}
+                                                                    onClick={e => {
+                                                                        e.preventDefault();
+                                                                        document
+                                                                            .getElementById(item.id)
+                                                                            ?.scrollIntoView({
+                                                                                behavior: 'smooth',
+                                                                                block: 'start',
+                                                                            });
+                                                                    }}
+                                                                    className="block text-sm hover:text-blue-600 transition-colors py-1"
+                                                                    style={{
+                                                                        paddingLeft: `${(item.level - 1) * 12}px`,
+                                                                    }}
+                                                                >
+                                                                    <span className="hover:underline">{item.text}</span>
+                                                                </a>
+                                                            ))}
+                                                        </nav>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <div
+                                            className="prose prose-sm sm:prose-base max-w-none 
                                         prose-headings:font-bold prose-headings:tracking-tight
                                         prose-h1:text-3xl prose-h1:border-b prose-h1:pb-2 prose-h1:mb-4
                                         prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
@@ -805,8 +882,9 @@ export default function BookmarkDetail() {
                                         prose-td:p-2 prose-td:border prose-td:border-gray-300
                                         prose-strong:text-gray-900 prose-strong:font-semibold
                                         "
-                                        dangerouslySetInnerHTML={{ __html: readme }}
-                                    />
+                                            dangerouslySetInnerHTML={{ __html: readme }}
+                                        />
+                                    </>
                                 )}
                             </div>
                         </div>
