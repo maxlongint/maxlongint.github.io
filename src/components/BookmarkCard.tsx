@@ -17,16 +17,14 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     // 生成URL友好的路由名称（使用title的小写形式）
     const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-    // 处理卡片点击 - 在新标签页打开详情页
-    const handleCardClick = () => {
+    // 处理标题点击 - 在新标签页打开详情页
+    const handleTitleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         window.open(`#/${routeName}`, '_blank');
     };
 
     return (
-        <div
-            onClick={handleCardClick}
-            className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300 cursor-pointer"
-        >
+        <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
             {/* 网格模式或移动端布局 */}
             <div className={viewMode === 'grid' ? 'block' : 'md:hidden'}>
                 {/* 第一行：图标、标题和版本号 */}
@@ -50,7 +48,12 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                         </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-base font-bold text-gray-900 mb-1">{bookmark.title}</h3>
+                        <h3
+                            onClick={handleTitleClick}
+                            className="text-base font-bold text-gray-900 mb-1 cursor-pointer hover:text-blue-600 transition-colors"
+                        >
+                            {bookmark.title}
+                        </h3>
                         {/* Stars 数量徽章 */}
                         {repoInfo && repoInfo.stargazers_count > 0 && (
                             <a
@@ -120,7 +123,10 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4 mb-2">
                         <div className="flex-1">
-                            <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-1">
+                            <h3
+                                onClick={handleTitleClick}
+                                className="text-base font-bold text-gray-900 mb-1 cursor-pointer hover:text-blue-600 transition-colors"
+                            >
                                 {bookmark.title}
                             </h3>
                             <p className="text-gray-600 text-sm">{bookmark.description}</p>
