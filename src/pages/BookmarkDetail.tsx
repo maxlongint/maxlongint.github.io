@@ -58,7 +58,19 @@ export default function BookmarkDetail() {
                         const cacheData = JSON.parse(cachedReadme);
                         const isExpired = Date.now() - cacheData.timestamp > CACHE_EXPIRY_7_DAYS;
                         if (!isExpired) {
-                            const htmlContent = await marked(cacheData.content);
+                            let htmlContent = await marked(cacheData.content);
+                            
+                            // 修复图片路径
+                            htmlContent = htmlContent.replace(
+                                /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
+                                (_match, attrs, src) => {
+                                    const fullSrc = src.startsWith('/')
+                                        ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
+                                        : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
+                                    return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
+                                }
+                            );
+                            
                             setReadme(htmlContent);
                             setReadmeLoaded(true);
                             setReadmeError(false);
@@ -89,8 +101,22 @@ export default function BookmarkDetail() {
                             });
 
                             if (readmeText) {
-                                const htmlContent = await marked(readmeText);
+                                let htmlContent = await marked(readmeText);
                                 console.log('Markdown converted to HTML, length:', htmlContent.length);
+                                
+                                // 修复图片路径：将相对路径转换为 GitHub 绝对路径
+                                // 尝试 main 和 master 分支
+                                htmlContent = htmlContent.replace(
+                                    /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
+                                    (_match, attrs, src) => {
+                                        // 处理相对路径，默认使用 main 分支
+                                        const fullSrc = src.startsWith('/')
+                                            ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
+                                            : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
+                                        return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
+                                    }
+                                );
+                                
                                 setReadme(htmlContent);
                                 setReadmeLoaded(true);
                                 setReadmeError(false);
