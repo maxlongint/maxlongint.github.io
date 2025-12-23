@@ -11,4 +11,17 @@ export default defineConfig({
         },
     },
     base: './',
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    // 将大型库分离到单独的chunk
+                    'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+                    'chart-vendor': ['recharts'],
+                    'markdown-vendor': ['marked', 'highlight.js'],
+                },
+            },
+        },
+        chunkSizeWarningLimit: 600,
+    },
 });

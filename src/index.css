@@ -145,21 +145,97 @@ body {
 }
 
 .prose pre {
-    background-color: #1f2937;
-    color: #f9fafb;
+    background-color: #0d1117;
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-    border: 1px solid #e5e7eb;
+    border: none;
 }
 
 .prose pre code {
     background-color: transparent;
     padding: 0;
-    color: inherit;
     border: none;
+    font-size: 0.875em;
+    /* 移除所有颜色设置，让highlight.js完全控制 */
+}
+
+/* highlight.js 代码高亮样式 - 最高优先级 */
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0;
+    background: transparent !important;
+}
+
+/* 强制让hljs的颜色生效 */
+.prose pre code.hljs,
+.prose pre code[class*='hljs'] {
+    color: #c9d1d9 !important;
+}
+
+/* hljs语法元素的颜色 */
+.hljs-keyword {
+    color: #ff7b72 !important;
+}
+.hljs-built_in {
+    color: #79c0ff !important;
+}
+.hljs-type {
+    color: #79c0ff !important;
+}
+.hljs-literal {
+    color: #79c0ff !important;
+}
+.hljs-number {
+    color: #79c0ff !important;
+}
+.hljs-operator {
+    color: #ff7b72 !important;
+}
+.hljs-punctuation {
+    color: #c9d1d9 !important;
+}
+.hljs-property {
+    color: #c9d1d9 !important;
+}
+.hljs-string {
+    color: #a5d6ff !important;
+}
+.hljs-char {
+    color: #a5d6ff !important;
+}
+.hljs-template-variable {
+    color: #a5d6ff !important;
+}
+.hljs-template-tag {
+    color: #a5d6ff !important;
+}
+.hljs-comment {
+    color: #8b949e !important;
+}
+.hljs-variable {
+    color: #ffa657 !important;
+}
+.hljs-function {
+    color: #d2a8ff !important;
+}
+.hljs-class {
+    color: #d2a8ff !important;
+}
+.hljs-title {
+    color: #d2a8ff !important;
+}
+.hljs-tag {
+    color: #7ee787 !important;
+}
+.hljs-name {
+    color: #7ee787 !important;
+}
+.hljs-attribute {
+    color: #79c0ff !important;
 }
 
 .prose ul,
@@ -221,6 +297,15 @@ body {
     margin-bottom: 1.5em;
 }
 
+/* 徽章图片不应用通用图片样式 */
+.prose img[src*='shields.io'],
+.prose img[src*='coveralls.io'],
+.prose img[src*='badge'] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+}
+
 .prose hr {
     border: none;
     border-top: 1px solid #e5e7eb;
@@ -228,29 +313,35 @@ body {
     margin-bottom: 2em;
 }
 
-/* 徽章样式 */
-.prose .badge,
+/* 徽章样式 - 与 GitHub 保持一致 */
 .prose img[alt*='badge' i],
 .prose img[src*='shields.io'],
-.prose img[src*='img.shields.io'] {
-    display: inline-block;
+.prose img[src*='img.shields.io'],
+.prose img[src*='coveralls.io'],
+.prose img[src*='badge.svg'],
+.prose a > img[src*='shields.io'],
+.prose a > img[src*='img.shields.io'],
+.prose a > img[src*='coveralls.io'],
+.prose a > img[src*='badge.svg'] {
+    display: inline-block !important;
     vertical-align: middle;
-    margin: 0.25rem;
+    margin: 2px 4px !important;
+    height: 20px !important;
 }
 
-/* 让徽章在一行显示 */
-.prose p > img[alt*='badge' i],
+/* 包含徽章的段落保持单行 */
 .prose p > img[src*='shields.io'],
-.prose p > img[src*='img.shields.io'] {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0.25rem;
+.prose p > img[src*='coveralls.io'],
+.prose p > a > img[src*='shields.io'],
+.prose p > a > img[src*='coveralls.io'] {
+    display: inline !important;
+    margin: 0 4px 0 0 !important;
 }
 
-/* 防止徽章换行 */
-.prose .badge-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    align-items: center;
+/* 包含徽章图片的段落 */
+.prose p:has(img[src*='shields.io']),
+.prose p:has(img[src*='coveralls.io']) {
+    line-height: 1.5;
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
 }

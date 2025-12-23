@@ -4,27 +4,28 @@ import { marked } from 'marked';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import typescript from 'highlight.js/lib/languages/typescript';
-import python from 'highlight.js/lib/languages/python';
-import java from 'highlight.js/lib/languages/java';
-import css from 'highlight.js/lib/languages/css';
 import xml from 'highlight.js/lib/languages/xml';
-import bash from 'highlight.js/lib/languages/bash';
+import css from 'highlight.js/lib/languages/css';
 import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
 import 'highlight.js/styles/github-dark.css';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
 import type { BundleSize, NPMDownloadData } from '../types';
 
-// 注册语言
+// 注册常用语言
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
-hljs.registerLanguage('python', python);
-hljs.registerLanguage('java', java);
-hljs.registerLanguage('css', css);
+hljs.registerLanguage('jsx', javascript);
+hljs.registerLanguage('tsx', typescript);
+hljs.registerLanguage('html', xml);
 hljs.registerLanguage('xml', xml);
-hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('css', css);
 hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('shell', bash);
+hljs.registerLanguage('sh', bash);
 
 export default function BookmarkDetail() {
     const { id } = useParams<{ id: string }>();
@@ -112,9 +113,6 @@ export default function BookmarkDetail() {
                 while (!readmeText && retryCount < maxRetries) {
                     readmeText = await getGitHubReadme(githubInfo.owner, githubInfo.repo);
                     if (!readmeText) {
-                        console.log(
-                            `[README] Retry ${retryCount + 1}/${maxRetries} for ${githubInfo.owner}/${githubInfo.repo}`
-                        );
                         // 等待一段时间后重试
                         await new Promise(resolve => setTimeout(resolve, retryDelay));
                         retryCount++;
@@ -159,10 +157,8 @@ export default function BookmarkDetail() {
                     setReadme(htmlContent);
                     setReadmeLoaded(true);
                     setReadmeError(false);
-                    console.log(`✓ README loaded for ${githubInfo.owner}/${githubInfo.repo}`);
                 } else {
                     // 如果没有 README 数据，显示降级 UI
-                    console.log(`✗ No README data for ${githubInfo.owner}/${githubInfo.repo}`);
                     setReadmeError(true);
                     setReadmeLoaded(true);
                 }
@@ -278,31 +274,37 @@ export default function BookmarkDetail() {
         };
 
         fetchData();
-    }, [id, bookmark, githubInfo, navigate, readmeLoaded, repoInfo]); // 添加所有依赖项
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]); // 只依赖id，避免循环触发
 
     useEffect(() => {
-        if (readme && readmeRef.current) {
-            // 为所有代码块添加高亮
+        if (!readme || !readmeRef.current) return;
+
+        // 直接设置HTML内容，绕过React的重渲染
+        readmeRef.current.innerHTML = readme;
+
+        // 等待DOM更新后再高亮代码
+        const timeoutId = setTimeout(() => {
+            if (!readmeRef.current) return;
+
+            // 移除所有已高亮的标记，重新高亮
             const codeBlocks = readmeRef.current.querySelectorAll('pre code');
+
             codeBlocks.forEach(block => {
-                hljs.highlightElement(block as HTMLElement);
+                const el = block as HTMLElement;
+                // 清除旧的高亮
+                el.removeAttribute('data-highlighted');
+                el.className = el.className
+                    .split(' ')
+                    .filter(c => !c.startsWith('hljs'))
+                    .join(' ');
             });
 
-            // 为没有语言类的代码块添加默认语言
-            const preBlocks = readmeRef.current.querySelectorAll('pre:not(.hljs)');
-            preBlocks.forEach(pre => {
-                const code = pre.querySelector('code');
-                if (code && !code.className.includes('language-')) {
-                    code.className = code.className ? code.className + ' language-plaintext' : 'language-plaintext';
-                }
-            });
+            // 使用highlightAll自动高亮所有代码块
+            hljs.highlightAll();
+        }, 150);
 
-            // 再次对更新后的代码块进行高亮
-            const updatedCodeBlocks = readmeRef.current.querySelectorAll('pre code');
-            updatedCodeBlocks.forEach(block => {
-                hljs.highlightElement(block as HTMLElement);
-            });
-        }
+        return () => clearTimeout(timeoutId);
     }, [readme]);
 
     // 监听滚动，更新活动标题
@@ -330,6 +332,22 @@ export default function BookmarkDetail() {
         handleScroll(); // 初始化
         return () => window.removeEventListener('scroll', handleScroll);
     }, [readme, tocItems]);
+
+    // 点击空白区域关闭目录
+    useEffect(() => {
+        if (!showToc) return;
+
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            // 如果点击的不是目录按钮或目录内容，就关闭
+            if (!target.closest('.toc-container') && !target.closest('.toc-button')) {
+                setShowToc(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showToc]);
 
     if (!bookmark) {
         return null;
@@ -488,28 +506,11 @@ export default function BookmarkDetail() {
                                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 tracking-tight">
                                     {bookmark.title}
                                 </h1>
-                                <div className="flex flex-wrap items-center gap-2">
-                                    {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
-                                        <span className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
-                                            v{repoInfo.npm_version}
-                                        </span>
-                                    )}
-                                    {githubInfo && repoInfo && (
-                                        <a
-                                            href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={e => e.stopPropagation()}
-                                            className="inline-block"
-                                        >
-                                            <img
-                                                src={`https://img.shields.io/github/stars/${githubInfo.owner}/${githubInfo.repo}?style=social`}
-                                                alt="GitHub stars"
-                                                className="h-5"
-                                            />
-                                        </a>
-                                    )}
-                                </div>
+                                {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
+                                    <span className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
+                                        v{repoInfo.npm_version}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <p className="text-base text-gray-600 leading-relaxed">{bookmark.description}</p>
@@ -582,34 +583,6 @@ export default function BookmarkDetail() {
                                 {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
                                     <span className="px-3 py-1.5 bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-full">
                                         v{repoInfo.npm_version}
-                                    </span>
-                                )}
-                                {githubInfo && repoInfo && (
-                                    <a
-                                        href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={e => e.stopPropagation()}
-                                        className="inline-block"
-                                    >
-                                        <img
-                                            src={`https://img.shields.io/github/stars/${githubInfo.owner}/${githubInfo.repo}?style=social`}
-                                            alt="GitHub stars"
-                                            className="h-6"
-                                        />
-                                    </a>
-                                )}
-                                {repoInfo?.pushed_at && (
-                                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
-                                        </svg>
-                                        更新于 {new Date(repoInfo.pushed_at).toLocaleDateString('zh-CN')}
                                     </span>
                                 )}
                             </div>
@@ -850,7 +823,7 @@ export default function BookmarkDetail() {
                                 {tocItems.length > 0 && (
                                     <button
                                         onClick={() => setShowToc(!showToc)}
-                                        className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                        className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                                         title="目录"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -902,27 +875,14 @@ export default function BookmarkDetail() {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* 右侧浮动目录 */}
+                                        {/* 右侧浮动目录 - GitHub风格 */}
                                         {showToc && tocItems.length > 0 && (
-                                            <div className="float-right w-64 ml-6 mb-4">
-                                                <div className="sticky top-20 bg-gray-50 rounded-lg border border-gray-200 p-4">
-                                                    <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                                        <svg
-                                                            className="w-4 h-4"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth={2}
-                                                                d="M4 6h16M4 12h16M4 18h7"
-                                                            />
-                                                        </svg>
+                                            <div className="toc-container float-right w-64 ml-6 mb-4">
+                                                <div className="sticky top-20 bg-white rounded-lg border border-gray-200 p-3">
+                                                    <h3 className="text-xs font-semibold text-gray-700 mb-2 px-2">
                                                         目录
                                                     </h3>
-                                                    <nav className="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto">
+                                                    <nav className="space-y-0 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
                                                         {tocItems.map((item, index) => (
                                                             <a
                                                                 key={index}
@@ -934,16 +894,17 @@ export default function BookmarkDetail() {
                                                                         block: 'start',
                                                                     });
                                                                 }}
-                                                                className={`block text-sm transition-colors py-1 border-l-2 ${
+                                                                className={`flex items-start gap-2 py-1.5 px-2 rounded transition-colors ${
                                                                     activeHeading === item.id
-                                                                        ? 'border-blue-600 text-blue-600 font-medium'
-                                                                        : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-gray-300'
+                                                                        ? 'bg-blue-50 text-blue-600 font-medium'
+                                                                        : 'text-gray-700 hover:bg-gray-50'
                                                                 }`}
                                                                 style={{
                                                                     paddingLeft: `${(item.level - 1) * 12 + 8}px`,
                                                                 }}
                                                             >
-                                                                <span className="hover:underline truncate block">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 mt-1.5"></span>
+                                                                <span className="flex-1 leading-relaxed">
                                                                     {item.text}
                                                                 </span>
                                                             </a>
@@ -953,6 +914,7 @@ export default function BookmarkDetail() {
                                             </div>
                                         )}
                                         <div
+                                            key="readme-content"
                                             ref={readmeRef}
                                             className="prose prose-sm sm:prose-base max-w-none 
                                         prose-headings:font-bold prose-headings:tracking-tight
@@ -962,20 +924,19 @@ export default function BookmarkDetail() {
                                         prose-p:leading-7 prose-p:text-gray-700 prose-p:my-4
                                         prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-a:font-normal
                                         prose-code:text-sm prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-code:text-pink-600 prose-code:font-normal
-                                        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto prose-pre:my-6
+                                        prose-pre:bg-gray-900 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto prose-pre:my-6
                                         prose-pre:shadow-lg
                                         prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-3 prose-blockquote:px-4 prose-blockquote:my-6 prose-blockquote:not-italic
                                         prose-ul:my-4 prose-ol:my-4 prose-ul:list-disc prose-ol:list-decimal
                                         prose-li:my-2 prose-li:text-gray-700
-                                        prose-img:rounded-lg prose-img:shadow-md prose-img:my-6 prose-img:inline-block
                                         prose-table:border-collapse prose-table:w-full prose-table:my-6
                                         prose-th:bg-gray-100 prose-th:p-3 prose-th:border prose-th:border-gray-300 prose-th:text-left prose-th:font-semibold
                                         prose-td:p-3 prose-td:border prose-td:border-gray-300
                                         prose-strong:text-gray-900 prose-strong:font-semibold
                                         prose-hr:border-gray-200 prose-hr:my-8
                                         "
-                                            dangerouslySetInnerHTML={{ __html: readme }}
                                         />
+                                        {/* HTML内容通过useEffect中的innerHTML设置 */}
                                     </>
                                 )}
                             </div>
