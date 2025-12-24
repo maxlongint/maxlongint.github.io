@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { marked } from 'marked';
+import { markedEmoji } from 'marked-emoji';
+import { nameToEmoji } from 'gemoji';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -16,6 +18,21 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'rec
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
 import type { BundleSize, NPMDownloadData } from '../types';
+
+// 配置 marked 使用 GitHub Flavored Markdown (GFM)
+marked.setOptions({
+    gfm: true, // 启用 GitHub Flavored Markdown
+    breaks: true, // 将单个换行符转换为 <br>
+});
+
+// 配置 Emoji 支持（GitHub 风格的 :emoji: 语法）
+// 使用 GitHub 官方 emoji 数据
+marked.use(
+    markedEmoji({
+        emojis: nameToEmoji,
+        renderer: token => token.emoji, // 直接返回 Unicode 字符
+    })
+);
 
 // 注册常用语言
 hljs.registerLanguage('javascript', javascript);
@@ -131,10 +148,38 @@ export default function BookmarkDetail() {
                     htmlContent = htmlContent.replace(
                         /<img([^>]*?)src="(?!\/\/|http:\/\/|https:\/\/)([^"]+)"/g,
                         (_match, attrs, src) => {
-                            const fullSrc = src.startsWith('/')
-                                ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${src}`
-                                : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${src}`;
+                            // 处理相对路径中的 ../ 和 /blob/
+                            let cleanSrc = src;
+
+                            // 如果路径以 / 开头且包含 ../，需要特殊处理
+                            if (cleanSrc.startsWith('/') && cleanSrc.includes('../')) {
+                                // 移除前导 / 和所有 ../
+                                cleanSrc = cleanSrc.replace(/^\/+/, '').replace(/\.\.\//g, '');
+                            }
+
+                            // 检查是否是跨仓库引用（格式：owner/repo/blob/branch/path）
+                            const crossRepoMatch = cleanSrc.match(/^([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/);
+                            if (crossRepoMatch) {
+                                const [, owner, repo, branch, path] = crossRepoMatch;
+                                return `<img${attrs}src="https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}" onerror="this.src=this.src.replace('/${branch}/', '/master/')"`;
+                            }
+
+                            // 移除 /blob/ 路径（如果存在）
+                            cleanSrc = cleanSrc.replace(/\/blob\//, '/');
+
+                            const fullSrc = cleanSrc.startsWith('/')
+                                ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${cleanSrc}`
+                                : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${cleanSrc}`;
                             return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
+                        }
+                    );
+
+                    // 修复 GitHub URL 中错误的 blob 路径（应该是 raw.githubusercontent.com）
+                    htmlContent = htmlContent.replace(
+                        /<img([^>]*?)src="https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/([^"]+)"/g,
+                        (_match, attrs, owner, repo, branch, path) => {
+                            const correctSrc = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+                            return `<img${attrs}src="${correctSrc}"`;
                         }
                     );
 

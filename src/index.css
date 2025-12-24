@@ -71,7 +71,10 @@ body {
     margin-bottom: 1rem;
 }
 
-/* GitHub Markdown 样式覆盖 */
+/* GitHub Markdown 样式 - 直接使用官方 github-markdown-css */
+@import 'github-markdown-css/github-markdown.css';
+
+/* 仅保留代码高亮的深色主题覆盖 */
 
 /* 代码高亮样式 - 使用GitHub Dark主题 */
 .markdown-body pre {
@@ -144,113 +147,44 @@ body {
     color: #79c0ff !important;
 }
 
-/* 徽章样式 - 与 GitHub 保持一致 */
-/* 所有徽章图片（直接img标签或a标签内的img） */
-.markdown-body img[alt*='badge' i],
-.markdown-body img[alt*='size' i],
-.markdown-body img[src*='shields.io'],
-.markdown-body img[src*='img.shields.io'],
-.markdown-body img[src*='coveralls.io'],
-.markdown-body img[src*='badgen.net'],
-.markdown-body img[src*='packagephobia'],
-.markdown-body img[src*='bundlephobia'],
-.markdown-body img[src*='badge.svg'],
-.markdown-body img[src*='badge'],
-.markdown-body a > img[alt*='badge' i],
-.markdown-body a > img[alt*='size' i],
-.markdown-body a > img[src*='shields.io'],
-.markdown-body a > img[src*='img.shields.io'],
-.markdown-body a > img[src*='coveralls.io'],
-.markdown-body a > img[src*='badgen.net'],
-.markdown-body a > img[src*='packagephobia'],
-.markdown-body a > img[src*='bundlephobia'],
-.markdown-body a > img[src*='badge.svg'],
-.markdown-body a > img[src*='badge'] {
-    display: inline-block !important;
-    vertical-align: middle !important;
-    margin: 1px 0.5px !important;
-    height: 20px !important;
+/* GitHub Markdown 额外样式修正 */
+
+/* 1. 徽章在一行，多了就换行 */
+.markdown-body p:has(> img[src*='shields.io']),
+.markdown-body p:has(> a > img[src*='shields.io']),
+.markdown-body p:has(> img[src*='badge']),
+.markdown-body p:has(> a > img[src*='badge']) {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    align-items: center !important;
+}
+
+/* 2. 图片高度使用 HTML height 属性 */
+/* 移除所有可能覆盖 HTML height 属性的 CSS */
+.markdown-body img[height]:not([src*='shields.io']):not([src*='badge']) {
+    /* 不设置 height，让 HTML 属性生效 */
+    height: initial !important;
     width: auto !important;
-    border-radius: 3px !important;
+    max-height: none !important;
+    max-width: 100% !important;
 }
 
-/* 包含徽章的链接也要inline */
-.markdown-body a:has(img[alt*='badge' i]),
-.markdown-body a:has(img[alt*='size' i]),
-.markdown-body a:has(img[src*='shields.io']),
-.markdown-body a:has(img[src*='coveralls.io']),
-.markdown-body a:has(img[src*='badgen.net']),
-.markdown-body a:has(img[src*='packagephobia']),
-.markdown-body a:has(img[src*='bundlephobia']),
-.markdown-body a:has(img[src*='badge']) {
-    display: inline-block !important;
-    vertical-align: middle !important;
-    margin: 0 0.5px !important;
-    line-height: 1 !important;
+/* 如果上面不生效，直接使用属性选择器设置具体值 */
+.markdown-body img[height='50']:not([src*='shields.io']):not([src*='badge']) {
+    height: 50px !important;
+}
+.markdown-body img[height='60']:not([src*='shields.io']):not([src*='badge']) {
+    height: 60px !important;
+}
+.markdown-body img[height='40']:not([src*='shields.io']):not([src*='badge']) {
+    height: 40px !important;
+}
+.markdown-body img[height='100']:not([src*='shields.io']):not([src*='badge']) {
+    height: 100px !important;
 }
 
-/* 包含徽章的段落保持单行 */
-.markdown-body p > img[alt*='badge' i],
-.markdown-body p > img[alt*='size' i],
-.markdown-body p > img[src*='shields.io'],
-.markdown-body p > img[src*='coveralls.io'],
-.markdown-body p > img[src*='badgen.net'],
-.markdown-body p > img[src*='packagephobia'],
-.markdown-body p > img[src*='bundlephobia'],
-.markdown-body p > img[src*='badge'],
-.markdown-body p > a > img[alt*='badge' i],
-.markdown-body p > a > img[alt*='size' i],
-.markdown-body p > a > img[src*='shields.io'],
-.markdown-body p > a > img[src*='coveralls.io'],
-.markdown-body p > a > img[src*='badgen.net'],
-.markdown-body p > a > img[src*='packagephobia'],
-.markdown-body p > a > img[src*='bundlephobia'],
-.markdown-body p > a > img[src*='badge'] {
-    display: inline-block !important;
-    margin: 0 0.5px !important;
-}
-
-/* 包含徽章图片的段落 */
-.markdown-body p:has(img[alt*='badge' i]),
-.markdown-body p:has(img[alt*='size' i]),
-.markdown-body p:has(img[src*='shields.io']),
-.markdown-body p:has(img[src*='coveralls.io']),
-.markdown-body p:has(img[src*='badgen.net']),
-.markdown-body p:has(img[src*='packagephobia']),
-.markdown-body p:has(img[src*='bundlephobia']),
-.markdown-body p:has(img[src*='badge']) {
-    line-height: 1.5 !important;
-    margin-top: 0.5em !important;
-    margin-bottom: 0.5em !important;
-    white-space: nowrap !important;
-    overflow-x: auto !important;
-}
-
-/* 徽章段落中的br标签隐藏 */
-.markdown-body p:has(img[alt*='badge' i]) br,
-.markdown-body p:has(img[alt*='size' i]) br,
-.markdown-body p:has(img[src*='shields.io']) br,
-.markdown-body p:has(img[src*='coveralls.io']) br,
-.markdown-body p:has(img[src*='badgen.net']) br,
-.markdown-body p:has(img[src*='packagephobia']) br,
-.markdown-body p:has(img[src*='bundlephobia']) br,
-.markdown-body p:has(img[src*='badge']) br {
-    display: none !important;
-}
-
-/* GitHub风格的嵌套列表标记 */
-.markdown-body ul {
-    list-style-type: disc !important;
-}
-
-.markdown-body ul ul {
-    list-style-type: circle !important;
-}
-
-.markdown-body ul ul ul {
-    list-style-type: square !important;
-}
-
-.markdown-body ol {
-    list-style-type: decimal !important;
+/* 包含图片的链接也要 inline-block */
+.markdown-body p > a:has(> img) {
+    display: inline-block;
 }
