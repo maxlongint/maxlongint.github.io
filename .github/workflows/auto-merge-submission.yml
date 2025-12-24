@@ -15,9 +15,18 @@ jobs:
             issues: write
 
         steps:
+            - name: Debug - Print Event Info
+              run: |
+                  echo "触发事件类型: ${{ github.event_name }}"
+                  echo "Issue 编号: ${{ github.event.issue.number }}"
+                  echo "Issue 标题: ${{ github.event.issue.title }}"
+                  echo "当前标签:"
+                  echo '${{ toJSON(github.event.issue.labels) }}'
+
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
+                  ref: master
                   token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Setup Node.js
@@ -301,7 +310,7 @@ jobs:
 由 GitHub Actions 自动处理"
                   
                   git commit -m "$COMMIT_MSG"
-                  git push
+                  git push origin master
 
             - name: Comment and Close Issue (Success)
               if: steps.parse-issue.outputs.already_exists == 'false'
