@@ -113,12 +113,9 @@ function Trending() {
                 ) : (
                     <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-6' : 'space-y-4'}>
                         {trendingData.repos.map(repo => (
-                            <a
+                            <div
                                 key={repo.rank}
-                                href={repo.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all p-6"
+                                className="bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all p-6 flex flex-col"
                             >
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="flex-1">
@@ -126,15 +123,21 @@ function Trending() {
                                             <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-bold">
                                                 {repo.rank}
                                             </span>
-                                            <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600">
+                                            <a
+                                                href={repo.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                                                onClick={e => e.stopPropagation()}
+                                            >
                                                 {repo.author} / {repo.name}
-                                            </h3>
+                                            </a>
                                         </div>
                                         <p className="text-gray-600 text-sm line-clamp-2 mb-3">{repo.description}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                     {repo.language && (
                                         <div className="flex items-center gap-1">
                                             <span
@@ -173,7 +176,7 @@ function Trending() {
                                 </div>
 
                                 {repo.builtBy.length > 0 && (
-                                    <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                                    <div className="flex items-center gap-2 pt-3 border-t border-gray-100 mt-auto">
                                         <span className="text-xs text-gray-500">Built by</span>
                                         <div className="flex -space-x-2">
                                             {repo.builtBy.slice(0, 5).map(builder => (
@@ -188,7 +191,7 @@ function Trending() {
                                         </div>
                                     </div>
                                 )}
-                            </a>
+                            </div>
                         ))}
                     </div>
                 )}
