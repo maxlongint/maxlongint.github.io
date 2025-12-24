@@ -1,3 +1,6 @@
+/* GitHub Markdown 样式 - 直接使用官方 github-markdown-css */
+@import 'github-markdown-css/github-markdown.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -70,9 +73,6 @@ body {
     break-inside: avoid;
     margin-bottom: 1rem;
 }
-
-/* GitHub Markdown 样式 - 直接使用官方 github-markdown-css */
-@import 'github-markdown-css/github-markdown.css';
 
 /* 仅保留代码高亮的深色主题覆盖 */
 

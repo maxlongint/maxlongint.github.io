@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { marked } from 'marked';
 import { markedEmoji } from 'marked-emoji';
@@ -58,25 +58,31 @@ export default function BookmarkDetail() {
     const [loading, setLoading] = useState(true);
     const [readmeLoaded, setReadmeLoaded] = useState(false);
     const [readmeError, setReadmeError] = useState(false);
-    const [showFixedBanner, setShowFixedBanner] = useState(false);
-    const [showBackToTop, setShowBackToTop] = useState(false);
     const [tocItems, setTocItems] = useState<{ id: string; text: string; level: number }[]>([]);
     const [showToc, setShowToc] = useState(false);
-    const [activeHeading, setActiveHeading] = useState<string>('');
     const readmeRef = useRef<HTMLDivElement>(null);
+    const hasRenderedRef = useRef<boolean>(false); // 追踪是否已渲染
 
-    // 根据路由名称查找书签
-    const bookmark = bookmarksData.bookmarks.find(b => {
-        const routeName = b.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return routeName === id;
-    });
-    const repoInfo = bookmark ? getGitHubRepoInfo(bookmark.url) : null;
+    // 使用 useMemo 缓存计算结果，避免每次渲染时重新查找
+    const bookmark = useMemo(() => {
+        return bookmarksData.bookmarks.find(b => {
+            const routeName = b.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return routeName === id;
+        });
+    }, [id]);
 
-    const githubInfo = bookmark ? getGitHubInfo(bookmark.url) : null;
+    const repoInfo = useMemo(() => {
+        return bookmark ? getGitHubRepoInfo(bookmark.url) : null;
+    }, [bookmark]);
+
+    const githubInfo = useMemo(() => {
+        return bookmark ? getGitHubInfo(bookmark.url) : null;
+    }, [bookmark]);
 
     // 进入详情页时滚动到顶部
     useEffect(() => {
         window.scrollTo(0, 0);
+        hasRenderedRef.current = false; // 重置渲染状态
     }, [id]); // 当路由参数变化时触发
 
     // 设置页面标题
@@ -88,20 +94,6 @@ export default function BookmarkDetail() {
             document.title = '前端工具库';
         };
     }, [bookmark]);
-
-    // 监听滚动，控制固定 banner 和回到顶部按钮的显示
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            // 当滚动超过 300px 时显示固定 banner
-            setShowFixedBanner(scrollY > 300);
-            // 当滚动超过 500px 时显示回到顶部按钮
-            setShowBackToTop(scrollY > 500);
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     useEffect(() => {
         if (!bookmark || !githubInfo) {
@@ -158,7 +150,7 @@ export default function BookmarkDetail() {
                             }
 
                             // 检查是否是跨仓库引用（格式：owner/repo/blob/branch/path）
-                            const crossRepoMatch = cleanSrc.match(/^([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/);
+                            const crossRepoMatch = cleanSrc.match(/^([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);
                             if (crossRepoMatch) {
                                 const [, owner, repo, branch, path] = crossRepoMatch;
                                 return `<img${attrs}src="https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}" onerror="this.src=this.src.replace('/${branch}/', '/master/')"`;
@@ -176,7 +168,7 @@ export default function BookmarkDetail() {
 
                     // 修复 GitHub URL 中错误的 blob 路径（应该是 raw.githubusercontent.com）
                     htmlContent = htmlContent.replace(
-                        /<img([^>]*?)src="https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/([^"]+)"/g,
+                        /<img([^>]*?)src="https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/([^"]+)"/g,
                         (_match, attrs, owner, repo, branch, path) => {
                             const correctSrc = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
                             return `<img${attrs}src="${correctSrc}"`;
@@ -344,8 +336,14 @@ export default function BookmarkDetail() {
     useEffect(() => {
         if (!readme || !readmeRef.current) return;
 
+        // 使用 ref 防止重复渲染，更可靠
+        if (hasRenderedRef.current && readmeRef.current.hasChildNodes()) {
+            return; // 已经渲染过且 DOM 仍然存在，跳过
+        }
+
         // 直接设置HTML内容，绕过React的重渲染
         readmeRef.current.innerHTML = readme;
+        hasRenderedRef.current = true; // 标记为已渲染
 
         // 等待DOM更新后再高亮代码
         const timeoutId = setTimeout(() => {
@@ -452,32 +450,6 @@ export default function BookmarkDetail() {
         };
     }, []);
 
-    // 监听滚动，更新活动标题
-    useEffect(() => {
-        if (!readme || tocItems.length === 0) return;
-
-        const handleScroll = () => {
-            const headingElements = tocItems.map(item => document.getElementById(item.id)).filter(Boolean);
-
-            // 找到当前可视区域的标题
-            for (let i = headingElements.length - 1; i >= 0; i--) {
-                const element = headingElements[i];
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 100) {
-                        setActiveHeading(element.id);
-                        return;
-                    }
-                }
-            }
-            setActiveHeading('');
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll(); // 初始化
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [readme, tocItems]);
-
     // 点击空白区域关闭目录
     useEffect(() => {
         if (!showToc) return;
@@ -500,110 +472,6 @@ export default function BookmarkDetail() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* 固定顶部 Banner */}
-            <div
-                className={`fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50 transition-transform duration-300 ${
-                    showFixedBanner ? 'translate-y-0' : '-translate-y-full'
-                }`}
-            >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
-                    <div className="flex items-center justify-between gap-4">
-                        {/* 左侧：返回按钮 + 标题 */}
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                            <button
-                                onClick={() => navigate('/')}
-                                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
-                                title="返回首页"
-                            >
-                                <svg
-                                    className="w-5 h-5 text-gray-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                                    />
-                                </svg>
-                            </button>
-                            <div className="flex items-center gap-2 min-w-0">
-                                {githubInfo && (
-                                    <img
-                                        src={`https://github.com/${githubInfo.owner}.png?size=32`}
-                                        alt={bookmark.title}
-                                        className="w-8 h-8 rounded-lg flex-shrink-0"
-                                    />
-                                )}
-                                <div className="min-w-0">
-                                    <h2 className="text-sm font-semibold text-gray-900 truncate">{bookmark.title}</h2>
-                                    {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
-                                        <span className="text-xs text-gray-500">v{repoInfo.npm_version}</span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 右侧：操作按钮 */}
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                            <a
-                                href={bookmark.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all text-sm font-medium"
-                            >
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                                </svg>
-                                <span className="hidden md:inline">GitHub</span>
-                            </a>
-                            {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
-                                <a
-                                    href={`https://www.npmjs.com/package/${repoInfo.name}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="hidden sm:flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all text-sm font-medium"
-                                >
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331zM10.665 10H12v2.667h-1.335V10z" />
-                                    </svg>
-                                    <span className="hidden md:inline">NPM</span>
-                                </a>
-                            )}
-                            {/* 移动端：显示更多按钮 */}
-                            <div className="sm:hidden flex gap-1">
-                                <a
-                                    href={bookmark.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all"
-                                    title="访问 GitHub"
-                                >
-                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                                    </svg>
-                                </a>
-                                {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
-                                    <a
-                                        href={`https://www.npmjs.com/package/${repoInfo.name}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-9 h-9 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all"
-                                        title="访问 NPM"
-                                    >
-                                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331zM10.665 10H12v2.667h-1.335V10z" />
-                                        </svg>
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* 面包屑导航 */}
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
@@ -1051,11 +919,7 @@ export default function BookmarkDetail() {
                                                                         });
                                                                     }
                                                                 }}
-                                                                className={`flex items-start gap-1.5 py-1 px-2 rounded transition-colors ${
-                                                                    activeHeading === item.id
-                                                                        ? 'bg-blue-50 text-blue-600 font-medium'
-                                                                        : 'text-gray-700 hover:bg-gray-50'
-                                                                }`}
+                                                                className="flex items-start gap-1.5 py-1 px-2 rounded transition-colors text-gray-700 hover:bg-gray-50"
                                                                 style={{
                                                                     paddingLeft: `${(item.level - 1) * 10 + 8}px`,
                                                                 }}
@@ -1250,19 +1114,6 @@ export default function BookmarkDetail() {
                     </div>
                 </div>
             </div>
-
-            {/* 回到顶部按钮 */}
-            <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className={`fixed bottom-8 right-8 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-40 flex items-center justify-center ${
-                    showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
-                }`}
-                title="回到顶部"
-            >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                </svg>
-            </button>
         </div>
     );
 }

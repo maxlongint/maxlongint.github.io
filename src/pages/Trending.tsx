@@ -12,39 +12,26 @@ function Trending() {
 
     useEffect(() => {
         // 从运行时加载 Trending 数据（类似 GitHub Stats）
-        console.log('🔄 开始加载 Trending 数据...');
         const data = getTrendingData();
         if (data) {
-            console.log('✅ 成功加载 Trending 数据:', data);
-            console.log('📊 本周项目数量:', data.repos?.length);
             setTrendingData(data);
         } else {
-            console.warn('⚠️ 没有找到 Trending 数据，尝试从文件加载...');
             // 如果运行时数据不存在，尝试直接加载 JSON 文件
             fetch('/trending.json')
-                .then(res => {
-                    console.log('📡 收到响应，状态码:', res.status);
-                    return res.json();
-                })
+                .then(res => res.json())
                 .then(result => {
-                    console.log('✅ 成功从文件加载:', result);
                     setTrendingData(result.data); // 注意：使用 result.data
                 })
                 .catch(err => {
-                    console.error('❌ 加载 Trending 数据失败:', err);
+                    console.error('Failed to load trending data:', err);
                 });
         }
     }, []);
 
-    const formatDate = (dateStr: string) => {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
-    };
-
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
-            <Header onOpenComments={() => {}} isFixed={false} searchQuery="" setSearchQuery={() => {}} />
+            <Header />
 
             {/* Hero Section */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border-b border-gray-200">

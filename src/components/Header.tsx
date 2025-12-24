@@ -3,7 +3,7 @@ import { useState } from 'react';
 import SearchBar from './SearchBar';
 
 interface HeaderProps {
-    onOpenComments: () => void;
+    onOpenComments?: () => void;
     isFixed?: boolean;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
@@ -113,6 +113,7 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                                 onClick={onOpenComments}
                                 className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
                                 aria-label="评论"
+                                style={{ display: onOpenComments ? 'block' : 'none' }}
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path

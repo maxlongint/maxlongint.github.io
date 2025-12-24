@@ -613,7 +613,6 @@ export const loadGitHubData = async () => {
         if (trendingResponse && trendingResponse.ok) {
             const trendingData = await trendingResponse.json();
             (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
-            console.log('✅ Trending data loaded:', trendingData.data);
         }
     } catch (error) {
         console.warn('Failed to load GitHub data:', error);

@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Submit() {
-    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // 表单状态
@@ -125,7 +124,7 @@ _此 Issue 由提交表单自动创建_`;
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Header onOpenComments={() => setIsCommentsOpen(true)} />
+            <Header />
 
             {/* Main Content */}
             <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
