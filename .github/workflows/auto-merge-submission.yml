@@ -10,6 +10,8 @@ on:
 
 jobs:
     merge-submission:
+        # 确保只在手动触发时运行
+        if: github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
 
         permissions:
@@ -20,7 +22,7 @@ jobs:
             - name: Debug - Print Event Info
               run: |
                   echo "触发事件类型: ${{ github.event_name }}"
-                  echo "手动触发: Issue #${{ github.event.inputs.issue_number }}"
+                  echo "手动触发: Issue #${{ github.event.inputs.issue_number || 'N/A' }}"
 
             - name: Checkout repository
               uses: actions/checkout@v4
