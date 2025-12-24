@@ -1,14 +1,16 @@
 import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
+import { useNavigate } from 'react-router-dom';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
     viewMode: 'list' | 'grid';
-    getTagColor: (tag: string) => string;
+    getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
 }
 
 export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
+    const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
@@ -17,10 +19,10 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     // 生成URL友好的路由名称（使用title的小写形式）
     const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-    // 处理标题点击 - 在新标签页打开详情页
+    // 处理标题点击 - 路由跳转到详情页
     const handleTitleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        window.open(`#/${routeName}`, '_blank');
+        navigate(`/${routeName}`);
     };
 
     return (
@@ -80,14 +82,21 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                 {/* 第三行：标签 */}
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                     <div className="flex flex-wrap gap-1.5 flex-1">
-                        {bookmark.tags.slice(0, 3).map((tag, index) => (
-                            <span
-                                key={`${tag}-${index}`}
-                                className={`px-2 py-0.5 rounded text-xs font-semibold ${getTagColor(tag)}`}
-                            >
-                                {tag}
-                            </span>
-                        ))}
+                        {bookmark.tags.slice(0, 3).map((tag, index) => {
+                            const tagColor = getTagColor(tag);
+                            const isStyleObject = typeof tagColor === 'object';
+                            return (
+                                <span
+                                    key={`${tag}-${index}`}
+                                    className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                                        isStyleObject ? '' : tagColor
+                                    }`}
+                                    style={isStyleObject ? tagColor : undefined}
+                                >
+                                    {tag}
+                                </span>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -153,14 +162,21 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                     {/* Footer: Tags and Stats */}
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex flex-wrap gap-1.5">
-                            {bookmark.tags.slice(0, 3).map((tag, index) => (
-                                <span
-                                    key={`${tag}-${index}`}
-                                    className={`px-2 py-0.5 rounded text-xs font-semibold ${getTagColor(tag)}`}
-                                >
-                                    {tag}
-                                </span>
-                            ))}
+                            {bookmark.tags.slice(0, 3).map((tag, index) => {
+                                const tagColor = getTagColor(tag);
+                                const isStyleObject = typeof tagColor === 'object';
+                                return (
+                                    <span
+                                        key={`${tag}-${index}`}
+                                        className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                                            isStyleObject ? '' : tagColor
+                                        }`}
+                                        style={isStyleObject ? tagColor : undefined}
+                                    >
+                                        {tag}
+                                    </span>
+                                );
+                            })}
                         </div>
                         <div className="flex-shrink-0">
                             <GitHubStats url={bookmark.url} />

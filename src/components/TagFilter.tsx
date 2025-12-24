@@ -5,7 +5,7 @@ interface TagFilterProps {
     tagStats: Record<string, number>;
     selectedTag: string;
     setSelectedTag: (tag: string) => void;
-    getTagColor: (tag: string) => string;
+    getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
 }
 
 export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag, getTagColor }: TagFilterProps) {
@@ -69,19 +69,29 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                         </button>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                        {(showAll ? otherTags : otherTags.slice(0, 24)).map(tag => (
-                            <button
-                                key={tag}
-                                onClick={() => setSelectedTag(tag)}
-                                className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                                    selectedTag === tag
-                                        ? getTagColor(tag) + ' ring-2 ring-offset-1 ring-blue-500'
-                                        : getTagColor(tag) + ' hover:opacity-80'
-                                }`}
-                            >
-                                {tag} <span className="ml-0.5 opacity-75">{tagStats[tag]}</span>
-                            </button>
-                        ))}
+                        {(showAll ? otherTags : otherTags.slice(0, 24)).map(tag => {
+                            const tagColor = getTagColor(tag);
+                            const isStyleObject = typeof tagColor === 'object';
+
+                            return (
+                                <button
+                                    key={tag}
+                                    onClick={() => setSelectedTag(tag)}
+                                    className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                                        selectedTag === tag
+                                            ? isStyleObject
+                                                ? 'ring-2 ring-offset-1 ring-blue-500'
+                                                : tagColor + ' ring-2 ring-offset-1 ring-blue-500'
+                                            : isStyleObject
+                                            ? 'hover:opacity-80'
+                                            : tagColor + ' hover:opacity-80'
+                                    }`}
+                                    style={isStyleObject ? tagColor : undefined}
+                                >
+                                    {tag} <span className="ml-0.5 opacity-75">{tagStats[tag]}</span>
+                                </button>
+                            );
+                        })}
                         {!showAll && otherTags.length > 24 && (
                             <span className="px-2.5 py-1 text-xs text-gray-500">+ {otherTags.length - 24} 个标签</span>
                         )}

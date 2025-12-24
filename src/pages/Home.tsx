@@ -167,10 +167,20 @@ function Home() {
                     tagStats={tagStats}
                     selectedTag={selectedTag}
                     setSelectedTag={setSelectedTag}
-                    getTagColor={(tag: string) =>
-                        (bookmarksData.tags as Record<string, { className: string }>)[tag]?.className ||
-                        'bg-gray-100 text-gray-800'
-                    }
+                    getTagColor={(tag: string) => {
+                        const tagConfig = (
+                            bookmarksData.tags as Record<
+                                string,
+                                { className?: string; backgroundColor?: string; textColor?: string }
+                            >
+                        )[tag];
+                        if (tagConfig && tagConfig.backgroundColor && tagConfig.textColor) {
+                            // 使用新的内联样式格式
+                            return { backgroundColor: tagConfig.backgroundColor, color: tagConfig.textColor };
+                        }
+                        // 降级到 className（为 "All" 标签保留）
+                        return tagConfig?.className || 'bg-gray-100 text-gray-800';
+                    }}
                 />
 
                 <div className="mt-8">
@@ -288,10 +298,20 @@ function Home() {
                     <BookmarkList
                         bookmarks={filteredBookmarks}
                         viewMode={viewMode}
-                        getTagColor={(tag: string) =>
-                            (bookmarksData.tags as Record<string, { className: string }>)[tag]?.className ||
-                            'bg-gray-100 text-gray-800'
-                        }
+                        getTagColor={(tag: string) => {
+                            const tagConfig = (
+                                bookmarksData.tags as Record<
+                                    string,
+                                    { className?: string; backgroundColor?: string; textColor?: string }
+                                >
+                            )[tag];
+                            if (tagConfig && tagConfig.backgroundColor && tagConfig.textColor) {
+                                // 使用新的内联样式格式
+                                return { backgroundColor: tagConfig.backgroundColor, color: tagConfig.textColor };
+                            }
+                            // 降级到 className（为 "All" 标签保留）
+                            return tagConfig?.className || 'bg-gray-100 text-gray-800';
+                        }}
                     />
                 </div>
             </main>

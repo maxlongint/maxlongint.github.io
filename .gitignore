@@ -7,7 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-ssr
 *.local
@@ -27,6 +30,7 @@ dist-ssr
 *.sw?
 
 # Environment variables
+.env
 .env.local
 .env.*.local
 
@@ -34,3 +38,8 @@ dist-ssr
 public/github-stats.json
 public/github-readmes.json
 public/trending.json
+
+# 临时文件
+*.tmp
+*.temp
+.cache

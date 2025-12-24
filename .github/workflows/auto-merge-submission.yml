@@ -39,7 +39,7 @@ jobs:
                   const fs = require('fs');
                   const issueBody = process.env.ISSUE_BODY;
 
-                  // 解析函数
+                  // 解析函数 - 适配 GitHub Issue Form 格式
                   function parseIssueBody(body) {
                     const result = {
                       toolName: '',
@@ -48,31 +48,38 @@ jobs:
                       tags: [],
                     };
                     
+                    // GitHub Issue Form 格式：
+                    // ### 工具名称
+                    // Mock.js
+                    // 
+                    // ### GitHub 仓库地址
+                    // https://github.com/nuysoft/Mock
+                    
                     // 提取工具名称
-                    const nameMatch = body.match(/(?:Tool Name|工具名称)[:\s*]+(.+)/i);
+                    const nameMatch = body.match(/###\s*工具名称\s*\n+([^\n#]+)/i);
                     if (nameMatch) {
-                      result.toolName = nameMatch[1].trim().replace(/^\*\*|\*\*$/g, '');
+                      result.toolName = nameMatch[1].trim();
                     }
                     
                     // 提取 GitHub URL
-                    const githubMatch = body.match(/(?:GitHub Repository|GitHub 仓库地址)[:\s*]+(.+)/i);
-                    if (githubMatch) {
-                      result.githubUrl = githubMatch[1].trim().replace(/^\*\*|\*\*$/g, '');
+                    const urlMatch = body.match(/###\s*GitHub\s*仓库地址\s*\n+([^\n#]+)/i);
+                    if (urlMatch) {
+                      result.githubUrl = urlMatch[1].trim();
                       if (!result.githubUrl.startsWith('http')) {
                         result.githubUrl = 'https://' + result.githubUrl;
                       }
                     }
                     
-                    // 提取描述
-                    const descMatch = body.match(/###\s*Description\s*\n+([\s\S]+?)(?=\n###|$)/i);
+                    // 提取描述（可能是多行）
+                    const descMatch = body.match(/###\s*工具描述\s*\n+([\s\S]+?)(?=\n###|$)/i);
                     if (descMatch) {
                       result.description = descMatch[1].trim();
                     }
                     
                     // 提取标签
-                    const tagsMatch = body.match(/(?:Tags|标签)[:\s*]+(.+)/i);
+                    const tagsMatch = body.match(/###\s*标签\s*\n+([^\n#]+)/i);
                     if (tagsMatch) {
-                      const tagsStr = tagsMatch[1].trim().replace(/^\*\*|\*\*$/g, '');
+                      const tagsStr = tagsMatch[1].trim();
                       result.tags = tagsStr.split(/[,，]/).map(tag => tag.trim()).filter(tag => tag);
                     }
                     
@@ -107,6 +114,134 @@ jobs:
                     process.exit(0);
                   }
 
+                  // 自动为新标签添加默认样式配置
+                  // 动态生成颜色：使用 HSL 色彩空间，从浅色到深色渐变
+                  function generateTagColor(index) {
+                    // 使用黄金角度 (137.5度) 确保颜色分布均匀
+                    const goldenAngle = 137.5;
+                    const hue = (index * goldenAngle) % 360;
+                    
+                    // 饱和度：45-65% 之间，避免过于鲜艳
+                    const saturation = 45 + (index % 3) * 10;
+                    
+                    // 亮度：从浅到深渐变，但避免太深
+                    // 范围：78-88%，保持在浅色区间
+                    const lightnessBase = 88;
+                    const lightnessStep = 2;
+                    const maxSteps = 6; // 最多6个深度级别
+                    const lightness = lightnessBase - (index % maxSteps) * lightnessStep;
+                    
+                    // 生成 HSL 颜色
+                    const backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                    const textLightness = Math.max(20, lightness - 50); // 文字颜色更深
+                    const textColor = `hsl(${hue}, ${Math.min(saturation + 20, 80)}%, ${textLightness}%)`;
+                    
+                    // 转换为十六进制颜色（用于 color 字段）
+                    function hslToHex(h, s, l) {
+                      s /= 100;
+                      l /= 100;
+                      const c = (1 - Math.abs(2 * l - 1)) * s;
+                      const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+                      const m = l - c / 2;
+                      let r = 0, g = 0, b = 0;
+                      
+                      if (0 <= h && h < 60) {
+                        r = c; g = x; b = 0;
+                      } else if (60 <= h && h < 120) {
+                        r = x; g = c; b = 0;
+                      } else if (120 <= h && h < 180) {
+                        r = 0; g = c; b = x;
+                      } else if (180 <= h && h < 240) {
+                        r = 0; g = x; b = c;
+                      } else if (240 <= h && h < 300) {
+                        r = x; g = 0; b = c;
+                      } else if (300 <= h && h < 360) {
+                        r = c; g = 0; b = x;
+                      }
+                      
+                      const toHex = (num) => {
+                        const hex = Math.round((num + m) * 255).toString(16);
+                        return hex.length === 1 ? '0' + hex : hex;
+                      };
+                      
+                      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+                    }
+                    
+                    const hexColor = hslToHex(hue, saturation, lightness);
+                    
+                    return {
+                      className: '', // Tailwind className 不再使用，改用内联样式
+                      color: hexColor,
+                      backgroundColor: backgroundColor,
+                      textColor: textColor
+                    };
+                  }
+
+                  let tagsUpdated = false;
+                  
+                  // 获取当前最深的颜色亮度（从所有现有标签中找出最低亮度）
+                  let minLightness = 88; // 默认从最浅开始
+                  let nextColorIndex = 0;
+                  
+                  if (bookmarksData.tags.__meta__ && typeof bookmarksData.tags.__meta__.lastColorIndex === 'number') {
+                    // 使用元数据中的索引
+                    nextColorIndex = bookmarksData.tags.__meta__.lastColorIndex + 1;
+                  } else {
+                    // 如果没有元数据，遍历所有标签找出最深的颜色
+                    Object.keys(bookmarksData.tags).forEach(key => {
+                      if (key !== 'All' && key !== '__meta__') {
+                        const tag = bookmarksData.tags[key];
+                        if (tag.backgroundColor) {
+                          // 从 HSL 字符串中提取亮度值：hsl(55, 55%, 80%)
+                          const match = tag.backgroundColor.match(/hsl\([^,]+,\s*[^,]+,\s*(\d+)%\)/);
+                          if (match) {
+                            const lightness = parseInt(match[1]);
+                            if (lightness < minLightness) {
+                              minLightness = lightness;
+                            }
+                          }
+                        }
+                      }
+                    });
+                    
+                    // 根据最深的亮度计算下一个索引
+                    // 亮度范围：88 -> 86 -> 84 -> 82 -> 80 -> 78（每次 -2，共6级）
+                    const lightnessBase = 88;
+                    const lightnessStep = 2;
+                    const currentStep = (lightnessBase - minLightness) / lightnessStep;
+                    nextColorIndex = currentStep + 1; // 下一级
+                  }
+                  
+                  parsed.tags.forEach(tag => {
+                    if (!bookmarksData.tags[tag]) {
+                      // 为新标签生成颜色（基于最深颜色继续）
+                      const newColorConfig = generateTagColor(nextColorIndex);
+                      bookmarksData.tags[tag] = newColorConfig;
+                      
+                      // 提取亮度用于日志
+                      const lightnessMatch = newColorConfig.backgroundColor.match(/hsl\([^,]+,\s*[^,]+,\s*(\d+)%\)/);
+                      const currentLightness = lightnessMatch ? lightnessMatch[1] : '?';
+                      
+                      console.log(`🏷️  自动添加新标签: ${tag}`);
+                      console.log(`   色相: ${Math.round((nextColorIndex * 137.5) % 360)}° | 索引: ${nextColorIndex}`);
+                      console.log(`   亮度: ${currentLightness}% (${nextColorIndex % 6 === 0 ? '最浅，开始新循环' : '继续加深'})`);
+                      console.log(`   背景: ${newColorConfig.backgroundColor}`);
+                      console.log(`   文字: ${newColorConfig.textColor}`);
+                      
+                      nextColorIndex++; // 递增索引（会自动循环）
+                      tagsUpdated = true;
+                    }
+                  });
+                  
+                  // 更新元数据
+                  if (tagsUpdated) {
+                    bookmarksData.tags.__meta__ = {
+                      lastColorIndex: nextColorIndex - 1,
+                      totalTags: Object.keys(bookmarksData.tags).filter(k => k !== 'All' && k !== '__meta__').length,
+                      lastUpdated: new Date().toISOString()
+                    };
+                  }
+
                   // 创建新的 bookmark 对象（仅包含4个字段）
                   const newBookmark = {
                     title: parsed.toolName,
@@ -127,9 +262,12 @@ jobs:
 
                   console.log('✅ 成功添加新工具:', parsed.toolName);
                   console.log('📝 工具信息:', JSON.stringify(newBookmark, null, 2));
+                  if (tagsUpdated) {
+                    console.log('🏷️ 自动添加了新标签样式配置');
+                  }
 
                   // 输出到 GitHub Actions
-                  const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false`;
+                  const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false\ntags_updated=${tagsUpdated}`;
                   fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
                   SCRIPT_END
 
@@ -145,14 +283,24 @@ jobs:
                   git config --local user.name "github-actions[bot]"
 
                   git add src/data/bookmarks.json
-                  git commit -m "🤖 自动收录: ${{ steps.parse-issue.outputs.tool_name }}
+                  
+                  # 构建提交信息
+                  COMMIT_MSG="🤖 自动收录: ${{ steps.parse-issue.outputs.tool_name }}
 
-                  - 工具名称: ${{ steps.parse-issue.outputs.tool_name }}
-                  - GitHub: ${{ steps.parse-issue.outputs.tool_url }}
-                  - 来源 Issue: #${{ github.event.issue.number }}
+- 工具名称: ${{ steps.parse-issue.outputs.tool_name }}
+- GitHub: ${{ steps.parse-issue.outputs.tool_url }}
+- 来源 Issue: #${{ github.event.issue.number }}"
+                  
+                  if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
+                    COMMIT_MSG="$COMMIT_MSG
+- ✨ 自动添加了新标签样式配置"
+                  fi
+                  
+                  COMMIT_MSG="$COMMIT_MSG
 
-                  由 GitHub Actions 自动处理"
-
+由 GitHub Actions 自动处理"
+                  
+                  git commit -m "$COMMIT_MSG"
                   git push
 
             - name: Comment and Close Issue (Success)
@@ -160,20 +308,26 @@ jobs:
               uses: actions/github-script@v7
               with:
                   script: |
-                      await github.rest.issues.createComment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: context.issue.number,
-                        body: `🎉 **收录成功！**
+                      let commentBody = `🎉 **收录成功！**
 
                       您提交的工具 **${{ steps.parse-issue.outputs.tool_name }}** 已成功添加到工具库中！
 
                       - 📦 工具名称: ${{ steps.parse-issue.outputs.tool_name }}
-                      - 🔗 GitHub 地址: ${{ steps.parse-issue.outputs.tool_url }}
+                      - 🔗 GitHub 地址: ${{ steps.parse-issue.outputs.tool_url }}`;
+                      
+                      if ('${{ steps.parse-issue.outputs.tags_updated }}' === 'true') {
+                        commentBody += `\n                      - ✨ 自动为新标签添加了默认样式配置`;
+                      }
+                      
+                      commentBody += `\n\n                      感谢您为前端社区做出的贡献！🙏
 
-                      感谢您为前端社区做出的贡献！🙏
-
-                      工具将在下次部署后出现在网站上。`
+                      工具将在下次部署后出现在网站上。`;
+                      
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                        body: commentBody
                       });
 
                       // 添加 "已收录" 标签

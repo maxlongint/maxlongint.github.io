@@ -528,17 +528,33 @@ export default function BookmarkDetail() {
                         </div>
                         <p className="text-base text-gray-600 leading-relaxed">{bookmark.description}</p>
                         <div className="flex flex-wrap gap-2">
-                            {bookmark.tags.map((tag, index) => (
-                                <span
-                                    key={index}
-                                    className={`px-2.5 py-1 rounded-lg text-xs font-medium ${
-                                        (bookmarksData.tags as Record<string, { className: string }>)[tag]?.className ||
-                                        'bg-gray-100 text-gray-700'
-                                    }`}
-                                >
-                                    {tag}
-                                </span>
-                            ))}
+                            {bookmark.tags.map((tag, index) => {
+                                const tagConfig = (
+                                    bookmarksData.tags as Record<
+                                        string,
+                                        { className?: string; backgroundColor?: string; textColor?: string }
+                                    >
+                                )[tag];
+                                const isStyleObject = tagConfig && tagConfig.backgroundColor && tagConfig.textColor;
+                                return (
+                                    <span
+                                        key={index}
+                                        className={`px-2.5 py-1 rounded-lg text-xs font-medium ${
+                                            isStyleObject ? '' : tagConfig?.className || 'bg-gray-100 text-gray-700'
+                                        }`}
+                                        style={
+                                            isStyleObject
+                                                ? {
+                                                      backgroundColor: tagConfig.backgroundColor,
+                                                      color: tagConfig.textColor,
+                                                  }
+                                                : undefined
+                                        }
+                                    >
+                                        {tag}
+                                    </span>
+                                );
+                            })}
                         </div>
                         <div className="flex flex-col gap-2.5">
                             <a
@@ -601,17 +617,33 @@ export default function BookmarkDetail() {
                             </div>
 
                             <div className="flex flex-wrap gap-2">
-                                {bookmark.tags.map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
-                                            (bookmarksData.tags as Record<string, { className: string }>)[tag]
-                                                ?.className || 'bg-gray-100 text-gray-700'
-                                        }`}
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
+                                {bookmark.tags.map((tag, index) => {
+                                    const tagConfig = (
+                                        bookmarksData.tags as Record<
+                                            string,
+                                            { className?: string; backgroundColor?: string; textColor?: string }
+                                        >
+                                    )[tag];
+                                    const isStyleObject = tagConfig && tagConfig.backgroundColor && tagConfig.textColor;
+                                    return (
+                                        <span
+                                            key={index}
+                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+                                                isStyleObject ? '' : tagConfig?.className || 'bg-gray-100 text-gray-700'
+                                            }`}
+                                            style={
+                                                isStyleObject
+                                                    ? {
+                                                          backgroundColor: tagConfig.backgroundColor,
+                                                          color: tagConfig.textColor,
+                                                      }
+                                                    : undefined
+                                            }
+                                        >
+                                            {tag}
+                                        </span>
+                                    );
+                                })}
                             </div>
                         </div>
 

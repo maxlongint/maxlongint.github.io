@@ -4,7 +4,7 @@ import BookmarkCard from './BookmarkCard';
 interface BookmarkListProps {
     bookmarks: Bookmark[];
     viewMode: 'list' | 'grid';
-    getTagColor: (tag: string) => string;
+    getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
 }
 
 export default function BookmarkList({ bookmarks, viewMode, getTagColor }: BookmarkListProps) {

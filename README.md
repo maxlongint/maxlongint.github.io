@@ -135,7 +135,8 @@ npm run fetch-trending
 │   └── sitemap.xml           # 站点地图
 ├── scripts/                   # 脚本文件
 │   ├── update-github-data.js # GitHub 数据更新脚本
-│   └── fetch-trending.js     # Trending 数据抓取脚本
+│   ├── fetch-trending.js     # Trending 数据抓取脚本
+│   └── regenerate-tag-colors.js # 标签颜色重新生成脚本
 ├── src/
 │   ├── components/           # React 组件
 │   │   ├── BookmarkCard.tsx   # 书签卡片组件
@@ -422,16 +423,53 @@ https://github.com/maxlongint/maxlongint.github.io/actions
 
 ### 标签配置
 
-在 `bookmarks.json` 的 `tags` 对象中配置标签样式：
+#### 🎨 动态颜色生成系统
+
+项目采用 HSL 色彩空间的动态颜色生成算法，自动为标签分配颜色：
+
+**核心特性**：
+
+-   **黄金角度分布** (137.5°) - 确保颜色均匀分布，避免相邻颜色
+-   **渐变式亮度** - 从浅到深：88% → 86% → 84% → 82% → 80% → 78%（共 6 级）
+-   **自动循环** - 超过最深色后自动回到最浅色，无限循环
+-   **适中饱和度** - 45%-65% 之间，避免过于鲜艳或灰暗
+-   **自动文字色** - 根据背景色自动计算深色文字，确保对比度
+
+**数据格式**：
 
 ```json
 "tags": {
     "标签名": {
-        "className": "bg-blue-100 text-blue-800",
-        "color": "#3498db"
+        "className": "",  // 保留兼容性
+        "color": "#eed3d3",  // 十六进制颜色
+        "backgroundColor": "hsl(0, 45%, 88%)",  // HSL 背景色
+        "textColor": "hsl(0, 65%, 38%)"  // HSL 文字色
+    },
+    "__meta__": {
+        "lastColorIndex": 58,  // 最后一个颜色索引
+        "totalTags": 59,
+        "generatedAt": "2025-12-24T09:33:48.461Z"
     }
 }
 ```
+
+**重新生成所有标签颜色**：
+
+```bash
+node scripts/regenerate-tag-colors.js
+```
+
+#### 自动收录时的颜色生成
+
+当通过 GitHub Actions 自动收录新工具时：
+
+1. 读取 `__meta__.lastColorIndex` 获取当前最深的颜色索引
+2. 从最深颜色继续生成（索引 +1）
+3. 亮度自动降低 2%
+4. 达到最深色（78%）后自动循环回到最浅色（88%）
+5. 更新元数据保存最新索引
+
+这确保了标签颜色的连续性和一致性。
 
 ### GitHub 数据自动更新
 
@@ -442,11 +480,27 @@ https://github.com/maxlongint/maxlongint.github.io/actions
 
 ## 📊 性能优化
 
+### 构建优化
+
 -   ⚡ **Vite 构建**: 使用 Vite 6 提供极速的开发和构建体验
 -   🎯 **代码分割**: 组件按需加载，减少首屏加载时间
+-   📦 **依赖优化**: 分离 vendor chunks，React、Markdown、Chart 分别打包
+-   📊 **构建结果**: 总包体积 ~367KB (gzip: ~113KB)
+
+### 运行时优化
+
 -   💾 **状态管理**: 使用 React Hooks 和 localStorage 优化状态管理
 -   🔄 **空闲时更新**: 在浏览器空闲时更新 GitHub 数据，不影响用户体验
 -   📱 **响应式图片**: 根据设备尺寸加载合适的资源
+-   🐎 **防抖优化**: 滚动事件、搜索输入等采用防抖处理
+-   📝 **useMemo 缓存**: 关键计算结果缓存，避免重复渲染
+-   🎯 **useRef 优化**: 避免不必要的 DOM 操作和重渲染
+
+### Markdown 渲染优化
+
+-   🛡️ **防止重复渲染**: 使用 `useRef` 追踪渲染状态，避免图片重复加载
+-   🚀 **移除滚动监听**: 彻底移除所有滚动 state，防止滚动时组件重渲染
+-   📊 **性能提升**: 滚动时图片只加载一次，请求数从 320+ 降低到一次性加载
 
 ## 🚢 部署
 
