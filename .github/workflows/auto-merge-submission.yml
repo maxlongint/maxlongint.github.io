@@ -12,8 +12,11 @@ on:
 
 jobs:
     merge-submission:
-        # 只在 Issue 被标记为 "收录通过" 或 "approved" 时运行
-        if: contains(github.event.issue.labels.*.name, '收录通过') || contains(github.event.issue.labels.*.name, 'approved')
+        # 只在 Issue 被标记为 "收录通过" 或 "approved" 时运行（或手动触发时）
+        if: |
+            github.event_name == 'workflow_dispatch' || 
+            contains(github.event.issue.labels.*.name, '收录通过') || 
+            contains(github.event.issue.labels.*.name, 'approved')
         runs-on: ubuntu-latest
 
         permissions:
@@ -43,11 +46,19 @@ jobs:
             - name: Parse Issue and Update Bookmarks
               id: parse-issue
               run: |
-                  # 获取 Issue 内容
-                  ISSUE_BODY=$(cat <<'EOF'
+                  # 获取 Issue 内容（支持手动触发和 Issue 事件）
+                  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+                    # 手动触发：从 API 获取 Issue 内容
+                    ISSUE_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                      "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}" | \
+                      jq -r '.body')
+                  else
+                    # Issue 事件触发
+                    ISSUE_BODY=$(cat <<'EOF'
                   ${{ github.event.issue.body }}
                   EOF
                   )
+                  fi
 
                   # 创建解析脚本（使用 .cjs 扩展名以支持 CommonJS）
                   cat > parse-issue.cjs << 'SCRIPT_END'
