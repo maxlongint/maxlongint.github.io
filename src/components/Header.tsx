@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import SearchBar from './SearchBar';
 
 interface HeaderProps {
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export default function Header({ onOpenComments, isFixed = false, searchQuery = '', setSearchQuery }: HeaderProps) {
     const location = useLocation();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
         <>
@@ -30,12 +32,20 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                             <nav className="hidden md:flex items-center gap-1">
                                 <Link
                                     to="/"
-                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                                         location.pathname === '/'
                                             ? 'bg-blue-100 text-blue-700'
                                             : 'text-gray-600 hover:bg-gray-100'
                                     }`}
                                 >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                                        />
+                                    </svg>
                                     工具库
                                 </Link>
                                 <Link
@@ -74,6 +84,31 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
 
                         {/* Right Actions */}
                         <div className="flex items-center gap-3">
+                            {/* 移动端菜单按钮 */}
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                                aria-label="菜单"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    {mobileMenuOpen ? (
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    ) : (
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 6h16M4 12h16M4 18h16"
+                                        />
+                                    )}
+                                </svg>
+                            </button>
+
                             <button
                                 onClick={onOpenComments}
                                 className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
@@ -101,6 +136,72 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                             </a>
                         </div>
                     </div>
+
+                    {/* 移动端菜单 */}
+                    {mobileMenuOpen && (
+                        <div className="md:hidden border-t border-gray-200">
+                            <nav className="px-4 py-3 space-y-1">
+                                <Link
+                                    to="/"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        location.pathname === '/'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                                            />
+                                        </svg>
+                                        工具库
+                                    </span>
+                                </Link>
+                                <Link
+                                    to="/trending"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        location.pathname === '/trending'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                                        </svg>
+                                        每日趋势
+                                    </span>
+                                </Link>
+                                <Link
+                                    to="/submit"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        location.pathname === '/submit'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                            />
+                                        </svg>
+                                        提交收录
+                                    </span>
+                                </Link>
+                            </nav>
+                        </div>
+                    )}
                 </div>
             </header>
 
