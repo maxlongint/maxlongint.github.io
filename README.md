@@ -115,8 +115,18 @@ npm run fetch-trending
 
 ## 📁 项目结构
 
+### 文件结构
+
 ```
 .
+├── .github/
+│   ├── ISSUE_TEMPLATE/         # GitHub Issue 模板
+│   │   └── tool-submission.yml # 工具提交表单模板
+│   └── workflows/             # GitHub Actions 工作流
+│       ├── setup-labels.yml    # 创建 Issues 标签
+│       ├── deploy.yml          # 部署工作流
+│       ├── update-trending.yml # Trending 更新工作流
+│       └── auto-merge-submission.yml # 自动审核工作流
 ├── public/                    # 静态资源
 │   ├── github-stats.json      # GitHub 仓库统计数据
 │   ├── github-readmes.json    # GitHub README 内容
@@ -141,7 +151,8 @@ npm run fetch-trending
 │   │   └── bookmarks.json    # 书签数据（500+ 前端工具）
 │   ├── pages/                # 页面组件
 │   │   ├── Home.tsx          # 首页（书签列表）
-│   │   ├── Trending.tsx      # 每周趋势页面
+│   │   ├── Trending.tsx      # 每日趋势页面
+│   │   ├── Submit.tsx        # 提交新工具页面
 │   │   └── BookmarkDetail.tsx # 书签详情页
 │   ├── types/                # TypeScript 类型定义
 │   │   └── index.ts          # 通用类型
@@ -150,10 +161,6 @@ npm run fetch-trending
 │   ├── main.tsx              # 应用入口
 │   ├── index.css             # 全局样式
 │   └── vite-env.d.ts         # Vite 类型定义
-├── .github/
-│   └── workflows/            # GitHub Actions 工作流
-│       ├── deploy.yml        # 部署工作流
-│       └── update-trending.yml # Trending 更新工作流
 ├── index.html                # HTML 模板
 ├── vite.config.ts            # Vite 配置
 ├── tailwind.config.ts        # Tailwind CSS 配置
@@ -161,16 +168,16 @@ npm run fetch-trending
 └── package.json              # 项目依赖
 ```
 
-## 📊 每周趋势功能
+## 📊 每日趋势功能
 
 ### 自动抓取 GitHub Trending
 
 项目配置了自动抓取 GitHub Trending 数据的功能：
 
--   ⏰ **定时更新**: 每周一 UTC 0:00 自动抓取最新数据
--   🌍 **多语言支持**: 支持 JavaScript, TypeScript, Vue, HTML, CSS 等前端相关语言
+-   ⏰ **定时更新**: 每天 UTC 0:00（北京时间 8:00）自动抓取最新数据
+-   🌍 **多语言支持**: 支持 JavaScript, TypeScript, Vue, React, HTML, CSS 等前端相关语言
 -   🔝 **智能去重**: 自动去除重复项目，按本周 Stars 增量排序
--   🏆 **Top 25 精选**: 每周展示 25 个最热门前端项目
+-   🏆 **Top 25 精选**: 每日展示 25 个最热门前端项目
 -   💾 **自动同步**: 数据更新后自动提交到仓库
 
 ### 手动抓取
@@ -210,6 +217,194 @@ npm run fetch-trending
 }
 ```
 
+## 🤖 GitHub Actions 自动化任务
+
+项目配置了多个 GitHub Actions 工作流，实现全自动化的数据更新、审核和部署流程。
+
+### 1️⃣ Setup Repository Labels
+
+**文件**: `.github/workflows/setup-labels.yml`
+
+**功能**: 自动创建和更新 GitHub Issues 所需的标签
+
+**触发条件**:
+
+-   👆 手动触发 (`workflow_dispatch`)
+-   📤 推送到 `main` 分支且修改了 `setup-labels.yml` 文件
+
+**创建的标签**:
+
+-   🟢 **收录申请** (绿色 `#0E8A16`) - 新工具收录申请
+-   🟡 **待审核** (黄色 `#FBCA04`) - 等待审核的收录申请
+-   ✅ **收录通过** (绿色 `#0E8A16`) - 审核通过，将自动收录
+-   ✅ **approved** (绿色 `#0E8A16`) - Approved for inclusion
+-   🟪 **已收录** (紫色 `#5319E7`) - 已成功收录到工具库
+-   ⚠️ **需要修改** (橙色 `#D93F0B`) - 需要修改后重新提交
+-   ❌ **拒绝收录** (红色 `#B60205`) - 不符合收录标准
+
+**手动执行**:
+
+```bash
+# 访问 GitHub Actions 页面
+https://github.com/maxlongint/maxlongint.github.io/actions
+
+# 选择 "Setup Repository Labels" 工作流
+# 点击 "Run workflow" 按钮
+# 选择 main 分支，点击绿色确认按钮
+```
+
+---
+
+### 2️⃣ Deploy to GitHub Pages
+
+**文件**: `.github/workflows/deploy.yml`
+
+**功能**: 自动构建项目并部署到 GitHub Pages，同时更新 GitHub 数据
+
+**触发条件**:
+
+-   ⏰ **定时任务**: 每天 UTC 0:00（北京时间 8:00）自动执行
+-   📤 **推送触发**: 推送到 `master` 分支时自动执行
+-   👆 **手动触发**: 支持手动运行
+
+**执行步骤**:
+
+1. 📚 Checkout 代码仓库
+2. 🛠️ 安装 Node.js 18
+3. 📦 安装项目依赖
+4. 🔄 **更新 GitHub 数据** (执行 `update-github-data.js`)
+    - 获取所有仓库的 Stars、Forks、更新时间等数据
+    - 获取仓库 README 内容
+    - 生成 `public/github-stats.json` 和 `public/github-readmes.json`
+5. 🛠️ 构建生产版本 (`npm run build`)
+6. 📤 上传构建产物
+7. 🚀 部署到 GitHub Pages
+
+**手动执行**:
+
+```bash
+# 访问 GitHub Actions 页面
+https://github.com/maxlongint/maxlongint.github.io/actions/workflows/deploy.yml
+
+# 点击 "Run workflow" 按钮手动触发
+```
+
+---
+
+### 3️⃣ Update Daily Trending
+
+**文件**: `.github/workflows/update-trending.yml`
+
+**功能**: 自动抓取 GitHub Trending 数据，获取每日最热门的前端项目
+
+**触发条件**:
+
+-   ⏰ **定时任务**: 每天 UTC 0:00（北京时间 8:00）自动执行
+-   👆 **手动触发**: 支持手动运行
+
+**执行步骤**:
+
+1. 📚 Checkout 代码仓库
+2. 🛠️ 安装 Node.js 18
+3. 📦 安装项目依赖
+4. 🔥 **抓取 Trending 数据** (`npm run fetch-trending`)
+    - 抓取 JavaScript, TypeScript, Vue, React, HTML, CSS 等语言
+    - 智能去重，按本周 Stars 增量排序
+    - 只保留 Top 25 项目
+    - 生成 `public/trending.json`
+5. 💾 提交并推送更新 (如有变化)
+
+**手动执行**:
+
+```bash
+# 方法 1: 本地执行
+npm run fetch-trending
+
+# 方法 2: GitHub Actions 手动触发
+https://github.com/maxlongint/maxlongint.github.io/actions/workflows/update-trending.yml
+```
+
+---
+
+### 4️⃣ Auto Merge Submission
+
+**文件**: `.github/workflows/auto-merge-submission.yml`
+
+**功能**: 自动审核并合并新工具提交，实现全自动化收录流程
+
+**触发条件**:
+
+-   🏷️ **Issue 标签**: 当 Issue 被添加 **"收录通过"** 或 **"approved"** 标签时自动执行
+
+**工作流程**:
+
+1. 👤 **用户提交**: 用户通过网站表单提交新工具，自动创建 GitHub Issue
+2. 👁️ **管理员审核**: 管理员查看 Issue，确认信息完整性
+3. ✅ **添加标签**: 管理员添加 "收录通过" 或 "approved" 标签
+4. 🤖 **自动处理**: GitHub Actions 自动执行：
+    - 📝 解析 Issue 内容（工具名称、GitHub URL、描述、标签）
+    - ✔️ 验证必填字段
+    - 🔍 检查是否已存在
+    - ➕ 添加到 `src/data/bookmarks.json` 文件开头
+    - 💾 提交并推送代码
+    - 🏷️ 添加 "已收录" 标签
+    - 💬 评论通知用户
+    - 🔒 关闭 Issue
+
+**特殊情况处理**:
+
+-   ⚠️ **工具已存在**: 评论提示，不重复添加
+-   ❌ **信息不完整**: 任务失败，需人工处理
+
+**审核操作指南**:
+
+```bash
+# 步骤 1: 访问 Issues 页面
+https://github.com/maxlongint/maxlongint.github.io/issues
+
+# 步骤 2: 选择带有 "待审核" 标签的 Issue
+
+# 步骤 3: 检查信息是否完整
+# - 工具名称
+# - GitHub 仓库地址
+# - 工具描述
+# - 标签
+# - 确认事项均已勾选
+
+# 步骤 4: 做出审核决定
+# ✅ 通过: 添加 "收录通过" 或 "approved" 标签
+# ⚠️ 需修改: 添加 "需要修改" 标签 + 评论说明
+# ❌ 拒绝: 添加 "拒绝收录" 标签 + 评论说明原因 + 手动关闭 Issue
+
+# 步骤 5: 等待自动化处理（如果添加了通过标签）
+```
+
+---
+
+### 📊 任务运行频率
+
+| 任务                    | 频率               | 说明                     |
+| ----------------------- | ------------------ | ------------------------ |
+| Setup Repository Labels | 手动 / 修改时      | 一次性设置，无需频繁执行 |
+| Deploy to GitHub Pages  | 每天 8:00 / 推送时 | 自动更新数据并部署       |
+| Update Daily Trending   | 每天 8:00          | 每日更新热门项目         |
+| Auto Merge Submission   | Issue 标签时       | 实时自动审核             |
+
+### 🛠️ 监控与日志
+
+所有任务的执行情况和日志可在 GitHub Actions 页面查看：
+
+```bash
+https://github.com/maxlongint/maxlongint.github.io/actions
+```
+
+每个任务都会显示：
+
+-   ✅ 执行状态（成功/失败）
+-   ⏱️ 运行时长
+-   📝 详细日志
+-   📅 执行时间
+
 ## 📝 数据管理
 
 ### 添加新工具
@@ -242,8 +437,8 @@ npm run fetch-trending
 
 项目配置了 GitHub Actions，定时更新以下数据：
 
--   **GitHub Stats**: 每日 UTC 0:00 自动更新仓库 Stars、更新时间等数据
--   **GitHub Trending**: 每周一 UTC 0:00 自动抓取本周热门项目
+-   **GitHub Stats**: 每日 UTC 0:00（北京时间 8:00）自动更新仓库 Stars、更新时间等数据
+-   **GitHub Trending**: 每日 UTC 0:00（北京时间 8:00）自动抓取最热门项目
 
 ## 📊 性能优化
 
