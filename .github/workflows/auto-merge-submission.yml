@@ -23,13 +23,20 @@ jobs:
             issues: write
 
         steps:
-            - name: Debug - Print Event Info
+            - name: Debug - Print Event Info (Issues)
+              if: github.event_name == 'issues'
               run: |
                   echo "触发事件类型: ${{ github.event_name }}"
                   echo "Issue 编号: ${{ github.event.issue.number }}"
                   echo "Issue 标题: ${{ github.event.issue.title }}"
                   echo "当前标签:"
                   echo '${{ toJSON(github.event.issue.labels) }}'
+
+            - name: Debug - Print Event Info (Manual)
+              if: github.event_name == 'workflow_dispatch'
+              run: |
+                  echo "触发事件类型: ${{ github.event_name }}"
+                  echo "手动触发: Issue #${{ github.event.inputs.issue_number }}"
 
             - name: Checkout repository
               uses: actions/checkout@v4
