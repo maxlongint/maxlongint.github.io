@@ -1,39 +1,20 @@
 {
-  "updated_at": "2025-12-24T03:57:36.686Z",
+  "updated_at": "2025-12-24T05:05:38.396Z",
   "data": {
     "weekStart": "2025-12-24",
     "weekEnd": "2025-12-24",
     "repos": [
       {
         "rank": 1,
-        "name": "n8n",
-        "author": "n8n-io",
-        "url": "https://github.com/n8n-io/n8n",
-        "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 164432,
-        "forks": 52521,
-        "starsThisWeek": 164432,
-        "builtBy": [
-          {
-            "username": "n8n-io",
-            "avatar": "https://avatars.githubusercontent.com/u/45487711?v=4",
-            "url": "https://github.com/n8n-io"
-          }
-        ]
-      },
-      {
-        "rank": 2,
         "name": "awesome-chatgpt-prompts",
         "author": "f",
         "url": "https://github.com/f/awesome-chatgpt-prompts",
         "description": "Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 140569,
-        "forks": 18630,
-        "starsThisWeek": 140569,
+        "stars": 140573,
+        "forks": 18631,
+        "starsThisWeek": 140573,
         "builtBy": [
           {
             "username": "f",
@@ -43,35 +24,16 @@
         ]
       },
       {
-        "rank": 3,
-        "name": "dify",
-        "author": "langgenius",
-        "url": "https://github.com/langgenius/dify",
-        "description": "Production-ready platform for agentic workflow development.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 122678,
-        "forks": 19088,
-        "starsThisWeek": 122678,
-        "builtBy": [
-          {
-            "username": "langgenius",
-            "avatar": "https://avatars.githubusercontent.com/u/127165244?v=4",
-            "url": "https://github.com/langgenius"
-          }
-        ]
-      },
-      {
-        "rank": 4,
+        "rank": 2,
         "name": "node",
         "author": "nodejs",
         "url": "https://github.com/nodejs/node",
         "description": "Node.js JavaScript runtime ✨🐢🚀✨",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 114878,
-        "forks": 34138,
-        "starsThisWeek": 114878,
+        "stars": 114879,
+        "forks": 34140,
+        "starsThisWeek": 114879,
         "builtBy": [
           {
             "username": "nodejs",
@@ -81,7 +43,26 @@
         ]
       },
       {
-        "rank": 5,
+        "rank": 3,
+        "name": "excalidraw",
+        "author": "excalidraw",
+        "url": "https://github.com/excalidraw/excalidraw",
+        "description": "Virtual whiteboard for sketching hand-drawn like diagrams",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 112964,
+        "forks": 11932,
+        "starsThisWeek": 112964,
+        "builtBy": [
+          {
+            "username": "excalidraw",
+            "avatar": "https://avatars.githubusercontent.com/u/59452120?v=4",
+            "url": "https://github.com/excalidraw"
+          }
+        ]
+      },
+      {
+        "rank": 4,
         "name": "three.js",
         "author": "mrdoob",
         "url": "https://github.com/mrdoob/three.js",
@@ -100,16 +81,16 @@
         ]
       },
       {
-        "rank": 6,
+        "rank": 5,
         "name": "iptv",
         "author": "iptv-org",
         "url": "https://github.com/iptv-org/iptv",
         "description": "Collection of publicly available IPTV channels from all over the world",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 106729,
-        "forks": 4958,
-        "starsThisWeek": 106729,
+        "stars": 106735,
+        "forks": 4959,
+        "starsThisWeek": 106735,
         "builtBy": [
           {
             "username": "iptv-org",
@@ -119,16 +100,16 @@
         ]
       },
       {
-        "rank": 7,
+        "rank": 6,
         "name": "ant-design",
         "author": "ant-design",
         "url": "https://github.com/ant-design/ant-design",
         "description": "An enterprise-class UI design language and React UI library",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 97067,
-        "forks": 54275,
-        "starsThisWeek": 97067,
+        "stars": 97069,
+        "forks": 54276,
+        "starsThisWeek": 97069,
         "builtBy": [
           {
             "username": "ant-design",
@@ -138,54 +119,16 @@
         ]
       },
       {
-        "rank": 8,
-        "name": "supabase",
-        "author": "supabase",
-        "url": "https://github.com/supabase/supabase",
-        "description": "The Postgres development platform. Supabase gives you a dedicated Postgres database to build your web, mobile, and AI applications.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 95080,
-        "forks": 11073,
-        "starsThisWeek": 95080,
-        "builtBy": [
-          {
-            "username": "supabase",
-            "avatar": "https://avatars.githubusercontent.com/u/54469796?v=4",
-            "url": "https://github.com/supabase"
-          }
-        ]
-      },
-      {
-        "rank": 9,
-        "name": "gemini-cli",
-        "author": "google-gemini",
-        "url": "https://github.com/google-gemini/gemini-cli",
-        "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 88424,
-        "forks": 10155,
-        "starsThisWeek": 88424,
-        "builtBy": [
-          {
-            "username": "google-gemini",
-            "avatar": "https://avatars.githubusercontent.com/u/161781182?v=4",
-            "url": "https://github.com/google-gemini"
-          }
-        ]
-      },
-      {
-        "rank": 10,
+        "rank": 7,
         "name": "immich",
         "author": "immich-app",
         "url": "https://github.com/immich-app/immich",
         "description": "High performance self-hosted photo and video management solution.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 87249,
+        "stars": 87250,
         "forks": 4599,
-        "starsThisWeek": 87249,
+        "starsThisWeek": 87250,
         "builtBy": [
           {
             "username": "immich-app",
@@ -195,73 +138,16 @@
         ]
       },
       {
-        "rank": 11,
-        "name": "playwright",
-        "author": "microsoft",
-        "url": "https://github.com/microsoft/playwright",
-        "description": "Playwright is a framework for Web Testing and Automation. It allows testing Chromium, Firefox and WebKit with a single API. ",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 80443,
-        "forks": 4936,
-        "starsThisWeek": 80443,
-        "builtBy": [
-          {
-            "username": "microsoft",
-            "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4",
-            "url": "https://github.com/microsoft"
-          }
-        ]
-      },
-      {
-        "rank": 12,
-        "name": "uptime-kuma",
-        "author": "louislam",
-        "url": "https://github.com/louislam/uptime-kuma",
-        "description": "A fancy self-hosted monitoring tool",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 80121,
-        "forks": 7140,
-        "starsThisWeek": 80121,
-        "builtBy": [
-          {
-            "username": "louislam",
-            "avatar": "https://avatars.githubusercontent.com/u/1336778?v=4",
-            "url": "https://github.com/louislam"
-          }
-        ]
-      },
-      {
-        "rank": 13,
-        "name": "grafana",
-        "author": "grafana",
-        "url": "https://github.com/grafana/grafana",
-        "description": "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources like Prometheus, Loki, Elasticsearch, InfluxDB, Postgres and many more. ",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 71422,
-        "forks": 13297,
-        "starsThisWeek": 71422,
-        "builtBy": [
-          {
-            "username": "grafana",
-            "avatar": "https://avatars.githubusercontent.com/u/7195757?v=4",
-            "url": "https://github.com/grafana"
-          }
-        ]
-      },
-      {
-        "rank": 14,
+        "rank": 8,
         "name": "firecrawl",
         "author": "firecrawl",
         "url": "https://github.com/firecrawl/firecrawl",
         "description": "🔥 The Web Data API for AI - Turn entire websites into LLM-ready markdown or structured data",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 70846,
+        "stars": 70860,
         "forks": 5557,
-        "starsThisWeek": 70846,
+        "starsThisWeek": 70860,
         "builtBy": [
           {
             "username": "firecrawl",
@@ -271,45 +157,7 @@
         ]
       },
       {
-        "rank": 15,
-        "name": "superset",
-        "author": "apache",
-        "url": "https://github.com/apache/superset",
-        "description": "Apache Superset is a Data Visualization and Data Exploration Platform",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 69522,
-        "forks": 16359,
-        "starsThisWeek": 69522,
-        "builtBy": [
-          {
-            "username": "apache",
-            "avatar": "https://avatars.githubusercontent.com/u/47359?v=4",
-            "url": "https://github.com/apache"
-          }
-        ]
-      },
-      {
-        "rank": 16,
-        "name": "lobe-chat",
-        "author": "lobehub",
-        "url": "https://github.com/lobehub/lobe-chat",
-        "description": "🤯 LobeHub - an open-source, modern design AI Agent Workspace. Supports multiple AI providers, Knowledge Base (file upload / RAG ), one click install MCP Marketplace and Artifacts / Thinking. One-click FREE deployment of your private AI Agent application.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 69376,
-        "forks": 14280,
-        "starsThisWeek": 69376,
-        "builtBy": [
-          {
-            "username": "lobehub",
-            "avatar": "https://avatars.githubusercontent.com/u/131470832?v=4",
-            "url": "https://github.com/lobehub"
-          }
-        ]
-      },
-      {
-        "rank": 17,
+        "rank": 9,
         "name": "astro",
         "author": "withastro",
         "url": "https://github.com/withastro/astro",
@@ -328,16 +176,16 @@
         ]
       },
       {
-        "rank": 18,
+        "rank": 10,
         "name": "appwrite",
         "author": "appwrite",
         "url": "https://github.com/appwrite/appwrite",
         "description": "Appwrite® - The developers' cloud",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 54013,
+        "stars": 54014,
         "forks": 4890,
-        "starsThisWeek": 54013,
+        "starsThisWeek": 54014,
         "builtBy": [
           {
             "username": "appwrite",
@@ -347,7 +195,7 @@
         ]
       },
       {
-        "rank": 19,
+        "rank": 11,
         "name": "joplin",
         "author": "laurent22",
         "url": "https://github.com/laurent22/joplin",
@@ -366,7 +214,7 @@
         ]
       },
       {
-        "rank": 20,
+        "rank": 12,
         "name": "core",
         "author": "vuejs",
         "url": "https://github.com/vuejs/core",
@@ -385,16 +233,16 @@
         ]
       },
       {
-        "rank": 21,
+        "rank": 13,
         "name": "memos",
         "author": "usememos",
         "url": "https://github.com/usememos/memos",
         "description": "An open-source, self-hosted note-taking service. Your thoughts, your data, your control — no tracking, no ads, no subscription fees.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 47427,
+        "stars": 47429,
         "forks": 3424,
-        "starsThisWeek": 47427,
+        "starsThisWeek": 47429,
         "builtBy": [
           {
             "username": "usememos",
@@ -404,35 +252,16 @@
         ]
       },
       {
-        "rank": 22,
-        "name": "Rocket.Chat",
-        "author": "RocketChat",
-        "url": "https://github.com/RocketChat/Rocket.Chat",
-        "description": "The communications platform that puts data protection first.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 44155,
-        "forks": 12733,
-        "starsThisWeek": 44155,
-        "builtBy": [
-          {
-            "username": "RocketChat",
-            "avatar": "https://avatars.githubusercontent.com/u/12508788?v=4",
-            "url": "https://github.com/RocketChat"
-          }
-        ]
-      },
-      {
-        "rank": 23,
+        "rank": 14,
         "name": "awesome-compose",
         "author": "docker",
         "url": "https://github.com/docker/awesome-compose",
         "description": "Awesome Docker Compose samples",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 43047,
-        "forks": 7922,
-        "starsThisWeek": 43047,
+        "stars": 43049,
+        "forks": 7923,
+        "starsThisWeek": 43049,
         "builtBy": [
           {
             "username": "docker",
@@ -442,40 +271,211 @@
         ]
       },
       {
-        "rank": 24,
-        "name": "opencode",
-        "author": "sst",
-        "url": "https://github.com/sst/opencode",
-        "description": "The open source coding agent.",
+        "rank": 15,
+        "name": "RSSHub",
+        "author": "DIYgod",
+        "url": "https://github.com/DIYgod/RSSHub",
+        "description": "🧡 Everything is RSSible",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 41642,
-        "forks": 3551,
-        "starsThisWeek": 41642,
+        "stars": 40657,
+        "forks": 8903,
+        "starsThisWeek": 40657,
         "builtBy": [
           {
-            "username": "sst",
-            "avatar": "https://avatars.githubusercontent.com/u/66570915?v=4",
-            "url": "https://github.com/sst"
+            "username": "DIYgod",
+            "avatar": "https://avatars.githubusercontent.com/u/8266075?v=4",
+            "url": "https://github.com/DIYgod"
+          }
+        ]
+      },
+      {
+        "rank": 16,
+        "name": "siyuan",
+        "author": "siyuan-note",
+        "url": "https://github.com/siyuan-note/siyuan",
+        "description": "A privacy-first, self-hosted, fully open source personal knowledge management software, written in typescript and golang.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 40036,
+        "forks": 2480,
+        "starsThisWeek": 40036,
+        "builtBy": [
+          {
+            "username": "siyuan-note",
+            "avatar": "https://avatars.githubusercontent.com/u/70468694?v=4",
+            "url": "https://github.com/siyuan-note"
+          }
+        ]
+      },
+      {
+        "rank": 17,
+        "name": "jan",
+        "author": "janhq",
+        "url": "https://github.com/janhq/jan",
+        "description": "Jan is an open source alternative to ChatGPT that runs 100% offline on your computer.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 39844,
+        "forks": 2453,
+        "starsThisWeek": 39844,
+        "builtBy": [
+          {
+            "username": "janhq",
+            "avatar": "https://avatars.githubusercontent.com/u/102363196?v=4",
+            "url": "https://github.com/janhq"
+          }
+        ]
+      },
+      {
+        "rank": 18,
+        "name": "bruno",
+        "author": "usebruno",
+        "url": "https://github.com/usebruno/bruno",
+        "description": "Opensource IDE For Exploring and Testing API's (lightweight alternative to Postman/Insomnia)",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 39426,
+        "forks": 2023,
+        "starsThisWeek": 39426,
+        "builtBy": [
+          {
+            "username": "usebruno",
+            "avatar": "https://avatars.githubusercontent.com/u/114530840?v=4",
+            "url": "https://github.com/usebruno"
+          }
+        ]
+      },
+      {
+        "rank": 19,
+        "name": "cal.com",
+        "author": "calcom",
+        "url": "https://github.com/calcom/cal.com",
+        "description": "Scheduling infrastructure for absolutely everyone.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 39402,
+        "forks": 11368,
+        "starsThisWeek": 39402,
+        "builtBy": [
+          {
+            "username": "calcom",
+            "avatar": "https://avatars.githubusercontent.com/u/79145102?v=4",
+            "url": "https://github.com/calcom"
+          }
+        ]
+      },
+      {
+        "rank": 20,
+        "name": "puter",
+        "author": "HeyPuter",
+        "url": "https://github.com/HeyPuter/puter",
+        "description": "🌐 The Internet Computer! Free, Open-Source, and Self-Hostable.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 38124,
+        "forks": 3320,
+        "starsThisWeek": 38124,
+        "builtBy": [
+          {
+            "username": "HeyPuter",
+            "avatar": "https://avatars.githubusercontent.com/u/103972607?v=4",
+            "url": "https://github.com/HeyPuter"
+          }
+        ]
+      },
+      {
+        "rank": 21,
+        "name": "ant-design-pro",
+        "author": "ant-design",
+        "url": "https://github.com/ant-design/ant-design-pro",
+        "description": "👨🏻‍💻👩🏻‍💻 Use Ant Design like a Pro!",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 37780,
+        "forks": 8232,
+        "starsThisWeek": 37780,
+        "builtBy": [
+          {
+            "username": "ant-design",
+            "avatar": "https://avatars.githubusercontent.com/u/12101536?v=4",
+            "url": "https://github.com/ant-design"
+          }
+        ]
+      },
+      {
+        "rank": 22,
+        "name": "twenty",
+        "author": "twentyhq",
+        "url": "https://github.com/twentyhq/twenty",
+        "description": "Building a modern alternative to Salesforce, powered by the community.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 37652,
+        "forks": 4790,
+        "starsThisWeek": 37652,
+        "builtBy": [
+          {
+            "username": "twentyhq",
+            "avatar": "https://avatars.githubusercontent.com/u/119600397?v=4",
+            "url": "https://github.com/twentyhq"
+          }
+        ]
+      },
+      {
+        "rank": 23,
+        "name": "netron",
+        "author": "lutzroeder",
+        "url": "https://github.com/lutzroeder/netron",
+        "description": "Visualizer for neural network, deep learning and machine learning models",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 32074,
+        "forks": 3050,
+        "starsThisWeek": 32074,
+        "builtBy": [
+          {
+            "username": "lutzroeder",
+            "avatar": "https://avatars.githubusercontent.com/u/438516?v=4",
+            "url": "https://github.com/lutzroeder"
+          }
+        ]
+      },
+      {
+        "rank": 24,
+        "name": "homepage",
+        "author": "gethomepage",
+        "url": "https://github.com/gethomepage/homepage",
+        "description": "A highly customizable homepage (or startpage / application dashboard) with Docker and service API integrations.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 27390,
+        "forks": 1727,
+        "starsThisWeek": 27390,
+        "builtBy": [
+          {
+            "username": "gethomepage",
+            "avatar": "https://avatars.githubusercontent.com/u/122929872?v=4",
+            "url": "https://github.com/gethomepage"
           }
         ]
       },
       {
         "rank": 25,
-        "name": "uni-app",
-        "author": "dcloudio",
-        "url": "https://github.com/dcloudio/uni-app",
-        "description": "A cross-platform framework using Vue.js",
+        "name": "live",
+        "author": "fanmingming",
+        "url": "https://github.com/fanmingming/live",
+        "description": "✯ 可直连访问的电视/广播图标库与相关工具项目 ✯ 🔕 永久免费 直连访问 完整开源 不断完善的台标 支持IPv4/IPv6双栈访问 🔕",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 41328,
-        "forks": 3716,
-        "starsThisWeek": 41328,
+        "stars": 26922,
+        "forks": 4060,
+        "starsThisWeek": 26922,
         "builtBy": [
           {
-            "username": "dcloudio",
-            "avatar": "https://avatars.githubusercontent.com/u/5485517?v=4",
-            "url": "https://github.com/dcloudio"
+            "username": "fanmingming",
+            "avatar": "https://avatars.githubusercontent.com/u/4993993?v=4",
+            "url": "https://github.com/fanmingming"
           }
         ]
       }

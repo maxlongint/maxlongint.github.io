@@ -11,7 +11,7 @@ const token = process.env.GITHUB_TOKEN;
 
 // GitHub Trending API （使用更可靠的第三方服务）
 // 前端相关语言：JavaScript, TypeScript, HTML, CSS
-const TRENDING_LANGUAGES = ['javascript', 'html', 'css'];
+const TRENDING_LANGUAGES = ['javascript', 'typescript', 'html', 'css'];
 // 使用 GitHub Trending API by huchenme
 const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
@@ -187,7 +187,8 @@ async function fetchGitHubTrending(language) {
     yesterday.setDate(yesterday.getDate() - 1);
     const since = yesterday.toISOString().split('T')[0];
 
-    // GitHub Search API - 搜索最近更新且 Stars 高的项目
+    // 排除非前端相关的关键词（仅在最终结果过滤，不在 API 查询中排除）
+    // GitHub Search API - 搜索最近更新且 Stars 高的前端项目
     const query = `language:${language} pushed:>${since} stars:>50`;
     const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(
         query
@@ -285,8 +286,62 @@ async function fetchTrending() {
 
         console.log(`📊 去重后: ${uniqueRepos.length} 个唯一仓库`);
 
+        // 过滤掉非纯前端项目
+        const frontendKeywords = [
+            'react',
+            'vue',
+            'angular',
+            'svelte',
+            'next',
+            'nuxt',
+            'vite',
+            'webpack',
+            'ui',
+            'component',
+            'design',
+            'css',
+            'tailwind',
+            'animation',
+            'chart',
+            'visualization',
+            'three',
+            'canvas',
+            'webgl',
+            'pwa',
+            'responsive',
+        ];
+
+        const excludeKeywords = [
+            'workflow',
+            'automation',
+            'agent',
+            'platform',
+            'backend',
+            'server',
+            'database',
+            'deployment',
+            'devops',
+            'monitoring',
+            'observability',
+        ];
+
+        const filteredRepos = uniqueRepos.filter(repo => {
+            const text = `${repo.name} ${repo.description}`.toLowerCase();
+
+            // 检查是否包含排除关键词
+            const hasExcludeKeyword = excludeKeywords.some(keyword => text.includes(keyword));
+            if (hasExcludeKeyword) {
+                console.log(`  ⊗ 排除: ${repo.author}/${repo.name} (包含非前端关键词)`);
+                return false;
+            }
+
+            return true;
+        });
+
+        console.log(`🎯 过滤后: ${filteredRepos.length} 个前端项目`);
+
         // 按 Stars 排序并取前 25 个
-        const sortedRepos = uniqueRepos.sort((a, b) => b.stars - a.stars).slice(0, 25);
+        const sortedRepos = filteredRepos.sort((a, b) => b.stars - a.stars).slice(0, 25);
 
         // 转换数据格式
         const { weekStart, weekEnd } = getDailyRange();
