@@ -12,6 +12,7 @@
 ### 核心功能
 
 -   🔍 **智能搜索**: 支持按标题、描述、URL、标签进行全文搜索，快速定位所需工具
+-   📈 **每周趋势**: 自动抓取 GitHub Trending 前端项目，每周一更新
 -   🏷️ **标签筛选**: 60+ 技术标签分类，一键筛选特定领域的工具
 -   📊 **多维度排序**: 支持默认、名称、Stars、更新日期等多种排序方式
 -   📱 **响应式设计**: 完美适配桌面端和移动端，提供一致的浏览体验
@@ -54,6 +55,8 @@
 ### Markdown 渲染
 
 -   **Marked** 17.0.1 - GitHub README 内容渲染
+-   **Highlight.js** 11.11.1 - 代码语法高亮
+-   **github-markdown-css** - GitHub 风格样式
 
 ### 代码质量
 
@@ -105,6 +108,9 @@ npm run preview
 ```bash
 # 运行 ESLint 检查
 npm run lint
+
+# 抓取 GitHub Trending 数据
+npm run fetch-trending
 ```
 
 ## 📁 项目结构
@@ -112,10 +118,14 @@ npm run lint
 ```
 .
 ├── public/                    # 静态资源
+│   ├── github-stats.json      # GitHub 仓库统计数据
+│   ├── github-readmes.json    # GitHub README 内容
+│   ├── trending.json          # GitHub Trending 数据
 │   ├── robots.txt            # SEO 爬虫协议
 │   └── sitemap.xml           # 站点地图
 ├── scripts/                   # 脚本文件
-│   └── update-github-data.js # GitHub 数据更新脚本
+│   ├── update-github-data.js # GitHub 数据更新脚本
+│   └── fetch-trending.js     # Trending 数据抓取脚本
 ├── src/
 │   ├── components/           # React 组件
 │   │   ├── BookmarkCard.tsx   # 书签卡片组件
@@ -131,6 +141,7 @@ npm run lint
 │   │   └── bookmarks.json    # 书签数据（500+ 前端工具）
 │   ├── pages/                # 页面组件
 │   │   ├── Home.tsx          # 首页（书签列表）
+│   │   ├── Trending.tsx      # 每周趋势页面
 │   │   └── BookmarkDetail.tsx # 书签详情页
 │   ├── types/                # TypeScript 类型定义
 │   │   └── index.ts          # 通用类型
@@ -141,11 +152,62 @@ npm run lint
 │   └── vite-env.d.ts         # Vite 类型定义
 ├── .github/
 │   └── workflows/            # GitHub Actions 工作流
+│       ├── deploy.yml        # 部署工作流
+│       └── update-trending.yml # Trending 更新工作流
 ├── index.html                # HTML 模板
 ├── vite.config.ts            # Vite 配置
 ├── tailwind.config.ts        # Tailwind CSS 配置
 ├── tsconfig.json             # TypeScript 配置
 └── package.json              # 项目依赖
+```
+
+## 📊 每周趋势功能
+
+### 自动抓取 GitHub Trending
+
+项目配置了自动抓取 GitHub Trending 数据的功能：
+
+-   ⏰ **定时更新**: 每周一 UTC 0:00 自动抓取最新数据
+-   🌍 **多语言支持**: 支持 JavaScript, TypeScript, Vue, HTML, CSS 等前端相关语言
+-   🔝 **智能去重**: 自动去除重复项目，按本周 Stars 增量排序
+-   🏆 **Top 25 精选**: 每周展示 25 个最热门前端项目
+-   💾 **自动同步**: 数据更新后自动提交到仓库
+
+### 手动抓取
+
+```bash
+# 抓取最新 Trending 数据
+npm run fetch-trending
+```
+
+### 数据结构
+
+生成的 `public/trending.json` 包含：
+
+```json
+{
+    "updated_at": "2025-12-24T03:34:10.064Z",
+    "data": {
+        "weekStart": "2025-12-22",
+        "weekEnd": "2025-12-28",
+        "repos": [
+            {
+                "rank": 1,
+                "name": "项目名称",
+                "author": "作者",
+                "url": "GitHub URL",
+                "description": "项目描述",
+                "language": "编程语言",
+                "stars": 85432,
+                "forks": 4521,
+                "starsThisWeek": 1234,
+                "builtBy": [
+                    /* 贡献者列表 */
+                ]
+            }
+        ]
+    }
+}
 ```
 
 ## 📝 数据管理
@@ -178,7 +240,10 @@ npm run lint
 
 ### GitHub 数据自动更新
 
-项目配置了 GitHub Actions，每天 UTC 0:00 自动更新 GitHub 仓库的 Stars、更新时间等数据。
+项目配置了 GitHub Actions，定时更新以下数据：
+
+-   **GitHub Stats**: 每日 UTC 0:00 自动更新仓库 Stars、更新时间等数据
+-   **GitHub Trending**: 每周一 UTC 0:00 自动抓取本周热门项目
 
 ## 📊 性能优化
 

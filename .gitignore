@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# TypeScript
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -30,3 +33,4 @@ dist-ssr
 # GitHub API 缓存数据（每天自动生成）
 public/github-stats.json
 public/github-readmes.json
+public/trending.json
