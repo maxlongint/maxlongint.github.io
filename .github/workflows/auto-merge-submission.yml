@@ -34,8 +34,8 @@ jobs:
                   EOF
                   )
 
-                  # 创建解析脚本
-                  cat > parse-issue.js << 'SCRIPT_END'
+                  # 创建解析脚本（使用 .cjs 扩展名以支持 CommonJS）
+                  cat > parse-issue.cjs << 'SCRIPT_END'
                   const fs = require('fs');
                   const issueBody = process.env.ISSUE_BODY;
 
@@ -134,7 +134,7 @@ jobs:
                   SCRIPT_END
 
                   # 运行解析脚本
-                  ISSUE_BODY="$ISSUE_BODY" node parse-issue.js
+                  ISSUE_BODY="$ISSUE_BODY" node parse-issue.cjs
               env:
                   ISSUE_BODY: ${{ github.event.issue.body }}
 
