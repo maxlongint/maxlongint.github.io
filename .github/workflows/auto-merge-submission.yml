@@ -12,11 +12,10 @@ on:
 
 jobs:
     merge-submission:
-        # 只在 Issue 被标记为 "收录通过" 或 "approved" 时运行（或手动触发时）
+        # 只在正确的事件下运行
         if: |
-            github.event_name == 'workflow_dispatch' || 
-            contains(github.event.issue.labels.*.name, '收录通过') || 
-            contains(github.event.issue.labels.*.name, 'approved')
+            (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, '收录通过') || contains(github.event.issue.labels.*.name, 'approved'))) ||
+            github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
 
         permissions:
