@@ -57,9 +57,9 @@ function Trending() {
                             {trendingData &&
                                 `${formatDate(trendingData.weekStart)} - ${formatDate(trendingData.weekEnd)}`}
                         </div>
-                        <h1 className="text-5xl font-bold text-gray-900 mb-4">每周前端趋势</h1>
+                        <h1 className="text-5xl font-bold text-gray-900 mb-4">今日前端趋势</h1>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            本周最热门的前端工具和项目，从 GitHub Trending 精选而来。
+                            今天最热门的前端工具和项目，从 GitHub Trending 精选而来。
                         </p>
                     </div>
                 </div>
@@ -69,7 +69,7 @@ function Trending() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">
-                        本周最热 {trendingData?.repos.length || 0} 个工具
+                        今日最热 {trendingData?.repos.length || 0} 个工具
                     </h2>
                     <div className="flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden">
                         <button
@@ -171,7 +171,7 @@ function Trending() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span>+{repo.starsThisWeek.toLocaleString()} 本周</span>
+                                        <span>+{repo.starsThisWeek.toLocaleString()} 今日</span>
                                     </div>
                                 </div>
 

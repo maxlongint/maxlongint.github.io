@@ -16,21 +16,11 @@ const TRENDING_LANGUAGES = ['javascript', 'typescript', 'html', 'css'];
 const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
 /**
- * 获取当前周的开始和结束日期
+ * 获取当前日期（用于每日趋势）
  */
-function getWeekRange() {
+function getDailyRange() {
     const now = new Date();
-    const dayOfWeek = now.getDay();
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // 周一为起始
-
-    const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() + diff);
-    weekStart.setHours(0, 0, 0, 0);
-
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
-    weekEnd.setHours(23, 59, 59, 999);
-
+    
     // 使用本地日期而不是 UTC
     const formatDate = date => {
         const year = date.getFullYear();
@@ -39,9 +29,11 @@ function getWeekRange() {
         return `${year}-${month}-${day}`;
     };
 
+    const today = formatDate(now);
+    
     return {
-        weekStart: formatDate(weekStart),
-        weekEnd: formatDate(weekEnd),
+        weekStart: today,  // 复用字段名，以保持数据结构一致
+        weekEnd: today,
     };
 }
 
@@ -117,7 +109,7 @@ function saveData(trendingData) {
  */
 function generateMockData() {
     console.log('📝 生成模拟 Trending 数据...');
-    const { weekStart, weekEnd } = getWeekRange();
+    const { weekStart, weekEnd } = getDailyRange();
     const mockData = {
         weekStart,
         weekEnd,
@@ -186,16 +178,17 @@ function generateMockData() {
 }
 
 /**
- * 使用 GitHub Search API 获取近期热门仓库
+ * 使用 GitHub Search API 获取每日热门仓库
+ * 策略：搜索最近推送更新且 Stars 数量高的项目
  */
 async function fetchGitHubTrending(language) {
-    // 计算 7 天前的日期
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    const since = weekAgo.toISOString().split('T')[0];
+    // 计算 1 天前的日期（搜索最近有更新的项目）
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const since = yesterday.toISOString().split('T')[0];
 
-    // GitHub Search API
-    const query = `language:${language} created:>${since} stars:>10`;
+    // GitHub Search API - 搜索最近更新且 Stars 高的项目
+    const query = `language:${language} pushed:>${since} stars:>50`;
     const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(
         query
     )}&sort=stars&order=desc&per_page=30`;
@@ -230,7 +223,7 @@ async function fetchGitHubTrending(language) {
                             languageColor: getLanguageColor(repo.language || language),
                             stars: repo.stargazers_count,
                             forks: repo.forks_count,
-                            starsThisWeek: repo.stargazers_count, // 近期 stars
+                            starsThisWeek: repo.stargazers_count, // 总 Stars（实际增量需要额外 API）
                             builtBy: [
                                 {
                                     username: repo.owner.login,
@@ -296,7 +289,7 @@ async function fetchTrending() {
         const sortedRepos = uniqueRepos.sort((a, b) => b.stars - a.stars).slice(0, 25);
 
         // 转换数据格式
-        const { weekStart, weekEnd } = getWeekRange();
+        const { weekStart, weekEnd } = getDailyRange();
         const trendingData = {
             weekStart,
             weekEnd,
