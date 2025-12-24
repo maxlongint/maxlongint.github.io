@@ -1,5 +1,6 @@
 name: Auto Merge Submission
 
+# 工具自动收录工作流（手动触发）
 on:
     workflow_dispatch:
         inputs:
