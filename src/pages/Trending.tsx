@@ -42,7 +42,7 @@ function Trending() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
             <Header onOpenComments={() => {}} isFixed={false} searchQuery="" setSearchQuery={() => {}} />
 
@@ -59,7 +59,7 @@ function Trending() {
             </div>
 
             {/* Trending 列表 */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">
                         今日最热 {trendingData?.repos.length || 0} 个工具
