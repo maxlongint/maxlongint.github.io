@@ -11,7 +11,7 @@ const token = process.env.GITHUB_TOKEN;
 
 // GitHub Trending API （使用更可靠的第三方服务）
 // 前端相关语言：JavaScript, TypeScript, HTML, CSS
-const TRENDING_LANGUAGES = ['javascript', 'typescript', 'html', 'css'];
+const TRENDING_LANGUAGES = ['javascript', 'html', 'css'];
 // 使用 GitHub Trending API by huchenme
 const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
@@ -20,7 +20,7 @@ const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
  */
 function getDailyRange() {
     const now = new Date();
-    
+
     // 使用本地日期而不是 UTC
     const formatDate = date => {
         const year = date.getFullYear();
@@ -30,9 +30,9 @@ function getDailyRange() {
     };
 
     const today = formatDate(now);
-    
+
     return {
-        weekStart: today,  // 复用字段名，以保持数据结构一致
+        weekStart: today, // 复用字段名，以保持数据结构一致
         weekEnd: today,
     };
 }
