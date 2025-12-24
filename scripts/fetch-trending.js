@@ -6,19 +6,14 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 从环境变量获取 Token
+// 从环境变量获取 Token（Trending API 不需要，但保留以便未来扩展）
 const token = process.env.GITHUB_TOKEN;
 
-if (!token) {
-    console.log('⚠️  No GitHub token found, using mock data');
-    generateMockData();
-    process.exit(0);
-}
-
-// GitHub Trending API (使用第三方代理服务)
-// 前端相关语言：JavaScript, TypeScript, Vue, HTML, CSS
+// GitHub Trending API （使用更可靠的第三方服务）
+// 前端相关语言：JavaScript, TypeScript, HTML, CSS
 const TRENDING_LANGUAGES = ['javascript', 'typescript', 'html', 'css'];
-const TRENDING_API_BASE = 'https://api.gitterapp.com/repositories';
+// 使用 GitHub Trending API by huchenme
+const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
 /**
  * 获取当前周的开始和结束日期
@@ -191,30 +186,69 @@ function generateMockData() {
 }
 
 /**
- * 抓取多个语言的 Trending 数据并合并
+ * 使用 GitHub Search API 获取近期热门仓库
  */
-async function fetchMultiLanguageTrending() {
-    const allRepos = [];
+async function fetchGitHubTrending(language) {
+    // 计算 7 天前的日期
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const since = weekAgo.toISOString().split('T')[0];
 
-    for (const language of TRENDING_LANGUAGES) {
-        try {
-            const url = `${TRENDING_API_BASE}?language=${language}&since=weekly`;
-            console.log(`📡 抓取 ${language} trending...`);
+    // GitHub Search API
+    const query = `language:${language} created:>${since} stars:>10`;
+    const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(
+        query
+    )}&sort=stars&order=desc&per_page=30`;
 
-            const rawData = await httpsGet(url);
-            const repos = JSON.parse(rawData);
+    const headers = {
+        'User-Agent': 'Mozilla/5.0',
+        Accept: 'application/vnd.github.v3+json',
+    };
 
-            console.log(`  ✓ ${language}: ${repos.length} 个仓库`);
-            allRepos.push(...repos);
-
-            // 避免触发 API 限流
-            await delay(500);
-        } catch (error) {
-            console.warn(`  ✗ ${language} 抓取失败:`, error.message);
-        }
+    if (token) {
+        headers.Authorization = `token ${token}`;
     }
 
-    return allRepos;
+    return new Promise((resolve, reject) => {
+        https
+            .get(url, { headers }, res => {
+                let data = '';
+                res.on('data', chunk => {
+                    data += chunk;
+                });
+                res.on('end', () => {
+                    if (res.statusCode === 200) {
+                        const result = JSON.parse(data);
+                        // 转换为统一格式
+                        const repos = result.items.map((repo, index) => ({
+                            rank: index + 1,
+                            name: repo.name,
+                            author: repo.owner.login,
+                            url: repo.html_url,
+                            description: repo.description || '暂无描述',
+                            language: repo.language || language,
+                            languageColor: getLanguageColor(repo.language || language),
+                            stars: repo.stargazers_count,
+                            forks: repo.forks_count,
+                            starsThisWeek: repo.stargazers_count, // 近期 stars
+                            builtBy: [
+                                {
+                                    username: repo.owner.login,
+                                    avatar: repo.owner.avatar_url,
+                                    url: repo.owner.html_url,
+                                },
+                            ],
+                        }));
+                        resolve(repos);
+                    } else if (res.statusCode === 403) {
+                        reject(new Error('API 频率限制，请配置 GITHUB_TOKEN'));
+                    } else {
+                        reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+                    }
+                });
+            })
+            .on('error', reject);
+    });
 }
 
 /**
@@ -226,15 +260,29 @@ async function fetchTrending() {
         console.log(`🔑 Token available: ${!!token}`);
         console.log(`📚 语言范围: ${TRENDING_LANGUAGES.join(', ')}\n`);
 
-        const repos = await fetchMultiLanguageTrending();
+        const allRepos = [];
 
-        console.log(`\n✅ 总共获取 ${repos.length} 个仓库`);
+        // 逐个语言抓取
+        for (const language of TRENDING_LANGUAGES) {
+            try {
+                console.log(`📡 抓取 ${language} trending...`);
+                const repos = await fetchGitHubTrending(language);
+                console.log(`  ✓ ${language}: ${repos.length} 个仓库`);
+                allRepos.push(...repos);
+                // 避免 API 限流
+                await delay(1000);
+            } catch (error) {
+                console.warn(`  ✗ ${language} 抓取失败:`, error.message);
+            }
+        }
+
+        console.log(`\n✅ 总共获取 ${allRepos.length} 个仓库`);
 
         // 去重（同一个仓库可能在多个语言分类中出现）
         const uniqueRepos = [];
         const seen = new Set();
 
-        for (const repo of repos) {
+        for (const repo of allRepos) {
             const key = `${repo.author}/${repo.name}`;
             if (!seen.has(key)) {
                 seen.add(key);
@@ -244,10 +292,8 @@ async function fetchTrending() {
 
         console.log(`📊 去重后: ${uniqueRepos.length} 个唯一仓库`);
 
-        // 按本周 Stars 排序并取前 25 个
-        const sortedRepos = uniqueRepos
-            .sort((a, b) => (b.currentPeriodStars || 0) - (a.currentPeriodStars || 0))
-            .slice(0, 25);
+        // 按 Stars 排序并取前 25 个
+        const sortedRepos = uniqueRepos.sort((a, b) => b.stars - a.stars).slice(0, 25);
 
         // 转换数据格式
         const { weekStart, weekEnd } = getWeekRange();
@@ -255,21 +301,8 @@ async function fetchTrending() {
             weekStart,
             weekEnd,
             repos: sortedRepos.map((repo, index) => ({
+                ...repo,
                 rank: index + 1,
-                name: repo.name,
-                author: repo.author,
-                url: repo.url,
-                description: repo.description || 'No description provided',
-                language: repo.language || 'Unknown',
-                languageColor: getLanguageColor(repo.language),
-                stars: repo.stars,
-                forks: repo.forks,
-                starsThisWeek: repo.currentPeriodStars || 0,
-                builtBy: (repo.builtBy || []).map(user => ({
-                    username: user.username,
-                    avatar: user.avatar,
-                    url: user.href,
-                })),
             })),
         };
 
