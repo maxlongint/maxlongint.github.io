@@ -71,109 +71,15 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Markdown/Prose 样式 */
-.prose {
-    max-width: none;
+/* GitHub Markdown 样式覆盖 */
+
+/* 代码高亮样式 - 使用GitHub Dark主题 */
+.markdown-body pre {
+    background-color: #0d1117 !important;
 }
 
-/* GitHub风格的Markdown样式 */
-.prose h1 {
-    font-size: 2em;
-    font-weight: 700;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-    line-height: 1.2;
-    color: #1f2937;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 0.3em;
-}
-
-.prose h2 {
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-    line-height: 1.3;
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 0.3em;
-}
-
-.prose h3 {
-    font-size: 1.25em;
-    font-weight: 600;
-    margin-top: 1.25em;
-    margin-bottom: 0.5em;
-    line-height: 1.4;
-    color: #4b5563;
-}
-
-.prose h4 {
-    font-size: 1.1em;
-    font-weight: 600;
-    margin-top: 1.25em;
-    margin-bottom: 0.5em;
-    line-height: 1.4;
-    color: #4b5563;
-}
-
-.prose p {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    line-height: 1.75;
-    color: #4b5563;
-}
-
-.prose a {
-    color: #3b82f6;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.prose a:hover {
-    text-decoration: underline;
-}
-
-.prose code {
-    background-color: #f3f4f6;
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    color: #1f2937;
-    border: 1px solid #e5e7eb;
-}
-
-.prose pre {
-    background-color: #0d1117;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    border: none;
-}
-
-.prose pre code {
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    font-size: 0.875em;
-    /* 移除所有颜色设置，让highlight.js完全控制 */
-}
-
-/* highlight.js 代码高亮样式 - 最高优先级 */
-.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 0;
-    background: transparent !important;
-}
-
-/* 强制让hljs的颜色生效 */
-.prose pre code.hljs,
-.prose pre code[class*='hljs'] {
-    color: #c9d1d9 !important;
+.markdown-body pre code {
+    background-color: transparent !important;
 }
 
 /* hljs语法元素的颜色 */
@@ -238,110 +144,113 @@ body {
     color: #79c0ff !important;
 }
 
-.prose ul,
-.prose ol {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding-left: 1.625em;
-}
-
-.prose li {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    line-height: 1.75;
-    color: #4b5563;
-}
-
-.prose blockquote {
-    border-left: 4px solid #e5e7eb;
-    padding-left: 1em;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    font-style: italic;
-    color: #6b7280;
-    background-color: #f9fafb;
-    padding: 1rem 1rem 1rem 1.25rem;
-    border-left-color: #3b82f6;
-}
-
-.prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    border: 1px solid #e5e7eb;
-}
-
-.prose th,
-.prose td {
-    border: 1px solid #e5e7eb;
-    padding: 0.5rem 1rem;
-    text-align: left;
-}
-
-.prose th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.prose td {
-    color: #4b5563;
-}
-
-.prose img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-}
-
-/* 徽章图片不应用通用图片样式 */
-.prose img[src*='shields.io'],
-.prose img[src*='coveralls.io'],
-.prose img[src*='badge'] {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    border-radius: 0 !important;
-}
-
-.prose hr {
-    border: none;
-    border-top: 1px solid #e5e7eb;
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
 /* 徽章样式 - 与 GitHub 保持一致 */
-.prose img[alt*='badge' i],
-.prose img[src*='shields.io'],
-.prose img[src*='img.shields.io'],
-.prose img[src*='coveralls.io'],
-.prose img[src*='badge.svg'],
-.prose a > img[src*='shields.io'],
-.prose a > img[src*='img.shields.io'],
-.prose a > img[src*='coveralls.io'],
-.prose a > img[src*='badge.svg'] {
+/* 所有徽章图片（直接img标签或a标签内的img） */
+.markdown-body img[alt*='badge' i],
+.markdown-body img[alt*='size' i],
+.markdown-body img[src*='shields.io'],
+.markdown-body img[src*='img.shields.io'],
+.markdown-body img[src*='coveralls.io'],
+.markdown-body img[src*='badgen.net'],
+.markdown-body img[src*='packagephobia'],
+.markdown-body img[src*='bundlephobia'],
+.markdown-body img[src*='badge.svg'],
+.markdown-body img[src*='badge'],
+.markdown-body a > img[alt*='badge' i],
+.markdown-body a > img[alt*='size' i],
+.markdown-body a > img[src*='shields.io'],
+.markdown-body a > img[src*='img.shields.io'],
+.markdown-body a > img[src*='coveralls.io'],
+.markdown-body a > img[src*='badgen.net'],
+.markdown-body a > img[src*='packagephobia'],
+.markdown-body a > img[src*='bundlephobia'],
+.markdown-body a > img[src*='badge.svg'],
+.markdown-body a > img[src*='badge'] {
     display: inline-block !important;
-    vertical-align: middle;
-    margin: 2px 4px !important;
+    vertical-align: middle !important;
+    margin: 1px 0.5px !important;
     height: 20px !important;
+    width: auto !important;
+    border-radius: 3px !important;
+}
+
+/* 包含徽章的链接也要inline */
+.markdown-body a:has(img[alt*='badge' i]),
+.markdown-body a:has(img[alt*='size' i]),
+.markdown-body a:has(img[src*='shields.io']),
+.markdown-body a:has(img[src*='coveralls.io']),
+.markdown-body a:has(img[src*='badgen.net']),
+.markdown-body a:has(img[src*='packagephobia']),
+.markdown-body a:has(img[src*='bundlephobia']),
+.markdown-body a:has(img[src*='badge']) {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin: 0 0.5px !important;
+    line-height: 1 !important;
 }
 
 /* 包含徽章的段落保持单行 */
-.prose p > img[src*='shields.io'],
-.prose p > img[src*='coveralls.io'],
-.prose p > a > img[src*='shields.io'],
-.prose p > a > img[src*='coveralls.io'] {
-    display: inline !important;
-    margin: 0 4px 0 0 !important;
+.markdown-body p > img[alt*='badge' i],
+.markdown-body p > img[alt*='size' i],
+.markdown-body p > img[src*='shields.io'],
+.markdown-body p > img[src*='coveralls.io'],
+.markdown-body p > img[src*='badgen.net'],
+.markdown-body p > img[src*='packagephobia'],
+.markdown-body p > img[src*='bundlephobia'],
+.markdown-body p > img[src*='badge'],
+.markdown-body p > a > img[alt*='badge' i],
+.markdown-body p > a > img[alt*='size' i],
+.markdown-body p > a > img[src*='shields.io'],
+.markdown-body p > a > img[src*='coveralls.io'],
+.markdown-body p > a > img[src*='badgen.net'],
+.markdown-body p > a > img[src*='packagephobia'],
+.markdown-body p > a > img[src*='bundlephobia'],
+.markdown-body p > a > img[src*='badge'] {
+    display: inline-block !important;
+    margin: 0 0.5px !important;
 }
 
 /* 包含徽章图片的段落 */
-.prose p:has(img[src*='shields.io']),
-.prose p:has(img[src*='coveralls.io']) {
-    line-height: 1.5;
+.markdown-body p:has(img[alt*='badge' i]),
+.markdown-body p:has(img[alt*='size' i]),
+.markdown-body p:has(img[src*='shields.io']),
+.markdown-body p:has(img[src*='coveralls.io']),
+.markdown-body p:has(img[src*='badgen.net']),
+.markdown-body p:has(img[src*='packagephobia']),
+.markdown-body p:has(img[src*='bundlephobia']),
+.markdown-body p:has(img[src*='badge']) {
+    line-height: 1.5 !important;
     margin-top: 0.5em !important;
     margin-bottom: 0.5em !important;
+    white-space: nowrap !important;
+    overflow-x: auto !important;
+}
+
+/* 徽章段落中的br标签隐藏 */
+.markdown-body p:has(img[alt*='badge' i]) br,
+.markdown-body p:has(img[alt*='size' i]) br,
+.markdown-body p:has(img[src*='shields.io']) br,
+.markdown-body p:has(img[src*='coveralls.io']) br,
+.markdown-body p:has(img[src*='badgen.net']) br,
+.markdown-body p:has(img[src*='packagephobia']) br,
+.markdown-body p:has(img[src*='bundlephobia']) br,
+.markdown-body p:has(img[src*='badge']) br {
+    display: none !important;
+}
+
+/* GitHub风格的嵌套列表标记 */
+.markdown-body ul {
+    list-style-type: disc !important;
+}
+
+.markdown-body ul ul {
+    list-style-type: circle !important;
+}
+
+.markdown-body ul ul ul {
+    list-style-type: square !important;
+}
+
+.markdown-body ol {
+    list-style-type: decimal !important;
 }

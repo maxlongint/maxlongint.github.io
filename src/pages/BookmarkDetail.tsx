@@ -8,7 +8,10 @@ import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import json from 'highlight.js/lib/languages/json';
 import bash from 'highlight.js/lib/languages/bash';
+import python from 'highlight.js/lib/languages/python';
+import swift from 'highlight.js/lib/languages/swift';
 import 'highlight.js/styles/github-dark.css';
+import 'github-markdown-css/github-markdown.css';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
@@ -26,6 +29,8 @@ hljs.registerLanguage('json', json);
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('shell', bash);
 hljs.registerLanguage('sh', bash);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('swift', swift);
 
 export default function BookmarkDetail() {
     const { id } = useParams<{ id: string }>();
@@ -142,10 +147,24 @@ export default function BookmarkDetail() {
                     headings.forEach((heading, index) => {
                         const level = parseInt(heading.tagName.substring(1));
                         const text = heading.textContent || '';
-                        const id = `heading-${index}`;
 
-                        // 为标题添加 ID
-                        heading.id = id;
+                        // 保留已有的 ID（Markdown 渲染器生成的），如果没有则根据标题文本生成
+                        let id = heading.id;
+                        if (!id) {
+                            // 生成与 GitHub 一致的 ID：小写、空格转连字符、移除特殊字符
+                            id = text
+                                .toLowerCase()
+                                .trim()
+                                .replace(/[^\w\s-]/g, '') // 移除特殊字符
+                                .replace(/\s+/g, '-') // 空格转连字符
+                                .replace(/-+/g, '-'); // 多个连字符合并为一个
+
+                            // 如果生成的ID为空，使用索引作为后备
+                            if (!id) {
+                                id = `heading-${index}`;
+                            }
+                            heading.id = id;
+                        }
 
                         toc.push({ id, text, level });
                     });
@@ -298,14 +317,95 @@ export default function BookmarkDetail() {
                     .split(' ')
                     .filter(c => !c.startsWith('hljs'))
                     .join(' ');
-            });
 
-            // 使用highlightAll自动高亮所有代码块
-            hljs.highlightAll();
+                // 检查是否有语言标识
+                const hasLanguage = el.className
+                    .split(' ')
+                    .some(
+                        c =>
+                            c.startsWith('language-') ||
+                            [
+                                'javascript',
+                                'typescript',
+                                'html',
+                                'css',
+                                'json',
+                                'bash',
+                                'shell',
+                                'sh',
+                                'python',
+                                'swift',
+                                'jsx',
+                                'tsx',
+                                'xml',
+                            ].includes(c)
+                    );
+
+                // 如果没有语言标识，尝试自动检测
+                if (!hasLanguage) {
+                    const result = hljs.highlightAuto(el.textContent || '');
+                    el.innerHTML = result.value;
+                    el.className = `hljs ${result.language || ''}`;
+                } else {
+                    // 有语言标识，使用正常高亮
+                    hljs.highlightElement(el);
+                }
+            });
         }, 150);
 
         return () => clearTimeout(timeoutId);
     }, [readme]);
+
+    // 使用全局事件处理README内部的锚点链接（必须在Router之前拦截）
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const anchor = target.closest('a') as HTMLAnchorElement;
+
+            // 只处理README容器内的链接
+            if (!anchor || !readmeRef.current?.contains(anchor)) {
+                return;
+            }
+
+            const href = anchor.getAttribute('href');
+
+            // 检查是否是锚点链接
+            if (href?.includes('#')) {
+                const hashIndex = href.indexOf('#');
+                const hash = href.substring(hashIndex + 1);
+                const beforeHash = href.substring(0, hashIndex);
+
+                // 如果是纯锚点或当前页面的锚点
+                if (!beforeHash || beforeHash === '' || window.location.hash.includes(beforeHash)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+
+                    if (hash && readmeRef.current) {
+                        const targetElement = readmeRef.current.querySelector(`#${CSS.escape(hash)}`);
+
+                        if (targetElement) {
+                            const yOffset = -100;
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset + yOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth',
+                            });
+                        }
+                    }
+                    return false;
+                }
+            }
+        };
+
+        // 在document上监听，捕获阶段，优先级最高
+        document.addEventListener('click', handleClick, true);
+
+        return () => {
+            document.removeEventListener('click', handleClick, true);
+        };
+    }, []);
 
     // 监听滚动，更新活动标题
     useEffect(() => {
@@ -875,67 +975,55 @@ export default function BookmarkDetail() {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* 右侧浮动目录 - GitHub风格 */}
+                                        {/* 右侧浮动目录 */}
                                         {showToc && tocItems.length > 0 && (
                                             <div className="toc-container float-right w-64 ml-6 mb-4">
                                                 <div className="sticky top-20 bg-white rounded-lg border border-gray-200 p-3">
                                                     <h3 className="text-xs font-semibold text-gray-700 mb-2 px-2">
                                                         目录
                                                     </h3>
-                                                    <nav className="space-y-0 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
+                                                    <nav className="space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
                                                         {tocItems.map((item, index) => (
                                                             <a
                                                                 key={index}
                                                                 href={`#${item.id}`}
                                                                 onClick={e => {
                                                                     e.preventDefault();
-                                                                    document.getElementById(item.id)?.scrollIntoView({
-                                                                        behavior: 'smooth',
-                                                                        block: 'start',
-                                                                    });
+                                                                    const element = readmeRef.current?.querySelector(
+                                                                        `#${item.id}`
+                                                                    );
+                                                                    if (element) {
+                                                                        const yOffset = -100; // 固定头部高度的偏移
+                                                                        const elementPosition =
+                                                                            element.getBoundingClientRect().top;
+                                                                        const offsetPosition =
+                                                                            elementPosition +
+                                                                            window.pageYOffset +
+                                                                            yOffset;
+                                                                        window.scrollTo({
+                                                                            top: offsetPosition,
+                                                                            behavior: 'smooth',
+                                                                        });
+                                                                    }
                                                                 }}
-                                                                className={`flex items-start gap-2 py-1.5 px-2 rounded transition-colors ${
+                                                                className={`flex items-start gap-1.5 py-1 px-2 rounded transition-colors ${
                                                                     activeHeading === item.id
                                                                         ? 'bg-blue-50 text-blue-600 font-medium'
                                                                         : 'text-gray-700 hover:bg-gray-50'
                                                                 }`}
                                                                 style={{
-                                                                    paddingLeft: `${(item.level - 1) * 12 + 8}px`,
+                                                                    paddingLeft: `${(item.level - 1) * 10 + 8}px`,
                                                                 }}
                                                             >
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 mt-1.5"></span>
-                                                                <span className="flex-1 leading-relaxed">
-                                                                    {item.text}
-                                                                </span>
+                                                                <span className="w-1 h-1 rounded-full bg-current flex-shrink-0 mt-1.5"></span>
+                                                                <span className="flex-1 leading-snug">{item.text}</span>
                                                             </a>
                                                         ))}
                                                     </nav>
                                                 </div>
                                             </div>
                                         )}
-                                        <div
-                                            key="readme-content"
-                                            ref={readmeRef}
-                                            className="prose prose-sm sm:prose-base max-w-none 
-                                        prose-headings:font-bold prose-headings:tracking-tight
-                                        prose-h1:text-3xl prose-h1:border-b prose-h1:border-gray-200 prose-h1:pb-3 prose-h1:mb-6 prose-h1:mt-0
-                                        prose-h2:text-2xl prose-h2:border-b prose-h2:border-gray-100 prose-h2:pb-2 prose-h2:mt-10 prose-h2:mb-4
-                                        prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                                        prose-p:leading-7 prose-p:text-gray-700 prose-p:my-4
-                                        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-a:font-normal
-                                        prose-code:text-sm prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-code:text-pink-600 prose-code:font-normal
-                                        prose-pre:bg-gray-900 prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto prose-pre:my-6
-                                        prose-pre:shadow-lg
-                                        prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-3 prose-blockquote:px-4 prose-blockquote:my-6 prose-blockquote:not-italic
-                                        prose-ul:my-4 prose-ol:my-4 prose-ul:list-disc prose-ol:list-decimal
-                                        prose-li:my-2 prose-li:text-gray-700
-                                        prose-table:border-collapse prose-table:w-full prose-table:my-6
-                                        prose-th:bg-gray-100 prose-th:p-3 prose-th:border prose-th:border-gray-300 prose-th:text-left prose-th:font-semibold
-                                        prose-td:p-3 prose-td:border prose-td:border-gray-300
-                                        prose-strong:text-gray-900 prose-strong:font-semibold
-                                        prose-hr:border-gray-200 prose-hr:my-8
-                                        "
-                                        />
+                                        <div key="readme-content" ref={readmeRef} className="markdown-body" />
                                         {/* HTML内容通过useEffect中的innerHTML设置 */}
                                     </>
                                 )}
@@ -995,7 +1083,7 @@ export default function BookmarkDetail() {
                                     : '45,231'}
                             </div>
                             <div className="h-32">
-                                <ResponsiveContainer width="100%" height="100%">
+                                <ResponsiveContainer width="100%" height={128}>
                                     <AreaChart
                                         data={
                                             npmDownloads.length > 0
