@@ -22,3 +22,33 @@ export interface BundleSize {
     gzip: string;
     raw: string;
 }
+
+export interface TrendingRepo {
+    rank: number;
+    name: string;
+    author: string;
+    url: string;
+    description: string;
+    language: string;
+    languageColor: string;
+    stars: number;
+    forks: number;
+    starsThisWeek: number;
+    builtBy: Array<{
+        username: string;
+        avatar: string;
+        url: string;
+    }>;
+}
+
+export interface WeeklyTrending {
+    weekStart: string;
+    weekEnd: string;
+    repos: TrendingRepo[];
+}
+
+export interface EmailSubscriber {
+    email: string;
+    subscribedAt: string;
+    active: boolean;
+}

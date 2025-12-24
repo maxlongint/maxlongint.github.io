@@ -1,4 +1,4 @@
-import type { GitHubRepoInfo } from '../types';
+import type { GitHubRepoInfo, WeeklyTrending } from '../types';
 
 // 提取 GitHub 仓库信息
 export const getGitHubInfo = (url: string) => {
@@ -45,6 +45,17 @@ export const getGitHubReadme = async (owner: string, repo: string): Promise<stri
         return null;
     } catch (error) {
         console.warn('Failed to get README:', error);
+        return null;
+    }
+};
+
+// 获取 Trending 数据
+export const getTrendingData = (): WeeklyTrending | null => {
+    try {
+        const runtimeData = (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__;
+        return runtimeData || null;
+    } catch (error) {
+        console.warn('Failed to get Trending data:', error);
         return null;
     }
 };
@@ -571,16 +582,17 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
     },
 };
 
-// 统一加载所有 GitHub 预构建数据（stats + readmes）
+// 统一加载所有 GitHub 预构建数据（stats + readmes + trending）
 export const loadGitHubData = async () => {
     try {
         // 使用基础路径，兼容不同的部署环境
         const basePath = import.meta.env.BASE_URL || '/';
 
-        // 并行加载 stats 和 readmes 数据
-        const [statsResponse, readmesResponse] = await Promise.all([
+        // 并行加载 stats、readmes 和 trending 数据
+        const [statsResponse, readmesResponse, trendingResponse] = await Promise.all([
             fetch(`${basePath}github-stats.json`).catch(() => null),
             fetch(`${basePath}github-readmes.json`).catch(() => null),
+            fetch(`${basePath}trending.json`).catch(() => null),
         ]);
 
         // 处理 stats 数据
@@ -595,6 +607,13 @@ export const loadGitHubData = async () => {
             const readmesData = await readmesResponse.json();
             (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
                 readmesData.readmes;
+        }
+
+        // 处理 trending 数据
+        if (trendingResponse && trendingResponse.ok) {
+            const trendingData = await trendingResponse.json();
+            (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
+            console.log('✅ Trending data loaded:', trendingData.data);
         }
     } catch (error) {
         console.warn('Failed to load GitHub data:', error);

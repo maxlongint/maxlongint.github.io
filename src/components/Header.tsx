@@ -1,3 +1,4 @@
+import { Link, useLocation } from 'react-router-dom';
 import SearchBar from './SearchBar';
 
 interface HeaderProps {
@@ -8,14 +9,45 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenComments, isFixed = false, searchQuery = '', setSearchQuery }: HeaderProps) {
+    const location = useLocation();
+
     return (
         <header className="bg-gray-50 border-b border-gray-200 sticky top-0 z-40">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo and Title */}
-                    <div className="flex items-center gap-3">
-                        <img src="/logo.png" alt="前端工具库" className="w-12 h-12 rounded-lg" />
-                        <h1 className="text-xl font-bold text-gray-900">前端工具库</h1>
+                    <div className="flex items-center gap-6">
+                        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                            <img src="/logo.png" alt="前端工具库" className="w-12 h-12 rounded-lg" />
+                            <h1 className="text-xl font-bold text-gray-900">前端工具库</h1>
+                        </Link>
+
+                        {/* 导航链接 */}
+                        <nav className="hidden md:flex items-center gap-1">
+                            <Link
+                                to="/"
+                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    location.pathname === '/'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                工具库
+                            </Link>
+                            <Link
+                                to="/trending"
+                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                                    location.pathname === '/trending'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                                </svg>
+                                每周趋势
+                            </Link>
+                        </nav>
                     </div>
 
                     {/* 滚动固定时显示搜索框 - 仅在大屏幕显示 */}
