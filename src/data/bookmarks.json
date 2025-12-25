@@ -1,813 +1,1017 @@
 {
-    "tags": {
-        "All": {
-            "className": "bg-gray-100 text-gray-800",
-            "color": "#9b59b6"
-        },
-        "Base64": {
-            "className": "",
-            "color": "#eed3d3",
-            "backgroundColor": "hsl(0, 45%, 88%)",
-            "textColor": "hsl(0, 65%, 38%)"
-        },
-        "Cookie": {
-            "className": "",
-            "color": "#c8efd3",
-            "backgroundColor": "hsl(137.5, 55%, 86%)",
-            "textColor": "hsl(137.5, 75%, 36%)"
-        },
-        "CSS": {
-            "className": "",
-            "color": "#dbbcf1",
-            "backgroundColor": "hsl(275, 65%, 84%)",
-            "textColor": "hsl(275, 80%, 34%)"
-        },
-        "DOCX": {
-            "className": "",
-            "color": "#e6e1bc",
-            "backgroundColor": "hsl(52.5, 45%, 82%)",
-            "textColor": "hsl(52.5, 65%, 32%)"
-        },
-        "Dropdown": {
-            "className": "",
-            "color": "#b0dfe8",
-            "backgroundColor": "hsl(190, 55%, 80%)",
-            "textColor": "hsl(190, 75%, 30%)"
-        },
-        "HTTP请求": {
-            "className": "",
-            "color": "#eba2ca",
-            "backgroundColor": "hsl(327.5, 65%, 78%)",
-            "textColor": "hsl(327.5, 80%, 28%)"
-        },
-        "JSON": {
-            "className": "",
-            "color": "#daeed3",
-            "backgroundColor": "hsl(105, 45%, 88%)",
-            "textColor": "hsl(105, 65%, 38%)"
-        },
-        "Markdown": {
-            "className": "",
-            "color": "#c9c8ef",
-            "backgroundColor": "hsl(242.5, 55%, 86%)",
-            "textColor": "hsl(242.5, 75%, 36%)"
-        },
-        "Menu": {
-            "className": "",
-            "color": "#f1cdbc",
-            "backgroundColor": "hsl(20, 65%, 84%)",
-            "textColor": "hsl(20, 80%, 34%)"
-        },
-        "Popover": {
-            "className": "",
-            "color": "#bce6d6",
-            "backgroundColor": "hsl(157.5, 45%, 82%)",
-            "textColor": "hsl(157.5, 65%, 32%)"
-        },
-        "SVG": {
-            "className": "",
-            "color": "#e3b0e8",
-            "backgroundColor": "hsl(295, 55%, 80%)",
-            "textColor": "hsl(295, 75%, 30%)"
-        },
-        "Store": {
-            "className": "",
-            "color": "#dceba2",
-            "backgroundColor": "hsl(72.5, 65%, 78%)",
-            "textColor": "hsl(72.5, 80%, 28%)"
-        },
-        "Tooltip": {
-            "className": "",
-            "color": "#d3e0ee",
-            "backgroundColor": "hsl(210, 45%, 88%)",
-            "textColor": "hsl(210, 65%, 38%)"
-        },
-        "TypeScript": {
-            "className": "",
-            "color": "#efc8d0",
-            "backgroundColor": "hsl(347.5, 55%, 86%)",
-            "textColor": "hsl(347.5, 75%, 36%)"
-        },
-        "WebSocket": {
-            "className": "",
-            "color": "#bcf1c0",
-            "backgroundColor": "hsl(125, 65%, 84%)",
-            "textColor": "hsl(125, 80%, 34%)"
-        },
-        "XSS": {
-            "className": "",
-            "color": "#ccbce6",
-            "backgroundColor": "hsl(262.5, 45%, 82%)",
-            "textColor": "hsl(262.5, 65%, 32%)"
-        },
-        "uuid": {
-            "className": "",
-            "color": "#e8d5b0",
-            "backgroundColor": "hsl(40, 55%, 80%)",
-            "textColor": "hsl(40, 75%, 30%)"
-        },
-        "中文处理": {
-            "className": "",
-            "color": "#a2ebe8",
-            "backgroundColor": "hsl(177.5, 65%, 78%)",
-            "textColor": "hsl(177.5, 80%, 28%)"
-        },
-        "代码编辑器": {
-            "className": "",
-            "color": "#eed3e7",
-            "backgroundColor": "hsl(315, 45%, 88%)",
-            "textColor": "hsl(315, 65%, 38%)"
-        },
-        "代码高亮": {
-            "className": "",
-            "color": "#daefc8",
-            "backgroundColor": "hsl(92.5, 55%, 86%)",
-            "textColor": "hsl(92.5, 75%, 36%)"
-        },
-        "剪贴板": {
-            "className": "",
-            "color": "#bcc5f1",
-            "backgroundColor": "hsl(230, 65%, 84%)",
-            "textColor": "hsl(230, 80%, 34%)"
-        },
-        "图像处理": {
-            "className": "",
-            "color": "#e6c2bc",
-            "backgroundColor": "hsl(7.5, 45%, 82%)",
-            "textColor": "hsl(7.5, 65%, 32%)"
-        },
-        "图标": {
-            "className": "",
-            "color": "#b0e8c7",
-            "backgroundColor": "hsl(145, 55%, 80%)",
-            "textColor": "hsl(145, 75%, 30%)"
-        },
-        "弹窗组件": {
-            "className": "",
-            "color": "#d6a2eb",
-            "backgroundColor": "hsl(282.5, 65%, 78%)",
-            "textColor": "hsl(282.5, 80%, 28%)"
-        },
-        "安全防护": {
-            "className": "",
-            "color": "#eeeed3",
-            "backgroundColor": "hsl(60, 45%, 88%)",
-            "textColor": "hsl(60, 65%, 38%)"
-        },
-        "实时通信": {
-            "className": "",
-            "color": "#c8e3ef",
-            "backgroundColor": "hsl(197.5, 55%, 86%)",
-            "textColor": "hsl(197.5, 75%, 36%)"
-        },
-        "数据操作": {
-            "className": "",
-            "color": "#f1bcd2",
-            "backgroundColor": "hsl(335, 65%, 84%)",
-            "textColor": "hsl(335, 80%, 34%)"
-        },
-        "数据加密": {
-            "className": "",
-            "color": "#c2e6bc",
-            "backgroundColor": "hsl(112.5, 45%, 82%)",
-            "textColor": "hsl(112.5, 65%, 32%)"
-        },
-        "数据可视化": {
-            "className": "",
-            "color": "#b9b0e8",
-            "backgroundColor": "hsl(250, 55%, 80%)",
-            "textColor": "hsl(250, 75%, 30%)"
-        },
-        "数据格式化": {
-            "className": "",
-            "color": "#ebc4a2",
-            "backgroundColor": "hsl(27.5, 65%, 78%)",
-            "textColor": "hsl(27.5, 80%, 28%)"
-        },
-        "数据验证": {
-            "className": "",
-            "color": "#d3eee7",
-            "backgroundColor": "hsl(165, 45%, 88%)",
-            "textColor": "hsl(165, 65%, 38%)"
-        },
-        "数字动画": {
-            "className": "",
-            "color": "#efc8ed",
-            "backgroundColor": "hsl(302.5, 55%, 86%)",
-            "textColor": "hsl(302.5, 75%, 36%)"
-        },
-        "日期时间": {
-            "className": "",
-            "color": "#dff1bc",
-            "backgroundColor": "hsl(80, 65%, 84%)",
-            "textColor": "hsl(80, 80%, 34%)"
-        },
-        "文档解析": {
-            "className": "",
-            "color": "#bccce6",
-            "backgroundColor": "hsl(217.5, 45%, 82%)",
-            "textColor": "hsl(217.5, 65%, 32%)"
-        },
-        "文档预览": {
-            "className": "",
-            "color": "#e8b0b5",
-            "backgroundColor": "hsl(355, 55%, 80%)",
-            "textColor": "hsl(355, 75%, 30%)"
-        },
-        "文件处理": {
-            "className": "",
-            "color": "#a2ebb2",
-            "backgroundColor": "hsl(132.5, 65%, 78%)",
-            "textColor": "hsl(132.5, 80%, 28%)"
-        },
-        "文件类型": {
-            "className": "",
-            "color": "#e0d3ee",
-            "backgroundColor": "hsl(270, 45%, 88%)",
-            "textColor": "hsl(270, 65%, 38%)"
-        },
-        "滚动处理": {
-            "className": "",
-            "color": "#efe7c8",
-            "backgroundColor": "hsl(47.5, 55%, 86%)",
-            "textColor": "hsl(47.5, 75%, 36%)"
-        },
-        "用户引导": {
-            "className": "",
-            "color": "#bcecf1",
-            "backgroundColor": "hsl(185, 65%, 84%)",
-            "textColor": "hsl(185, 80%, 34%)"
-        },
-        "演示展示": {
-            "className": "",
-            "color": "#e6bcd6",
-            "backgroundColor": "hsl(322.5, 45%, 82%)",
-            "textColor": "hsl(322.5, 65%, 32%)"
-        },
-        "视频音频": {
-            "className": "",
-            "color": "#c3e8b0",
-            "backgroundColor": "hsl(100, 55%, 80%)",
-            "textColor": "hsl(100, 75%, 30%)"
-        },
-        "颜色处理": {
-            "className": "",
-            "color": "#a2a5eb",
-            "backgroundColor": "hsl(237.5, 65%, 78%)",
-            "textColor": "hsl(237.5, 80%, 28%)"
-        },
-        "颜色选择": {
-            "className": "",
-            "color": "#eedad3",
-            "backgroundColor": "hsl(15, 45%, 88%)",
-            "textColor": "hsl(15, 65%, 38%)"
-        },
-        "触摸交互": {
-            "className": "",
-            "color": "#c8efdd",
-            "backgroundColor": "hsl(152.5, 55%, 86%)",
-            "textColor": "hsl(152.5, 75%, 36%)"
-        },
-        "拖拽操作": {
-            "className": "",
-            "color": "#e8bcf1",
-            "backgroundColor": "hsl(290, 65%, 84%)",
-            "textColor": "hsl(290, 80%, 34%)"
-        },
-        "终端": {
-            "className": "",
-            "color": "#e1e6bc",
-            "backgroundColor": "hsl(67.5, 45%, 82%)",
-            "textColor": "hsl(67.5, 65%, 32%)"
-        },
-        "性能优化": {
-            "className": "",
-            "color": "#b0d1e8",
-            "backgroundColor": "hsl(205, 55%, 80%)",
-            "textColor": "hsl(205, 75%, 30%)"
-        },
-        "虚拟键盘": {
-            "className": "",
-            "color": "#eba2b8",
-            "backgroundColor": "hsl(342.5, 65%, 78%)",
-            "textColor": "hsl(342.5, 80%, 28%)"
-        },
-        "浏览器API": {
-            "className": "",
-            "color": "#d3eed3",
-            "backgroundColor": "hsl(120, 45%, 88%)",
-            "textColor": "hsl(120, 65%, 38%)"
-        },
-        "工具库": {
-            "className": "",
-            "color": "#d3c8ef",
-            "backgroundColor": "hsl(257.5, 55%, 86%)",
-            "textColor": "hsl(257.5, 75%, 36%)"
-        },
-        "实用工具": {
-            "className": "",
-            "color": "#f1dbbc",
-            "backgroundColor": "hsl(35, 65%, 84%)",
-            "textColor": "hsl(35, 80%, 34%)"
-        },
-        "开发工具": {
-            "className": "",
-            "color": "#bce6e1",
-            "backgroundColor": "hsl(172.5, 45%, 82%)",
-            "textColor": "hsl(172.5, 65%, 32%)"
-        },
-        "二维码": {
-            "className": "",
-            "color": "#e8b0df",
-            "backgroundColor": "hsl(310, 55%, 80%)",
-            "textColor": "hsl(310, 75%, 30%)"
-        },
-        "截图": {
-            "className": "",
-            "color": "#caeba2",
-            "backgroundColor": "hsl(87.5, 65%, 78%)",
-            "textColor": "hsl(87.5, 80%, 28%)"
-        },
-        "数学计算": {
-            "className": "",
-            "color": "#d3daee",
-            "backgroundColor": "hsl(225, 45%, 88%)",
-            "textColor": "hsl(225, 65%, 38%)"
-        },
-        "键盘交互": {
-            "className": "",
-            "color": "#efc9c8",
-            "backgroundColor": "hsl(2.5, 55%, 86%)",
-            "textColor": "hsl(2.5, 75%, 36%)"
-        },
-        "数学公式": {
-            "className": "",
-            "color": "#bcf1cd",
-            "backgroundColor": "hsl(140, 65%, 84%)",
-            "textColor": "hsl(140, 80%, 34%)"
-        },
-        "动画效果": {
-            "className": "",
-            "color": "#d6bce6",
-            "backgroundColor": "hsl(277.5, 45%, 82%)",
-            "textColor": "hsl(277.5, 65%, 32%)"
-        },
-        "签名绘制": {
-            "className": "",
-            "color": "#e8e3b0",
-            "backgroundColor": "hsl(55, 55%, 80%)",
-            "textColor": "hsl(55, 75%, 30%)"
-        },
-        "__meta__": {
-            "lastColorIndex": 58,
-            "totalTags": 59,
-            "generatedAt": "2025-12-24T09:33:48.461Z"
-        }
+  "tags": {
+    "All": {
+      "className": "bg-gray-100 text-gray-800",
+      "color": "#9b59b6"
     },
-    "bookmarks": [
-        {
-            "title": "Mutative",
-            "url": "https://github.com/unadlib/mutative",
-            "description": "一个用于高效不可变更新的JavaScript库，其速度比手动编写的简单reducer快2-6倍，比Immer快10倍以上。",
-            "tags": ["数据操作", "性能优化"]
-        },
-        {
-            "title": "Immer",
-            "url": "https://github.com/immerjs/immer",
-            "description": "Immer是一个用于JavaScript的库，它允许你以一种简单、直观的方式编写不可变数据更新逻辑。",
-            "tags": ["数据操作", "性能优化"]
-        },
-        {
-            "title": "Valibot",
-            "url": "https://github.com/fabian-hiller/valibot",
-            "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
-            "tags": ["TypeScript", "数据验证"]
-        },
-        {
-            "title": "Zod",
-            "url": "https://github.com/colinhacks/zod",
-            "description": "Zod是一个用于TypeScript的运行时类型检查库，它允许你定义数据结构，并在运行时验证数据是否符合这些结构。",
-            "tags": ["TypeScript", "数据验证"]
-        },
-        {
-            "title": "class-validator",
-            "url": "https://github.com/typestack/class-validator",
-            "description": "该库支持基于装饰器和非基于装饰器的验证方式。它内部使用 validator.js 来执行验证。Class-validator 可以在浏览器和 Node.js 平台上使用。",
-            "tags": ["数据验证", "TypeScript"]
-        },
-        {
-            "title": "Mage Icons",
-            "url": "https://github.com/Mage-Icons/mage-icons",
-            "description": "Mage Icons是一个精心策划的图标库，专为网页和移动应用的用户界面设计而打造。",
-            "tags": ["图标", "SVG"]
-        },
-        {
-            "title": "Iconoir",
-            "url": "https://github.com/iconoir-icons/iconoir",
-            "description": "一个拥有 1600 多个图标的开源图标库，支持 React、React Native、Flutter、Vue、Figma 和 Framer。",
-            "tags": ["图标", "SVG"]
-        },
-        {
-            "title": "DOMPurify",
-            "url": "https://github.com/cure53/DOMPurify",
-            "description": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS（跨站脚本）清理器，可用于HTML、MathML和SVG。",
-            "tags": ["XSS", "安全防护"]
-        },
-        {
-            "title": "SnapDOM",
-            "url": "https://github.com/zumerlab/snapdom",
-            "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片，同时支持伪元素、Shadow DOM、网页字体等。",
-            "tags": ["图像处理", "截图"]
-        },
-        {
-            "title": "Animejs",
-            "url": "https://github.com/juliangarnier/anime",
-            "description": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
-            "tags": ["动画效果"]
-        },
-        {
-            "title": "Animate.css",
-            "url": "https://github.com/animate-css/animate.css",
-            "description": "一个跨浏览器的 CSS 动画库，使用起来非常简单。",
-            "tags": ["CSS", "动画效果"]
-        },
-        {
-            "title": "CountUp.js",
-            "url": "https://github.com/inorganik/CountUp.js",
-            "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库，可用于快速创建动画，以一种更有趣的方式展示数值数据。",
-            "tags": ["动画效果", "数字动画"]
-        },
-        {
-            "title": "SortableJS",
-            "url": "https://github.com/SortableJS/Sortable",
-            "description": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。",
-            "tags": ["拖拽操作", "触摸交互"]
-        },
-        {
-            "title": "JSON Editor",
-            "url": "https://github.com/josdejong/jsoneditor",
-            "description": "一个基于网页的工具，用于查看、编辑、格式化和验证JSON。",
-            "tags": ["JSON", "数据操作", "开发工具"]
-        },
-        {
-            "title": "Bignumber.js",
-            "url": "https://github.com/MikeMcl/bignumber.js",
-            "description": "一个用于任意精度十进制和非十进制算术的JavaScript库。",
-            "tags": ["数学计算"]
-        },
-        {
-            "title": "decimal.js",
-            "url": "https://github.com/MikeMcl/decimal.js",
-            "description": "一个用于 JavaScript 的任意精度 Decimal 类型库。",
-            "tags": ["数学计算"]
-        },
-        {
-            "title": "Dinero.js",
-            "url": "https://github.com/dinerojs/dinero.js",
-            "description": "在JavaScript和Typescript中创建，计算和格式化货币。",
-            "tags": ["数据格式化"]
-        },
-        {
-            "title": "Nzh",
-            "url": "https://github.com/cnwhy/nzh",
-            "description": "数字转中文（大写，小写）数字，金额。",
-            "tags": ["中文处理", "数据格式化"]
-        },
-        {
-            "title": "Numeral.js",
-            "url": "https://github.com/adamwdraper/Numeral-js",
-            "description": "一个用于格式化和操作数字的JavaScript库。",
-            "tags": ["数据格式化"]
-        },
-        {
-            "title": "Wavesurfer.js",
-            "url": "https://github.com/katspaugh/wavesurfer.js",
-            "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
-            "tags": ["视频音频", "数据可视化"]
-        },
-        {
-            "title": "Store.js",
-            "url": "https://github.com/marcuswestin/store.js",
-            "description": "Store.js 是一个通用的跨浏览器存储库。",
-            "tags": ["浏览器API", "Store"]
-        },
-        {
-            "title": "iro.js",
-            "url": "https://github.com/jaames/iro.js",
-            "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
-            "tags": ["颜色选择"]
-        },
-        {
-            "title": "Pickr",
-            "url": "https://github.com/simonwep/pickr",
-            "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
-            "tags": ["颜色选择"]
-        },
-        {
-            "title": "OverlayScrollbars",
-            "url": "https://github.com/KingSora/OverlayScrollbars",
-            "description": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
-            "tags": ["滚动处理"]
-        },
-        {
-            "title": "Scrollama",
-            "url": "https://github.com/russellsamora/scrollama",
-            "description": "Scrollama 是一个现代化且轻量级的 JavaScript 库，用于通过使用 IntersectionObserver 来实现滚动式叙事，以替代传统的滚动事件。",
-            "tags": ["滚动处理"]
-        },
-        {
-            "title": "Signature Pad",
-            "url": "https://github.com/szimek/signature_pad",
-            "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。",
-            "tags": ["签名绘制"]
-        },
-        {
-            "title": "simple-keyboard",
-            "url": "https://github.com/hodgef/simple-keyboard",
-            "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
-            "tags": ["虚拟键盘"]
-        },
-        {
-            "title": "uuid",
-            "url": "https://github.com/uuidjs/uuid",
-            "description": "在 JavaScript 中生成符合 RFC 标准的 UUID。",
-            "tags": ["uuid", "实用工具"]
-        },
-        {
-            "title": "Tippy.js",
-            "url": "https://github.com/atomiks/tippyjs",
-            "description": "一个用于制作工具提示（Tooltip）、气泡框（Popover）、下拉菜单（Dropdown）和普通菜单（Menu）的库。",
-            "tags": ["Tooltip", "Popover", "Dropdown", "Menu", "弹窗组件"]
-        },
-        {
-            "title": "Day.js",
-            "url": "https://github.com/iamkun/dayjs",
-            "description": "Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样. 如果您曾经用过 Moment.js, 那么您已经知道如何使用 Day.js。",
-            "tags": ["日期时间", "实用工具"]
-        },
-        {
-            "title": "Moment.js",
-            "url": "https://github.com/moment/moment",
-            "description": "Moment.js 是一个用于解析、验证、操作和显示日期的 JavaScript 库。",
-            "tags": ["日期时间", "实用工具"]
-        },
-        {
-            "title": "Socket.IO",
-            "url": "https://github.com/socketio/socket.io",
-            "description": "Socket.IO 是一个库，它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。",
-            "tags": ["实时通信", "WebSocket"]
-        },
-        {
-            "title": "tinykeys",
-            "url": "https://github.com/jamiebuilds/tinykeys",
-            "description": "一个用于键盘绑定的微型（约 650 B）且现代化的库。",
-            "tags": ["键盘交互"]
-        },
-        {
-            "title": "pinyin-pro",
-            "url": "https://github.com/zh-lx/pinyin-pro",
-            "description": "中文转拼音、拼音音调、拼音声母、拼音韵母、多音字拼音、姓氏拼音、拼音匹配、中文分词。",
-            "tags": ["中文处理"]
-        },
-        {
-            "title": "bpmn-js",
-            "url": "https://github.com/bpmn-io/bpmn-js",
-            "description": "流程图绘制工具库。",
-            "tags": ["数据可视化"]
-        },
-        {
-            "title": "QRCode.js",
-            "url": "https://github.com/davidshimjs/qrcodejs",
-            "description": "QRCode.js 是一个用于制作二维码的 JavaScript 库。QRCode.js 支持跨浏览器，可使用 HTML5 Canvas 和 DOM 中的表格标签来生成二维码。此外，它没有任何依赖。",
-            "tags": ["二维码"]
-        },
-        {
-            "title": "FullCalendar",
-            "url": "https://github.com/fullcalendar/fullcalendar",
-            "description": "一个用 JavaScript 实现的全功能拖放事件日历。",
-            "tags": ["日期时间", "拖拽操作"]
-        },
-        {
-            "title": "clipboard.js",
-            "url": "https://github.com/zenorocha/clipboard.js",
-            "description": "现代版可复制到剪贴板。无需 Flash。仅 3kb（已压缩）大小。",
-            "tags": ["浏览器API", "剪贴板"]
-        },
-        {
-            "title": "Cropper.js",
-            "url": "https://github.com/fengyuanchen/cropperjs",
-            "description": "JavaScript 图像裁剪工具。",
-            "tags": ["图像处理"]
-        },
-        {
-            "title": "Video.js",
-            "url": "https://github.com/videojs/video.js",
-            "description": "Video.js 是一款功能齐全的开源视频播放器，适用于所有基于网络的平台。",
-            "tags": ["视频音频"]
-        },
-        {
-            "title": "HLS.js",
-            "url": "https://github.com/video-dev/hls.js",
-            "description": "HLS.js 是一个 JavaScript 库，它可以在支持 MSE（媒体源扩展）的浏览器中播放 HLS（HTTP 直播流）。",
-            "tags": ["视频音频"]
-        },
-        {
-            "title": "Plyr",
-            "url": "https://github.com/sampotts/plyr",
-            "description": "Plyr 是一款简单、轻量、易于使用且可定制的 HTML5、YouTube 和 Vimeo 媒体播放器，支持现代浏览器。",
-            "tags": ["视频音频"]
-        },
-        {
-            "title": "FilePond",
-            "url": "https://github.com/pqina/filepond",
-            "description": "一款 JavaScript 库，能够处理您所上传的任何内容，会优化图片以加快上传速度，并提供出色、易用且流畅顺滑的用户体验。",
-            "tags": ["文件处理"]
-        },
-        {
-            "title": "crypto-js",
-            "url": "https://github.com/brix/crypto-js",
-            "description": "加密标准的 JavaScript 库。",
-            "tags": ["数据加密"]
-        },
-        {
-            "title": "Intro.js",
-            "url": "https://github.com/usablica/intro.js",
-            "description": "轻量级、用户友好型的上手引导教程库。",
-            "tags": ["用户引导"]
-        },
-        {
-            "title": "driver.js",
-            "url": "https://github.com/kamranahmedse/driver.js",
-            "description": "一个轻巧的，无依赖的JavaScript库，用于指导用户在页面上的重点。",
-            "tags": ["用户引导"]
-        },
-        {
-            "title": "Axios",
-            "url": "https://github.com/axios/axios",
-            "description": "基于承诺的浏览器及 Node.js  HTTP 客户端。 Axios 是一款专为浏览器和 Node.js 设计的基于 Promise 的 HTTP 客户端。Axios 提供了一个小巧且易于使用的库，其接口具有高度的可扩展性。",
-            "tags": ["HTTP请求"]
-        },
-        {
-            "title": "Cookie",
-            "url": "https://github.com/js-cookie/js-cookie",
-            "description": "一个简单、轻量级的 JavaScript API，用于处理浏览器中的 Cookie 数据。",
-            "tags": ["浏览器API", "Cookie"]
-        },
-        {
-            "title": "Loaders.css",
-            "url": "https://github.com/ConnorAtherton/loaders.css",
-            "description": "令人愉悦、以表现力为导向的纯 CSS 加载动画。",
-            "tags": ["CSS", "动画效果"]
-        },
-        {
-            "title": "Viewer.js",
-            "url": "https://github.com/fengyuanchen/viewerjs",
-            "description": "JavaScript 图像查看器。",
-            "tags": ["图像处理"]
-        },
-        {
-            "title": "Swiper",
-            "url": "https://github.com/nolimits4web/swiper",
-            "description": "大多数现代的触摸式移动滑动界面都具备硬件加速的过渡效果。",
-            "tags": ["触摸交互"]
-        },
-        {
-            "title": "Highlight.js",
-            "url": "https://github.com/highlightjs/highlight.js",
-            "description": "带有语言自动检测功能且无需任何依赖项的 JavaScript 语法高亮显示器。",
-            "tags": ["代码高亮"]
-        },
-        {
-            "title": "Normalize.css",
-            "url": "https://github.com/necolas/normalize.css",
-            "description": "CSS 重置的现代 HTML5 就绪替代方案Normalize.css使浏览器更一致地呈现所有元素并符合现代标准。它精确地只针对需要规范化的样式。",
-            "tags": ["CSS"]
-        },
-        {
-            "title": "reveal.js",
-            "url": "https://github.com/hakimel/reveal.js",
-            "description": "reveal.js 是一个开源的 HTML 演示框架。它能让任何拥有网络浏览器的人免费创建出美观的演示文稿。",
-            "tags": ["演示展示"]
-        },
-        {
-            "title": "hammer.js",
-            "url": "https://github.com/hammerjs/hammer.js",
-            "description": "一个用于检测触摸手势的 JavaScript 库。",
-            "tags": ["触摸交互"]
-        },
-        {
-            "title": "Marked",
-            "url": "https://github.com/markedjs/marked",
-            "description": "一个 Markdown 解析器和编译器。专为提高速度而设计。",
-            "tags": ["Markdown", "文档解析"]
-        },
-        {
-            "title": "Milkdown",
-            "url": "https://github.com/Milkdown/milkdown",
-            "description": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
-            "tags": ["Markdown", "文档解析"]
-        },
-        {
-            "title": "Swapy",
-            "url": "https://github.com/TahaSh/swapy",
-            "description": "一款与框架无关的工具，只需几行代码就能将任何布局转换为可拖动替换的布局形式。",
-            "tags": ["拖拽操作"]
-        },
-        {
-            "title": "morphdom",
-            "url": "https://github.com/patrick-steele-idem/morphdom",
-            "description": "快速且轻量级的 DOM 差异对比/补丁处理（无需虚拟 DOM）。",
-            "tags": ["性能优化", "开发工具"]
-        },
-        {
-            "title": "Uppy",
-            "url": "https://github.com/transloadit/uppy",
-            "description": "Uppy 是一款时尚、模块化的 JavaScript 文件上传工具，可与任何应用程序无缝集成。它速度快，API 易于理解，让您无需为构建文件上传器而操心，能够专注于更重要的问题。",
-            "tags": ["文件处理"]
-        },
-        {
-            "title": "Lucide",
-            "url": "https://github.com/lucide-icons/lucide",
-            "description": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
-            "tags": ["图标", "SVG"]
-        },
-        {
-            "title": "docxjs",
-            "url": "https://github.com/VolodymyrBaydalka/docxjs",
-            "description": "DOCX 渲染库。",
-            "tags": ["DOCX", "文档预览"]
-        },
-        {
-            "title": "tui.image-editor",
-            "url": "https://github.com/nhn/tui.image-editor",
-            "description": "一个基于 Web 的图像编辑器，提供了丰富的编辑功能，如裁剪、旋转、缩放等。",
-            "tags": ["图像处理"]
-        },
-        {
-            "title": "interact.js",
-            "url": "https://github.com/taye/interact.js",
-            "description": "适用于现代浏览器（以及 IE9+）的 JavaScript 拖放、调整大小以及具有惯性和捕捉功能的多点触摸手势，支持网格式拖动",
-            "tags": ["拖拽操作", "触摸交互"]
-        },
-        {
-            "title": "lodash",
-            "url": "https://github.com/lodash/lodash",
-            "description": "一个一致性、模块化、高性能的 JavaScript 实用工具库。",
-            "tags": ["工具库"]
-        },
-        {
-            "title": "CodeMirror 5",
-            "url": "https://github.com/codemirror/codemirror5",
-            "description": "一个功能强大的文本编辑器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["代码编辑器"]
-        },
-        {
-            "title": "xterm.js",
-            "url": "https://github.com/xtermjs/xterm.js",
-            "description": "一个功能强大的终端模拟器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["终端"]
-        },
-        {
-            "title": "file-type",
-            "url": "https://github.com/sindresorhus/file-type",
-            "description": "检测文件、流或数据的文件类型；支持 Node.js、浏览器。",
-            "tags": ["文件类型"]
-        },
-        {
-            "title": "monaco-editor",
-            "url": "https://github.com/microsoft/monaco-editor",
-            "description": "一个基于浏览器的代码编辑器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["代码编辑器"]
-        },
-        {
-            "title": "TinyColor",
-            "url": "https://github.com/bgrins/TinyColor",
-            "description": "一个用于处理颜色的 JavaScript 库，支持颜色转换、混合、渐变等功能。",
-            "tags": ["颜色处理"]
-        },
-        {
-            "title": "js-base64",
-            "url": "https://github.com/dankogai/js-base64",
-            "description": "一个用于 Base64 编码/解码的 JavaScript 库，支持 Node.js、浏览器。",
-            "tags": ["Base64"]
-        },
-        {
-            "title": "ECharts",
-            "url": "https://github.com/apache/echarts",
-            "description": "一个基于 JavaScript 的开源可视化库，提供了丰富的图表类型和交互功能。",
-            "tags": ["数据可视化"]
-        },
-        {
-            "title": "radash",
-            "url": "https://github.com/sodiray/radash",
-            "description": "一个功能强大的 JavaScript 实用工具库，提供了丰富的功能，如数组操作、对象操作、字符串操作等。",
-            "tags": ["工具库"]
-        },
-        {
-            "title": "KaTeX",
-            "url": "https://github.com/KaTeX/KaTeX",
-            "description": "KaTeX/KaTeX 是一个快速的数学排版库，用于在网页上展示数学公式。",
-            "tags": ["数学公式"]
-        }
-    ]
+    "Base64": {
+      "className": "",
+      "color": "#eed3d3",
+      "backgroundColor": "hsl(0, 45%, 88%)",
+      "textColor": "hsl(0, 65%, 38%)"
+    },
+    "Cookie": {
+      "className": "",
+      "color": "#c8efd3",
+      "backgroundColor": "hsl(137.5, 55%, 86%)",
+      "textColor": "hsl(137.5, 75%, 36%)"
+    },
+    "CSS": {
+      "className": "",
+      "color": "#dbbcf1",
+      "backgroundColor": "hsl(275, 65%, 84%)",
+      "textColor": "hsl(275, 80%, 34%)"
+    },
+    "DOCX": {
+      "className": "",
+      "color": "#e6e1bc",
+      "backgroundColor": "hsl(52.5, 45%, 82%)",
+      "textColor": "hsl(52.5, 65%, 32%)"
+    },
+    "Dropdown": {
+      "className": "",
+      "color": "#b0dfe8",
+      "backgroundColor": "hsl(190, 55%, 80%)",
+      "textColor": "hsl(190, 75%, 30%)"
+    },
+    "HTTP请求": {
+      "className": "",
+      "color": "#eba2ca",
+      "backgroundColor": "hsl(327.5, 65%, 78%)",
+      "textColor": "hsl(327.5, 80%, 28%)"
+    },
+    "JSON": {
+      "className": "",
+      "color": "#daeed3",
+      "backgroundColor": "hsl(105, 45%, 88%)",
+      "textColor": "hsl(105, 65%, 38%)"
+    },
+    "Markdown": {
+      "className": "",
+      "color": "#c9c8ef",
+      "backgroundColor": "hsl(242.5, 55%, 86%)",
+      "textColor": "hsl(242.5, 75%, 36%)"
+    },
+    "Menu": {
+      "className": "",
+      "color": "#f1cdbc",
+      "backgroundColor": "hsl(20, 65%, 84%)",
+      "textColor": "hsl(20, 80%, 34%)"
+    },
+    "Popover": {
+      "className": "",
+      "color": "#bce6d6",
+      "backgroundColor": "hsl(157.5, 45%, 82%)",
+      "textColor": "hsl(157.5, 65%, 32%)"
+    },
+    "SVG": {
+      "className": "",
+      "color": "#e3b0e8",
+      "backgroundColor": "hsl(295, 55%, 80%)",
+      "textColor": "hsl(295, 75%, 30%)"
+    },
+    "Store": {
+      "className": "",
+      "color": "#dceba2",
+      "backgroundColor": "hsl(72.5, 65%, 78%)",
+      "textColor": "hsl(72.5, 80%, 28%)"
+    },
+    "Tooltip": {
+      "className": "",
+      "color": "#d3e0ee",
+      "backgroundColor": "hsl(210, 45%, 88%)",
+      "textColor": "hsl(210, 65%, 38%)"
+    },
+    "TypeScript": {
+      "className": "",
+      "color": "#efc8d0",
+      "backgroundColor": "hsl(347.5, 55%, 86%)",
+      "textColor": "hsl(347.5, 75%, 36%)"
+    },
+    "WebSocket": {
+      "className": "",
+      "color": "#bcf1c0",
+      "backgroundColor": "hsl(125, 65%, 84%)",
+      "textColor": "hsl(125, 80%, 34%)"
+    },
+    "XSS": {
+      "className": "",
+      "color": "#ccbce6",
+      "backgroundColor": "hsl(262.5, 45%, 82%)",
+      "textColor": "hsl(262.5, 65%, 32%)"
+    },
+    "uuid": {
+      "className": "",
+      "color": "#e8d5b0",
+      "backgroundColor": "hsl(40, 55%, 80%)",
+      "textColor": "hsl(40, 75%, 30%)"
+    },
+    "中文处理": {
+      "className": "",
+      "color": "#a2ebe8",
+      "backgroundColor": "hsl(177.5, 65%, 78%)",
+      "textColor": "hsl(177.5, 80%, 28%)"
+    },
+    "代码编辑器": {
+      "className": "",
+      "color": "#eed3e7",
+      "backgroundColor": "hsl(315, 45%, 88%)",
+      "textColor": "hsl(315, 65%, 38%)"
+    },
+    "代码高亮": {
+      "className": "",
+      "color": "#daefc8",
+      "backgroundColor": "hsl(92.5, 55%, 86%)",
+      "textColor": "hsl(92.5, 75%, 36%)"
+    },
+    "剪贴板": {
+      "className": "",
+      "color": "#bcc5f1",
+      "backgroundColor": "hsl(230, 65%, 84%)",
+      "textColor": "hsl(230, 80%, 34%)"
+    },
+    "图像处理": {
+      "className": "",
+      "color": "#e6c2bc",
+      "backgroundColor": "hsl(7.5, 45%, 82%)",
+      "textColor": "hsl(7.5, 65%, 32%)"
+    },
+    "图标": {
+      "className": "",
+      "color": "#b0e8c7",
+      "backgroundColor": "hsl(145, 55%, 80%)",
+      "textColor": "hsl(145, 75%, 30%)"
+    },
+    "弹窗组件": {
+      "className": "",
+      "color": "#d6a2eb",
+      "backgroundColor": "hsl(282.5, 65%, 78%)",
+      "textColor": "hsl(282.5, 80%, 28%)"
+    },
+    "安全防护": {
+      "className": "",
+      "color": "#eeeed3",
+      "backgroundColor": "hsl(60, 45%, 88%)",
+      "textColor": "hsl(60, 65%, 38%)"
+    },
+    "实时通信": {
+      "className": "",
+      "color": "#c8e3ef",
+      "backgroundColor": "hsl(197.5, 55%, 86%)",
+      "textColor": "hsl(197.5, 75%, 36%)"
+    },
+    "数据操作": {
+      "className": "",
+      "color": "#f1bcd2",
+      "backgroundColor": "hsl(335, 65%, 84%)",
+      "textColor": "hsl(335, 80%, 34%)"
+    },
+    "数据加密": {
+      "className": "",
+      "color": "#c2e6bc",
+      "backgroundColor": "hsl(112.5, 45%, 82%)",
+      "textColor": "hsl(112.5, 65%, 32%)"
+    },
+    "数据可视化": {
+      "className": "",
+      "color": "#b9b0e8",
+      "backgroundColor": "hsl(250, 55%, 80%)",
+      "textColor": "hsl(250, 75%, 30%)"
+    },
+    "数据格式化": {
+      "className": "",
+      "color": "#ebc4a2",
+      "backgroundColor": "hsl(27.5, 65%, 78%)",
+      "textColor": "hsl(27.5, 80%, 28%)"
+    },
+    "数据验证": {
+      "className": "",
+      "color": "#d3eee7",
+      "backgroundColor": "hsl(165, 45%, 88%)",
+      "textColor": "hsl(165, 65%, 38%)"
+    },
+    "数字动画": {
+      "className": "",
+      "color": "#efc8ed",
+      "backgroundColor": "hsl(302.5, 55%, 86%)",
+      "textColor": "hsl(302.5, 75%, 36%)"
+    },
+    "日期时间": {
+      "className": "",
+      "color": "#dff1bc",
+      "backgroundColor": "hsl(80, 65%, 84%)",
+      "textColor": "hsl(80, 80%, 34%)"
+    },
+    "文档解析": {
+      "className": "",
+      "color": "#bccce6",
+      "backgroundColor": "hsl(217.5, 45%, 82%)",
+      "textColor": "hsl(217.5, 65%, 32%)"
+    },
+    "文档预览": {
+      "className": "",
+      "color": "#e8b0b5",
+      "backgroundColor": "hsl(355, 55%, 80%)",
+      "textColor": "hsl(355, 75%, 30%)"
+    },
+    "文件处理": {
+      "className": "",
+      "color": "#a2ebb2",
+      "backgroundColor": "hsl(132.5, 65%, 78%)",
+      "textColor": "hsl(132.5, 80%, 28%)"
+    },
+    "文件类型": {
+      "className": "",
+      "color": "#e0d3ee",
+      "backgroundColor": "hsl(270, 45%, 88%)",
+      "textColor": "hsl(270, 65%, 38%)"
+    },
+    "滚动处理": {
+      "className": "",
+      "color": "#efe7c8",
+      "backgroundColor": "hsl(47.5, 55%, 86%)",
+      "textColor": "hsl(47.5, 75%, 36%)"
+    },
+    "用户引导": {
+      "className": "",
+      "color": "#bcecf1",
+      "backgroundColor": "hsl(185, 65%, 84%)",
+      "textColor": "hsl(185, 80%, 34%)"
+    },
+    "演示展示": {
+      "className": "",
+      "color": "#e6bcd6",
+      "backgroundColor": "hsl(322.5, 45%, 82%)",
+      "textColor": "hsl(322.5, 65%, 32%)"
+    },
+    "视频音频": {
+      "className": "",
+      "color": "#c3e8b0",
+      "backgroundColor": "hsl(100, 55%, 80%)",
+      "textColor": "hsl(100, 75%, 30%)"
+    },
+    "颜色处理": {
+      "className": "",
+      "color": "#a2a5eb",
+      "backgroundColor": "hsl(237.5, 65%, 78%)",
+      "textColor": "hsl(237.5, 80%, 28%)"
+    },
+    "颜色选择": {
+      "className": "",
+      "color": "#eedad3",
+      "backgroundColor": "hsl(15, 45%, 88%)",
+      "textColor": "hsl(15, 65%, 38%)"
+    },
+    "触摸交互": {
+      "className": "",
+      "color": "#c8efdd",
+      "backgroundColor": "hsl(152.5, 55%, 86%)",
+      "textColor": "hsl(152.5, 75%, 36%)"
+    },
+    "拖拽操作": {
+      "className": "",
+      "color": "#e8bcf1",
+      "backgroundColor": "hsl(290, 65%, 84%)",
+      "textColor": "hsl(290, 80%, 34%)"
+    },
+    "终端": {
+      "className": "",
+      "color": "#e1e6bc",
+      "backgroundColor": "hsl(67.5, 45%, 82%)",
+      "textColor": "hsl(67.5, 65%, 32%)"
+    },
+    "性能优化": {
+      "className": "",
+      "color": "#b0d1e8",
+      "backgroundColor": "hsl(205, 55%, 80%)",
+      "textColor": "hsl(205, 75%, 30%)"
+    },
+    "虚拟键盘": {
+      "className": "",
+      "color": "#eba2b8",
+      "backgroundColor": "hsl(342.5, 65%, 78%)",
+      "textColor": "hsl(342.5, 80%, 28%)"
+    },
+    "浏览器API": {
+      "className": "",
+      "color": "#d3eed3",
+      "backgroundColor": "hsl(120, 45%, 88%)",
+      "textColor": "hsl(120, 65%, 38%)"
+    },
+    "工具库": {
+      "className": "",
+      "color": "#d3c8ef",
+      "backgroundColor": "hsl(257.5, 55%, 86%)",
+      "textColor": "hsl(257.5, 75%, 36%)"
+    },
+    "实用工具": {
+      "className": "",
+      "color": "#f1dbbc",
+      "backgroundColor": "hsl(35, 65%, 84%)",
+      "textColor": "hsl(35, 80%, 34%)"
+    },
+    "开发工具": {
+      "className": "",
+      "color": "#bce6e1",
+      "backgroundColor": "hsl(172.5, 45%, 82%)",
+      "textColor": "hsl(172.5, 65%, 32%)"
+    },
+    "二维码": {
+      "className": "",
+      "color": "#e8b0df",
+      "backgroundColor": "hsl(310, 55%, 80%)",
+      "textColor": "hsl(310, 75%, 30%)"
+    },
+    "截图": {
+      "className": "",
+      "color": "#caeba2",
+      "backgroundColor": "hsl(87.5, 65%, 78%)",
+      "textColor": "hsl(87.5, 80%, 28%)"
+    },
+    "数学计算": {
+      "className": "",
+      "color": "#d3daee",
+      "backgroundColor": "hsl(225, 45%, 88%)",
+      "textColor": "hsl(225, 65%, 38%)"
+    },
+    "键盘交互": {
+      "className": "",
+      "color": "#efc9c8",
+      "backgroundColor": "hsl(2.5, 55%, 86%)",
+      "textColor": "hsl(2.5, 75%, 36%)"
+    },
+    "数学公式": {
+      "className": "",
+      "color": "#bcf1cd",
+      "backgroundColor": "hsl(140, 65%, 84%)",
+      "textColor": "hsl(140, 80%, 34%)"
+    },
+    "动画效果": {
+      "className": "",
+      "color": "#d6bce6",
+      "backgroundColor": "hsl(277.5, 45%, 82%)",
+      "textColor": "hsl(277.5, 65%, 32%)"
+    },
+    "签名绘制": {
+      "className": "",
+      "color": "#e8e3b0",
+      "backgroundColor": "hsl(55, 55%, 80%)",
+      "textColor": "hsl(55, 75%, 30%)"
+    },
+    "__meta__": {
+      "lastColorIndex": 60,
+      "totalTags": 61,
+      "lastUpdated": "2025-12-25T06:36:32.911Z"
+    },
+    "模拟数据": {
+      "className": "",
+      "color": "#a2dceb",
+      "backgroundColor": "hsl(192.5, 65%, 78%)",
+      "textColor": "hsl(192.5, 80%, 28%)"
+    },
+    "测试": {
+      "className": "",
+      "color": "#eed3e0",
+      "backgroundColor": "hsl(330, 45%, 88%)",
+      "textColor": "hsl(330, 65%, 38%)"
+    }
+  },
+  "bookmarks": [
+    {
+      "title": "Mutative",
+      "url": "https://github.com/unadlib/mutative",
+      "description": "一个用于高效不可变更新的JavaScript库，其速度比手动编写的简单reducer快2-6倍，比Immer快10倍以上。",
+      "tags": [
+        "数据操作",
+        "性能优化"
+      ]
+    },
+    {
+      "title": "Immer",
+      "url": "https://github.com/immerjs/immer",
+      "description": "Immer是一个用于JavaScript的库，它允许你以一种简单、直观的方式编写不可变数据更新逻辑。",
+      "tags": [
+        "数据操作",
+        "性能优化"
+      ]
+    },
+    {
+      "title": "Valibot",
+      "url": "https://github.com/fabian-hiller/valibot",
+      "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
+      "tags": [
+        "TypeScript",
+        "数据验证"
+      ]
+    },
+    {
+      "title": "Zod",
+      "url": "https://github.com/colinhacks/zod",
+      "description": "Zod是一个用于TypeScript的运行时类型检查库，它允许你定义数据结构，并在运行时验证数据是否符合这些结构。",
+      "tags": [
+        "TypeScript",
+        "数据验证"
+      ]
+    },
+    {
+      "title": "class-validator",
+      "url": "https://github.com/typestack/class-validator",
+      "description": "该库支持基于装饰器和非基于装饰器的验证方式。它内部使用 validator.js 来执行验证。Class-validator 可以在浏览器和 Node.js 平台上使用。",
+      "tags": [
+        "数据验证",
+        "TypeScript"
+      ]
+    },
+    {
+      "title": "Mage Icons",
+      "url": "https://github.com/Mage-Icons/mage-icons",
+      "description": "Mage Icons是一个精心策划的图标库，专为网页和移动应用的用户界面设计而打造。",
+      "tags": [
+        "图标",
+        "SVG"
+      ]
+    },
+    {
+      "title": "Iconoir",
+      "url": "https://github.com/iconoir-icons/iconoir",
+      "description": "一个拥有 1600 多个图标的开源图标库，支持 React、React Native、Flutter、Vue、Figma 和 Framer。",
+      "tags": [
+        "图标",
+        "SVG"
+      ]
+    },
+    {
+      "title": "DOMPurify",
+      "url": "https://github.com/cure53/DOMPurify",
+      "description": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS（跨站脚本）清理器，可用于HTML、MathML和SVG。",
+      "tags": [
+        "XSS",
+        "安全防护"
+      ]
+    },
+    {
+      "title": "SnapDOM",
+      "url": "https://github.com/zumerlab/snapdom",
+      "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片，同时支持伪元素、Shadow DOM、网页字体等。",
+      "tags": [
+        "图像处理",
+        "截图"
+      ]
+    },
+    {
+      "title": "Animejs",
+      "url": "https://github.com/juliangarnier/anime",
+      "description": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
+      "tags": [
+        "动画效果"
+      ]
+    },
+    {
+      "title": "Animate.css",
+      "url": "https://github.com/animate-css/animate.css",
+      "description": "一个跨浏览器的 CSS 动画库，使用起来非常简单。",
+      "tags": [
+        "CSS",
+        "动画效果"
+      ]
+    },
+    {
+      "title": "CountUp.js",
+      "url": "https://github.com/inorganik/CountUp.js",
+      "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库，可用于快速创建动画，以一种更有趣的方式展示数值数据。",
+      "tags": [
+        "动画效果",
+        "数字动画"
+      ]
+    },
+    {
+      "title": "SortableJS",
+      "url": "https://github.com/SortableJS/Sortable",
+      "description": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。",
+      "tags": [
+        "拖拽操作",
+        "触摸交互"
+      ]
+    },
+    {
+      "title": "JSON Editor",
+      "url": "https://github.com/josdejong/jsoneditor",
+      "description": "一个基于网页的工具，用于查看、编辑、格式化和验证JSON。",
+      "tags": [
+        "JSON",
+        "数据操作",
+        "开发工具"
+      ]
+    },
+    {
+      "title": "Bignumber.js",
+      "url": "https://github.com/MikeMcl/bignumber.js",
+      "description": "一个用于任意精度十进制和非十进制算术的JavaScript库。",
+      "tags": [
+        "数学计算"
+      ]
+    },
+    {
+      "title": "decimal.js",
+      "url": "https://github.com/MikeMcl/decimal.js",
+      "description": "一个用于 JavaScript 的任意精度 Decimal 类型库。",
+      "tags": [
+        "数学计算"
+      ]
+    },
+    {
+      "title": "Dinero.js",
+      "url": "https://github.com/dinerojs/dinero.js",
+      "description": "在JavaScript和Typescript中创建，计算和格式化货币。",
+      "tags": [
+        "数据格式化"
+      ]
+    },
+    {
+      "title": "Nzh",
+      "url": "https://github.com/cnwhy/nzh",
+      "description": "数字转中文（大写，小写）数字，金额。",
+      "tags": [
+        "中文处理",
+        "数据格式化"
+      ]
+    },
+    {
+      "title": "Numeral.js",
+      "url": "https://github.com/adamwdraper/Numeral-js",
+      "description": "一个用于格式化和操作数字的JavaScript库。",
+      "tags": [
+        "数据格式化"
+      ]
+    },
+    {
+      "title": "Wavesurfer.js",
+      "url": "https://github.com/katspaugh/wavesurfer.js",
+      "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
+      "tags": [
+        "视频音频",
+        "数据可视化"
+      ]
+    },
+    {
+      "title": "Store.js",
+      "url": "https://github.com/marcuswestin/store.js",
+      "description": "Store.js 是一个通用的跨浏览器存储库。",
+      "tags": [
+        "浏览器API",
+        "Store"
+      ]
+    },
+    {
+      "title": "iro.js",
+      "url": "https://github.com/jaames/iro.js",
+      "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
+      "tags": [
+        "颜色选择"
+      ]
+    },
+    {
+      "title": "Pickr",
+      "url": "https://github.com/simonwep/pickr",
+      "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
+      "tags": [
+        "颜色选择"
+      ]
+    },
+    {
+      "title": "OverlayScrollbars",
+      "url": "https://github.com/KingSora/OverlayScrollbars",
+      "description": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
+      "tags": [
+        "滚动处理"
+      ]
+    },
+    {
+      "title": "Scrollama",
+      "url": "https://github.com/russellsamora/scrollama",
+      "description": "Scrollama 是一个现代化且轻量级的 JavaScript 库，用于通过使用 IntersectionObserver 来实现滚动式叙事，以替代传统的滚动事件。",
+      "tags": [
+        "滚动处理"
+      ]
+    },
+    {
+      "title": "Signature Pad",
+      "url": "https://github.com/szimek/signature_pad",
+      "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。",
+      "tags": [
+        "签名绘制"
+      ]
+    },
+    {
+      "title": "simple-keyboard",
+      "url": "https://github.com/hodgef/simple-keyboard",
+      "description": "一个 JavaScript 虚拟键盘库，可自定义、响应式且轻量。",
+      "tags": [
+        "虚拟键盘"
+      ]
+    },
+    {
+      "title": "uuid",
+      "url": "https://github.com/uuidjs/uuid",
+      "description": "在 JavaScript 中生成符合 RFC 标准的 UUID。",
+      "tags": [
+        "uuid",
+        "实用工具"
+      ]
+    },
+    {
+      "title": "Tippy.js",
+      "url": "https://github.com/atomiks/tippyjs",
+      "description": "一个用于制作工具提示（Tooltip）、气泡框（Popover）、下拉菜单（Dropdown）和普通菜单（Menu）的库。",
+      "tags": [
+        "Tooltip",
+        "Popover",
+        "Dropdown",
+        "Menu",
+        "弹窗组件"
+      ]
+    },
+    {
+      "title": "Day.js",
+      "url": "https://github.com/iamkun/dayjs",
+      "description": "Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样. 如果您曾经用过 Moment.js, 那么您已经知道如何使用 Day.js。",
+      "tags": [
+        "日期时间",
+        "实用工具"
+      ]
+    },
+    {
+      "title": "Moment.js",
+      "url": "https://github.com/moment/moment",
+      "description": "Moment.js 是一个用于解析、验证、操作和显示日期的 JavaScript 库。",
+      "tags": [
+        "日期时间",
+        "实用工具"
+      ]
+    },
+    {
+      "title": "Socket.IO",
+      "url": "https://github.com/socketio/socket.io",
+      "description": "Socket.IO 是一个库，它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。",
+      "tags": [
+        "实时通信",
+        "WebSocket"
+      ]
+    },
+    {
+      "title": "tinykeys",
+      "url": "https://github.com/jamiebuilds/tinykeys",
+      "description": "一个用于键盘绑定的微型（约 650 B）且现代化的库。",
+      "tags": [
+        "键盘交互"
+      ]
+    },
+    {
+      "title": "pinyin-pro",
+      "url": "https://github.com/zh-lx/pinyin-pro",
+      "description": "中文转拼音、拼音音调、拼音声母、拼音韵母、多音字拼音、姓氏拼音、拼音匹配、中文分词。",
+      "tags": [
+        "中文处理"
+      ]
+    },
+    {
+      "title": "bpmn-js",
+      "url": "https://github.com/bpmn-io/bpmn-js",
+      "description": "流程图绘制工具库。",
+      "tags": [
+        "数据可视化"
+      ]
+    },
+    {
+      "title": "QRCode.js",
+      "url": "https://github.com/davidshimjs/qrcodejs",
+      "description": "QRCode.js 是一个用于制作二维码的 JavaScript 库。QRCode.js 支持跨浏览器，可使用 HTML5 Canvas 和 DOM 中的表格标签来生成二维码。此外，它没有任何依赖。",
+      "tags": [
+        "二维码"
+      ]
+    },
+    {
+      "title": "FullCalendar",
+      "url": "https://github.com/fullcalendar/fullcalendar",
+      "description": "一个用 JavaScript 实现的全功能拖放事件日历。",
+      "tags": [
+        "日期时间",
+        "拖拽操作"
+      ]
+    },
+    {
+      "title": "clipboard.js",
+      "url": "https://github.com/zenorocha/clipboard.js",
+      "description": "现代版可复制到剪贴板。无需 Flash。仅 3kb（已压缩）大小。",
+      "tags": [
+        "浏览器API",
+        "剪贴板"
+      ]
+    },
+    {
+      "title": "Cropper.js",
+      "url": "https://github.com/fengyuanchen/cropperjs",
+      "description": "JavaScript 图像裁剪工具。",
+      "tags": [
+        "图像处理"
+      ]
+    },
+    {
+      "title": "Video.js",
+      "url": "https://github.com/videojs/video.js",
+      "description": "Video.js 是一款功能齐全的开源视频播放器，适用于所有基于网络的平台。",
+      "tags": [
+        "视频音频"
+      ]
+    },
+    {
+      "title": "HLS.js",
+      "url": "https://github.com/video-dev/hls.js",
+      "description": "HLS.js 是一个 JavaScript 库，它可以在支持 MSE（媒体源扩展）的浏览器中播放 HLS（HTTP 直播流）。",
+      "tags": [
+        "视频音频"
+      ]
+    },
+    {
+      "title": "Plyr",
+      "url": "https://github.com/sampotts/plyr",
+      "description": "Plyr 是一款简单、轻量、易于使用且可定制的 HTML5、YouTube 和 Vimeo 媒体播放器，支持现代浏览器。",
+      "tags": [
+        "视频音频"
+      ]
+    },
+    {
+      "title": "FilePond",
+      "url": "https://github.com/pqina/filepond",
+      "description": "一款 JavaScript 库，能够处理您所上传的任何内容，会优化图片以加快上传速度，并提供出色、易用且流畅顺滑的用户体验。",
+      "tags": [
+        "文件处理"
+      ]
+    },
+    {
+      "title": "crypto-js",
+      "url": "https://github.com/brix/crypto-js",
+      "description": "加密标准的 JavaScript 库。",
+      "tags": [
+        "数据加密"
+      ]
+    },
+    {
+      "title": "Intro.js",
+      "url": "https://github.com/usablica/intro.js",
+      "description": "轻量级、用户友好型的上手引导教程库。",
+      "tags": [
+        "用户引导"
+      ]
+    },
+    {
+      "title": "driver.js",
+      "url": "https://github.com/kamranahmedse/driver.js",
+      "description": "一个轻巧的，无依赖的JavaScript库，用于指导用户在页面上的重点。",
+      "tags": [
+        "用户引导"
+      ]
+    },
+    {
+      "title": "Axios",
+      "url": "https://github.com/axios/axios",
+      "description": "基于承诺的浏览器及 Node.js  HTTP 客户端。 Axios 是一款专为浏览器和 Node.js 设计的基于 Promise 的 HTTP 客户端。Axios 提供了一个小巧且易于使用的库，其接口具有高度的可扩展性。",
+      "tags": [
+        "HTTP请求"
+      ]
+    },
+    {
+      "title": "Cookie",
+      "url": "https://github.com/js-cookie/js-cookie",
+      "description": "一个简单、轻量级的 JavaScript API，用于处理浏览器中的 Cookie 数据。",
+      "tags": [
+        "浏览器API",
+        "Cookie"
+      ]
+    },
+    {
+      "title": "Loaders.css",
+      "url": "https://github.com/ConnorAtherton/loaders.css",
+      "description": "令人愉悦、以表现力为导向的纯 CSS 加载动画。",
+      "tags": [
+        "CSS",
+        "动画效果"
+      ]
+    },
+    {
+      "title": "Viewer.js",
+      "url": "https://github.com/fengyuanchen/viewerjs",
+      "description": "JavaScript 图像查看器。",
+      "tags": [
+        "图像处理"
+      ]
+    },
+    {
+      "title": "Swiper",
+      "url": "https://github.com/nolimits4web/swiper",
+      "description": "大多数现代的触摸式移动滑动界面都具备硬件加速的过渡效果。",
+      "tags": [
+        "触摸交互"
+      ]
+    },
+    {
+      "title": "Highlight.js",
+      "url": "https://github.com/highlightjs/highlight.js",
+      "description": "带有语言自动检测功能且无需任何依赖项的 JavaScript 语法高亮显示器。",
+      "tags": [
+        "代码高亮"
+      ]
+    },
+    {
+      "title": "Normalize.css",
+      "url": "https://github.com/necolas/normalize.css",
+      "description": "CSS 重置的现代 HTML5 就绪替代方案Normalize.css使浏览器更一致地呈现所有元素并符合现代标准。它精确地只针对需要规范化的样式。",
+      "tags": [
+        "CSS"
+      ]
+    },
+    {
+      "title": "reveal.js",
+      "url": "https://github.com/hakimel/reveal.js",
+      "description": "reveal.js 是一个开源的 HTML 演示框架。它能让任何拥有网络浏览器的人免费创建出美观的演示文稿。",
+      "tags": [
+        "演示展示"
+      ]
+    },
+    {
+      "title": "hammer.js",
+      "url": "https://github.com/hammerjs/hammer.js",
+      "description": "一个用于检测触摸手势的 JavaScript 库。",
+      "tags": [
+        "触摸交互"
+      ]
+    },
+    {
+      "title": "Marked",
+      "url": "https://github.com/markedjs/marked",
+      "description": "一个 Markdown 解析器和编译器。专为提高速度而设计。",
+      "tags": [
+        "Markdown",
+        "文档解析"
+      ]
+    },
+    {
+      "title": "Milkdown",
+      "url": "https://github.com/Milkdown/milkdown",
+      "description": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
+      "tags": [
+        "Markdown",
+        "文档解析"
+      ]
+    },
+    {
+      "title": "Swapy",
+      "url": "https://github.com/TahaSh/swapy",
+      "description": "一款与框架无关的工具，只需几行代码就能将任何布局转换为可拖动替换的布局形式。",
+      "tags": [
+        "拖拽操作"
+      ]
+    },
+    {
+      "title": "morphdom",
+      "url": "https://github.com/patrick-steele-idem/morphdom",
+      "description": "快速且轻量级的 DOM 差异对比/补丁处理（无需虚拟 DOM）。",
+      "tags": [
+        "性能优化",
+        "开发工具"
+      ]
+    },
+    {
+      "title": "Uppy",
+      "url": "https://github.com/transloadit/uppy",
+      "description": "Uppy 是一款时尚、模块化的 JavaScript 文件上传工具，可与任何应用程序无缝集成。它速度快，API 易于理解，让您无需为构建文件上传器而操心，能够专注于更重要的问题。",
+      "tags": [
+        "文件处理"
+      ]
+    },
+    {
+      "title": "Lucide",
+      "url": "https://github.com/lucide-icons/lucide",
+      "description": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
+      "tags": [
+        "图标",
+        "SVG"
+      ]
+    },
+    {
+      "title": "docxjs",
+      "url": "https://github.com/VolodymyrBaydalka/docxjs",
+      "description": "DOCX 渲染库。",
+      "tags": [
+        "DOCX",
+        "文档预览"
+      ]
+    },
+    {
+      "title": "tui.image-editor",
+      "url": "https://github.com/nhn/tui.image-editor",
+      "description": "一个基于 Web 的图像编辑器，提供了丰富的编辑功能，如裁剪、旋转、缩放等。",
+      "tags": [
+        "图像处理"
+      ]
+    },
+    {
+      "title": "interact.js",
+      "url": "https://github.com/taye/interact.js",
+      "description": "适用于现代浏览器（以及 IE9+）的 JavaScript 拖放、调整大小以及具有惯性和捕捉功能的多点触摸手势，支持网格式拖动",
+      "tags": [
+        "拖拽操作",
+        "触摸交互"
+      ]
+    },
+    {
+      "title": "lodash",
+      "url": "https://github.com/lodash/lodash",
+      "description": "一个一致性、模块化、高性能的 JavaScript 实用工具库。",
+      "tags": [
+        "工具库"
+      ]
+    },
+    {
+      "title": "CodeMirror 5",
+      "url": "https://github.com/codemirror/codemirror5",
+      "description": "一个功能强大的文本编辑器，支持语法高亮、代码折叠、自动完成等功能。",
+      "tags": [
+        "代码编辑器"
+      ]
+    },
+    {
+      "title": "xterm.js",
+      "url": "https://github.com/xtermjs/xterm.js",
+      "description": "一个功能强大的终端模拟器，支持语法高亮、代码折叠、自动完成等功能。",
+      "tags": [
+        "终端"
+      ]
+    },
+    {
+      "title": "file-type",
+      "url": "https://github.com/sindresorhus/file-type",
+      "description": "检测文件、流或数据的文件类型；支持 Node.js、浏览器。",
+      "tags": [
+        "文件类型"
+      ]
+    },
+    {
+      "title": "monaco-editor",
+      "url": "https://github.com/microsoft/monaco-editor",
+      "description": "一个基于浏览器的代码编辑器，支持语法高亮、代码折叠、自动完成等功能。",
+      "tags": [
+        "代码编辑器"
+      ]
+    },
+    {
+      "title": "TinyColor",
+      "url": "https://github.com/bgrins/TinyColor",
+      "description": "一个用于处理颜色的 JavaScript 库，支持颜色转换、混合、渐变等功能。",
+      "tags": [
+        "颜色处理"
+      ]
+    },
+    {
+      "title": "js-base64",
+      "url": "https://github.com/dankogai/js-base64",
+      "description": "一个用于 Base64 编码/解码的 JavaScript 库，支持 Node.js、浏览器。",
+      "tags": [
+        "Base64"
+      ]
+    },
+    {
+      "title": "ECharts",
+      "url": "https://github.com/apache/echarts",
+      "description": "一个基于 JavaScript 的开源可视化库，提供了丰富的图表类型和交互功能。",
+      "tags": [
+        "数据可视化"
+      ]
+    },
+    {
+      "title": "radash",
+      "url": "https://github.com/sodiray/radash",
+      "description": "一个功能强大的 JavaScript 实用工具库，提供了丰富的功能，如数组操作、对象操作、字符串操作等。",
+      "tags": [
+        "工具库"
+      ]
+    },
+    {
+      "title": "KaTeX",
+      "url": "https://github.com/KaTeX/KaTeX",
+      "description": "KaTeX/KaTeX 是一个快速的数学排版库，用于在网页上展示数学公式。",
+      "tags": [
+        "数学公式"
+      ]
+    },
+    {
+      "title": "Mock.js",
+      "url": "https://github.com/nuysoft/Mock",
+      "description": "Mock.js 是一个模拟数据生成器，可帮助前端开发和原型与后端进度分离，并减少一些单调性，特别是在编写自动化测试时。",
+      "tags": [
+        "模拟数据",
+        "测试"
+      ]
+    }
+  ]
 }
