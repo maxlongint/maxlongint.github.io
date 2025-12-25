@@ -11,11 +11,17 @@ export default function Contact() {
         if (!giscusLoadedRef.current) {
             giscusLoadedRef.current = true;
 
-            // 检查是否已经被预加载，如果有则直接使用
+            // 检查是否已经被预加载或加载过
             const existingScript = document.querySelector('script[src="https://giscus.app/client.js"]');
+            const existingPreload = document.querySelector('link[rel="preload"][href="https://giscus.app/client.js"]');
+
             if (existingScript) {
-                console.log('✅ Using preloaded Giscus script');
+                console.log('✅ Giscus script already loaded');
                 return;
+            }
+
+            if (existingPreload) {
+                console.log('✅ Using preloaded Giscus script');
             }
 
             const script = document.createElement('script');
