@@ -2,8 +2,8 @@ name: Update Daily Trending
 
 on:
     schedule:
-        # 每天早上 6:00 北京时间 (UTC时间前一天 22:00)
-        - cron: '0 22 * * *'
+        # 每天凌晨 3:00 北京时间 (UTC时间前一天 19:00)
+        - cron: '0 19 * * *'
     workflow_dispatch: # 允许手动触发
 
 jobs:

@@ -13,6 +13,13 @@ export interface GitHubRepoInfo {
     pushed_at?: string;
 }
 
+export interface PresetRepoInfo {
+    stars: number;
+    forks: number;
+    language: string;
+    updated_at: string;
+}
+
 export interface NPMDownloadData {
     date: string;
     downloads: number;

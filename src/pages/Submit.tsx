@@ -99,8 +99,6 @@ _此 Issue 由提交表单自动创建_`;
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log('提交的数据:', { formData, selectedTags }); // 调试日志
-
         if (!validateForm()) {
             return;
         }

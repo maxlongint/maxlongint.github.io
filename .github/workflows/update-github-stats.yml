@@ -1,9 +1,9 @@
 name: Update GitHub Stats
 
 on:
-    # 每天早上 6:00 北京时间 (UTC时间前一天 22:00)
+    # 每天凌晨 1:00 北京时间 (UTC时间前一天 17:00)
     schedule:
-        - cron: '0 22 * * *'
+        - cron: '0 17 * * *'
     # 允许手动触发
     workflow_dispatch:
 

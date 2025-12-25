@@ -1,5 +1,4 @@
 import type { GitHubRepoInfo, WeeklyTrending } from '../types';
-import presetStatsData from '../data/github-stats-preset.json';
 
 // 提取 GitHub 仓库信息
 export const getGitHubInfo = (url: string) => {
@@ -63,11 +62,7 @@ export const getTrendingData = (): WeeklyTrending | null => {
 // 统一加载所有 GitHub 预构建数据（preset + stats + readmes + trending）
 export const loadGitHubData = async () => {
     try {
-        // 1. 首先加载静态导入的 preset 数据
-        let statsData: Record<string, GitHubRepoInfo> = { ...presetStatsData.repos };
-        console.log('Loaded preset GitHub stats from static import');
-
-        // 2. 使用基础路径，从 public 目录加载运行时数据
+        // 使用基础路径，从 public 目录加载运行时数据
         const basePath = import.meta.env.BASE_URL || '/';
 
         // 并行加载 stats、readmes 和 trending 数据
@@ -77,11 +72,16 @@ export const loadGitHubData = async () => {
             fetch(`${basePath}trending.json`).catch(() => null),
         ]);
 
-        // 然后加载完整的 stats 数据（会覆盖 preset 中的数据）
+        // 初始化 statsData
+        let statsData: Record<string, GitHubRepoInfo> = {};
+
+        // 然后加载完整的 stats 数据
         if (statsResponse && statsResponse.ok) {
             const fullStatsData = await statsResponse.json();
-            statsData = { ...statsData, ...fullStatsData.repos };
-            console.log('Loaded full GitHub stats');
+            statsData = { ...fullStatsData.repos };
+            console.log('Loaded GitHub stats from public data');
+        } else {
+            console.log('GitHub stats not available');
         }
 
         // 将合并后的数据保存到全局
