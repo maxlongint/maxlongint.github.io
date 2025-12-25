@@ -38,10 +38,25 @@ jobs:
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
-                  git add -f public/github-readmes.json
-                  if git diff --staged --quiet; then
-                    echo "No changes to commit"
+
+                  # 检查文件是否存在
+                  if [ -f "public/github-readmes.json" ]; then
+                    echo "✅ File exists: public/github-readmes.json"
+                    ls -lh public/github-readmes.json
                   else
+                    echo "❌ File not found: public/github-readmes.json"
+                    exit 1
+                  fi
+
+                  # 强制添加文件
+                  git add -f public/github-readmes.json
+
+                  # 检查是否有变化
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                    exit 0
+                  else
+                    echo "✅ Changes detected, committing..."
                     git commit -m "🔄 Update GitHub READMEs data [skip ci]"
                     git push
                   fi
