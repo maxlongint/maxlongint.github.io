@@ -93,17 +93,86 @@ jobs:
                     fs.writeFileSync(process.env.GITHUB_OUTPUT, 'already_exists=true', { flag: 'a' });
                     process.exit(0);
                   }
-
+                                    
+                  // 自动为新标签生成样式
+                  function generateTagColor(index) {
+                    const goldenAngle = 137.5;
+                    const hue = (index * goldenAngle) % 360;
+                    const saturation = 45 + (index % 3) * 10;
+                    const lightnessBase = 88;
+                    const lightnessStep = 2;
+                    const maxSteps = 6;
+                    const lightness = lightnessBase - (index % maxSteps) * lightnessStep;
+                    const backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                    const textLightness = Math.max(20, lightness - 50);
+                    const textColor = `hsl(${hue}, ${Math.min(saturation + 20, 80)}%, ${textLightness}%)`;
+                                      
+                    function hslToHex(h, s, l) {
+                      s /= 100; l /= 100;
+                      const c = (1 - Math.abs(2 * l - 1)) * s;
+                      const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+                      const m = l - c / 2;
+                      let r = 0, g = 0, b = 0;
+                      if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+                      else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+                      else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+                      else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+                      else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+                      else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+                      const toHex = (num) => {
+                        const hex = Math.round((num + m) * 255).toString(16);
+                        return hex.length === 1 ? '0' + hex : hex;
+                      };
+                      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+                    }
+                                      
+                    const hexColor = hslToHex(hue, saturation, lightness);
+                    return {
+                      className: '',
+                      color: hexColor,
+                      backgroundColor: backgroundColor,
+                      textColor: textColor
+                    };
+                  }
+                                    
+                  let tagsUpdated = false;
+                  let nextColorIndex = 0;
+                  if (bookmarksData.tags.__meta__ && typeof bookmarksData.tags.__meta__.lastColorIndex === 'number') {
+                    nextColorIndex = bookmarksData.tags.__meta__.lastColorIndex + 1;
+                  } else {
+                    const existingTags = Object.keys(bookmarksData.tags).filter(k => k !== 'All' && k !== '__meta__');
+                    nextColorIndex = existingTags.length;
+                  }
+                                    
+                  parsed.tags.forEach(tag => {
+                    if (!bookmarksData.tags[tag]) {
+                      const newColorConfig = generateTagColor(nextColorIndex);
+                      bookmarksData.tags[tag] = newColorConfig;
+                      console.log(`添加新标签: ${tag}`);
+                      nextColorIndex++;
+                      tagsUpdated = true;
+                    }
+                  });
+                                    
+                  if (tagsUpdated) {
+                    bookmarksData.tags.__meta__ = {
+                      lastColorIndex: nextColorIndex - 1,
+                      totalTags: Object.keys(bookmarksData.tags).filter(k => k !== 'All' && k !== '__meta__').length,
+                      lastUpdated: new Date().toISOString()
+                    };
+                  }
+                                    
                   const newBookmark = {
                     title: parsed.toolName,
                     url: parsed.githubUrl,
                     description: parsed.description,
                     tags: parsed.tags
                   };
-                  bookmarksData.bookmarks.unshift(newBookmark);
+                  // 添加到数组最后
+                  bookmarksData.bookmarks.push(newBookmark);
                   fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
-
-                  const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false`;
+                                    
+                  const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false\ntags_updated=${tagsUpdated}`;
                   fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
                   EOF
 
@@ -116,7 +185,11 @@ jobs:
                   git config --local user.name "github-actions[bot]"
                   git add src/data/bookmarks.json
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
-                  git commit -m "Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
+                  COMMIT_MSG="Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
+                  if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
+                    COMMIT_MSG="${COMMIT_MSG}\n\n- Auto-generated new tag styles"
+                  fi
+                  git commit -m "${COMMIT_MSG}"
                   git push
 
             - name: Comment and Close Issue
