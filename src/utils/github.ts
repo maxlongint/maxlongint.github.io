@@ -582,25 +582,39 @@ const presetRepoData: Record<string, GitHubRepoInfo> = {
     },
 };
 
-// 统一加载所有 GitHub 预构建数据（stats + readmes + trending）
+// 统一加载所有 GitHub 预构建数据（stats + preset + readmes + trending）
 export const loadGitHubData = async () => {
     try {
         // 使用基础路径，兼容不同的部署环境
         const basePath = import.meta.env.BASE_URL || '/';
 
-        // 并行加载 stats、readmes 和 trending 数据
-        const [statsResponse, readmesResponse, trendingResponse] = await Promise.all([
+        // 并行加载 preset、stats、readmes 和 trending 数据
+        const [presetResponse, statsResponse, readmesResponse, trendingResponse] = await Promise.all([
+            fetch(`${basePath}github-stats-preset.json`).catch(() => null),
             fetch(`${basePath}github-stats.json`).catch(() => null),
             fetch(`${basePath}github-readmes.json`).catch(() => null),
             fetch(`${basePath}trending.json`).catch(() => null),
         ]);
 
-        // 处理 stats 数据
-        if (statsResponse && statsResponse.ok) {
-            const statsData = await statsResponse.json();
-            (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ =
-                statsData.repos;
+        // 初始化 stats 对象
+        let statsData: Record<string, GitHubRepoInfo> = {};
+
+        // 优先加载 preset 数据
+        if (presetResponse && presetResponse.ok) {
+            const presetData = await presetResponse.json();
+            statsData = { ...presetData.repos };
+            console.log('Loaded preset GitHub stats');
         }
+
+        // 然后加载完整的 stats 数据（会覆盖 preset 中的数据）
+        if (statsResponse && statsResponse.ok) {
+            const fullStatsData = await statsResponse.json();
+            statsData = { ...statsData, ...fullStatsData.repos };
+            console.log('Loaded full GitHub stats');
+        }
+
+        // 将合并后的数据保存到全局
+        (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ = statsData;
 
         // 处理 readmes 数据
         if (readmesResponse && readmesResponse.ok) {

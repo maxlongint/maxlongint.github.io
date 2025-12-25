@@ -171,7 +171,107 @@ jobs:
                   // 添加到数组最后
                   bookmarksData.bookmarks.push(newBookmark);
                   fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
-                                    
+                  
+                  // 实时获取GitHub仓库信息并添加到预设数据
+                  const match = parsed.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+                  if (match) {
+                    const owner = match[1];
+                    const repo = match[2].replace(/\.git$/, '');
+                    const fullName = `${owner}/${repo}`;
+                    
+                    console.log(`正在获取 ${fullName} 的实时数据...`);
+                    
+                    try {
+                      // 使用 GitHub API 获取仓库信息
+                      const https = require('https');
+                      
+                      const fetchGitHubData = () => new Promise((resolve, reject) => {
+                        const options = {
+                          hostname: 'api.github.com',
+                          path: `/repos/${fullName}`,
+                          headers: {
+                            'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'User-Agent': 'GitHub-Actions-Bot'
+                          }
+                        };
+                        
+                        https.get(options, (res) => {
+                          let data = '';
+                          res.on('data', (chunk) => { data += chunk; });
+                          res.on('end', () => {
+                            if (res.statusCode === 200) {
+                              resolve(JSON.parse(data));
+                            } else {
+                              reject(new Error(`HTTP ${res.statusCode}`));
+                            }
+                          });
+                        }).on('error', reject);
+                      });
+                      
+                      const fetchNpmData = (packageName) => new Promise((resolve) => {
+                        const options = {
+                          hostname: 'registry.npmjs.org',
+                          path: `/${encodeURIComponent(packageName)}`,
+                          headers: { 'User-Agent': 'GitHub-Actions-Bot' }
+                        };
+                        
+                        https.get(options, (res) => {
+                          let data = '';
+                          res.on('data', (chunk) => { data += chunk; });
+                          res.on('end', () => {
+                            if (res.statusCode === 200) {
+                              try {
+                                const npmData = JSON.parse(data);
+                                resolve(npmData['dist-tags']?.latest || 'N/A');
+                              } catch (e) {
+                                resolve('N/A');
+                              }
+                            } else {
+                              resolve('N/A');
+                            }
+                          });
+                        }).on('error', () => resolve('N/A'));
+                      });
+                      
+                      const repoData = await fetchGitHubData();
+                      const npmVersion = await fetchNpmData(repoData.name);
+                      
+                      const presetData = {
+                        stargazers_count: repoData.stargazers_count || 0,
+                        npm_version: npmVersion,
+                        name: repoData.name,
+                        full_name: repoData.full_name,
+                        pushed_at: repoData.pushed_at || new Date().toISOString()
+                      };
+                      
+                      console.log(`  ✓ Stars: ${presetData.stargazers_count}`);
+                      console.log(`  ✓ npm版本: ${presetData.npm_version}`);
+                      console.log(`  ✓ 最后更新: ${presetData.pushed_at}`);
+                      
+                      // 读取或创建预设数据文件
+                      const presetDataPath = './public/github-stats-preset.json';
+                      let presetDataFile = { repos: {} };
+                      if (fs.existsSync(presetDataPath)) {
+                        presetDataFile = JSON.parse(fs.readFileSync(presetDataPath, 'utf8'));
+                      }
+                      
+                      // 添加新的预设数据
+                      const urlKey = `github.com/${fullName}`;
+                      presetDataFile.repos[urlKey] = presetData;
+                      presetDataFile.updated_at = new Date().toISOString();
+                      
+                      fs.writeFileSync(presetDataPath, JSON.stringify(presetDataFile, null, 2) + '\n', 'utf8');
+                      console.log(`  ✓ 已添加预设数据到 github-stats-preset.json`);
+                      
+                      // 标记需要提交预设数据文件
+                      fs.appendFileSync(process.env.GITHUB_OUTPUT, 'preset_data_added=true\n');
+                    } catch (error) {
+                      console.log(`  ✗ 获取GitHub数据失败: ${error.message}`);
+                      console.log(`  → 数据将在下次定时更新时同步`);
+                    }
+                  }
+                  
                   const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false\ntags_updated=${tagsUpdated}`;
                   fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
                   EOF
@@ -184,10 +284,19 @@ jobs:
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
                   git add src/data/bookmarks.json
+                  
+                  # 如果有预设数据，也一起提交
+                  if [ -f "public/github-stats-preset.json" ]; then
+                    git add public/github-stats-preset.json
+                  fi
+                  
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   COMMIT_MSG="Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
                   if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
                     COMMIT_MSG="${COMMIT_MSG}\n\n- Auto-generated new tag styles"
+                  fi
+                  if [ "${{ steps.parse-issue.outputs.preset_data_added }}" = "true" ]; then
+                    COMMIT_MSG="${COMMIT_MSG}\n- Added preset GitHub stats data"
                   fi
                   git commit -m "${COMMIT_MSG}"
                   git push
