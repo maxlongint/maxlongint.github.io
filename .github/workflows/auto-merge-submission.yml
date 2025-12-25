@@ -172,8 +172,8 @@ jobs:
                   bookmarksData.bookmarks.push(newBookmark);
                   fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 2) + '\n', 'utf8');
 
-                  // 定义主函数
-                  async function main() {
+                  // 定义并执行主函数
+                  (async function main() {
                     // 实时获取GitHub仓库信息并添加到预设数据
                     const match = parsed.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
                     if (match) {
@@ -322,16 +322,13 @@ jobs:
 
                     const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false\ntags_updated=${tagsUpdated}`;
                     fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
-                  }
-
-                  // 执行主函数
-                  main().catch(err => {
+                  })().catch(err => {
                     console.error('执行失败:', err);
                     process.exit(1);
                   });
                   EOF
 
-                  ISSUE_BODY="$ISSUE_BODY" node parse-issue.cjs
+                  ISSUE_BODY="$ISSUE_BODY" GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" node parse-issue.cjs
 
             - name: Commit Changes
               if: steps.parse-issue.outputs.already_exists == 'false'
@@ -361,6 +358,14 @@ jobs:
                   fi
                   git commit -m "${COMMIT_MSG}"
                   git push
+
+            - name: Trigger Deployment
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "New tool added: ${{ steps.parse-issue.outputs.tool_name }}"}'
 
             - name: Comment and Close Issue
               if: steps.parse-issue.outputs.already_exists == 'false'
