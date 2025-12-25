@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import bookmarksData from '../data/bookmarks.json';
 
 export default function Submit() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,8 +12,39 @@ export default function Submit() {
         toolName: '',
         githubUrl: '',
         description: '',
-        tags: '',
     });
+
+    // 选中的标签（数组）
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    // 新标签输入
+    const [newTagInput, setNewTagInput] = useState('');
+    // 是否显示标签下拉框
+    const [showTagDropdown, setShowTagDropdown] = useState(false);
+
+    // 获取所有已存在的标签（排除 All 和 __meta__）
+    const existingTags = useMemo(() => {
+        return Object.keys(bookmarksData.tags)
+            .filter(tag => tag !== 'All' && tag !== '__meta__')
+            .sort();
+    }, []);
+
+    // 点击外部关闭标签下拉框
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (showTagDropdown && !target.closest('.tag-input-container')) {
+                setShowTagDropdown(false);
+            }
+        };
+
+        if (showTagDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showTagDropdown]);
 
     // GitHub 仓库信息
     const GITHUB_REPO = 'maxlongint/maxlongint.github.io';
@@ -36,8 +68,8 @@ export default function Submit() {
             alert('请输入工具描述');
             return false;
         }
-        if (!formData.tags.trim()) {
-            alert('请输入至少一个标签');
+        if (selectedTags.length === 0) {
+            alert('请选择或输入至少一个标签');
             return false;
         }
         return true;
@@ -56,7 +88,7 @@ ${formData.description}
 
 ### 标签
 
-${formData.tags}
+${selectedTags.join(', ')}
 
 ---
 
@@ -66,6 +98,8 @@ _此 Issue 由提交表单自动创建_`;
     // 提交表单 - 直接创建 GitHub Issue
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        console.log('提交的数据:', { formData, selectedTags }); // 调试日志
 
         if (!validateForm()) {
             return;
@@ -107,8 +141,9 @@ _此 Issue 由提交表单自动创建_`;
                     toolName: '',
                     githubUrl: '',
                     description: '',
-                    tags: '',
                 });
+                setSelectedTags([]);
+                setNewTagInput('');
                 // 跳转到 Issue 页面
                 window.open(issue.html_url, '_blank');
             } else {
@@ -289,16 +324,146 @@ _此 Issue 由提交表单自动创建_`;
                                 <label className="block text-sm font-medium text-gray-900 mb-2">
                                     标签 <span className="text-red-500">*</span>
                                 </label>
-                                <p className="text-xs text-gray-500 mb-2">
-                                    多个标签用逗号分隔（例如：TypeScript, React, 动画效果）
+                                <p className="text-xs text-gray-500 mb-2">选择已有标签或输入新标签后按回车添加</p>
+
+                                {/* 已选标签 */}
+                                {selectedTags.length > 0 && (
+                                    <div className="flex flex-wrap gap-1.5 mb-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                                        {selectedTags.map(tag => (
+                                            <span
+                                                key={tag}
+                                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium"
+                                            >
+                                                {tag}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedTags(selectedTags.filter(t => t !== tag))}
+                                                    className="hover:text-blue-900"
+                                                >
+                                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                            clipRule="evenodd"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* 标签输入框 */}
+                                <div className="relative tag-input-container">
+                                    <input
+                                        type="text"
+                                        placeholder="输入标签名称..."
+                                        value={newTagInput}
+                                        onChange={e => {
+                                            setNewTagInput(e.target.value);
+                                            setShowTagDropdown(true);
+                                        }}
+                                        onFocus={() => setShowTagDropdown(true)}
+                                        onKeyDown={e => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                const tag = newTagInput.trim();
+                                                if (tag && !selectedTags.includes(tag)) {
+                                                    setSelectedTags([...selectedTags, tag]);
+                                                    setNewTagInput('');
+                                                    setShowTagDropdown(false);
+                                                }
+                                            } else if (e.key === 'Escape') {
+                                                setShowTagDropdown(false);
+                                            }
+                                        }}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+
+                                    {/* 标签下拉列表 */}
+                                    {showTagDropdown && (
+                                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                            {/* 筛选后的已有标签 */}
+                                            {(() => {
+                                                const filtered = existingTags.filter(
+                                                    tag =>
+                                                        tag.toLowerCase().includes(newTagInput.toLowerCase()) &&
+                                                        !selectedTags.includes(tag)
+                                                );
+
+                                                if (filtered.length === 0 && !newTagInput.trim()) {
+                                                    return (
+                                                        <div className="px-3 py-2 text-sm text-gray-500">
+                                                            输入标签名称或从下方选择
+                                                        </div>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <>
+                                                        {/* 如果有输入且不存在，显示"添加新标签"选项 */}
+                                                        {newTagInput.trim() &&
+                                                            !existingTags.includes(newTagInput.trim()) && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        const tag = newTagInput.trim();
+                                                                        if (tag && !selectedTags.includes(tag)) {
+                                                                            setSelectedTags([...selectedTags, tag]);
+                                                                            setNewTagInput('');
+                                                                            setShowTagDropdown(false);
+                                                                        }
+                                                                    }}
+                                                                    className="w-full text-left px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium border-b border-gray-200"
+                                                                >
+                                                                    + 添加新标签 "{newTagInput.trim()}"
+                                                                </button>
+                                                            )}
+
+                                                        {/* 已有标签列表 */}
+                                                        {filtered.length > 0 && (
+                                                            <div className="py-1">
+                                                                <div className="px-3 py-1 text-xs text-gray-500 font-medium">
+                                                                    选择已有标签
+                                                                </div>
+                                                                {filtered.map(tag => (
+                                                                    <button
+                                                                        key={tag}
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            if (!selectedTags.includes(tag)) {
+                                                                                setSelectedTags([...selectedTags, tag]);
+                                                                                setNewTagInput('');
+                                                                                setShowTagDropdown(false);
+                                                                            }
+                                                                        }}
+                                                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                    >
+                                                                        {tag}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        )}
+
+                                                        {/* 如果没有匹配结果 */}
+                                                        {filtered.length === 0 &&
+                                                            newTagInput.trim() &&
+                                                            existingTags.includes(newTagInput.trim()) && (
+                                                                <div className="px-3 py-2 text-sm text-gray-500">
+                                                                    此标签已选择
+                                                                </div>
+                                                            )}
+                                                    </>
+                                                );
+                                            })()}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* 提示文本 */}
+                                <p className="text-xs text-gray-500 mt-2">
+                                    💡 提示：输入后按回车添加标签，或从下拉列表选择已有标签
                                 </p>
-                                <input
-                                    type="text"
-                                    placeholder="TypeScript, React, 数据处理"
-                                    value={formData.tags}
-                                    onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
                             </div>
                         </div>
                     </div>
