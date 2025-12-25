@@ -1,14 +1,8 @@
 name: 🖼️ Update OG Images
 
 on:
-    # 每周日凌晨 4:00 自动运行
-    schedule:
-        - cron: '0 4 * * 0'
-    # 允许手动触发
+    # 仅允许手动触发
     workflow_dispatch:
-    # Stats 更新后自动触发
-    repository_dispatch:
-        types: [stats-updated]
 
 jobs:
     update-og-images:

@@ -332,6 +332,7 @@ jobs:
 
             - name: Commit Changes
               if: steps.parse-issue.outputs.already_exists == 'false'
+              id: commit
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
@@ -358,6 +359,25 @@ jobs:
                   fi
                   git commit -m "${COMMIT_MSG}"
                   git push
+
+            - name: Generate OG Image for New Tool
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              run: |
+                  npm run generate-og-single "${{ steps.parse-issue.outputs.tool_url }}"
+
+            - name: Commit OG Image
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add public/og-images/
+
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No OG image changes to commit"
+                  else
+                    git commit -m "🖼️ Generate OG image for ${{ steps.parse-issue.outputs.tool_name }}"
+                    git push
+                  fi
 
             - name: Trigger Deployment
               if: steps.parse-issue.outputs.already_exists == 'false'
