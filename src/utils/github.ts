@@ -1,4 +1,5 @@
 import type { GitHubRepoInfo, WeeklyTrending, PresetRepoInfo } from '../types';
+import presetData from '../data/github-stats-preset.json';
 
 // 提取 GitHub 仓库信息
 export const getGitHubInfo = (url: string) => {
@@ -65,9 +66,8 @@ export const loadGitHubData = async () => {
         // 使用基础路径,从 public 目录加载运行时数据
         const basePath = import.meta.env.BASE_URL || '/';
 
-        // 并行加载 preset、stats、readmes 和 trending 数据
-        const [presetResponse, statsResponse, readmesResponse, trendingResponse] = await Promise.all([
-            import('../data/github-stats-preset.json'),
+        // 并行加载 stats、readmes 和 trending 数据
+        const [statsResponse, readmesResponse, trendingResponse] = await Promise.all([
             fetch(`${basePath}github-stats.json`, { cache: 'no-cache' }).catch(() => null),
             fetch(`${basePath}github-readmes.json`, { cache: 'no-cache' }).catch(() => null),
             fetch(`${basePath}trending.json`, { cache: 'no-cache' }).catch(() => null),
@@ -77,8 +77,8 @@ export const loadGitHubData = async () => {
         let statsData: Record<string, GitHubRepoInfo> = {};
 
         // 首先加载预设数据作为基础,转换格式
-        if (presetResponse && presetResponse.repos) {
-            const presetRepos = presetResponse.repos as Record<string, PresetRepoInfo>;
+        if (presetData && presetData.repos) {
+            const presetRepos = presetData.repos as Record<string, PresetRepoInfo>;
             Object.entries(presetRepos).forEach(([key, preset]) => {
                 // 从 URL中提取 owner 和 repo 名称
                 const parts = key.split('/');
