@@ -1,0 +1,63 @@
+name: 📖 Sync Single README
+
+on:
+    # 允许手动触发
+    workflow_dispatch:
+        inputs:
+            repository:
+                description: 'Repository to sync (e.g., KaTeX/KaTeX)'
+                required: true
+                type: string
+
+jobs:
+    sync-readme:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Sync README for ${{ inputs.repository }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: npm run sync-readme ${{ inputs.repository }}
+
+            - name: Commit and push changes
+              id: commit
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+
+                  git add src/data/github-readmes.json
+
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "✅ Committing updated README for ${{ inputs.repository }}"
+                    git commit -m "📖 Update README for ${{ inputs.repository }}"
+                    git push
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Trigger deployment
+              if: steps.commit.outputs.has_changes == 'true'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "README updated for ${{ inputs.repository }}"}'
