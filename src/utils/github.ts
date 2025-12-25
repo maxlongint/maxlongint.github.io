@@ -59,24 +59,24 @@ export const getTrendingData = (): WeeklyTrending | null => {
     }
 };
 
-// 统一加载所有 GitHub 预构建数据（preset + stats + readmes + trending）
+// 统一加载所有 GitHub 预构建数据(preset + stats + readmes + trending)
 export const loadGitHubData = async () => {
     try {
-        // 使用基础路径，从 public 目录加载运行时数据
+        // 使用基础路径,从 public 目录加载运行时数据
         const basePath = import.meta.env.BASE_URL || '/';
 
         // 并行加载 preset、stats、readmes 和 trending 数据
         const [presetResponse, statsResponse, readmesResponse, trendingResponse] = await Promise.all([
             import('../data/github-stats-preset.json'),
-            fetch(`${basePath}github-stats.json`).catch(() => null),
-            fetch(`${basePath}github-readmes.json`).catch(() => null),
-            fetch(`${basePath}trending.json`).catch(() => null),
+            fetch(`${basePath}github-stats.json`, { cache: 'no-cache' }).catch(() => null),
+            fetch(`${basePath}github-readmes.json`, { cache: 'no-cache' }).catch(() => null),
+            fetch(`${basePath}trending.json`, { cache: 'no-cache' }).catch(() => null),
         ]);
 
-        // 初始化 statsData，先加载预设数据作为基础
+        // 初始化 statsData,先加载预设数据作为基础
         let statsData: Record<string, GitHubRepoInfo> = {};
 
-        // 首先加载预设数据作为基础，转换格式
+        // 首先加载预设数据作为基础,转换格式
         if (presetResponse && presetResponse.repos) {
             const presetRepos = presetResponse.repos as Record<string, PresetRepoInfo>;
             Object.entries(presetRepos).forEach(([key, preset]) => {
@@ -92,16 +92,16 @@ export const loadGitHubData = async () => {
                     pushed_at: preset.updated_at,
                 };
             });
-            console.log('Loaded GitHub preset stats');
+            console.log('✅ Loaded GitHub preset stats');
         }
 
-        // 然后加载完整的 stats 数据（如果可用，会覆盖预设数据）
+        // 然后加载完整的 stats 数据(如果可用,会覆盖预设数据)
         if (statsResponse && statsResponse.ok) {
             const fullStatsData = await statsResponse.json();
             statsData = { ...statsData, ...fullStatsData.repos };
-            console.log('Loaded GitHub stats from public data');
+            console.log('✅ Loaded GitHub stats from public data');
         } else {
-            console.log('Using preset GitHub stats data');
+            console.log('ℹ️ Using preset GitHub stats data (public data not available)');
         }
 
         // 将合并后的数据保存到全局
@@ -112,15 +112,21 @@ export const loadGitHubData = async () => {
             const readmesData = await readmesResponse.json();
             (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
                 readmesData.readmes;
+            console.log('✅ Loaded GitHub readmes from public data');
+        } else {
+            console.log('ℹ️ GitHub readmes not available (will be loaded on-demand)');
         }
 
         // 处理 trending 数据
         if (trendingResponse && trendingResponse.ok) {
             const trendingData = await trendingResponse.json();
             (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
+            console.log('✅ Loaded trending data from public data');
+        } else {
+            console.log('ℹ️ Trending data not available (requires GitHub Actions)');
         }
     } catch (error) {
-        console.warn('Failed to load GitHub data:', error);
+        console.warn('⚠️ Failed to load some GitHub data:', error);
     }
 };
 
