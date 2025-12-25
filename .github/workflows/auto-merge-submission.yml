@@ -1,7 +1,11 @@
 name: Auto Merge Submission
 
-# 工具自动收录工作流（手动触发）
+# 工具自动收录工作流
 on:
+    # 当 Issue 标签发生变化时触发
+    issues:
+        types: [labeled]
+    # 允许手动触发
     workflow_dispatch:
         inputs:
             issue_number:
@@ -11,8 +15,12 @@ on:
 
 jobs:
     merge-submission:
-        # 确保只在手动触发时运行
-        if: github.event_name == 'workflow_dispatch'
+        # 只在以下情况运行：
+        # 1. 手动触发
+        # 2. 标签变化且添加了「收录通过」标签
+        if: |
+            github.event_name == 'workflow_dispatch' ||
+            (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == '收录通过')
         runs-on: ubuntu-latest
 
         permissions:
@@ -24,6 +32,7 @@ jobs:
               run: |
                   echo "触发事件类型: ${{ github.event_name }}"
                   echo "手动触发: Issue #${{ github.event.inputs.issue_number || 'N/A' }}"
+                  echo "标签触发: Issue #${{ github.event.issue.number || 'N/A' }}"
 
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -40,8 +49,10 @@ jobs:
               id: parse-issue
               run: |
                   # 从 API 获取 Issue 内容
+                  # 如果是手动触发，使用输入的 issue_number；否则使用事件中的 issue.number
+                  ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   ISSUE_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                    "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}" | \
+                    "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUM}" | \
                     jq -r '.body')
 
                   # 创建解析脚本（使用 .cjs 扩展名以支持 CommonJS）
@@ -295,11 +306,12 @@ jobs:
                   git add src/data/bookmarks.json
                   
                   # 构建提交信息
+                  ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   COMMIT_MSG="🤖 自动收录: ${{ steps.parse-issue.outputs.tool_name }}
 
 - 工具名称: ${{ steps.parse-issue.outputs.tool_name }}
 - GitHub: ${{ steps.parse-issue.outputs.tool_url }}
-- 来源 Issue: #${{ github.event.issue.number }}"
+- 来源 Issue: #${ISSUE_NUM}"
                   
                   if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
                     COMMIT_MSG="$COMMIT_MSG
@@ -318,6 +330,7 @@ jobs:
               uses: actions/github-script@v7
               with:
                   script: |
+                      const issueNumber = ${{ github.event.inputs.issue_number || github.event.issue.number }};
                       let commentBody = `🎉 **收录成功！**
 
                       您提交的工具 **${{ steps.parse-issue.outputs.tool_name }}** 已成功添加到工具库中！
@@ -336,7 +349,7 @@ jobs:
                       await github.rest.issues.createComment({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        issue_number: context.issue.number,
+                        issue_number: issueNumber,
                         body: commentBody
                       });
 
@@ -344,7 +357,7 @@ jobs:
                       await github.rest.issues.addLabels({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        issue_number: context.issue.number,
+                        issue_number: issueNumber,
                         labels: ['已收录']
                       });
 
@@ -352,7 +365,7 @@ jobs:
                       await github.rest.issues.update({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        issue_number: context.issue.number,
+                        issue_number: issueNumber,
                         state: 'closed',
                         state_reason: 'completed'
                       });
@@ -362,10 +375,11 @@ jobs:
               uses: actions/github-script@v7
               with:
                   script: |
+                      const issueNumber = ${{ github.event.inputs.issue_number || github.event.issue.number }};
                       await github.rest.issues.createComment({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        issue_number: context.issue.number,
+                        issue_number: issueNumber,
                         body: `⚠️ **该工具已存在**
 
                       工具 **${{ steps.parse-issue.outputs.tool_name }}** 已经在工具库中了，无需重复添加。

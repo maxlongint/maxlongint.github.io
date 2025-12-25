@@ -2,11 +2,6 @@ name: Setup Repository Labels
 
 on:
     workflow_dispatch: # 手动触发
-    push:
-        branches:
-            - master
-        paths:
-            - '.github/workflows/setup-labels.yml'
 
 jobs:
     setup-labels:

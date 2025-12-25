@@ -1,18 +1,25 @@
-name: Update Daily Trending
+name: Update GitHub READMEs
 
 on:
+    # 每天早上 6:00 北京时间 (UTC时间前一天 22:00)
     schedule:
-        # 每天早上 6:00 北京时间 (UTC时间前一天 22:00)
         - cron: '0 22 * * *'
-    workflow_dispatch: # 允许手动触发
+    # 允许手动触发
+    workflow_dispatch:
 
 jobs:
-    update-trending:
+    update-readmes:
         runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
 
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
+              with:
+                  ref: master
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -22,17 +29,19 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Fetch trending data
-              run: npm run fetch-trending
+            - name: Update GitHub READMEs
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: node scripts/update-github-readmes.js
 
             - name: Commit and push changes
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
-                  git add public/trending.json
+                  git add public/github-readmes.json
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
                   else
-                    git commit -m "🔄 Update daily trending data [skip ci]"
+                    git commit -m "🔄 Update GitHub READMEs data [skip ci]"
                     git push
                   fi
