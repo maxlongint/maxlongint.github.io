@@ -347,7 +347,7 @@ jobs:
 
                   # 添加所有修改的文件
                   git add src/data/bookmarks.json
-                  git add public/og-images/
+                  git add src/data/og-images/
                               
                   # 如果有同步数据，也一起提交
                   if [ -f "src/data/github-stats.json" ]; then
