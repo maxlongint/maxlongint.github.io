@@ -73,38 +73,36 @@ export const loadGitHubData = async () => {
             fetch(`${basePath}trending.json`, { cache: 'no-cache' }).catch(() => null),
         ]);
 
-        // 初始化 statsData,先加载预设数据作为基础
+        // 初始化 statsData
         let statsData: Record<string, GitHubRepoInfo> = {};
 
-        // 首先加载预设数据作为基础,转换格式
-        if (presetData && presetData.repos) {
-            const presetRepos = presetData.repos as Record<string, PresetRepoInfo>;
-            Object.entries(presetRepos).forEach(([key, preset]) => {
-                // 从 URL中提取 owner 和 repo 名称
-                const parts = key.split('/');
-                const name = parts[parts.length - 1];
-
-                statsData[key] = {
-                    stargazers_count: preset.stars,
-                    npm_version: '',
-                    name: name,
-                    full_name: key.replace('github.com/', ''),
-                    pushed_at: preset.updated_at,
-                };
-            });
-            console.log('✅ Loaded GitHub preset stats');
-        }
-
-        // 然后加载完整的 stats 数据(如果可用,会覆盖预设数据)
+        // 优先加载实时 stats 数据
         if (statsResponse && statsResponse.ok) {
             const fullStatsData = await statsResponse.json();
-            statsData = { ...statsData, ...fullStatsData.repos };
+            statsData = { ...fullStatsData.repos };
             console.log('✅ Loaded GitHub stats from public data');
         } else {
-            console.log('ℹ️ Using preset GitHub stats data (public data not available)');
+            // 如果实时数据不可用,回退到预设数据
+            if (presetData && presetData.repos) {
+                const presetRepos = presetData.repos as Record<string, PresetRepoInfo>;
+                Object.entries(presetRepos).forEach(([key, preset]) => {
+                    // 从 URL中提取 owner 和 repo 名称
+                    const parts = key.split('/');
+                    const name = parts[parts.length - 1];
+
+                    statsData[key] = {
+                        stargazers_count: preset.stars,
+                        npm_version: '',
+                        name: name,
+                        full_name: key.replace('github.com/', ''),
+                        pushed_at: preset.updated_at,
+                    };
+                });
+                console.log('ℹ️ Using preset GitHub stats data (public data not available)');
+            }
         }
 
-        // 将合并后的数据保存到全局
+        // 将数据保存到全局
         (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ = statsData;
 
         // 处理 readmes 数据
