@@ -49,16 +49,24 @@ jobs:
                                     
                   function parseIssueBody(body) {
                     const result = { toolName: '', githubUrl: '', description: '', tags: [] };
-                    const nameMatch = body.match(/###\s*工具名称\s*\n+([^\n#]+)/i);
+                    
+                    // 匹配 **工具名称:** Mock.js
+                    const nameMatch = body.match(/\*\*工具名称:\*\*\s*([^\n]+)/i);
                     if (nameMatch) result.toolName = nameMatch[1].trim();
-                    const urlMatch = body.match(/###\s*GitHub\s*仓库地址\s*\n+([^\n#]+)/i);
+                    
+                    // 匹配 **GitHub 仓库地址:** https://...
+                    const urlMatch = body.match(/\*\*GitHub\s*仓库地址:\*\*\s*([^\n]+)/i);
                     if (urlMatch) {
                       result.githubUrl = urlMatch[1].trim();
                       if (!result.githubUrl.startsWith('http')) result.githubUrl = 'https://' + result.githubUrl;
                     }
-                    const descMatch = body.match(/###\s*工具描述\s*\n+([\s\S]+?)(?=\n###|$)/i);
+                    
+                    // 匹配 ### 描述 后面的内容
+                    const descMatch = body.match(/###\s*描述\s*\n+([\s\S]+?)(?=\n###|---)/i);
                     if (descMatch) result.description = descMatch[1].trim();
-                    const tagsMatch = body.match(/###\s*标签\s*\n+([^\n#]+)/i);
+                    
+                    // 匹配 ### 标签 后面的内容
+                    const tagsMatch = body.match(/###\s*标签\s*\n+([^\n]+)/i);
                     if (tagsMatch) {
                       result.tags = tagsMatch[1].trim().split(/[,，]/).map(t => t.trim()).filter(t => t);
                     }
@@ -66,14 +74,14 @@ jobs:
                   }
 
                   const parsed = parseIssueBody(issueBody);
-                  
+
                   console.log('=== Parsed Result ===');
                   console.log('Tool Name:', parsed.toolName);
                   console.log('GitHub URL:', parsed.githubUrl);
                   console.log('Description:', parsed.description);
                   console.log('Tags:', parsed.tags);
                   console.log('=====================');
-                  
+
                   if (!parsed.toolName || !parsed.githubUrl || !parsed.description || parsed.tags.length === 0) {
                     console.error('Missing required fields');
                     process.exit(1);
