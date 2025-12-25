@@ -23,90 +23,42 @@ if (!token) {
 
 // 获取仓库README的函数
 async function fetchReadme(owner, repo) {
-    // 可能的 README 文件名变体
-    const readmeVariants = ['README.md', 'readme.md', 'Readme.md', 'README.MD', 'readme.MD', 'README', 'readme'];
-
-    // 可能的分支名
-    const branches = ['main', 'master'];
-
-    // 特殊仓库的 README 路径（针对 monorepo 等情况）
-    const specialPaths = {
-        'colinhacks/zod': ['packages/zod/README.md'],
-        'fabian-hiller/valibot': ['library/README.md'],
-        'KaTeX/KaTeX': ['README.md'],
-    };
-
     try {
         const fullName = `${owner}/${repo}`;
         console.log(`\nFetching README for ${fullName}...`);
 
-        // 首先尝试特殊路径
-        if (specialPaths[fullName]) {
-            console.log(`Using special paths for ${fullName}`);
-            for (const branch of branches) {
-                for (const specialPath of specialPaths[fullName]) {
-                    const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${specialPath}`;
-                    console.log(`  Trying ${branch}/${specialPath}...`);
+        // 使用 GitHub API 获取 README
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/readme`;
+        console.log(`  Using GitHub API: ${apiUrl}`);
 
-                    const headers = {
-                        'User-Agent': 'GitHub-Pages-Builder',
-                    };
-                    if (token) {
-                        headers.Authorization = `Bearer ${token}`;
-                    }
-
-                    const response = await fetch(url, { headers });
-                    console.log(`  Status: ${response.status}`);
-
-                    if (response.ok) {
-                        const text = await response.text();
-                        console.log(`  Content length: ${text.length} bytes`);
-                        console.log(`  First 100 chars: ${text.substring(0, 100).replace(/\n/g, '\\n')}`);
-
-                        if (text && text.length > 100 && !text.includes('<!DOCTYPE html>')) {
-                            console.log(`  ✓ Found ${specialPath} in ${branch} branch`);
-                            return text;
-                        } else {
-                            console.log(`  ✗ Content validation failed`);
-                        }
-                    }
-                }
-            }
+        const headers = {
+            Accept: 'application/vnd.github.v3.raw', // 获取原始 Markdown 内容
+            'User-Agent': 'GitHub-Pages-Builder',
+        };
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
         }
 
-        // 然后尝试根目录的 README
-        console.log(`Trying standard README locations...`);
-        for (const branch of branches) {
-            for (const filename of readmeVariants) {
-                const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filename}`;
-                console.log(`  Trying ${branch}/${filename}...`);
+        const response = await fetch(apiUrl, { headers });
+        console.log(`  Status: ${response.status}`);
 
-                const headers = {
-                    'User-Agent': 'GitHub-Pages-Builder',
-                };
-                if (token) {
-                    headers.Authorization = `Bearer ${token}`;
-                }
+        if (response.ok) {
+            const text = await response.text();
+            console.log(`  Content length: ${text.length} bytes`);
+            console.log(`  First 100 chars: ${text.substring(0, 100).replace(/\n/g, '\\n')}`);
 
-                const response = await fetch(url, { headers });
-                console.log(`  Status: ${response.status}`);
-
-                if (response.ok) {
-                    const text = await response.text();
-                    console.log(`  Content length: ${text.length} bytes`);
-                    console.log(`  First 100 chars: ${text.substring(0, 100).replace(/\n/g, '\\n')}`);
-
-                    if (text && text.length > 100 && !text.includes('<!DOCTYPE html>')) {
-                        console.log(`  ✓ Found ${filename} in ${branch} branch`);
-                        return text;
-                    } else {
-                        console.log(`  ✗ Content validation failed`);
-                    }
-                }
+            if (text && text.length > 100) {
+                console.log(`  ✓ Successfully fetched README`);
+                return text;
+            } else {
+                console.log(`  ✗ Content too short`);
             }
+        } else if (response.status === 404) {
+            console.error(`  ✗ README not found`);
+        } else {
+            console.error(`  ✗ API request failed: ${response.statusText}`);
         }
 
-        console.error(`\n✗ Failed to fetch README for ${owner}/${repo}: no valid README found`);
         return null;
     } catch (error) {
         console.error(`\n✗ Error fetching README for ${owner}/${repo}:`, error.message);
