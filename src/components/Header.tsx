@@ -3,13 +3,12 @@ import { useState } from 'react';
 import SearchBar from './SearchBar';
 
 interface HeaderProps {
-    onOpenComments?: () => void;
     isFixed?: boolean;
     searchQuery?: string;
     setSearchQuery?: (query: string) => void;
 }
 
-export default function Header({ onOpenComments, isFixed = false, searchQuery = '', setSearchQuery }: HeaderProps) {
+export default function Header({ isFixed = false, searchQuery = '', setSearchQuery }: HeaderProps) {
     const location = useLocation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -79,6 +78,24 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                                     </svg>
                                     提交收录
                                 </Link>
+                                <Link
+                                    to="/contact"
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                                        location.pathname === '/contact'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                                        />
+                                    </svg>
+                                    留言板
+                                </Link>
                             </nav>
                         </div>
 
@@ -109,21 +126,6 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                                 </svg>
                             </button>
 
-                            <button
-                                onClick={onOpenComments}
-                                className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
-                                aria-label="评论"
-                                style={{ display: onOpenComments ? 'block' : 'none' }}
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                                    />
-                                </svg>
-                            </button>
                             <a
                                 href="https://github.com/maxlongint/maxlongint.github.io"
                                 target="_blank"
@@ -198,6 +200,27 @@ export default function Header({ onOpenComments, isFixed = false, searchQuery = 
                                             />
                                         </svg>
                                         提交收录
+                                    </span>
+                                </Link>
+                                <Link
+                                    to="/contact"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        location.pathname === '/contact'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                                            />
+                                        </svg>
+                                        留言板
                                     </span>
                                 </Link>
                             </nav>

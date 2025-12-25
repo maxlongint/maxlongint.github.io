@@ -4,7 +4,6 @@ import SearchBar from '../components/SearchBar';
 import TagFilter from '../components/TagFilter';
 import BookmarkList from '../components/BookmarkList';
 import Footer from '../components/Footer';
-import Comments from '../components/Comments';
 import ClarityProvider from '../components/ClarityProvider';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo } from '../utils/github';
@@ -12,7 +11,6 @@ import { getGitHubRepoInfo } from '../utils/github';
 function Home() {
     const [selectedTag, setSelectedTag] = useState('全部 (All)');
     const [searchQuery, setSearchQuery] = useState('');
-    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedSort, setSelectedSort] = useState('默认');
     const [showScrollTop, setShowScrollTop] = useState(false);
@@ -143,12 +141,7 @@ function Home() {
             {/* Microsoft Clarity - 直接配置 Project ID */}
             <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
 
-            <Header
-                onOpenComments={() => setIsCommentsOpen(true)}
-                isFixed={isSearchFixed}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-            />
+            <Header isFixed={isSearchFixed} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
             {/* Hero Section */}
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
@@ -317,8 +310,6 @@ function Home() {
             </main>
 
             <Footer />
-
-            <Comments isOpen={isCommentsOpen} onClose={() => setIsCommentsOpen(false)} />
 
             {/* 回到顶部按钮 */}
             {showScrollTop && (
