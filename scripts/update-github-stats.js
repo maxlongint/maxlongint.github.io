@@ -125,15 +125,15 @@ async function updateAllRepos() {
     return repoData;
 }
 
-// 保存数据到public目录（构建时会被复制到dist）
+// 保存数据到src/data目录
 async function saveToPublic(repoData) {
-    const publicDir = path.join(__dirname, '../public');
-    if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
+    const dataDir = path.join(__dirname, '../src/data');
+    if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
     }
 
     // 保存GitHub Stats
-    const statsOutputPath = path.join(publicDir, 'github-stats.json');
+    const statsOutputPath = path.join(dataDir, 'github-stats.json');
     const statsOutputData = {
         updated_at: new Date().toISOString(),
         repos: repoData,

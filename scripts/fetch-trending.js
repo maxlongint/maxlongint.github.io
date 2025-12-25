@@ -81,10 +81,10 @@ function getLanguageColor(lang) {
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * 保存数据到 public 目录（类似 github-stats.json）
+ * 保存数据到 src/data 目录
  */
 function saveData(trendingData) {
-    const outputDir = path.join(__dirname, '../public');
+    const outputDir = path.join(__dirname, '../src/data');
     const outputPath = path.join(outputDir, 'trending.json');
 
     if (!fs.existsSync(outputDir)) {

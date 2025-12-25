@@ -131,15 +131,15 @@ async function updateAllReadmes() {
     return readmeData;
 }
 
-// 保存数据到public目录（构建时会被复制到dist）
+// 保存数据到src/data目录
 async function saveToPublic(readmeData) {
-    const publicDir = path.join(__dirname, '../public');
-    if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
+    const dataDir = path.join(__dirname, '../src/data');
+    if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
     }
 
     // 保存README数据
-    const readmeOutputPath = path.join(publicDir, 'github-readmes.json');
+    const readmeOutputPath = path.join(dataDir, 'github-readmes.json');
     const readmeOutputData = {
         updated_at: new Date().toISOString(),
         readmes: readmeData,

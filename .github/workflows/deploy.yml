@@ -7,9 +7,6 @@ on:
             - master
     # 允许手动触发
     workflow_dispatch:
-    # 数据更新后自动触发
-    repository_dispatch:
-        types: [deploy-requested]
 
 # 设置权限
 permissions:
@@ -38,41 +35,6 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
-
-            - name: Download data artifacts
-              uses: actions/download-artifact@v4
-              with:
-                  path: artifacts
-              continue-on-error: true
-
-            - name: Copy data files to public directory
-              run: |
-                  # 确保 public 目录存在
-                  mkdir -p public
-
-                  # 复制最新的数据文件
-                  echo "📦 Checking for data artifacts..."
-
-                  if [ -f "artifacts/github-stats/github-stats.json" ]; then
-                    cp artifacts/github-stats/github-stats.json public/
-                    echo "✅ Copied github-stats.json"
-                  else
-                    echo "⚠️ No github-stats.json artifact found"
-                  fi
-
-                  if [ -f "artifacts/github-readmes/github-readmes.json" ]; then
-                    cp artifacts/github-readmes/github-readmes.json public/
-                    echo "✅ Copied github-readmes.json"
-                  else
-                    echo "⚠️ No github-readmes.json artifact found"
-                  fi
-
-                  if [ -f "artifacts/trending/trending.json" ]; then
-                    cp artifacts/trending/trending.json public/
-                    echo "✅ Copied trending.json"
-                  else
-                    echo "⚠️ No trending.json artifact found"
-                  fi
 
             - name: Build
               run: npm run build
