@@ -25,29 +25,13 @@ jobs:
             - name: Fetch trending data
               run: npm run fetch-trending
 
-            - name: Commit and push changes
+            - name: Upload trending data as artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: trending
+                  path: public/trending.json
+                  retention-days: 7
+
+            - name: Trigger deployment
               run: |
-                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
-                  git config --local user.name "github-actions[bot]"
-
-                  # 检查文件是否存在
-                  if [ -f "public/trending.json" ]; then
-                    echo "✅ File exists: public/trending.json"
-                    ls -lh public/trending.json
-                  else
-                    echo "❌ File not found: public/trending.json"
-                    exit 1
-                  fi
-
-                  # 强制添加文件
-                  git add -f public/trending.json
-
-                  # 检查是否有变化
-                  if git diff --staged --quiet; then
-                    echo "⚠️ No changes to commit"
-                    exit 0
-                  else
-                    echo "✅ Changes detected, committing..."
-                    git commit -m "🔄 Update daily trending data [skip ci]"
-                    git push
-                  fi
+                  echo "✅ Trending data uploaded, deployment will be triggered"

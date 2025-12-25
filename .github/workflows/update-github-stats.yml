@@ -34,37 +34,13 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: node scripts/update-github-stats.js
 
-            - name: Commit and push changes
+            - name: Upload stats data as artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: github-stats
+                  path: public/github-stats.json
+                  retention-days: 7
+
+            - name: Trigger deployment
               run: |
-                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
-                  git config --local user.name "github-actions[bot]"
-
-                  # 检查文件是否存在
-                  if [ -f "public/github-stats.json" ]; then
-                    echo "✅ File exists: public/github-stats.json"
-                    ls -lh public/github-stats.json
-                  else
-                    echo "❌ File not found: public/github-stats.json"
-                    exit 1
-                  fi
-
-                  # 检查 git 状态
-                  echo "Git status before add:"
-                  git status
-
-                  # 强制添加文件
-                  git add -f public/github-stats.json
-
-                  # 检查暂存区
-                  echo "Git status after add:"
-                  git status
-
-                  # 检查是否有变化
-                  if git diff --staged --quiet; then
-                    echo "⚠️ No changes to commit"
-                    exit 0
-                  else
-                    echo "✅ Changes detected, committing..."
-                    git commit -m "🔄 Update GitHub stats data [skip ci]"
-                    git push
-                  fi
+                  echo "✅ Stats data uploaded, deployment will be triggered"

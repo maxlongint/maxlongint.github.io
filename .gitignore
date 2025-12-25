@@ -35,6 +35,7 @@ dist-ssr
 .env.*.local
 
 # GitHub API 缓存数据(每天自动生成)
+# 这些文件通过 Actions Artifacts 传递给部署流程
 public/github-stats.json
 public/github-readmes.json
 public/trending.json
