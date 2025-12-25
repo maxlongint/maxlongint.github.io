@@ -38,11 +38,15 @@ jobs:
                   ISSUE_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                     "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUM}" | \
                     jq -r '.body')
-                  
+
                   cat > parse-issue.cjs << 'EOF'
                   const fs = require('fs');
                   const issueBody = process.env.ISSUE_BODY;
-                  
+                                    
+                  console.log('=== Issue Body ===');
+                  console.log(issueBody);
+                  console.log('==================');
+                                    
                   function parseIssueBody(body) {
                     const result = { toolName: '', githubUrl: '', description: '', tags: [] };
                     const nameMatch = body.match(/###\s*工具名称\s*\n+([^\n#]+)/i);
@@ -60,20 +64,28 @@ jobs:
                     }
                     return result;
                   }
-                  
+
                   const parsed = parseIssueBody(issueBody);
+                  
+                  console.log('=== Parsed Result ===');
+                  console.log('Tool Name:', parsed.toolName);
+                  console.log('GitHub URL:', parsed.githubUrl);
+                  console.log('Description:', parsed.description);
+                  console.log('Tags:', parsed.tags);
+                  console.log('=====================');
+                  
                   if (!parsed.toolName || !parsed.githubUrl || !parsed.description || parsed.tags.length === 0) {
                     console.error('Missing required fields');
                     process.exit(1);
                   }
-                  
+
                   const bookmarksData = JSON.parse(fs.readFileSync('./src/data/bookmarks.json', 'utf8'));
                   const exists = bookmarksData.bookmarks.some(b => b.url === parsed.githubUrl);
                   if (exists) {
                     fs.writeFileSync(process.env.GITHUB_OUTPUT, 'already_exists=true', { flag: 'a' });
                     process.exit(0);
                   }
-                  
+
                   const newBookmark = {
                     title: parsed.toolName,
                     url: parsed.githubUrl,
@@ -82,13 +94,13 @@ jobs:
                   };
                   bookmarksData.bookmarks.unshift(newBookmark);
                   fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
-                  
+
                   const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false`;
                   fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
                   EOF
-                  
+
                   ISSUE_BODY="$ISSUE_BODY" node parse-issue.cjs
-            
+
             - name: Commit Changes
               if: steps.parse-issue.outputs.already_exists == 'false'
               run: |
@@ -98,7 +110,7 @@ jobs:
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   git commit -m "Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
                   git push
-            
+
             - name: Comment and Close Issue
               if: steps.parse-issue.outputs.already_exists == 'false'
               uses: actions/github-script@v7
