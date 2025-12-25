@@ -249,23 +249,23 @@ jobs:
                       console.log(`  ✓ npm版本: ${presetData.npm_version}`);
                       console.log(`  ✓ 最后更新: ${presetData.pushed_at}`);
                       
-                      // 读取或创建预设数据文件
-                      const presetDataPath = './src/data/github-stats-preset.json';
-                      let presetDataFile = { repos: {} };
-                      if (fs.existsSync(presetDataPath)) {
-                        presetDataFile = JSON.parse(fs.readFileSync(presetDataPath, 'utf8'));
+                      // 读取同步数据文件
+                      const statsDataPath = './src/data/github-stats.json';
+                      let statsDataFile = { updated_at: '', repos: {} };
+                      if (fs.existsSync(statsDataPath)) {
+                        statsDataFile = JSON.parse(fs.readFileSync(statsDataPath, 'utf8'));
                       }
                       
-                      // 添加新的预设数据
+                      // 添加新的仓库数据
                       const urlKey = `github.com/${fullName}`;
-                      presetDataFile.repos[urlKey] = presetData;
-                      presetDataFile.updated_at = new Date().toISOString();
+                      statsDataFile.repos[urlKey] = presetData;
+                      statsDataFile.updated_at = new Date().toISOString();
                       
-                      fs.writeFileSync(presetDataPath, JSON.stringify(presetDataFile, null, 4) + '\n', 'utf8');
-                      console.log(`  ✓ 已添加预设数据到 src/data/github-stats-preset.json`);
+                      fs.writeFileSync(statsDataPath, JSON.stringify(statsDataFile, null, 2) + '\n', 'utf8');
+                      console.log(`  ✓ 已添加数据到 src/data/github-stats.json`);
                       
-                      // 标记需要提交预设数据文件
-                      fs.appendFileSync(process.env.GITHUB_OUTPUT, 'preset_data_added=true\n');
+                      // 标记需要提交数据文件
+                      fs.appendFileSync(process.env.GITHUB_OUTPUT, 'stats_data_added=true\n');
                     } catch (error) {
                       console.log(`  ✗ 获取GitHub数据失败: ${error.message}`);
                       console.log(`  → 数据将在下次定时更新时同步`);
@@ -285,9 +285,9 @@ jobs:
                   git config --local user.name "github-actions[bot]"
                   git add src/data/bookmarks.json
                               
-                  # 如果有预设数据，也一起提交
-                  if [ -f "src/data/github-stats-preset.json" ]; then
-                    git add src/data/github-stats-preset.json
+                  # 如果有同步数据，也一起提交
+                  if [ -f "src/data/github-stats.json" ]; then
+                    git add src/data/github-stats.json
                   fi
 
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
@@ -295,8 +295,8 @@ jobs:
                   if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
                     COMMIT_MSG="${COMMIT_MSG}\n\n- Auto-generated new tag styles"
                   fi
-                  if [ "${{ steps.parse-issue.outputs.preset_data_added }}" = "true" ]; then
-                    COMMIT_MSG="${COMMIT_MSG}\n- Added preset GitHub stats data"
+                  if [ "${{ steps.parse-issue.outputs.stats_data_added }}" = "true" ]; then
+                    COMMIT_MSG="${COMMIT_MSG}\n- Added GitHub stats data"
                   fi
                   git commit -m "${COMMIT_MSG}"
                   git push
