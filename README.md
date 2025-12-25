@@ -31,8 +31,8 @@
 
 ### 🎨 用户体验
 
--   **⚡ 极速加载** - Vite 构建,代码分割优化,总包体积 ~372KB (gzip: ~114KB)
--   **🔄 智能缓存** - LocalStorage 缓存策略,减少重复请求
+-   **⚡ 极速加载** - Vite 构建,代码分割优化,总包体积 ~372KB (gzip: ~115KB)
+-   **🔄 数据同步** - 直接导入数据,无需额外请求
 -   **🎯 平滑滚动** - 固定搜索栏、回到顶部等交互优化
 -   **📊 用户分析** - 集成 Microsoft Clarity,了解用户行为
 -   **🚀 自动部署** - GitHub Actions 自动构建和部署
@@ -108,9 +108,6 @@ npm run lint
 │       ├── update-trending.yml         # 更新趋势榜
 │       └── auto-merge-submission.yml   # 自动合并提交
 ├── public/                 # 静态资源
-│   ├── github-stats.json           # GitHub 统计数据(自动生成)
-│   ├── github-readmes.json         # README 内容(自动生成)
-│   ├── trending.json               # 趋势数据(自动生成)
 │   ├── logo.png
 │   └── favicon.ico
 ├── scripts/                # 数据获取脚本
@@ -127,11 +124,12 @@ npm run lint
 │   │   ├── Footer.tsx              # 底部信息
 │   │   ├── SearchBar.tsx           # 搜索框
 │   │   ├── TagFilter.tsx           # 标签筛选
-│   │   ├── Comments.tsx            # Giscus 评论
 │   │   └── ClarityProvider.tsx     # Clarity 分析
 │   ├── data/               # 数据文件
 │   │   ├── bookmarks.json          # 工具库数据
-│   │   └── github-stats-preset.json # 预设 GitHub 数据
+│   │   ├── github-stats.json       # GitHub 统计数据(同步生成)
+│   │   ├── github-readmes.json     # README 内容(同步生成)
+│   │   └── trending.json           # 趋势数据(同步生成)
 │   ├── pages/              # 页面组件
 │   │   ├── Home.tsx                # 主页
 │   │   ├── BookmarkDetail.tsx      # 工具详情页
@@ -158,28 +156,29 @@ npm run lint
 
 ### 1. 数据加载机制
 
-项目采用**多层数据加载策略**,确保数据可用性和性能:
+项目采用**直接导入**策略,将数据打包到应用中,确保数据可用性和性能:
 
-#### 数据优先级
+#### 数据来源
 
-1.  **实时数据** (优先) - GitHub Actions 定时生成的最新数据
-2.  **预设数据** (兜底) - 内置的静态数据,确保首次加载可用
+所有数据文件位于 `src/data/` 目录,在构建时被打包到应用中:
+
+-   **github-stats.json** - GitHub 仓库统计数据(stars、npm 版本、更新时间)
+-   **github-readmes.json** - README 内容
+-   **trending.json** - 每日热门趋势数据
+-   **bookmarks.json** - 工具库基础信息
 
 #### 数据流程
 
 ```typescript
-// 1. 应用启动时加载数据
+// 1. 应用启动时直接导入数据(编译时打包)
+import githubStatsData from '../data/github-stats.json';
+import githubReadmesData from '../data/github-readmes.json';
+import trendingData from '../data/trending.json';
+
+// 2. 加载到全局状态
 loadGitHubData(); // src/main.tsx
 
-// 2. 尝试加载实时数据
-fetch('/github-stats.json');
-fetch('/github-readmes.json');
-fetch('/trending.json');
-
-// 3. 如果实时数据不可用,回退到预设数据
-import presetData from './data/github-stats-preset.json';
-
-// 4. 数据加载完成后触发事件,通知组件更新
+// 3. 数据加载完成后触发事件,通知组件更新
 window.dispatchEvent(new Event('github-data-loaded'));
 ```
 
@@ -199,11 +198,25 @@ useEffect(() => {
 
 ### 2. GitHub 数据自动更新
 
-通过 GitHub Actions 定时任务自动更新数据:
+通过 GitHub Actions 定时任务自动更新数据并提交到仓库:
 
--   **update-github-stats.yml** - 每天 UTC 00:00 更新 Stars 和 npm 版本
--   **update-github-readmes.yml** - 每天 UTC 01:00 更新 README 内容
--   **update-trending.yml** - 每天 UTC 02:00 更新趋势榜数据
+#### 定时任务
+
+-   **update-github-stats.yml** - 每天凌晨 1:00 北京时间更新 Stars 和 npm 版本
+-   **update-github-readmes.yml** - 每天凌晨 2:00 北京时间更新 README 内容
+-   **update-trending.yml** - 每天凌晨 3:00 北京时间更新趋势榜数据
+
+#### 自动收录机制
+
+当新工具通过审核(Issue 标记为 "收录通过")时,`auto-merge-submission.yml` 会自动:
+
+1.  解析 Issue 内容
+2.  添加到 `bookmarks.json`
+3.  自动生成新标签颜色
+4.  **实时获取 GitHub Stars 数据** → `github-stats.json`
+5.  **实时获取 README 内容** → `github-readmes.json`
+6.  一次性提交所有文件
+7.  评论、标记、关闭 Issue
 
 ### 3. 工具提交流程
 
@@ -211,8 +224,9 @@ useEffect(() => {
 
 1.  填写工具信息(名称、GitHub 地址、描述、标签)
 2.  自动创建 GitHub Issue
-3.  GitHub Actions 自动验证和合并
-4.  自动更新数据文件
+3.  管理员审核,标记为 "收录通过"
+4.  GitHub Actions 自动合并并同步数据
+5.  自动更新工具库展示
 
 ### 4. 缓存策略
 
@@ -308,13 +322,12 @@ npm run build
 
 ```typescript
 // src/pages/Contact.tsx
-<Giscus
-    repo="maxlongint/maxlongint.github.io"
-    repoId="R_kgDOMgUMZw"
-    category="Announcements"
-    categoryId="DIC_kwDOMgUMZ84CjZnX"
-    // ...
-/>
+const script = document.createElement('script');
+script.src = 'https://giscus.app/client.js';
+script.setAttribute('data-repo', 'maxlongint/maxlongint.github.io');
+script.setAttribute('data-repo-id', 'R_kgDONdqNSQ');
+script.setAttribute('data-category', 'General');
+// ...
 ```
 
 ---

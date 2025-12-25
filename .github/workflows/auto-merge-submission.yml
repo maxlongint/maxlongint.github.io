@@ -264,6 +264,52 @@ jobs:
                       fs.writeFileSync(statsDataPath, JSON.stringify(statsDataFile, null, 2) + '\n', 'utf8');
                       console.log(`  ✓ 已添加数据到 src/data/github-stats.json`);
                       
+                      // 同步获取 README 内容
+                      const fetchReadme = () => new Promise((resolve) => {
+                        const options = {
+                          hostname: 'api.github.com',
+                          path: `/repos/${fullName}/readme`,
+                          headers: {
+                            'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+                            'Accept': 'application/vnd.github.v3.raw',
+                            'User-Agent': 'GitHub-Actions-Bot'
+                          }
+                        };
+                        
+                        https.get(options, (res) => {
+                          let data = '';
+                          res.on('data', (chunk) => { data += chunk; });
+                          res.on('end', () => {
+                            if (res.statusCode === 200) {
+                              resolve(data);
+                            } else {
+                              resolve(null);
+                            }
+                          });
+                        }).on('error', () => resolve(null));
+                      });
+                      
+                      const readmeContent = await fetchReadme();
+                      if (readmeContent) {
+                        const readmesDataPath = './src/data/github-readmes.json';
+                        let readmesDataFile = { updated_at: '', readmes: {} };
+                        if (fs.existsSync(readmesDataPath)) {
+                          readmesDataFile = JSON.parse(fs.readFileSync(readmesDataPath, 'utf8'));
+                        }
+                        
+                        const readmeKey = `${owner}/${repo}`;
+                        readmesDataFile.readmes[readmeKey] = readmeContent;
+                        readmesDataFile.updated_at = new Date().toISOString();
+                        
+                        fs.writeFileSync(readmesDataPath, JSON.stringify(readmesDataFile, null, 2) + '\n', 'utf8');
+                        console.log(`  ✓ 已添加 README 到 src/data/github-readmes.json`);
+                        
+                        // 标记需要提交 README 文件
+                        fs.appendFileSync(process.env.GITHUB_OUTPUT, 'readme_data_added=true\n');
+                      } else {
+                        console.log(`  ⚠️ 未找到 README 文件`);
+                      }
+                      
                       // 标记需要提交数据文件
                       fs.appendFileSync(process.env.GITHUB_OUTPUT, 'stats_data_added=true\n');
                     } catch (error) {
@@ -289,6 +335,9 @@ jobs:
                   if [ -f "src/data/github-stats.json" ]; then
                     git add src/data/github-stats.json
                   fi
+                  if [ -f "src/data/github-readmes.json" ]; then
+                    git add src/data/github-readmes.json
+                  fi
 
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   COMMIT_MSG="Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
@@ -297,6 +346,9 @@ jobs:
                   fi
                   if [ "${{ steps.parse-issue.outputs.stats_data_added }}" = "true" ]; then
                     COMMIT_MSG="${COMMIT_MSG}\n- Added GitHub stats data"
+                  fi
+                  if [ "${{ steps.parse-issue.outputs.readme_data_added }}" = "true" ]; then
+                    COMMIT_MSG="${COMMIT_MSG}\n- Added README data"
                   fi
                   git commit -m "${COMMIT_MSG}"
                   git push

@@ -13,14 +13,6 @@ export interface GitHubRepoInfo {
     pushed_at?: string;
 }
 
-export interface PresetRepoInfo {
-    stars: number;
-    forks: number;
-    language: string;
-    updated_at: string;
-    npm_version?: string;
-}
-
 export interface NPMDownloadData {
     date: string;
     downloads: number;
@@ -53,10 +45,4 @@ export interface WeeklyTrending {
     weekStart: string;
     weekEnd: string;
     repos: TrendingRepo[];
-}
-
-export interface EmailSubscriber {
-    email: string;
-    subscribedAt: string;
-    active: boolean;
 }
