@@ -85,7 +85,8 @@ async function fetchReadme(owner, repo) {
                 if (response.ok) {
                     const text = await response.text();
                     // 确保是有效内容，不是 HTML 404 页面
-                    if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
+                    // KaTeX 的 README 以图片或标题开始，所以要更宽松的验证
+                    if (text && text.length > 100 && !text.includes('<!DOCTYPE html>')) {
                         console.log(`  ✓ Found ${filename} in ${branch} branch`);
                         return text;
                     }
