@@ -2,7 +2,6 @@ import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -13,19 +12,6 @@ interface BookmarkCardProps {
 export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
     const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
-    const [, forceUpdate] = useState({});
-
-    // 监听 GitHub 数据加载完成事件
-    useEffect(() => {
-        const handleDataLoaded = () => {
-            forceUpdate({}); // 强制重新渲染
-        };
-
-        window.addEventListener('github-data-loaded', handleDataLoaded);
-        return () => {
-            window.removeEventListener('github-data-loaded', handleDataLoaded);
-        };
-    }, []);
 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);

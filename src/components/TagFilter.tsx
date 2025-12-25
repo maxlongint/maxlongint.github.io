@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 interface TagFilterProps {
     tags: string[];
@@ -11,20 +11,24 @@ interface TagFilterProps {
 export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag, getTagColor }: TagFilterProps) {
     const [showAll, setShowAll] = useState(false);
 
-    // 热门分类：全部 + 包含库最多的5个标签
-    const topTags = Object.entries(tagStats)
-        .filter(([tag]) => tag !== '全部 (All)') // 排除"全部"
-        .sort(([, a], [, b]) => b - a) // 按数量降序排序
-        .slice(0, 5) // 取前5个
-        .map(([tag]) => tag);
+    // 热门分类：全部 + 包含库最多的5个标签 - 使用 useMemo 缓存
+    const topTags = useMemo(
+        () =>
+            Object.entries(tagStats)
+                .filter(([tag]) => tag !== '全部 (All)') // 排除“全部”
+                .sort(([, a], [, b]) => b - a) // 按数量降序排序
+                .slice(0, 5) // 取前5个
+                .map(([tag]) => tag),
+        [tagStats]
+    );
 
-    const mainTags = ['全部 (All)', ...topTags];
+    const mainTags = useMemo(() => ['全部 (All)', ...topTags], [topTags]);
 
     // 其他标签
-    const otherTags = tags.filter(tag => !mainTags.includes(tag));
+    const otherTags = useMemo(() => tags.filter(tag => !mainTags.includes(tag)), [tags, mainTags]);
 
     // 显示的主要标签
-    const displayedMainTags = mainTags.filter(tag => tags.includes(tag));
+    const displayedMainTags = useMemo(() => mainTags.filter(tag => tags.includes(tag)), [mainTags, tags]);
 
     return (
         <>

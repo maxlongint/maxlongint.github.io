@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import TagFilter from '../components/TagFilter';
@@ -35,13 +35,21 @@ function Home() {
         }
     }, [viewMode]);
 
-    // 监听滚动
+    // 监听滚动 - 使用节流优化性能
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
-            const scrollY = window.scrollY;
-            setShowScrollTop(scrollY > 300);
-            // 当滚动超过400px时，固定搜索框到Header
-            setIsSearchFixed(scrollY > 400);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    setShowScrollTop(scrollY > 300);
+                    // 当滚动超过400px时，固定搜索框到Header
+                    setIsSearchFixed(scrollY > 400);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
         // 初始化时检查当前滚动位置
@@ -75,6 +83,19 @@ function Home() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // 缓存 getTagColor 函数
+    const getTagColor = useCallback((tag: string) => {
+        const tagConfig = (
+            bookmarksData.tags as Record<string, { className?: string; backgroundColor?: string; textColor?: string }>
+        )[tag];
+        if (tagConfig && tagConfig.backgroundColor && tagConfig.textColor) {
+            // 使用新的内联样式格式
+            return { backgroundColor: tagConfig.backgroundColor, color: tagConfig.textColor };
+        }
+        // 降级到 className（为 "All" 标签保留）
+        return tagConfig?.className || 'bg-gray-100 text-gray-800';
+    }, []);
+
     // 获取所有标签及其数量
     const tagStats = useMemo(() => {
         const stats: Record<string, number> = { '全部 (All)': bookmarksData.bookmarks.length };
@@ -88,7 +109,7 @@ function Home() {
         return stats;
     }, []);
 
-    // 筛选和排序书签
+    // 筛选和排序书签 - 优化排序性能
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
 
@@ -111,29 +132,33 @@ function Home() {
             });
         }
 
-        // 排序
-        const sortedBookmarks = [...bookmarks].sort((a, b) => {
-            if (selectedSort === '默认') {
-                // 保持原始顺序
-                return 0;
-            } else if (selectedSort === '名称') {
-                // 按名称字母顺序
-                return a.title.localeCompare(b.title, 'zh-CN');
+        // 排序 - 提前缓存 repoInfo 避免重复查询
+        if (selectedSort === '默认') {
+            return bookmarks;
+        }
+
+        // 先缓存所有需要的 repoInfo
+        const bookmarksWithInfo = bookmarks.map(bookmark => ({
+            bookmark,
+            repoInfo: getGitHubRepoInfo(bookmark.url),
+        }));
+
+        const sortedBookmarks = [...bookmarksWithInfo].sort((a, b) => {
+            if (selectedSort === '名称') {
+                return a.bookmark.title.localeCompare(b.bookmark.title, 'zh-CN');
             } else if (selectedSort === 'Stars') {
-                // 按Stars数量降序
-                const starsA = getGitHubRepoInfo(a.url)?.stargazers_count || 0;
-                const starsB = getGitHubRepoInfo(b.url)?.stargazers_count || 0;
+                const starsA = a.repoInfo?.stargazers_count || 0;
+                const starsB = b.repoInfo?.stargazers_count || 0;
                 return starsB - starsA;
             } else if (selectedSort === '更新日期') {
-                // 按更新日期降序（最近的在前）
-                const dateA = getGitHubRepoInfo(a.url)?.pushed_at || '';
-                const dateB = getGitHubRepoInfo(b.url)?.pushed_at || '';
+                const dateA = a.repoInfo?.pushed_at || '';
+                const dateB = b.repoInfo?.pushed_at || '';
                 return dateB.localeCompare(dateA);
             }
             return 0;
         });
 
-        return sortedBookmarks;
+        return sortedBookmarks.map(item => item.bookmark);
     }, [selectedTag, searchQuery, selectedSort]);
 
     return (
@@ -160,20 +185,7 @@ function Home() {
                     tagStats={tagStats}
                     selectedTag={selectedTag}
                     setSelectedTag={setSelectedTag}
-                    getTagColor={(tag: string) => {
-                        const tagConfig = (
-                            bookmarksData.tags as Record<
-                                string,
-                                { className?: string; backgroundColor?: string; textColor?: string }
-                            >
-                        )[tag];
-                        if (tagConfig && tagConfig.backgroundColor && tagConfig.textColor) {
-                            // 使用新的内联样式格式
-                            return { backgroundColor: tagConfig.backgroundColor, color: tagConfig.textColor };
-                        }
-                        // 降级到 className（为 "All" 标签保留）
-                        return tagConfig?.className || 'bg-gray-100 text-gray-800';
-                    }}
+                    getTagColor={getTagColor}
                 />
 
                 <div className="mt-8">
@@ -288,24 +300,7 @@ function Home() {
                         </div>
                     </div>
 
-                    <BookmarkList
-                        bookmarks={filteredBookmarks}
-                        viewMode={viewMode}
-                        getTagColor={(tag: string) => {
-                            const tagConfig = (
-                                bookmarksData.tags as Record<
-                                    string,
-                                    { className?: string; backgroundColor?: string; textColor?: string }
-                                >
-                            )[tag];
-                            if (tagConfig && tagConfig.backgroundColor && tagConfig.textColor) {
-                                // 使用新的内联样式格式
-                                return { backgroundColor: tagConfig.backgroundColor, color: tagConfig.textColor };
-                            }
-                            // 降级到 className（为 "All" 标签保留）
-                            return tagConfig?.className || 'bg-gray-100 text-gray-800';
-                        }}
-                    />
+                    <BookmarkList bookmarks={filteredBookmarks} viewMode={viewMode} getTagColor={getTagColor} />
                 </div>
             </main>
 

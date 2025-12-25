@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface SearchBarProps {
     searchQuery: string;
@@ -8,14 +8,39 @@ interface SearchBarProps {
 
 export default function SearchBar({ searchQuery, setSearchQuery, compact = false }: SearchBarProps) {
     const [inputValue, setInputValue] = useState(searchQuery);
+    const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // 同步外部 searchQuery 的变化（比如清除搜索时）
     useEffect(() => {
         setInputValue(searchQuery);
     }, [searchQuery]);
 
+    // 防抖搜索 - 300ms 后触发
+    useEffect(() => {
+        // 清除之前的定时器
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+        }
+
+        // 设置新的定时器
+        debounceTimerRef.current = setTimeout(() => {
+            setSearchQuery(inputValue);
+        }, 300);
+
+        // 清理函数
+        return () => {
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+            }
+        };
+    }, [inputValue, setSearchQuery]);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
+            // 按回车时立即搜索，清除防抖
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+            }
             setSearchQuery(inputValue);
         }
     };

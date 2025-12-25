@@ -79,6 +79,9 @@ export default function BookmarkDetail() {
         return bookmark ? getGitHubInfo(bookmark.url) : null;
     }, [bookmark]);
 
+    // 缓存 Markdown 渲染结果
+    const renderedReadme = useMemo(() => readme, [readme]);
+
     // 进入详情页时滚动到顶部
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -334,7 +337,7 @@ export default function BookmarkDetail() {
     }, [id]); // 只依赖id，避免循环触发
 
     useEffect(() => {
-        if (!readme || !readmeRef.current) return;
+        if (!renderedReadme || !readmeRef.current) return;
 
         // 使用 ref 防止重复渲染，更可靠
         if (hasRenderedRef.current && readmeRef.current.hasChildNodes()) {
@@ -342,7 +345,7 @@ export default function BookmarkDetail() {
         }
 
         // 直接设置HTML内容，绕过React的重渲染
-        readmeRef.current.innerHTML = readme;
+        readmeRef.current.innerHTML = renderedReadme;
         hasRenderedRef.current = true; // 标记为已渲染
 
         // 等待DOM更新后再高亮代码
@@ -397,7 +400,7 @@ export default function BookmarkDetail() {
         }, 150);
 
         return () => clearTimeout(timeoutId);
-    }, [readme]);
+    }, [renderedReadme]); // 依赖 renderedReadme
 
     // 使用全局事件处理README内部的锚点链接（必须在Router之前拦截）
     useEffect(() => {
