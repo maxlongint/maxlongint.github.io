@@ -60,34 +60,45 @@ export default function BookmarkDetail() {
     const [readmeError, setReadmeError] = useState(false);
     const [tocItems, setTocItems] = useState<{ id: string; text: string; level: number }[]>([]);
     const [showToc, setShowToc] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const readmeRef = useRef<HTMLDivElement>(null);
     const hasRenderedRef = useRef<boolean>(false); // 追踪是否已渲染
+
+    // 显示提示框
+    const showToastMessage = (message: string, type: 'success' | 'error' = 'success') => {
+        setToastMessage(message);
+        setToastType(type);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    };
 
     // 分享按钮处理
     const handleShare = async () => {
         if (!bookmark) return;
-            
+
         const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         const ogImageUrl = `${window.location.origin}/og-images/${routeName}.png`;
-            
+
         try {
             // 获取图片并转换为 Blob
             const response = await fetch(ogImageUrl);
             const blob = await response.blob();
-                
+
             // 使用 Clipboard API 复制图片
             await navigator.clipboard.write([
                 new ClipboardItem({
-                    [blob.type]: blob
-                })
+                    [blob.type]: blob,
+                }),
             ]);
-                
+
             // 显示成功提示
-            alert('✅ 分享卡片已复制到剪贴板！\n可以直接粘贴到 QQ、微信等应用分享啦~');
+            showToastMessage('分享卡片已复制到剪贴板！\n可以直接粘贴到 QQ、微信等应用分享啦~', 'success');
         } catch (error) {
             console.error('复制失败:', error);
             // 降级方案：打开图片
-            alert('⚠️ 自动复制失败，已为您打开图片\n请手动右键保存后分享');
+            showToastMessage('自动复制失败，已为您打开图片\n请手动右键保存后分享', 'error');
             window.open(ogImageUrl, '_blank');
         }
     };
@@ -565,6 +576,79 @@ export default function BookmarkDetail() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* Toast 提示框 */}
+            {showToast && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowToast(false)} />
+                    <div
+                        className={`relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
+                            showToast ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+                        }`}
+                    >
+                        <div className="flex items-start gap-4">
+                            <div
+                                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                                    toastType === 'success' ? 'bg-green-100' : 'bg-red-100'
+                                }`}
+                            >
+                                {toastType === 'success' ? (
+                                    <svg
+                                        className="w-6 h-6 text-green-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        className="w-6 h-6 text-red-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <h3
+                                    className={`text-lg font-semibold mb-1 ${
+                                        toastType === 'success' ? 'text-green-900' : 'text-red-900'
+                                    }`}
+                                >
+                                    {toastType === 'success' ? '复制成功！' : '复制失败'}
+                                </h3>
+                                <p className="text-gray-600 whitespace-pre-line">{toastMessage}</p>
+                            </div>
+                            <button
+                                onClick={() => setShowToast(false)}
+                                className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* 面包屑导航 */}
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">

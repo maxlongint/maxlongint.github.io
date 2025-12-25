@@ -15,6 +15,9 @@ function Home() {
     const [selectedSort, setSelectedSort] = useState('默认');
     const [showScrollTop, setShowScrollTop] = useState(false);
     const [isSearchFixed, setIsSearchFixed] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
     // 从 localStorage 读取视图模式，默认为 list
     const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
@@ -25,6 +28,14 @@ function Home() {
             return 'list';
         }
     });
+
+    // 显示提示框
+    const handleShare = (message: string, type: 'success' | 'error') => {
+        setToastMessage(message);
+        setToastType(type);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    };
 
     // 当视图模式变化时，保存到 localStorage
     useEffect(() => {
@@ -163,6 +174,79 @@ function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            {/* Toast 提示框 */}
+            {showToast && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowToast(false)} />
+                    <div
+                        className={`relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
+                            showToast ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+                        }`}
+                    >
+                        <div className="flex items-start gap-4">
+                            <div
+                                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                                    toastType === 'success' ? 'bg-green-100' : 'bg-red-100'
+                                }`}
+                            >
+                                {toastType === 'success' ? (
+                                    <svg
+                                        className="w-6 h-6 text-green-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        className="w-6 h-6 text-red-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <h3
+                                    className={`text-lg font-semibold mb-1 ${
+                                        toastType === 'success' ? 'text-green-900' : 'text-red-900'
+                                    }`}
+                                >
+                                    {toastType === 'success' ? '复制成功！' : '复制失败'}
+                                </h3>
+                                <p className="text-gray-600 whitespace-pre-line">{toastMessage}</p>
+                            </div>
+                            <button
+                                onClick={() => setShowToast(false)}
+                                className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Microsoft Clarity - 直接配置 Project ID */}
             <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
 
@@ -300,7 +384,12 @@ function Home() {
                         </div>
                     </div>
 
-                    <BookmarkList bookmarks={filteredBookmarks} viewMode={viewMode} getTagColor={getTagColor} />
+                    <BookmarkList
+                        bookmarks={filteredBookmarks}
+                        viewMode={viewMode}
+                        getTagColor={getTagColor}
+                        onShare={handleShare}
+                    />
                 </div>
             </main>
 

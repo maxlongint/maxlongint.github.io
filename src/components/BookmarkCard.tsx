@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
@@ -7,9 +8,10 @@ interface BookmarkCardProps {
     bookmark: Bookmark;
     viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
+    onShare?: (message: string, type: 'success' | 'error') => void;
 }
 
-export default function BookmarkCard({ bookmark, viewMode, getTagColor }: BookmarkCardProps) {
+export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare }: BookmarkCardProps) {
     const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
 
@@ -23,6 +25,30 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
     const handleTitleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         navigate(`/${routeName}`);
+    };
+
+    // 分享按钮处理
+    const handleShare = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        const ogImageUrl = `${window.location.origin}/og-images/${routeName}.png`;
+
+        try {
+            const response = await fetch(ogImageUrl);
+            const blob = await response.blob();
+
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    [blob.type]: blob,
+                }),
+            ]);
+
+            onShare?.('分享卡片已复制到剪贴板！\n可以直接粘贴到 QQ、微信等应用分享啦~', 'success');
+        } catch (error) {
+            console.error('复制失败:', error);
+            onShare?.('自动复制失败，已为您打开图片\n请手动右键保存后分享', 'error');
+            window.open(ogImageUrl, '_blank');
+        }
     };
 
     return (
@@ -98,6 +124,20 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                             );
                         })}
                     </div>
+                    <button
+                        onClick={handleShare}
+                        className="flex-shrink-0 p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                        title="分享卡片"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                            />
+                        </svg>
+                    </button>
                 </div>
 
                 {/* 第四行：统计信息 */}
@@ -178,8 +218,24 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor }: Bookma
                                 );
                             })}
                         </div>
-                        <div className="flex-shrink-0">
-                            <GitHubStats url={bookmark.url} />
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleShare}
+                                className="flex-shrink-0 p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                                title="分享卡片"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                                    />
+                                </svg>
+                            </button>
+                            <div className="flex-shrink-0">
+                                <GitHubStats url={bookmark.url} />
+                            </div>
                         </div>
                     </div>
                 </div>

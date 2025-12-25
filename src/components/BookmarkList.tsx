@@ -5,9 +5,10 @@ interface BookmarkListProps {
     bookmarks: Bookmark[];
     viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
+    onShare?: (message: string, type: 'success' | 'error') => void;
 }
 
-export default function BookmarkList({ bookmarks, viewMode, getTagColor }: BookmarkListProps) {
+export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare }: BookmarkListProps) {
     if (bookmarks.length === 0) {
         return (
             <div className="text-center py-12">
@@ -32,6 +33,7 @@ export default function BookmarkList({ bookmarks, viewMode, getTagColor }: Bookm
                     bookmark={bookmark}
                     viewMode={viewMode}
                     getTagColor={getTagColor}
+                    onShare={onShare}
                 />
             ))}
         </div>
