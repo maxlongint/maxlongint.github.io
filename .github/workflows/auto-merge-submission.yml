@@ -170,7 +170,7 @@ jobs:
                   };
                   // 添加到数组最后
                   bookmarksData.bookmarks.push(newBookmark);
-                  fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
+                  fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 2) + '\n', 'utf8');
 
                   // 实时获取GitHub仓库信息并添加到预设数据
                   const match = parsed.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
