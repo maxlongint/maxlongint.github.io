@@ -171,7 +171,7 @@ jobs:
                   // 添加到数组最后
                   bookmarksData.bookmarks.push(newBookmark);
                   fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
-                  
+
                   // 实时获取GitHub仓库信息并添加到预设数据
                   const match = parsed.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
                   if (match) {
@@ -250,7 +250,7 @@ jobs:
                       console.log(`  ✓ 最后更新: ${presetData.pushed_at}`);
                       
                       // 读取或创建预设数据文件
-                      const presetDataPath = './public/github-stats-preset.json';
+                      const presetDataPath = './src/data/github-stats-preset.json';
                       let presetDataFile = { repos: {} };
                       if (fs.existsSync(presetDataPath)) {
                         presetDataFile = JSON.parse(fs.readFileSync(presetDataPath, 'utf8'));
@@ -261,8 +261,8 @@ jobs:
                       presetDataFile.repos[urlKey] = presetData;
                       presetDataFile.updated_at = new Date().toISOString();
                       
-                      fs.writeFileSync(presetDataPath, JSON.stringify(presetDataFile, null, 2) + '\n', 'utf8');
-                      console.log(`  ✓ 已添加预设数据到 github-stats-preset.json`);
+                      fs.writeFileSync(presetDataPath, JSON.stringify(presetDataFile, null, 4) + '\n', 'utf8');
+                      console.log(`  ✓ 已添加预设数据到 src/data/github-stats-preset.json`);
                       
                       // 标记需要提交预设数据文件
                       fs.appendFileSync(process.env.GITHUB_OUTPUT, 'preset_data_added=true\n');
@@ -271,7 +271,7 @@ jobs:
                       console.log(`  → 数据将在下次定时更新时同步`);
                     }
                   }
-                  
+
                   const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false\ntags_updated=${tagsUpdated}`;
                   fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
                   EOF
@@ -284,12 +284,12 @@ jobs:
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
                   git add src/data/bookmarks.json
-                  
+                              
                   # 如果有预设数据，也一起提交
-                  if [ -f "public/github-stats-preset.json" ]; then
-                    git add public/github-stats-preset.json
+                  if [ -f "src/data/github-stats-preset.json" ]; then
+                    git add src/data/github-stats-preset.json
                   fi
-                  
+
                   ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
                   COMMIT_MSG="Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
                   if [ "${{ steps.parse-issue.outputs.tags_updated }}" = "true" ]; then
