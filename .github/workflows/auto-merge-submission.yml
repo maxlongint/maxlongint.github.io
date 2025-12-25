@@ -1,4 +1,4 @@
-name: Auto Merge Submission v2
+name: Auto Merge Submission
 
 # 工具自动收录工作流
 on:
@@ -12,12 +12,6 @@ on:
                 description: 'Issue number to process'
                 required: true
                 type: number
-    # 临时触发器（用于激活 workflow）
-    push:
-        branches:
-            - master
-        paths:
-            - '.github/workflows/auto-merge-submission.yml'
 
 jobs:
     merge-submission:
