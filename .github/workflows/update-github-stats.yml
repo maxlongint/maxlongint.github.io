@@ -38,10 +38,33 @@ jobs:
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
-                  git add -f public/github-stats.json
-                  if git diff --staged --quiet; then
-                    echo "No changes to commit"
+                  
+                  # 检查文件是否存在
+                  if [ -f "public/github-stats.json" ]; then
+                    echo "✅ File exists: public/github-stats.json"
+                    ls -lh public/github-stats.json
                   else
+                    echo "❌ File not found: public/github-stats.json"
+                    exit 1
+                  fi
+                  
+                  # 检查 git 状态
+                  echo "Git status before add:"
+                  git status
+                  
+                  # 强制添加文件
+                  git add -f public/github-stats.json
+                  
+                  # 检查暂存区
+                  echo "Git status after add:"
+                  git status
+                  
+                  # 检查是否有变化
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                    exit 0
+                  else
+                    echo "✅ Changes detected, committing..."
                     git commit -m "🔄 Update GitHub stats data [skip ci]"
                     git push
                   fi
