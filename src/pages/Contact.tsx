@@ -11,6 +11,13 @@ export default function Contact() {
         if (!giscusLoadedRef.current) {
             giscusLoadedRef.current = true;
 
+            // 检查是否已经被预加载，如果有则直接使用
+            const existingScript = document.querySelector('script[src="https://giscus.app/client.js"]');
+            if (existingScript) {
+                console.log('✅ Using preloaded Giscus script');
+                return;
+            }
+
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
             script.setAttribute('data-repo', 'maxlongint/maxlongint.github.io');
