@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
