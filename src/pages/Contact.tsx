@@ -1,27 +1,31 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ClarityProvider from '../components/ClarityProvider';
 
 export default function Contact() {
     const giscusLoadedRef = useRef(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     // 页面加载时加载 Giscus
     useEffect(() => {
         if (!giscusLoadedRef.current) {
             giscusLoadedRef.current = true;
 
-            // 检查是否已经被预加载或加载过
-            const existingScript = document.querySelector('script[src="https://giscus.app/client.js"]');
-            const existingPreload = document.querySelector('link[rel="preload"][href="https://giscus.app/client.js"]');
+            const container = document.getElementById('giscus-container');
+            if (!container) return;
 
-            if (existingScript) {
-                console.log('✅ Giscus script already loaded');
+            // 检查容器中是否已经有 Giscus iframe
+            const existingFrame = container.querySelector('iframe.giscus-frame');
+            if (existingFrame) {
+                console.log('✅ Giscus already loaded');
                 return;
             }
 
-            if (existingPreload) {
-                console.log('✅ Using preloaded Giscus script');
+            // 检查是否已经有脚本标签,如果有就移除(重新加载)
+            const existingScript = document.querySelector('script[src="https://giscus.app/client.js"]');
+            if (existingScript) {
+                existingScript.remove();
             }
 
             const script = document.createElement('script');
@@ -40,11 +44,29 @@ export default function Contact() {
             script.crossOrigin = 'anonymous';
             script.async = true;
 
-            const container = document.getElementById('giscus-container');
-            if (container) {
-                container.appendChild(script);
-            }
+            container.appendChild(script);
+
+            // 监听 Giscus 加载完成
+            const checkGiscusLoaded = setInterval(() => {
+                const frame = container.querySelector('iframe.giscus-frame');
+                if (frame) {
+                    setIsLoading(false);
+                    clearInterval(checkGiscusLoaded);
+                }
+            }, 100);
+
+            // 10秒超时
+            setTimeout(() => {
+                clearInterval(checkGiscusLoaded);
+                setIsLoading(false);
+            }, 10000);
         }
+
+        // 离开页面时清理
+        return () => {
+            giscusLoadedRef.current = false;
+            setIsLoading(true);
+        };
     }, []);
 
     return (
@@ -135,6 +157,14 @@ export default function Contact() {
 
                 {/* Giscus Discussion Board */}
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    {isLoading && (
+                        <div className="flex items-center justify-center py-12">
+                            <div className="text-center">
+                                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-3"></div>
+                                <p className="text-gray-600 text-sm">正在加载评论...</p>
+                            </div>
+                        </div>
+                    )}
                     <div id="giscus-container" className="giscus-container" />
                 </div>
             </main>

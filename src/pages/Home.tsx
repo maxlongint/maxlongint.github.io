@@ -35,32 +35,6 @@ function Home() {
         }
     }, [viewMode]);
 
-    // 浏览器空闲时预加载 Giscus 脚本
-    useEffect(() => {
-        const preloadGiscus = () => {
-            // 检查是否已经加载过
-            if (document.querySelector('script[src="https://giscus.app/client.js"]')) {
-                return;
-            }
-
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.href = 'https://giscus.app/client.js';
-            link.as = 'script';
-            document.head.appendChild(link);
-
-            console.log('✅ Giscus script preloaded');
-        };
-
-        // 使用 requestIdleCallback 在浏览器空闲时执行
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(preloadGiscus, { timeout: 2000 });
-        } else {
-            // 降级方案：延迟 2 秒执行
-            setTimeout(preloadGiscus, 2000);
-        }
-    }, []);
-
     // 监听滚动
     useEffect(() => {
         const handleScroll = () => {
