@@ -8,7 +8,9 @@
         "build": "tsc -b && vite build",
         "preview": "vite preview",
         "lint": "eslint .",
-        "fetch-trending": "node scripts/fetch-trending.js"
+        "fetch-trending": "node scripts/fetch-trending.js",
+        "generate-og": "node scripts/generate-default-og.js && node scripts/generate-og-images.js",
+        "prebuild": "npm run generate-og"
     },
     "dependencies": {
         "@microsoft/clarity": "^1.0.2",
@@ -28,6 +30,7 @@
         "@types/node": "^24.3.1",
         "@types/react": "^19.1.12",
         "@types/react-dom": "^19.1.9",
+        "@vercel/og": "^0.8.6",
         "@vitejs/plugin-react": "^4.3.4",
         "autoprefixer": "^10.4.21",
         "eslint": "^9.35.0",

@@ -1,0 +1,60 @@
+name: 🖼️ Update OG Images
+
+on:
+    # 每周日凌晨 4:00 自动运行
+    schedule:
+        - cron: '0 4 * * 0'
+    # 允许手动触发
+    workflow_dispatch:
+    # Stats 更新后自动触发
+    repository_dispatch:
+        types: [stats-updated]
+
+jobs:
+    update-og-images:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Generate default OG image
+              run: node scripts/generate-default-og.js
+
+            - name: Generate OG images for all tools
+              run: node scripts/generate-og-images.js
+
+            - name: Check for changes
+              id: check_changes
+              run: |
+                  if [ -n "$(git status --porcelain public/og-images/)" ]; then
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Commit and push changes
+              if: steps.check_changes.outputs.has_changes == 'true'
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add public/og-images/
+                  git commit -m "🖼️ Update OG images"
+                  git push
+
+            - name: Trigger deployment
+              if: steps.check_changes.outputs.has_changes == 'true'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested

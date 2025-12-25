@@ -88,13 +88,74 @@ export default function BookmarkDetail() {
         hasRenderedRef.current = false; // 重置渲染状态
     }, [id]); // 当路由参数变化时触发
 
-    // 设置页面标题
+    // 设置页面标题和 OG meta 标签
     useEffect(() => {
         if (bookmark) {
             document.title = `${bookmark.title} - 前端工具库`;
+
+            // 动态设置 OG meta 标签
+            const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            const ogImageUrl = `${window.location.origin}/og-images/${routeName}.png`;
+            const ogUrl = window.location.href;
+
+            // 更新或创建 OG meta 标签
+            const updateMetaTag = (property: string, content: string) => {
+                let meta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
+                if (!meta) {
+                    meta = document.createElement('meta');
+                    meta.setAttribute('property', property);
+                    document.head.appendChild(meta);
+                }
+                meta.setAttribute('content', content);
+            };
+
+            // 更新或创建 Twitter Card meta 标签
+            const updateTwitterTag = (name: string, content: string) => {
+                let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+                if (!meta) {
+                    meta = document.createElement('meta');
+                    meta.setAttribute('name', name);
+                    document.head.appendChild(meta);
+                }
+                meta.setAttribute('content', content);
+            };
+
+            // 设置 Open Graph 标签
+            updateMetaTag('og:title', `${bookmark.title} - 前端工具库`);
+            updateMetaTag('og:description', bookmark.description);
+            updateMetaTag('og:image', ogImageUrl);
+            updateMetaTag('og:url', ogUrl);
+            updateMetaTag('og:type', 'article');
+
+            // 设置 Twitter Card 标签
+            updateTwitterTag('twitter:card', 'summary_large_image');
+            updateTwitterTag('twitter:title', `${bookmark.title} - 前端工具库`);
+            updateTwitterTag('twitter:description', bookmark.description);
+            updateTwitterTag('twitter:image', ogImageUrl);
         }
         return () => {
             document.title = '前端工具库';
+
+            // 恢复默认的 OG 标签
+            const resetMetaTag = (property: string, defaultContent: string) => {
+                const meta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
+                if (meta) {
+                    meta.setAttribute('content', defaultContent);
+                }
+            };
+
+            const resetTwitterTag = (name: string, defaultContent: string) => {
+                const meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+                if (meta) {
+                    meta.setAttribute('content', defaultContent);
+                }
+            };
+
+            resetMetaTag('og:title', '前端工具库');
+            resetMetaTag('og:description', '精心整理的前端开发工具与资源,让你的开发更高效');
+            resetMetaTag('og:type', 'website');
+            resetTwitterTag('twitter:title', '前端工具库');
+            resetTwitterTag('twitter:description', '精心整理的前端开发工具与资源,让你的开发更高效');
         };
     }, [bookmark]);
 
