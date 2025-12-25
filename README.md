@@ -1,79 +1,61 @@
-# 前端工具库
+# 前端工具库 | Frontend Toolbox
 
-一个现代化的前端工具收藏网站，帮助开发者快速找到优质的前端库、框架和工具。基于 Vite + React + Tailwind CSS 构建，提供流畅的浏览和搜索体验。
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-19.1-blue)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![Deploy](https://github.com/maxlongint/maxlongint.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/maxlongint/maxlongint.github.io/actions/workflows/deploy.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-19.1-61dafb?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.0-646cff?logo=vite)](https://vitejs.dev/)
 
-## ✨ 功能特性
+**精选前端工具库集合 - 让开发更高效**
 
-### 核心功能
+[🚀 在线访问](https://snazzy.top) · [📝 提交工具](https://snazzy.top/#/submit) · [📊 趋势榜](https://snazzy.top/#/trending) · [💬 留言板](https://snazzy.top/#/contact)
 
--   🔍 **智能搜索**: 支持按标题、描述、URL、标签进行全文搜索，快速定位所需工具
--   📈 **每周趋势**: 自动抓取 GitHub Trending 前端项目，每周一更新
--   🏷️ **标签筛选**: 60+ 技术标签分类，一键筛选特定领域的工具
--   📊 **多维度排序**: 支持默认、名称、Stars、更新日期等多种排序方式
--   📱 **响应式设计**: 完美适配桌面端和移动端，提供一致的浏览体验
--   🎨 **双视图模式**: 支持列表视图和网格视图自由切换
--   📖 **项目详情页**: 点击卡片查看完整的 GitHub README 和项目统计信息
--   💬 **评论系统**: 集成 Giscus 评论功能，支持社区交流
--   📈 **GitHub 数据展示**: 实时显示仓库 Stars 数、Forks 数、更新时间等信息
--   📉 **数据可视化**: 使用图表展示 GitHub 数据趋势
--   ⚡ **性能优化**: 基于 Vite 的极速构建，懒加载和虚拟滚动优化
--   🔝 **便捷导航**: 固定搜索框、回到顶部按钮等贴心设计
+</div>
 
-### 用户体验
+---
 
--   📍 **固定搜索框**: 滚动时自动固定到顶部，随时可搜索
--   💾 **状态持久化**: 自动保存视图模式等用户偏好设置
--   🎯 **流畅导航**: 点击卡片进入详情页，查看完整项目信息
--   📊 **数据统计**: 显示每个标签下的工具数量
--   🔄 **自动更新**: GitHub Actions 定时更新仓库数据
--   📖 **README 预览**: 自动渲染 GitHub README，支持 Markdown 格式
+## ✨ 特性
 
-## 🛠️ 技术栈
+### 🎯 核心功能
 
-### 前端框架
+-   **📚 精选工具库** - 74+ 精心挑选的前端工具和框架
+-   **🔍 智能搜索** - 支持标题、描述、URL、标签的全文搜索
+-   **🏷️ 标签筛选** - 20+ 分类标签,快速定位所需工具
+-   **📊 实时数据** - GitHub Stars、npm 版本、更新时间实时同步
+-   **📈 趋势榜单** - 展示 GitHub 每日前端热门项目
+-   **📱 响应式设计** - 完美支持桌面端和移动端
+-   **🌓 视图模式** - 列表/网格两种浏览模式,记忆用户偏好
+-   **📖 详情页面** - 包含 README、npm 下载量、Bundle Size 等详细信息
 
--   **React** 19.1.1 - 最新的 React 版本，提供更好的性能和开发体验
--   **React Router** 7.11.0 - 路由管理，支持单页应用导航
--   **TypeScript** 5.9.2 - 类型安全，提升代码质量
+### 🎨 用户体验
 
-### 构建工具
+-   **⚡ 极速加载** - Vite 构建,代码分割优化,总包体积 ~372KB (gzip: ~114KB)
+-   **🔄 智能缓存** - LocalStorage 缓存策略,减少重复请求
+-   **🎯 平滑滚动** - 固定搜索栏、回到顶部等交互优化
+-   **📊 用户分析** - 集成 Microsoft Clarity,了解用户行为
+-   **🚀 自动部署** - GitHub Actions 自动构建和部署
 
--   **Vite** 6.0.5 - 下一代前端构建工具，极速的开发体验
--   **PostCSS** + **Autoprefixer** - CSS 后处理，自动添加浏览器前缀
+### 🛠️ 技术栈
 
-### UI 样式
+-   **前端框架**: React 19.1 + TypeScript 5.9
+-   **构建工具**: Vite 6.0
+-   **路由**: React Router 7.11
+-   **样式**: Tailwind CSS 3.4
+-   **图表**: Recharts 3.6
+-   **Markdown**: Marked 17.0 + Highlight.js 11.11
+-   **分析**: Microsoft Clarity
+-   **部署**: GitHub Pages
 
--   **Tailwind CSS** 3.4.17 - 实用优先的 CSS 框架
--   **Recharts** 3.6.0 - 数据可视化图表库
--   响应式设计，移动端优先
+---
 
-### Markdown 渲染
-
--   **Marked** 17.0.1 - GitHub README 内容渲染
--   **Highlight.js** 11.11.1 - 代码语法高亮
--   **github-markdown-css** - GitHub 风格样式
-
-### 代码质量
-
--   **ESLint** 9.35.0 - 代码规范检查
--   **TypeScript ESLint** - TypeScript 代码规范
-
-### 第三方集成
-
--   **Microsoft Clarity** - 用户行为分析
--   **Giscus** - GitHub Discussions 评论系统
-
-## 🚀 快速开始
+## 📦 快速开始
 
 ### 环境要求
 
--   Node.js >= 18.0.0
--   npm >= 9.0.0
+-   Node.js >= 18.0
+-   npm >= 9.0
 
 ### 安装
 
@@ -89,8 +71,10 @@ npm install
 ### 开发
 
 ```bash
-# 启动开发服务器（默认运行在 http://localhost:5173）
+# 启动开发服务器
 npm run dev
+
+# 打开浏览器访问 http://localhost:5173
 ```
 
 ### 构建
@@ -106,425 +90,179 @@ npm run preview
 ### 代码检查
 
 ```bash
-# 运行 ESLint 检查
+# ESLint 代码检查
 npm run lint
-
-# 抓取 GitHub Trending 数据
-npm run fetch-trending
 ```
 
-## 📁 项目结构
+---
 
-### 文件结构
+## 📂 项目结构
 
 ```
 .
 ├── .github/
-│   ├── ISSUE_TEMPLATE/         # GitHub Issue 模板
-│   │   └── tool-submission.yml # 工具提交表单模板
-│   └── workflows/             # GitHub Actions 工作流
-│       ├── setup-labels.yml    # 创建 Issues 标签
-│       ├── deploy.yml          # 部署工作流
-│       ├── update-trending.yml # Trending 更新工作流
-│       └── auto-merge-submission.yml # 自动审核工作流
-├── public/                    # 静态资源
-│   ├── github-stats.json      # GitHub 仓库统计数据（自动生成）
-│   ├── github-readmes.json    # GitHub README 内容（自动生成）
-│   ├── trending.json          # GitHub Trending 数据（自动生成）
-│   ├── robots.txt            # SEO 爬虫协议
-│   └── sitemap.xml           # 站点地图
-├── scripts/                   # 脚本文件
-│   ├── update-github-data.js     # GitHub 数据更新脚本
-│   ├── update-github-stats.js    # GitHub Stats 更新脚本
-│   ├── update-github-readmes.js  # GitHub READMEs 更新脚本
-│   ├── fetch-trending.js         # Trending 数据抓取脚本
-│   └── regenerate-tag-colors.js  # 标签颜色重新生成脚本
+│   └── workflows/          # GitHub Actions 工作流
+│       ├── deploy.yml                  # 自动部署
+│       ├── update-github-stats.yml     # 更新 GitHub 数据
+│       ├── update-github-readmes.yml   # 更新 README
+│       ├── update-trending.yml         # 更新趋势榜
+│       └── auto-merge-submission.yml   # 自动合并提交
+├── public/                 # 静态资源
+│   ├── github-stats.json           # GitHub 统计数据(自动生成)
+│   ├── github-readmes.json         # README 内容(自动生成)
+│   ├── trending.json               # 趋势数据(自动生成)
+│   ├── logo.png
+│   └── favicon.ico
+├── scripts/                # 数据获取脚本
+│   ├── update-github-stats.js      # 获取 GitHub Stars/npm 版本
+│   ├── update-github-readmes.js    # 获取 README 内容
+│   ├── fetch-trending.js           # 获取趋势榜数据
+│   └── regenerate-tag-colors.js    # 重新生成标签颜色
 ├── src/
-│   ├── components/           # React 组件
-│   │   ├── BookmarkCard.tsx   # 书签卡片组件
-│   │   ├── BookmarkList.tsx   # 书签列表组件
-│   │   ├── ClarityProvider.tsx # Microsoft Clarity 分析
-│   │   ├── Comments.tsx       # 评论抽屉组件
-│   │   ├── Footer.tsx         # 页脚组件
-│   │   ├── GitHubStats.tsx    # GitHub 数据展示组件
-│   │   ├── Header.tsx         # 头部导航组件
-│   │   ├── SearchBar.tsx      # 搜索栏组件
-│   │   └── TagFilter.tsx      # 标签筛选组件
-│   ├── data/
-│   │   ├── bookmarks.json         # 书签数据（75+ 前端工具）
-│   │   └── github-stats-preset.json # GitHub 统计预设数据
-│   ├── pages/                # 页面组件
-│   │   ├── Home.tsx          # 首页（书签列表）
-│   │   ├── Trending.tsx      # 前端趋势页面
-│   │   ├── Submit.tsx        # 提交新工具页面
-│   │   └── BookmarkDetail.tsx # 书签详情页
-│   ├── types/                # TypeScript 类型定义
-│   │   └── index.ts          # 通用类型
-│   ├── utils/                # 工具函数
-│   │   └── github.ts         # GitHub API 工具
-│   ├── main.tsx              # 应用入口
-│   ├── index.css             # 全局样式
-│   └── vite-env.d.ts         # Vite 类型定义
-├── index.html                # HTML 模板
-├── vite.config.ts            # Vite 配置
-├── tailwind.config.ts        # Tailwind CSS 配置
-├── tsconfig.json             # TypeScript 配置
-└── package.json              # 项目依赖
-```
-
-## 📊 每日趋势功能
-
-### 前端趋势功能
-
-项目配置了自动抓取 GitHub Trending 数据的功能：
-
--   ⏰ **定时更新**: 每天凌晨 3:00（北京时间）自动抓取最新数据
--   🌍 **多语言支持**: 支持 JavaScript, TypeScript, HTML, CSS 等前端相关语言
--   🔝 **智能去重**: 自动去除重复项目，按本周 Stars 增量排序
--   🏆 **Top 25 精选**: 每日展示 25 个最热门前端项目
--   💾 **自动同步**: 数据更新后自动提交到仓库
-
-### 手动抓取
-
-```bash
-# 抓取最新 Trending 数据
-npm run fetch-trending
-```
-
-### 数据结构
-
-生成的 `public/trending.json` 包含：
-
-```json
-{
-    "updated_at": "2025-12-24T03:34:10.064Z",
-    "data": {
-        "weekStart": "2025-12-22",
-        "weekEnd": "2025-12-28",
-        "repos": [
-            {
-                "rank": 1,
-                "name": "项目名称",
-                "author": "作者",
-                "url": "GitHub URL",
-                "description": "项目描述",
-                "language": "编程语言",
-                "stars": 85432,
-                "forks": 4521,
-                "starsThisWeek": 1234,
-                "builtBy": [
-                    /* 贡献者列表 */
-                ]
-            }
-        ]
-    }
-}
-```
-
-## 🤖 GitHub Actions 自动化任务
-
-项目配置了多个 GitHub Actions 工作流，实现全自动化的数据更新、审核和部署流程。
-
-### 1️⃣ Setup Repository Labels
-
-**文件**: `.github/workflows/setup-labels.yml`
-
-**功能**: 自动创建和更新 GitHub Issues 所需的标签
-
-**触发条件**:
-
--   👆 手动触发 (`workflow_dispatch`)
--   📤 推送到 `main` 分支且修改了 `setup-labels.yml` 文件
-
-**创建的标签**:
-
--   🟢 **收录申请** (绿色 `#0E8A16`) - 新工具收录申请
--   🟡 **待审核** (黄色 `#FBCA04`) - 等待审核的收录申请
--   ✅ **收录通过** (绿色 `#0E8A16`) - 审核通过，将自动收录
--   ✅ **approved** (绿色 `#0E8A16`) - Approved for inclusion
--   🟪 **已收录** (紫色 `#5319E7`) - 已成功收录到工具库
--   ⚠️ **需要修改** (橙色 `#D93F0B`) - 需要修改后重新提交
--   ❌ **拒绝收录** (红色 `#B60205`) - 不符合收录标准
-
-**手动执行**:
-
-```bash
-# 访问 GitHub Actions 页面
-https://github.com/maxlongint/maxlongint.github.io/actions
-
-# 选择 "Setup Repository Labels" 工作流
-# 点击 "Run workflow" 按钮
-# 选择 main 分支，点击绿色确认按钮
+│   ├── components/         # React 组件
+│   │   ├── BookmarkCard.tsx        # 工具卡片组件
+│   │   ├── BookmarkList.tsx        # 工具列表组件
+│   │   ├── GitHubStats.tsx         # GitHub 统计组件
+│   │   ├── Header.tsx              # 顶部导航
+│   │   ├── Footer.tsx              # 底部信息
+│   │   ├── SearchBar.tsx           # 搜索框
+│   │   ├── TagFilter.tsx           # 标签筛选
+│   │   ├── Comments.tsx            # Giscus 评论
+│   │   └── ClarityProvider.tsx     # Clarity 分析
+│   ├── data/               # 数据文件
+│   │   ├── bookmarks.json          # 工具库数据
+│   │   └── github-stats-preset.json # 预设 GitHub 数据
+│   ├── pages/              # 页面组件
+│   │   ├── Home.tsx                # 主页
+│   │   ├── BookmarkDetail.tsx      # 工具详情页
+│   │   ├── Trending.tsx            # 趋势榜页面
+│   │   ├── Submit.tsx              # 提交工具页面
+│   │   └── Contact.tsx             # 留言板页面
+│   ├── types/              # TypeScript 类型定义
+│   │   └── index.ts
+│   ├── utils/              # 工具函数
+│   │   └── github.ts               # GitHub 数据处理
+│   ├── index.css           # 全局样式
+│   └── main.tsx            # 应用入口
+├── index.html              # HTML 模板
+├── package.json            # 项目配置
+├── tsconfig.json           # TypeScript 配置
+├── tailwind.config.ts      # Tailwind 配置
+├── vite.config.ts          # Vite 配置
+└── README.md               # 项目文档
 ```
 
 ---
 
-### 2️⃣ Deploy to GitHub Pages
+## 🎯 核心功能说明
 
-**文件**: `.github/workflows/deploy.yml`
+### 1. 数据加载机制
 
-**功能**: 自动构建项目并部署到 GitHub Pages，同时更新 GitHub 数据
+项目采用**多层数据加载策略**,确保数据可用性和性能:
 
-**触发条件**:
+#### 数据优先级
 
--   ⏰ **定时任务**: 每天凌晨 1:00（北京时间，UTC 17:00 前一天）自动执行
--   📤 **推送触发**: 推送到 `master` 分支时自动执行
--   👆 **手动触发**: 支持手动运行
+1.  **实时数据** (优先) - GitHub Actions 定时生成的最新数据
+2.  **预设数据** (兜底) - 内置的静态数据,确保首次加载可用
 
-**执行步骤**:
+#### 数据流程
 
-1. 📚 Checkout 代码仓库
-2. 🛠️ 安装 Node.js 18
-3. 📦 安装项目依赖
-4. 🔄 **更新 GitHub 数据** (执行 `update-github-data.js`)
-    - 获取所有仓库的 Stars、Forks、更新时间等数据
-    - 获取仓库 README 内容
-    - 生成 `public/github-stats.json` 和 `public/github-readmes.json`
-5. 🛠️ 构建生产版本 (`npm run build`)
-6. 📤 上传构建产物
-7. 🚀 部署到 GitHub Pages
+```typescript
+// 1. 应用启动时加载数据
+loadGitHubData(); // src/main.tsx
 
-**手动执行**:
+// 2. 尝试加载实时数据
+fetch('/github-stats.json');
+fetch('/github-readmes.json');
+fetch('/trending.json');
 
-```bash
-# 访问 GitHub Actions 页面
-https://github.com/maxlongint/maxlongint.github.io/actions/workflows/deploy.yml
+// 3. 如果实时数据不可用,回退到预设数据
+import presetData from './data/github-stats-preset.json';
 
-# 点击 "Run workflow" 按钮手动触发
+// 4. 数据加载完成后触发事件,通知组件更新
+window.dispatchEvent(new Event('github-data-loaded'));
 ```
+
+#### 组件响应
+
+```typescript
+// BookmarkCard 组件监听数据加载事件
+useEffect(() => {
+    const handleDataLoaded = () => {
+        forceUpdate({}); // 强制重新渲染,显示最新数据
+    };
+
+    window.addEventListener('github-data-loaded', handleDataLoaded);
+    return () => window.removeEventListener('github-data-loaded', handleDataLoaded);
+}, []);
+```
+
+### 2. GitHub 数据自动更新
+
+通过 GitHub Actions 定时任务自动更新数据:
+
+-   **update-github-stats.yml** - 每天 UTC 00:00 更新 Stars 和 npm 版本
+-   **update-github-readmes.yml** - 每天 UTC 01:00 更新 README 内容
+-   **update-trending.yml** - 每天 UTC 02:00 更新趋势榜数据
+
+### 3. 工具提交流程
+
+用户可以通过 [提交页面](https://snazzy.top/#/submit) 提交新工具:
+
+1.  填写工具信息(名称、GitHub 地址、描述、标签)
+2.  自动创建 GitHub Issue
+3.  GitHub Actions 自动验证和合并
+4.  自动更新数据文件
+
+### 4. 缓存策略
+
+为提升性能,项目采用多级缓存:
+
+-   **LocalStorage** - 缓存 npm 下载量和 Bundle Size 数据(7 天有效期)
+-   **浏览器缓存** - 静态资源缓存
+-   **GitHub Actions 缓存** - 依赖缓存,加快构建速度
 
 ---
-
-### 3️⃣ Update Daily Trending
-
-**文件**: `.github/workflows/update-trending.yml`
-
-**功能**: 自动抓取 GitHub Trending 数据，获取每日最热门的前端项目
-
-**触发条件**:
-
--   ⏰ **定时任务**: 每天凌晨 3:00（北京时间，UTC 19:00 前一天）自动执行
--   👆 **手动触发**: 支持手动运行
-
-**执行步骤**:
-
-1. 📚 Checkout 代码仓库
-2. 🛠️ 安装 Node.js 18
-3. 📦 安装项目依赖
-4. 🔥 **抓取 Trending 数据** (`npm run fetch-trending`)
-    - 抓取 JavaScript, TypeScript, HTML, CSS 等语言
-    - 智能去重，按本周 Stars 增量排序
-    - 只保留 Top 25 项目
-    - 生成 `public/trending.json`
-5. 💾 提交并推送更新 (如有变化)
-
-**手动执行**:
-
-```bash
-# 方法 1: 本地执行
-npm run fetch-trending
-
-# 方法 2: GitHub Actions 手动触发
-https://github.com/maxlongint/maxlongint.github.io/actions/workflows/update-trending.yml
-```
-
----
-
-### 4️⃣ Auto Merge Submission
-
-**文件**: `.github/workflows/auto-merge-submission.yml`
-
-**功能**: 自动审核并合并新工具提交，实现全自动化收录流程
-
-**触发条件**:
-
--   🏷️ **Issue 标签**: 当 Issue 被添加 **"收录通过"** 或 **"approved"** 标签时自动执行
-
-**工作流程**:
-
-1. 👤 **用户提交**: 用户通过网站表单提交新工具，自动创建 GitHub Issue
-2. 👁️ **管理员审核**: 管理员查看 Issue，确认信息完整性
-3. ✅ **添加标签**: 管理员添加 "收录通过" 或 "approved" 标签
-4. 🤖 **自动处理**: GitHub Actions 自动执行：
-    - 📝 解析 Issue 内容（工具名称、GitHub URL、描述、标签）
-    - ✔️ 验证必填字段
-    - 🔍 检查是否已存在
-    - ➕ 添加到 `src/data/bookmarks.json` 文件开头
-    - 💾 提交并推送代码
-    - 🏷️ 添加 "已收录" 标签
-    - 💬 评论通知用户
-    - 🔒 关闭 Issue
-
-**特殊情况处理**:
-
--   ⚠️ **工具已存在**: 评论提示，不重复添加
--   ❌ **信息不完整**: 任务失败，需人工处理
-
-**审核操作指南**:
-
-```bash
-# 步骤 1: 访问 Issues 页面
-https://github.com/maxlongint/maxlongint.github.io/issues
-
-# 步骤 2: 选择带有 "待审核" 标签的 Issue
-
-# 步骤 3: 检查信息是否完整
-# - 工具名称
-# - GitHub 仓库地址
-# - 工具描述
-# - 标签
-# - 确认事项均已勾选
-
-# 步骤 4: 做出审核决定
-# ✅ 通过: 添加 "收录通过" 或 "approved" 标签
-# ⚠️ 需修改: 添加 "需要修改" 标签 + 评论说明
-# ❌ 拒绝: 添加 "拒绝收录" 标签 + 评论说明原因 + 手动关闭 Issue
-
-# 步骤 5: 等待自动化处理（如果添加了通过标签）
-```
-
----
-
-### 📊 任务运行频率
-
-| 任务                    | 频率          | 说明                     |
-| ----------------------- | ------------- | ------------------------ |
-| Setup Repository Labels | 手动 / 修改时 | 一次性设置，无需频繁执行 |
-| Deploy to GitHub Pages  | 推送时        | 自动构建并部署           |
-| Update GitHub Stats     | 每天凌晨 1:00 | 自动更新仓库统计数据     |
-| Update GitHub READMEs   | 每天凌晨 2:00 | 自动更新 README 内容     |
-| Update Daily Trending   | 每天凌晨 3:00 | 每日更新热门项目         |
-| Auto Merge Submission   | Issue 标签时  | 实时自动审核             |
-
-### 🛠️ 监控与日志
-
-所有任务的执行情况和日志可在 GitHub Actions 页面查看：
-
-```bash
-https://github.com/maxlongint/maxlongint.github.io/actions
-```
-
-每个任务都会显示：
-
--   ✅ 执行状态（成功/失败）
--   ⏱️ 运行时长
--   📝 详细日志
--   📅 执行时间
-
-## 📝 数据管理
-
-### 添加新工具
-
-编辑 `src/data/bookmarks.json` 文件，按以下格式添加新工具：
-
-```json
-{
-    "title": "工具名称",
-    "url": "https://github.com/user/repo",
-    "description": "工具的详细描述",
-    "tags": ["标签1", "标签2"]
-}
-```
-
-### 标签配置
-
-#### 🎨 动态颜色生成系统
-
-项目采用 HSL 色彩空间的动态颜色生成算法，自动为标签分配颜色：
-
-**核心特性**：
-
--   **黄金角度分布** (137.5°) - 确保颜色均匀分布，避免相邻颜色
--   **渐变式亮度** - 从浅到深：88% → 86% → 84% → 82% → 80% → 78%（共 6 级）
--   **自动循环** - 超过最深色后自动回到最浅色，无限循环
--   **适中饱和度** - 45%-65% 之间，避免过于鲜艳或灰暗
--   **自动文字色** - 根据背景色自动计算深色文字，确保对比度
-
-**数据格式**：
-
-```json
-"tags": {
-    "标签名": {
-        "className": "",  // 保留兼容性
-        "color": "#eed3d3",  // 十六进制颜色
-        "backgroundColor": "hsl(0, 45%, 88%)",  // HSL 背景色
-        "textColor": "hsl(0, 65%, 38%)"  // HSL 文字色
-    },
-    "__meta__": {
-        "lastColorIndex": 58,  // 最后一个颜色索引
-        "totalTags": 59,
-        "generatedAt": "2025-12-24T09:33:48.461Z"
-    }
-}
-```
-
-**重新生成所有标签颜色**：
-
-```bash
-node scripts/regenerate-tag-colors.js
-```
-
-#### 自动收录时的颜色生成
-
-当通过 GitHub Actions 自动收录新工具时：
-
-1. 读取 `__meta__.lastColorIndex` 获取当前最深的颜色索引
-2. 从最深颜色继续生成（索引 +1）
-3. 亮度自动降低 2%
-4. 达到最深色（78%）后自动循环回到最浅色（88%）
-5. 更新元数据保存最新索引
-
-这确保了标签颜色的连续性和一致性。
-
-### GitHub 数据自动更新
-
-项目配置了 GitHub Actions，定时更新以下数据：
-
--   **GitHub Stats**: 每天凌晨 1:00（北京时间）自动更新仓库 Stars、Forks、更新时间等数据
--   **GitHub READMEs**: 每天凌晨 2:00（北京时间）自动更新仓库 README 内容
--   **GitHub Trending**: 每天凌晨 3:00（北京时间）自动抓取最热门项目
 
 ## 📊 性能优化
 
-### 📊 构建产物
-
-```
-dist/index.html                 2.27 kB │ gzip:   0.89 kB
-dist/assets/index-*.css        64.85 kB │ gzip:  12.33 kB
-dist/assets/react-vendor-*.js  47.78 kB │ gzip:  16.94 kB
-dist/assets/markdown-vendor-*.js 61.82 kB │ gzip: 20.86 kB
-dist/assets/chart-vendor-*.js   323.04 kB │ gzip: 98.44 kB
-dist/assets/index-*.js          358.26 kB │ gzip: 111.31 kB
-总计: ~855 KB │ gzip: ~260 KB
-```
-
 ### 构建优化
 
--   ⚡ **Vite 构建**: 使用 Vite 6 提供极速的开发和构建体验
--   🎯 **代码分割**: 组件按需加载，减少首屏加载时间
--   📦 **依赖优化**: 分离 vendor chunks，React、Markdown、Chart 分别打包
--   📊 **构建结果**: 总包体积 ~367KB (gzip: ~113KB)
+-   ⚡ **Vite 构建** - 使用 Vite 6 提供极速的开发和构建体验
+-   🎯 **代码分割** - 组件按需加载,减少首屏加载时间
+-   📦 **依赖优化** - 分离 vendor chunks:
+    -   `react-vendor` (~48KB) - React 核心库
+    -   `markdown-vendor` (~62KB) - Markdown 渲染
+    -   `chart-vendor` (~323KB) - 图表库
+    -   主应用包 (~372KB)
+-   📊 **总包体积** - ~372KB (gzip: ~114KB)
 
 ### 运行时优化
 
--   💾 **状态管理**: 使用 React Hooks 和 localStorage 优化状态管理
--   🔄 **空闲时更新**: 在浏览器空闲时更新 GitHub 数据，不影响用户体验
--   📱 **响应式图片**: 根据设备尺寸加载合适的资源
--   🐎 **防抖优化**: 滚动事件、搜索输入等采用防抖处理
--   📝 **useMemo 缓存**: 关键计算结果缓存，避免重复渲染
--   🎯 **useRef 优化**: 避免不必要的 DOM 操作和重渲染
+-   💾 **状态管理** - 使用 React Hooks 和 localStorage 优化状态管理
+-   🔄 **事件驱动更新** - 数据加载完成后触发事件,避免轮询
+-   📱 **响应式优化** - 根据设备尺寸加载合适的资源
+-   🐎 **防抖优化** - 搜索输入采用防抖处理
+-   📝 **useMemo 缓存** - 关键计算结果缓存,避免重复渲染
+-   🎯 **useRef 优化** - 避免不必要的 DOM 操作和重渲染
 
 ### Markdown 渲染优化
 
--   🛡️ **防止重复渲染**: 使用 `useRef` 追踪渲染状态，避免图片重复加载
--   🚀 **移除滚动监听**: 彻底移除所有滚动 state，防止滚动时组件重渲染
--   📊 **性能提升**: 滚动时图片只加载一次，请求数从 320+ 降低到一次性加载
+-   🛡️ **防止重复渲染** - 使用 `useRef` 追踪渲染状态
+-   🚀 **移除滚动监听** - 彻底移除滚动 state,防止滚动时重渲染
+-   📊 **性能提升** - Markdown 图片只加载一次,请求数大幅降低
 
-## 🚢 部署
+---
 
-### GitHub Pages（推荐）
+## 🚀 部署
 
-项目已配置 GitHub Actions 自动部署，推送到主分支即可自动部署到 GitHub Pages。
+### GitHub Pages (推荐)
+
+项目已配置 GitHub Actions 自动部署:
+
+1.  推送代码到 `master` 分支
+2.  GitHub Actions 自动构建
+3.  自动部署到 GitHub Pages
 
 ### 手动部署
 
@@ -532,7 +270,7 @@ dist/assets/index-*.js          358.26 kB │ gzip: 111.31 kB
 # 构建项目
 npm run build
 
-# dist 目录即为生产版本，可部署到任何静态服务器
+# dist 目录即为生产版本,可部署到任何静态服务器
 ```
 
 ### 支持的平台
@@ -543,107 +281,150 @@ npm run build
 -   ✅ Cloudflare Pages
 -   ✅ 任何支持静态文件的服务器
 
-## 🎯 浏览器支持
+---
 
--   Chrome（推荐）
--   Firefox
--   Safari
--   Edge
--   其他现代浏览器
+## 🔧 配置说明
 
-## 📈 项目演进
+### Microsoft Clarity
 
-### 技术栈迁移
+项目集成了 Microsoft Clarity 用户行为分析:
 
-本项目已从 Next.js 重构为 Vite + React，主要变更：
+```typescript
+// src/pages/Home.tsx
+<ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
+```
 
--   ✅ 使用 Vite 替代 Next.js，提供更快的开发体验
--   ✅ 采用标准的 React SPA 架构，简化项目结构
--   ✅ 保留了所有核心功能和 500+ 工具数据
--   ✅ 优化了组件结构和代码组织
--   ✅ 改进了性能和用户体验
+**功能**:
 
-## 🤝 贡献指南
+-   📊 热力图 - 显示用户点击和滚动热点
+-   🎥 会话录制 - 录制用户真实操作过程
+-   📈 用户行为分析 - 了解用户如何与网站交互
 
-欢迎提交 Issue 和 Pull Request！
+**如需禁用**,设置 `enabled={false}` 或删除组件。
 
-### 贡献流程
+### Giscus 评论系统
 
-1. Fork 本仓库
-2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交你的改动 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启一个 Pull Request
+留言板页面使用 GitHub Discussions 作为评论系统:
 
-### 提交规范
-
--   feat: 新功能
--   fix: 修复 bug
--   docs: 文档更新
--   style: 代码格式调整
--   refactor: 重构
--   perf: 性能优化
--   test: 测试相关
--   chore: 构建/工具链相关
-
-## 📄 License
-
-MIT License - 详见 [LICENSE](LICENSE) 文件
-
-## 🙏 致谢
-
-感谢所有开源项目的贡献者，让前端开发变得更加美好！
-
-## 📮 联系方式
-
-如有问题或建议，欢迎：
-
--   提交 [Issue](https://github.com/maxlongint/maxlongint.github.io/issues)
--   在网站评论区留言
--   通过 GitHub Discussions 交流
+```typescript
+// src/pages/Contact.tsx
+<Giscus
+    repo="maxlongint/maxlongint.github.io"
+    repoId="R_kgDOMgUMZw"
+    category="Announcements"
+    categoryId="DIC_kwDOMgUMZ84CjZnX"
+    // ...
+/>
+```
 
 ---
 
-⭐ 如果这个项目对你有帮助，欢迎给个 Star！
+## 📝 如何添加新工具
 
-## 🧪 项目清理报告
+### 方式 1: 通过网站提交 (推荐)
 
-### 最后清理时间: 2024-12-25
+1.  访问 [提交页面](https://snazzy.top/#/submit)
+2.  填写工具信息
+3.  提交后自动创建 GitHub Issue
+4.  等待自动验证和合并
 
-#### ✅ 已完成项目
+### 方式 2: 手动编辑 (开发者)
 
-1. **类型修复**: 修复 `PresetRepoInfo` 类型定义，解决构建错误
-2. **代码清理**: 删除调试日志和未使用的导入
-3. **ESLint 检查**: 通过所有 ESLint 规则检查
-4. **构建验证**: 生产构建成功，无错误和警告
-5. **文档更新**: 更新 README 文档，反映最新的项目状态
+编辑 `src/data/bookmarks.json`:
 
-#### 📊 构建统计
+```json
+{
+    "title": "工具名称",
+    "url": "https://github.com/owner/repo",
+    "description": "简短描述",
+    "tags": ["标签1", "标签2"]
+}
+```
 
--   **总包大小**: ~855 KB (不压缩) → ~260 KB (gzip)
--   **压缩率**: 69.6%
--   **构建时间**: ~4.3s
--   **模块数量**: 701 个
+### 方式 3: 提交 Pull Request
 
-#### 🛠️ 技术栈状态
+1.  Fork 本仓库
+2.  添加工具到 `src/data/bookmarks.json`
+3.  提交 Pull Request
+4.  等待审核合并
 
--   ✅ **React 19.1**: 最新稳定版
--   ✅ **Vite 6.0**: 最新构建工具
--   ✅ **TypeScript 5.9**: 类型检查通过
--   ✅ **Tailwind CSS 3.4**: 样式系统完善
--   ✅ **ESLint 9.35**: 代码规范通过
+---
 
-#### 📝 代码质量
+## 🤝 贡献指南
 
--   ✅ 无 TypeScript 编译错误
--   ✅ 无 ESLint 警告
--   ✅ 无 console.log 调试输出
--   ✅ 无未使用的导入和变量
--   ✅ 所有组件通过类型检查
+欢迎贡献代码、报告问题或提出建议!
 
-#### 🚀 性能优化
+### 贡献类型
 
--   ✅ 代码分割：React/Markdown/Chart 独立打包
--   ✅ Tree Shaking: 未使用代码自动剔除
--   ✅ 资源压缩：Gzip 压缩率 70%
--   ✅ 懒加载：路由组件按需加载
+-   🐛 报告 Bug
+-   💡 提出新功能
+-   📝 改进文档
+-   🔧 优化代码
+-   ➕ 添加新工具
+
+### 贡献步骤
+
+1.  Fork 本仓库
+2.  创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3.  提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4.  推送到分支 (`git push origin feature/AmazingFeature`)
+5.  创建 Pull Request
+
+### 代码规范
+
+-   ✅ 通过 ESLint 检查 (`npm run lint`)
+-   ✅ 遵循 TypeScript 类型约束
+-   ✅ 保持代码简洁和可读性
+-   ✅ 添加必要的注释
+
+---
+
+## 📄 License
+
+[MIT License](LICENSE)
+
+---
+
+## 🎯 浏览器支持
+
+-   ✅ Chrome (推荐)
+-   ✅ Firefox
+-   ✅ Safari
+-   ✅ Edge
+-   ✅ 其他现代浏览器
+
+**要求**: 支持 ES2020+ 和现代 Web API
+
+---
+
+## 📞 联系方式
+
+-   **网站**: [https://snazzy.top](https://snazzy.top)
+-   **GitHub**: [maxlongint/maxlongint.github.io](https://github.com/maxlongint/maxlongint.github.io)
+-   **邮箱**: 190615112@qq.com
+-   **QQ**: 190615112
+
+---
+
+## 🙏 致谢
+
+感谢以下项目和工具的支持:
+
+-   [React](https://reactjs.org/) - UI 框架
+-   [Vite](https://vitejs.dev/) - 构建工具
+-   [TypeScript](https://www.typescriptlang.org/) - 类型系统
+-   [Tailwind CSS](https://tailwindcss.com/) - CSS 框架
+-   [GitHub Pages](https://pages.github.com/) - 静态托管
+-   [Microsoft Clarity](https://clarity.microsoft.com/) - 用户分析
+
+以及所有贡献者和使用者!
+
+---
+
+<div align="center">
+
+**⭐ 如果这个项目对你有帮助,欢迎给个 Star!**
+
+Made with ❤️ by [maxlongint](https://github.com/maxlongint)
+
+</div>

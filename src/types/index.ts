@@ -18,6 +18,7 @@ export interface PresetRepoInfo {
     forks: number;
     language: string;
     updated_at: string;
+    npm_version?: string;
 }
 
 export interface NPMDownloadData {

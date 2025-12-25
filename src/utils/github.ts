@@ -78,28 +78,33 @@ export const loadGitHubData = async () => {
 
         // 优先加载实时 stats 数据
         if (statsResponse && statsResponse.ok) {
-            const fullStatsData = await statsResponse.json();
-            statsData = { ...fullStatsData.repos };
-            console.log('✅ Loaded GitHub stats from public data');
-        } else {
-            // 如果实时数据不可用,回退到预设数据
-            if (presetData && presetData.repos) {
-                const presetRepos = presetData.repos as Record<string, PresetRepoInfo>;
-                Object.entries(presetRepos).forEach(([key, preset]) => {
-                    // 从 URL中提取 owner 和 repo 名称
-                    const parts = key.split('/');
-                    const name = parts[parts.length - 1];
-
-                    statsData[key] = {
-                        stargazers_count: preset.stars,
-                        npm_version: '',
-                        name: name,
-                        full_name: key.replace('github.com/', ''),
-                        pushed_at: preset.updated_at,
-                    };
-                });
-                console.log('ℹ️ Using preset GitHub stats data (public data not available)');
+            try {
+                const fullStatsData = await statsResponse.json();
+                statsData = { ...fullStatsData.repos };
+                console.log('✅ Loaded GitHub stats from public data');
+            } catch {
+                console.log('⚠️ Failed to parse github-stats.json, using preset data');
             }
+        }
+
+        // 如果实时数据不可用或解析失败,回退到预设数据
+        if (Object.keys(statsData).length === 0 && presetData && presetData.repos) {
+            const presetRepos = presetData.repos as Record<string, PresetRepoInfo>;
+            Object.entries(presetRepos).forEach(([key, preset]) => {
+                // 预设数据的 key 格式是 "owner/repo",需要转换为 "github.com/owner/repo"
+                const fullKey = `github.com/${key}`;
+                const parts = key.split('/');
+                const name = parts[parts.length - 1];
+
+                statsData[fullKey] = {
+                    stargazers_count: preset.stars,
+                    npm_version: preset.npm_version || '',
+                    name: name,
+                    full_name: key,
+                    pushed_at: preset.updated_at,
+                };
+            });
+            console.log('ℹ️ Using preset GitHub stats data (public data not available)');
         }
 
         // 将数据保存到全局
@@ -107,22 +112,33 @@ export const loadGitHubData = async () => {
 
         // 处理 readmes 数据
         if (readmesResponse && readmesResponse.ok) {
-            const readmesData = await readmesResponse.json();
-            (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
-                readmesData.readmes;
-            console.log('✅ Loaded GitHub readmes from public data');
+            try {
+                const readmesData = await readmesResponse.json();
+                (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
+                    readmesData.readmes;
+                console.log('✅ Loaded GitHub readmes from public data');
+            } catch {
+                console.log('⚠️ Failed to parse github-readmes.json');
+            }
         } else {
             console.log('ℹ️ GitHub readmes not available (will be loaded on-demand)');
         }
 
         // 处理 trending 数据
         if (trendingResponse && trendingResponse.ok) {
-            const trendingData = await trendingResponse.json();
-            (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
-            console.log('✅ Loaded trending data from public data');
+            try {
+                const trendingData = await trendingResponse.json();
+                (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
+                console.log('✅ Loaded trending data from public data');
+            } catch {
+                console.log('⚠️ Failed to parse trending.json');
+            }
         } else {
             console.log('ℹ️ Trending data not available (requires GitHub Actions)');
         }
+
+        // 数据加载完成后触发自定义事件,通知组件重新渲染
+        window.dispatchEvent(new Event('github-data-loaded'));
     } catch (error) {
         console.warn('⚠️ Failed to load some GitHub data:', error);
     }
