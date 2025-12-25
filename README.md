@@ -202,13 +202,20 @@ useEffect(() => {
 
 #### 定时任务
 
--   **update-github-stats.yml** - 每天凌晨 1:00 北京时间更新 Stars 和 npm 版本
--   **update-github-readmes.yml** - 每天凌晨 2:00 北京时间更新 README 内容
--   **update-trending.yml** - 每天凌晨 3:00 北京时间更新趋势榜数据
+-   **⭐ Update GitHub Stats** - 每天凌晨 1:00 北京时间更新 Stars 和 npm 版本
+-   **📖 Update GitHub READMEs** - 每天凌晨 2:00 北京时间更新 README 内容
+-   **🔥 Update Daily Trending** - 每天凌晨 3:00 北京时间更新趋势榜数据
+
+数据更新后自动触发网站部署,用户无需等待下次访问即可看到最新数据。
 
 #### 自动收录机制
 
-当新工具通过审核(Issue 标记为 "收录通过")时,`auto-merge-submission.yml` 会自动:
+**🏷️ Auto Label New Submissions** - 当用户提交新工具(Issue 标题包含 `[收录]`)时:
+
+1.  自动添加标签: "收录申请" + "待审核"
+2.  自动回复欢迎评论,说明审核流程
+
+**🤖 Auto Merge Submission** - 当管理员审核通过(标记为 "收录通过")时:
 
 1.  解析 Issue 内容
 2.  添加到 `bookmarks.json`
@@ -216,7 +223,16 @@ useEffect(() => {
 4.  **实时获取 GitHub Stars 数据** → `github-stats.json`
 5.  **实时获取 README 内容** → `github-readmes.json`
 6.  一次性提交所有文件
-7.  评论、标记、关闭 Issue
+7.  触发网站部署
+8.  评论、标记、关闭 Issue
+
+**🚀 Deploy to GitHub Pages** - 自动部署触发条件:
+
+-   推送代码到 master 分支
+-   数据更新任务完成后
+-   手动触发
+
+**🏷️ Setup Repository Labels** - 手动触发,初始化仓库标签系统
 
 ### 3. 工具提交流程
 

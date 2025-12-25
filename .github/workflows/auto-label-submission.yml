@@ -1,4 +1,4 @@
-name: Auto Label Submission
+name: 🏷️ Auto Label New Submissions
 
 on:
     issues:
@@ -16,7 +16,7 @@ jobs:
               with:
                   script: |
                       const issue = context.payload.issue;
-                      
+
                       // 检查 Issue 标题是否包含 [收录]
                       if (issue.title.includes('[收录]')) {
                         await github.rest.issues.addLabels({
@@ -33,15 +33,6 @@ jobs:
                           owner: context.repo.owner,
                           repo: context.repo.repo,
                           issue_number: issue.number,
-                          body: `👋 感谢提交新工具!
-
-您的提交已收到,管理员会尽快审核。
-
-**审核流程:**
-- ⏳ 当前状态: 待审核
-- ✅ 审核通过后会自动添加到工具库
-- 📧 您会收到通知
-
-如有问题,请在评论中说明。`
+                          body: '👋 感谢提交新工具!\n\n您的提交已收到,管理员会尽快审核。\n\n**审核流程:**\n- ⏳ 当前状态: 待审核\n- ✅ 审核通过后会自动添加到工具库\n- 📧 您会收到通知\n\n如有问题,请在评论中说明。'
                         });
                       }
