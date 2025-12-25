@@ -33,68 +33,31 @@ console.log(`Found ${githubRepos.size} GitHub repositories`);
 
 // 获取仓库README的函数
 async function fetchReadme(owner, repo) {
-    // 可能的 README 文件名变体
-    const readmeVariants = ['README.md', 'readme.md', 'Readme.md', 'README.MD', 'readme.MD', 'README', 'readme'];
-
-    // 可能的分支名
-    const branches = ['main', 'master'];
-
-    // 特殊仓库的 README 路径（针对 monorepo 等情况）
-    const specialPaths = {
-        'colinhacks/zod': ['packages/zod/README.md'],
-        'fabian-hiller/valibot': ['library/README.md'],
-    };
-
     try {
         const fullName = `${owner}/${repo}`;
 
-        // 首先尝试特殊路径
-        if (specialPaths[fullName]) {
-            for (const branch of branches) {
-                for (const specialPath of specialPaths[fullName]) {
-                    const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${specialPath}`;
-                    const response = await fetch(url, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'User-Agent': 'GitHub-Pages-Builder',
-                        },
-                    });
+        // 使用 GitHub API 获取 README
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/readme`;
+        const response = await fetch(apiUrl, {
+            headers: {
+                Accept: 'application/vnd.github.v3.raw', // 获取原始 Markdown 内容
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
 
-                    if (response.ok) {
-                        const text = await response.text();
-                        if (text && !text.includes('<!DOCTYPE html>') && !text.includes('404: Not Found')) {
-                            console.log(`  ✓ Found ${specialPath} in ${branch} branch`);
-                            return text;
-                        }
-                    }
-                }
+        if (response.ok) {
+            const text = await response.text();
+            if (text && text.length > 100) {
+                console.log(`  ✓ Successfully fetched README (${text.length} bytes)`);
+                return text;
             }
+        } else if (response.status === 404) {
+            console.warn(`  ✗ README not found`);
+        } else {
+            console.warn(`  ✗ API request failed: ${response.status} ${response.statusText}`);
         }
 
-        // 然后尝试根目录的 README
-        for (const branch of branches) {
-            for (const filename of readmeVariants) {
-                const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filename}`;
-                const response = await fetch(url, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'User-Agent': 'GitHub-Pages-Builder',
-                    },
-                });
-
-                if (response.ok) {
-                    const text = await response.text();
-                    // 确保是有效内容，不是 HTML 404 页面
-                    // KaTeX 的 README 以图片或标题开始，所以要更宽松的验证
-                    if (text && text.length > 100 && !text.includes('<!DOCTYPE html>')) {
-                        console.log(`  ✓ Found ${filename} in ${branch} branch`);
-                        return text;
-                    }
-                }
-            }
-        }
-
-        console.warn(`Failed to fetch README for ${owner}/${repo}: no valid README found`);
         return null;
     } catch (error) {
         console.error(`Error fetching README for ${owner}/${repo}:`, error.message);
