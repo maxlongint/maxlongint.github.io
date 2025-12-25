@@ -1,35 +1,125 @@
 name: Auto Merge Submission
 
 on:
-  issues:
-    types: [labeled]
-  workflow_dispatch:
-    inputs:
-      issue_number:
-        description: 'Issue number to process'
-        required: true
-        type: number
+    issues:
+        types: [labeled]
+    workflow_dispatch:
+        inputs:
+            issue_number:
+                description: 'Issue number to process'
+                required: true
+                type: number
 
 jobs:
-  merge-submission:
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == '收录通过')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: master
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Test
-        run: echo "Workflow triggered successfully"
+    merge-submission:
+        if: |
+            github.event_name == 'workflow_dispatch' ||
+            (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == '收录通过')
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Parse Issue and Update Bookmarks
+              id: parse-issue
+              run: |
+                  ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
+                  ISSUE_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                    "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUM}" | \
+                    jq -r '.body')
+                  
+                  cat > parse-issue.cjs << 'EOF'
+                  const fs = require('fs');
+                  const issueBody = process.env.ISSUE_BODY;
+                  
+                  function parseIssueBody(body) {
+                    const result = { toolName: '', githubUrl: '', description: '', tags: [] };
+                    const nameMatch = body.match(/###\s*工具名称\s*\n+([^\n#]+)/i);
+                    if (nameMatch) result.toolName = nameMatch[1].trim();
+                    const urlMatch = body.match(/###\s*GitHub\s*仓库地址\s*\n+([^\n#]+)/i);
+                    if (urlMatch) {
+                      result.githubUrl = urlMatch[1].trim();
+                      if (!result.githubUrl.startsWith('http')) result.githubUrl = 'https://' + result.githubUrl;
+                    }
+                    const descMatch = body.match(/###\s*工具描述\s*\n+([\s\S]+?)(?=\n###|$)/i);
+                    if (descMatch) result.description = descMatch[1].trim();
+                    const tagsMatch = body.match(/###\s*标签\s*\n+([^\n#]+)/i);
+                    if (tagsMatch) {
+                      result.tags = tagsMatch[1].trim().split(/[,，]/).map(t => t.trim()).filter(t => t);
+                    }
+                    return result;
+                  }
+                  
+                  const parsed = parseIssueBody(issueBody);
+                  if (!parsed.toolName || !parsed.githubUrl || !parsed.description || parsed.tags.length === 0) {
+                    console.error('Missing required fields');
+                    process.exit(1);
+                  }
+                  
+                  const bookmarksData = JSON.parse(fs.readFileSync('./src/data/bookmarks.json', 'utf8'));
+                  const exists = bookmarksData.bookmarks.some(b => b.url === parsed.githubUrl);
+                  if (exists) {
+                    fs.writeFileSync(process.env.GITHUB_OUTPUT, 'already_exists=true', { flag: 'a' });
+                    process.exit(0);
+                  }
+                  
+                  const newBookmark = {
+                    title: parsed.toolName,
+                    url: parsed.githubUrl,
+                    description: parsed.description,
+                    tags: parsed.tags
+                  };
+                  bookmarksData.bookmarks.unshift(newBookmark);
+                  fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 4) + '\n', 'utf8');
+                  
+                  const output = `tool_name=${parsed.toolName}\ntool_url=${parsed.githubUrl}\nalready_exists=false`;
+                  fs.writeFileSync(process.env.GITHUB_OUTPUT, output, { flag: 'a' });
+                  EOF
+                  
+                  ISSUE_BODY="$ISSUE_BODY" node parse-issue.cjs
+            
+            - name: Commit Changes
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add src/data/bookmarks.json
+                  ISSUE_NUM=${{ github.event.inputs.issue_number || github.event.issue.number }}
+                  git commit -m "Add tool: ${{ steps.parse-issue.outputs.tool_name }} (Issue #${ISSUE_NUM})"
+                  git push
+            
+            - name: Comment and Close Issue
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const issueNumber = ${{ github.event.inputs.issue_number || github.event.issue.number }};
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        body: '🎉 Tool added successfully!'
+                      });
+                      await github.rest.issues.addLabels({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        labels: ['已收录']
+                      });
+                      await github.rest.issues.update({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        state: 'closed'
+                      });
