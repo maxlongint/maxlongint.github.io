@@ -333,13 +333,21 @@ jobs:
 
                   ISSUE_BODY="$ISSUE_BODY" GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" node parse-issue.cjs
 
-            - name: Commit Changes
+            - name: Generate OG Image for New Tool
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              run: |
+                  npm run generate-og-single "${{ steps.parse-issue.outputs.tool_url }}"
+
+            - name: Commit All Changes
               if: steps.parse-issue.outputs.already_exists == 'false'
               id: commit
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
+
+                  # 添加所有修改的文件
                   git add src/data/bookmarks.json
+                  git add public/og-images/
                               
                   # 如果有同步数据，也一起提交
                   if [ -f "src/data/github-stats.json" ]; then
@@ -360,27 +368,10 @@ jobs:
                   if [ "${{ steps.parse-issue.outputs.readme_data_added }}" = "true" ]; then
                     COMMIT_MSG="${COMMIT_MSG}\n- Added README data"
                   fi
+                  COMMIT_MSG="${COMMIT_MSG}\n- Generated OG image"
+
                   git commit -m "${COMMIT_MSG}"
                   git push
-
-            - name: Generate OG Image for New Tool
-              if: steps.parse-issue.outputs.already_exists == 'false'
-              run: |
-                  npm run generate-og-single "${{ steps.parse-issue.outputs.tool_url }}"
-
-            - name: Commit OG Image
-              if: steps.parse-issue.outputs.already_exists == 'false'
-              run: |
-                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
-                  git config --local user.name "github-actions[bot]"
-                  git add public/og-images/
-
-                  if git diff --staged --quiet; then
-                    echo "⚠️ No OG image changes to commit"
-                  else
-                    git commit -m "🖼️ Generate OG image for ${{ steps.parse-issue.outputs.tool_name }}"
-                    git push
-                  fi
 
             - name: Trigger Deployment
               if: steps.parse-issue.outputs.already_exists == 'false'
@@ -413,4 +404,23 @@ jobs:
                         repo: context.repo.repo,
                         issue_number: issueNumber,
                         state: 'closed'
+                      });
+
+            - name: Cleanup on Failure
+              if: failure() && steps.parse-issue.outputs.already_exists == 'false'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const issueNumber = ${{ github.event.inputs.issue_number || github.event.issue.number }};
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        body: '❌ 自动收录失败！\n\n**错误原因**：请查看 [GitHub Actions 日志](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n**解决方案**：\n1. 检查工具信息是否正确\n2. 确认 GitHub 仓库是否可访问\n3. 请手动重试或联系维护者\n\nℹ️ 没有任何数据被提交，请放心重试。'
+                      });
+                      await github.rest.issues.addLabels({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        labels: ['收录失败']
                       });
