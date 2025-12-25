@@ -12,7 +12,7 @@ const statsPath = path.join(__dirname, '../src/data/github-stats.json');
 const outputDir = path.join(__dirname, '../src/data/og-images');
 
 const bookmarksData = JSON.parse(fs.readFileSync(bookmarksPath, 'utf-8'));
-const statsData = fs.existsSync(statsPath) ? JSON.parse(fs.readFileSync(statsPath, 'utf-8')) : {};
+const statsData = fs.existsSync(statsPath) ? JSON.parse(fs.readFileSync(statsPath, 'utf-8')) : { repos: {} };
 
 // 确保输出目录存在
 if (!fs.existsSync(outputDir)) {
@@ -44,9 +44,10 @@ async function generateOGImage(bookmark) {
     const githubMatch = bookmark.url.match(/github\.com\/([^/]+)\/([^/]+)/);
     const owner = githubMatch ? githubMatch[1] : '';
     const repo = githubMatch ? githubMatch[2] : '';
-    const repoKey = `${owner}/${repo}`;
+    const urlKey = `github.com/${owner}/${repo}`;
 
-    const stars = statsData[repoKey]?.stars || 0;
+    const repoStats = statsData.repos?.[urlKey];
+    const stars = repoStats?.stargazers_count || 0;
     const starsText = formatStars(stars);
 
     // 根据描述长度动态调整字体大小
@@ -55,99 +56,63 @@ async function generateOGImage(bookmark) {
 
     try {
         // 构建底部信息栏子元素
-        const bottomChildren = [];
+        const rightTopChildren = [];
 
-        if (stars > 0) {
-            bottomChildren.push({
+        rightTopChildren.push(
+            {
+                type: 'div',
+                props: {
+                    style: {
+                        fontSize: '28px',
+                        color: 'rgba(255, 255, 255, 0.8)',
+                    },
+                    children: '前端工具库',
+                },
+            },
+            {
+                type: 'div',
+                props: {
+                    style: {
+                        fontSize: '20px',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                    },
+                    children: 'https://snazzy.top',
+                },
+            }
+        );
+
+        // 构建左侧内容
+        const leftContent = [];
+
+        if (owner) {
+            leftContent.push({
+                type: 'img',
+                props: {
+                    src: `https://github.com/${owner}.png?size=240`,
+                    width: 240,
+                    height: 240,
+                    style: {
+                        borderRadius: '24px',
+                        border: '8px solid rgba(255, 255, 255, 0.3)',
+                    },
+                },
+            });
+        }
+
+        // 构建右侧内容
+        const rightContent = [
+            {
                 type: 'div',
                 props: {
                     style: {
                         display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        padding: '16px 32px',
-                        borderRadius: '16px',
+                        flexDirection: 'column',
+                        gap: '8px',
+                        marginBottom: '24px',
                     },
-                    children: [
-                        {
-                            type: 'span',
-                            props: {
-                                style: {
-                                    fontSize: '32px',
-                                },
-                                children: '⭐',
-                            },
-                        },
-                        {
-                            type: 'span',
-                            props: {
-                                style: {
-                                    fontSize: '36px',
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                },
-                                children: `${starsText} Stars`,
-                            },
-                        },
-                    ],
+                    children: rightTopChildren,
                 },
-            });
-        }
-
-        bottomChildren.push({
-            type: 'div',
-            props: {
-                style: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '4px',
-                },
-                children: [
-                    {
-                        type: 'div',
-                        props: {
-                            style: {
-                                fontSize: '28px',
-                                color: 'rgba(255, 255, 255, 0.8)',
-                            },
-                            children: '前端工具库',
-                        },
-                    },
-                    {
-                        type: 'div',
-                        props: {
-                            style: {
-                                fontSize: '20px',
-                                color: 'rgba(255, 255, 255, 0.6)',
-                            },
-                            children: 'https://snazzy.top',
-                        },
-                    },
-                ],
             },
-        });
-
-        // 构建主体子元素
-        const mainChildren = [];
-
-        if (owner) {
-            mainChildren.push({
-                type: 'img',
-                props: {
-                    src: `https://github.com/${owner}.png?size=120`,
-                    width: 120,
-                    height: 120,
-                    style: {
-                        borderRadius: '24px',
-                        border: '4px solid rgba(255, 255, 255, 0.2)',
-                        marginBottom: '40px',
-                    },
-                },
-            });
-        }
-
-        mainChildren.push(
             {
                 type: 'div',
                 props: {
@@ -155,7 +120,7 @@ async function generateOGImage(bookmark) {
                         fontSize: '72px',
                         fontWeight: 'bold',
                         color: 'white',
-                        marginBottom: '20px',
+                        marginBottom: '24px',
                         lineHeight: 1.1,
                         textShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
                     },
@@ -168,29 +133,62 @@ async function generateOGImage(bookmark) {
                     style: {
                         fontSize: `${descriptionFontSize}px`,
                         color: 'rgba(255, 255, 255, 0.95)',
-                        marginBottom: 'auto',
                         lineHeight: 1.6,
-                        maxWidth: '95%',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        wordBreak: 'break-word',
+                        marginBottom: '24px',
                     },
                     children: description,
                 },
             },
-            {
+        ];
+
+        if (stars > 0) {
+            rightContent.push({
                 type: 'div',
                 props: {
                     style: {
                         display: 'flex',
-                        alignItems: 'center',
-                        marginTop: '20px',
-                        gap: '40px',
+                        justifyContent: 'flex-start',
                     },
-                    children: bottomChildren,
+                    children: [
+                        {
+                            type: 'div',
+                            props: {
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    background: 'rgba(255, 255, 255, 0.2)',
+                                    padding: '16px 32px',
+                                    borderRadius: '16px',
+                                },
+                                children: [
+                                    {
+                                        type: 'span',
+                                        props: {
+                                            style: {
+                                                fontSize: '32px',
+                                            },
+                                            children: '⭐',
+                                        },
+                                    },
+                                    {
+                                        type: 'span',
+                                        props: {
+                                            style: {
+                                                fontSize: '36px',
+                                                fontWeight: 'bold',
+                                                color: 'white',
+                                            },
+                                            children: `${starsText} Stars`,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
                 },
-            }
-        );
+            });
+        }
 
         const imageResponse = new ImageResponse(
             {
@@ -200,12 +198,40 @@ async function generateOGImage(bookmark) {
                         width: '100%',
                         height: '100%',
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
                         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        padding: '60px',
-                        fontFamily: 'system-ui, -apple-system, sans-serif',
+                        padding: '80px',
+                        fontFamily: 'sans-serif',
+                        gap: '60px',
+                        borderRadius: '24px',
                     },
-                    children: mainChildren,
+                    children: [
+                        {
+                            type: 'div',
+                            props: {
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                },
+                                children: leftContent,
+                            },
+                        },
+                        {
+                            type: 'div',
+                            props: {
+                                style: {
+                                    flex: 1,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                },
+                                children: rightContent,
+                            },
+                        },
+                    ],
                 },
             },
             {

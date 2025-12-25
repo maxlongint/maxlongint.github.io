@@ -20,14 +20,15 @@
 
 ### 🎯 核心功能
 
--   **📚 精选工具库** - 74+ 精心挑选的前端工具和框架
+-   **📚 精选工具库** - 75+ 精心挑选的前端工具和框架
 -   **🔍 智能搜索** - 支持标题、描述、URL、标签的全文搜索
 -   **🏷️ 标签筛选** - 20+ 分类标签,快速定位所需工具
 -   **📊 实时数据** - GitHub Stars、npm 版本、更新时间实时同步
 -   **📈 趋势榜单** - 展示 GitHub 每日前端热门项目
 -   **📱 响应式设计** - 完美支持桌面端和移动端
 -   **🌓 视图模式** - 列表/网格两种浏览模式,记忆用户偏好
--   **📖 详情页面** - 包含 README、npm 下载量、Bundle Size 等详细信息
+-   **📖 详情页面** - 包含 README、npm 下载量、Bundle Size、OG 分享卡片等详细信息
+-   **🎨 OG 分享卡片** - 每个工具自动生成精美的分享卡片,支持一键复制分享
 
 ### 🎨 用户体验
 
@@ -59,7 +60,7 @@
 
 ### 安装
 
-```bash
+```
 # 克隆项目
 git clone https://github.com/maxlongint/maxlongint.github.io.git
 cd maxlongint.github.io
@@ -70,7 +71,7 @@ npm install
 
 ### 开发
 
-```bash
+```
 # 启动开发服务器
 npm run dev
 
@@ -79,7 +80,7 @@ npm run dev
 
 ### 构建
 
-```bash
+```
 # 构建生产版本
 npm run build
 
@@ -89,7 +90,7 @@ npm run preview
 
 ### 代码检查
 
-```bash
+```
 # ESLint 代码检查
 npm run lint
 ```
@@ -114,6 +115,9 @@ npm run lint
 │   ├── update-github-stats.js      # 获取 GitHub Stars/npm 版本
 │   ├── update-github-readmes.js    # 获取 README 内容
 │   ├── fetch-trending.js           # 获取趋势榜数据
+│   ├── generate-og-images.js       # 批量生成 OG 图片
+│   ├── generate-og-single.js       # 生成单个 OG 图片
+│   ├── generate-default-og.js      # 生成默认 OG 图片
 │   └── regenerate-tag-colors.js    # 重新生成标签颜色
 ├── src/
 │   ├── components/         # React 组件
@@ -129,7 +133,8 @@ npm run lint
 │   │   ├── bookmarks.json          # 工具库数据
 │   │   ├── github-stats.json       # GitHub 统计数据(同步生成)
 │   │   ├── github-readmes.json     # README 内容(同步生成)
-│   │   └── trending.json           # 趋势数据(同步生成)
+│   │   ├── trending.json           # 趋势数据(同步生成)
+│   │   └── og-images/              # OG 分享图片(同步生成)
 │   ├── pages/              # 页面组件
 │   │   ├── Home.tsx                # 主页
 │   │   ├── BookmarkDetail.tsx      # 工具详情页
@@ -157,9 +162,10 @@ npm run lint
 ### 🌟 完全自动化
 
 -   **自动数据同步** - 每天定时自动更新 Stars、README、趋势榜
--   **自动收录工具** - Issue 提交后自动解析、同步、部署
+-   **自动收录工具** - Issue 提交后自动解析、同步 GitHub 数据、生成 OG 图片、部署
 -   **自动部署** - 代码/数据更新后自动构建并上线
 -   **自动标签** - 新工具自动生成颜色配置
+-   **自动 OG 图片** - 新工具收录时自动生成精美的 OG 分享卡片
 
 ### 🚀 性能优化
 
@@ -205,7 +211,7 @@ npm run lint
 
 #### 数据流程
 
-```typescript
+```
 // 1. 应用启动时直接导入数据(编译时打包)
 import githubStatsData from '../data/github-stats.json';
 import githubReadmesData from '../data/github-readmes.json';
@@ -220,7 +226,7 @@ window.dispatchEvent(new Event('github-data-loaded'));
 
 #### 组件响应
 
-```typescript
+```
 // BookmarkCard 组件监听数据加载事件
 useEffect(() => {
     const handleDataLoaded = () => {
@@ -258,9 +264,10 @@ useEffect(() => {
 3.  自动生成新标签颜色
 4.  **实时获取 GitHub Stars 数据** → `github-stats.json`
 5.  **实时获取 README 内容** → `github-readmes.json`
-6.  一次性提交所有文件
-7.  触发网站部署
-8.  评论、标记、关闭 Issue
+6.  **自动生成 OG 分享图片** → `src/data/og-images/`
+7.  一次性提交所有文件
+8.  触发网站部署
+9.  评论、标记、关闭 Issue
 
 **🚀 Deploy to GitHub Pages** - 自动部署触发条件:
 
@@ -300,8 +307,9 @@ useEffect(() => {
     -   `react-vendor` (~48KB) - React 核心库
     -   `markdown-vendor` (~62KB) - Markdown 渲染
     -   `chart-vendor` (~323KB) - 图表库
-    -   主应用包 (~372KB)
--   📊 **总包体积** - ~372KB (gzip: ~114KB)
+    -   主应用包 (~1.4MB)
+-   🖼️ **OG 图片优化** - 开发时代理访问,构建时自动复制,避免重复打包
+-   📊 **总包体积** - ~1.9MB (gzip: ~524KB)
 
 ### 运行时优化
 
@@ -320,6 +328,43 @@ useEffect(() => {
 
 ---
 
+## 🎨 OG 分享卡片
+
+项目为每个工具自动生成精美的 Open Graph 分享卡片,用于社交媒体分享时显示。
+
+### 特性
+
+-   🎨 **统一设计** - 左右布局,左侧显示项目头像,右侧显示工具信息
+-   ⭐ **动态数据** - 自动显示 GitHub Stars 数、工具描述等实时信息
+-   📱 **自适应布局** - 根据描述长度自动调整字体大小(24-36px)
+-   🖼️ **自动生成** - 新工具收录时自动生成 OG 图片
+-   💾 **优化存储** - 图片存储在 `src/data/og-images/`,Git 追踪,构建时复制
+
+### 生成方式
+
+```
+# 批量生成所有 OG 图片
+npm run generate-og
+
+# 为单个工具生成 OG 图片
+npm run generate-og-single "工具名称"
+```
+
+### 图片规格
+
+-   **尺寸**: 1200x630px (符合 Open Graph 标准)
+-   **格式**: PNG
+-   **存储**: `src/data/og-images/*.png`
+-   **访问**: `/og-images/*.png`
+
+### 使用场景
+
+-   🔗 **分享链接** - 在 QQ、微信、Twitter 等平台分享时显示卡片预览
+-   📋 **一键复制** - 点击详情页的分享按钮,自动复制 OG 图片到剪贴板
+-   🌐 **SEO 优化** - 提升社交媒体分享的视觉效果和点击率
+
+---
+
 ## 🚀 部署
 
 ### GitHub Pages (推荐)
@@ -332,7 +377,7 @@ useEffect(() => {
 
 ### 手动部署
 
-```bash
+```
 # 构建项目
 npm run build
 
@@ -355,7 +400,7 @@ npm run build
 
 项目集成了 Microsoft Clarity 用户行为分析:
 
-```typescript
+```
 // src/pages/Home.tsx
 <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
 ```
@@ -372,7 +417,7 @@ npm run build
 
 留言板页面使用 GitHub Discussions 作为评论系统:
 
-```typescript
+```
 // src/pages/Contact.tsx
 const script = document.createElement('script');
 script.src = 'https://giscus.app/client.js';
@@ -435,7 +480,7 @@ script.setAttribute('data-category', 'General');
 
 编辑 `src/data/bookmarks.json`:
 
-```json
+```
 {
     "title": "工具名称",
     "url": "https://github.com/owner/repo",
