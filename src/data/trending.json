@@ -1,20 +1,39 @@
 {
-  "updated_at": "2025-12-25T06:14:56.556Z",
+  "updated_at": "2025-12-25T19:10:55.833Z",
   "data": {
     "weekStart": "2025-12-25",
     "weekEnd": "2025-12-25",
     "repos": [
       {
         "rank": 1,
+        "name": "developer-roadmap",
+        "author": "kamranahmedse",
+        "url": "https://github.com/kamranahmedse/developer-roadmap",
+        "description": "Interactive roadmaps, guides and other educational content to help developers grow in their careers.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 346045,
+        "forks": 43546,
+        "starsThisWeek": 346045,
+        "builtBy": [
+          {
+            "username": "kamranahmedse",
+            "avatar": "https://avatars.githubusercontent.com/u/4921183?v=4",
+            "url": "https://github.com/kamranahmedse"
+          }
+        ]
+      },
+      {
+        "rank": 2,
         "name": "vscode",
         "author": "microsoft",
         "url": "https://github.com/microsoft/vscode",
         "description": "Visual Studio Code",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 179968,
-        "forks": 37029,
-        "starsThisWeek": 179968,
+        "stars": 179988,
+        "forks": 37042,
+        "starsThisWeek": 179988,
         "builtBy": [
           {
             "username": "microsoft",
@@ -24,16 +43,16 @@
         ]
       },
       {
-        "rank": 2,
+        "rank": 3,
         "name": "awesome-chatgpt-prompts",
         "author": "f",
         "url": "https://github.com/f/awesome-chatgpt-prompts",
         "description": "Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 140768,
-        "forks": 18655,
-        "starsThisWeek": 140768,
+        "stars": 140834,
+        "forks": 18664,
+        "starsThisWeek": 140834,
         "builtBy": [
           {
             "username": "f",
@@ -43,16 +62,54 @@
         ]
       },
       {
-        "rank": 3,
+        "rank": 4,
+        "name": "next.js",
+        "author": "vercel",
+        "url": "https://github.com/vercel/next.js",
+        "description": "The React Framework",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 136771,
+        "forks": 30126,
+        "starsThisWeek": 136771,
+        "builtBy": [
+          {
+            "username": "vercel",
+            "avatar": "https://avatars.githubusercontent.com/u/14985020?v=4",
+            "url": "https://github.com/vercel"
+          }
+        ]
+      },
+      {
+        "rank": 5,
+        "name": "node",
+        "author": "nodejs",
+        "url": "https://github.com/nodejs/node",
+        "description": "Node.js JavaScript runtime ✨🐢🚀✨",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 114910,
+        "forks": 34154,
+        "starsThisWeek": 114910,
+        "builtBy": [
+          {
+            "username": "nodejs",
+            "avatar": "https://avatars.githubusercontent.com/u/9950313?v=4",
+            "url": "https://github.com/nodejs"
+          }
+        ]
+      },
+      {
+        "rank": 6,
         "name": "iptv",
         "author": "iptv-org",
         "url": "https://github.com/iptv-org/iptv",
         "description": "Collection of publicly available IPTV channels from all over the world",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 106872,
-        "forks": 4990,
-        "starsThisWeek": 106872,
+        "stars": 106970,
+        "forks": 5013,
+        "starsThisWeek": 106970,
         "builtBy": [
           {
             "username": "iptv-org",
@@ -62,16 +119,16 @@
         ]
       },
       {
-        "rank": 4,
+        "rank": 7,
         "name": "ant-design",
         "author": "ant-design",
         "url": "https://github.com/ant-design/ant-design",
         "description": "An enterprise-class UI design language and React UI library",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 97081,
-        "forks": 54280,
-        "starsThisWeek": 97081,
+        "stars": 97086,
+        "forks": 54276,
+        "starsThisWeek": 97086,
         "builtBy": [
           {
             "username": "ant-design",
@@ -81,16 +138,35 @@
         ]
       },
       {
-        "rank": 5,
+        "rank": 8,
+        "name": "awesome-mac",
+        "author": "jaywcjlove",
+        "url": "https://github.com/jaywcjlove/awesome-mac",
+        "description": " Now we have become very big, Different from the original idea. Collect premium software in various categories.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 96787,
+        "forks": 7260,
+        "starsThisWeek": 96787,
+        "builtBy": [
+          {
+            "username": "jaywcjlove",
+            "avatar": "https://avatars.githubusercontent.com/u/1680273?v=4",
+            "url": "https://github.com/jaywcjlove"
+          }
+        ]
+      },
+      {
+        "rank": 9,
         "name": "clash-verge-rev",
         "author": "clash-verge-rev",
         "url": "https://github.com/clash-verge-rev/clash-verge-rev",
         "description": "A modern GUI client based on Tauri, designed to run in Windows, macOS and Linux for tailored proxy experience",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 88804,
-        "forks": 6541,
-        "starsThisWeek": 88804,
+        "stars": 88885,
+        "forks": 6552,
+        "starsThisWeek": 88885,
         "builtBy": [
           {
             "username": "clash-verge-rev",
@@ -100,16 +176,35 @@
         ]
       },
       {
-        "rank": 6,
+        "rank": 10,
+        "name": "immich",
+        "author": "immich-app",
+        "url": "https://github.com/immich-app/immich",
+        "description": "High performance self-hosted photo and video management solution.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 87376,
+        "forks": 4605,
+        "starsThisWeek": 87376,
+        "builtBy": [
+          {
+            "username": "immich-app",
+            "avatar": "https://avatars.githubusercontent.com/u/109746326?v=4",
+            "url": "https://github.com/immich-app"
+          }
+        ]
+      },
+      {
+        "rank": 11,
         "name": "vite",
         "author": "vitejs",
         "url": "https://github.com/vitejs/vite",
         "description": "Next generation frontend tooling. It's fast!",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 77230,
-        "forks": 7641,
-        "starsThisWeek": 77230,
+        "stars": 77233,
+        "forks": 7640,
+        "starsThisWeek": 77233,
         "builtBy": [
           {
             "username": "vitejs",
@@ -119,16 +214,149 @@
         ]
       },
       {
-        "rank": 7,
+        "rank": 12,
+        "name": "webpack",
+        "author": "webpack",
+        "url": "https://github.com/webpack/webpack",
+        "description": "A bundler for javascript and friends. Packs many modules into a few bundled assets. Code Splitting allows for loading parts of the application on demand. Through \"loaders\", modules can be CommonJs, AMD, ES6 modules, CSS, Images, JSON, Coffeescript, LESS, ... and your custom stuff.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 65836,
+        "forks": 9200,
+        "starsThisWeek": 65836,
+        "builtBy": [
+          {
+            "username": "webpack",
+            "avatar": "https://avatars.githubusercontent.com/u/2105791?v=4",
+            "url": "https://github.com/webpack"
+          }
+        ]
+      },
+      {
+        "rank": 13,
+        "name": "AFFiNE",
+        "author": "toeverything",
+        "url": "https://github.com/toeverything/AFFiNE",
+        "description": "There can be more than Notion and Miro. AFFiNE(pronounced [ə‘fain]) is a next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use. ",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 61049,
+        "forks": 4210,
+        "starsThisWeek": 61049,
+        "builtBy": [
+          {
+            "username": "toeverything",
+            "avatar": "https://avatars.githubusercontent.com/u/78728988?v=4",
+            "url": "https://github.com/toeverything"
+          }
+        ]
+      },
+      {
+        "rank": 14,
+        "name": "uBlock",
+        "author": "gorhill",
+        "url": "https://github.com/gorhill/uBlock",
+        "description": "uBlock Origin - An efficient blocker for Chromium and Firefox. Fast and lean.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 60596,
+        "forks": 3876,
+        "starsThisWeek": 60596,
+        "builtBy": [
+          {
+            "username": "gorhill",
+            "avatar": "https://avatars.githubusercontent.com/u/585534?v=4",
+            "url": "https://github.com/gorhill"
+          }
+        ]
+      },
+      {
+        "rank": 15,
+        "name": "nuxt",
+        "author": "nuxt",
+        "url": "https://github.com/nuxt/nuxt",
+        "description": "The Progressive Web Framework.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 59166,
+        "forks": 5472,
+        "starsThisWeek": 59166,
+        "builtBy": [
+          {
+            "username": "nuxt",
+            "avatar": "https://avatars.githubusercontent.com/u/23360933?v=4",
+            "url": "https://github.com/nuxt"
+          }
+        ]
+      },
+      {
+        "rank": 16,
+        "name": "astro",
+        "author": "withastro",
+        "url": "https://github.com/withastro/astro",
+        "description": "The web framework for content-driven websites. ⭐️ Star to support our work!",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 55099,
+        "forks": 3041,
+        "starsThisWeek": 55099,
+        "builtBy": [
+          {
+            "username": "withastro",
+            "avatar": "https://avatars.githubusercontent.com/u/44914786?v=4",
+            "url": "https://github.com/withastro"
+          }
+        ]
+      },
+      {
+        "rank": 17,
+        "name": "appwrite",
+        "author": "appwrite",
+        "url": "https://github.com/appwrite/appwrite",
+        "description": "Appwrite® - The developers' cloud",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 54062,
+        "forks": 4897,
+        "starsThisWeek": 54062,
+        "builtBy": [
+          {
+            "username": "appwrite",
+            "avatar": "https://avatars.githubusercontent.com/u/25003669?v=4",
+            "url": "https://github.com/appwrite"
+          }
+        ]
+      },
+      {
+        "rank": 18,
+        "name": "joplin",
+        "author": "laurent22",
+        "url": "https://github.com/laurent22/joplin",
+        "description": "Joplin - the privacy-focused note taking app with sync capabilities for Windows, macOS, Linux, Android and iOS.",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 52660,
+        "forks": 5648,
+        "starsThisWeek": 52660,
+        "builtBy": [
+          {
+            "username": "laurent22",
+            "avatar": "https://avatars.githubusercontent.com/u/1285584?v=4",
+            "url": "https://github.com/laurent22"
+          }
+        ]
+      },
+      {
+        "rank": 19,
         "name": "core",
         "author": "vuejs",
         "url": "https://github.com/vuejs/core",
         "description": "🖖 Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 52522,
-        "forks": 9002,
-        "starsThisWeek": 52522,
+        "stars": 52533,
+        "forks": 9003,
+        "starsThisWeek": 52533,
         "builtBy": [
           {
             "username": "vuejs",
@@ -138,16 +366,35 @@
         ]
       },
       {
-        "rank": 8,
+        "rank": 20,
+        "name": "prettier",
+        "author": "prettier",
+        "url": "https://github.com/prettier/prettier",
+        "description": "Prettier is an opinionated code formatter.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 51314,
+        "forks": 4625,
+        "starsThisWeek": 51314,
+        "builtBy": [
+          {
+            "username": "prettier",
+            "avatar": "https://avatars.githubusercontent.com/u/25822731?v=4",
+            "url": "https://github.com/prettier"
+          }
+        ]
+      },
+      {
+        "rank": 21,
         "name": "memos",
         "author": "usememos",
         "url": "https://github.com/usememos/memos",
         "description": "An open-source, self-hosted note-taking service. Your thoughts, your data, your control — no tracking, no ads, no subscription fees.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 47463,
+        "stars": 47475,
         "forks": 3426,
-        "starsThisWeek": 47463,
+        "starsThisWeek": 47475,
         "builtBy": [
           {
             "username": "usememos",
@@ -157,16 +404,16 @@
         ]
       },
       {
-        "rank": 9,
+        "rank": 22,
         "name": "expo",
         "author": "expo",
         "url": "https://github.com/expo/expo",
         "description": "An open-source framework for making universal native apps with React. Expo runs on Android, iOS, and the web.",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 45817,
-        "forks": 10380,
-        "starsThisWeek": 45817,
+        "stars": 45824,
+        "forks": 10386,
+        "starsThisWeek": 45824,
         "builtBy": [
           {
             "username": "expo",
@@ -176,306 +423,59 @@
         ]
       },
       {
-        "rank": 10,
+        "rank": 23,
+        "name": "Leaflet",
+        "author": "Leaflet",
+        "url": "https://github.com/Leaflet/Leaflet",
+        "description": "🍃 JavaScript library for mobile-friendly interactive maps 🇺🇦",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 44169,
+        "forks": 6067,
+        "starsThisWeek": 44169,
+        "builtBy": [
+          {
+            "username": "Leaflet",
+            "avatar": "https://avatars.githubusercontent.com/u/2854298?v=4",
+            "url": "https://github.com/Leaflet"
+          }
+        ]
+      },
+      {
+        "rank": 24,
+        "name": "vuetify",
+        "author": "vuetifyjs",
+        "url": "https://github.com/vuetifyjs/vuetify",
+        "description": "🐉 Vue Component Framework",
+        "language": "TypeScript",
+        "languageColor": "#3178c6",
+        "stars": 40857,
+        "forks": 7144,
+        "starsThisWeek": 40857,
+        "builtBy": [
+          {
+            "username": "vuetifyjs",
+            "avatar": "https://avatars.githubusercontent.com/u/22138497?v=4",
+            "url": "https://github.com/vuetifyjs"
+          }
+        ]
+      },
+      {
+        "rank": 25,
         "name": "RSSHub",
         "author": "DIYgod",
         "url": "https://github.com/DIYgod/RSSHub",
         "description": "🧡 Everything is RSSible",
         "language": "TypeScript",
         "languageColor": "#3178c6",
-        "stars": 40680,
-        "forks": 8909,
-        "starsThisWeek": 40680,
+        "stars": 40691,
+        "forks": 8910,
+        "starsThisWeek": 40691,
         "builtBy": [
           {
             "username": "DIYgod",
             "avatar": "https://avatars.githubusercontent.com/u/8266075?v=4",
             "url": "https://github.com/DIYgod"
-          }
-        ]
-      },
-      {
-        "rank": 11,
-        "name": "cal.com",
-        "author": "calcom",
-        "url": "https://github.com/calcom/cal.com",
-        "description": "Scheduling infrastructure for absolutely everyone.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 39416,
-        "forks": 11373,
-        "starsThisWeek": 39416,
-        "builtBy": [
-          {
-            "username": "calcom",
-            "avatar": "https://avatars.githubusercontent.com/u/79145102?v=4",
-            "url": "https://github.com/calcom"
-          }
-        ]
-      },
-      {
-        "rank": 12,
-        "name": "desktop",
-        "author": "zen-browser",
-        "url": "https://github.com/zen-browser/desktop",
-        "description": "Welcome to a calmer internet",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 38643,
-        "forks": 1225,
-        "starsThisWeek": 38643,
-        "builtBy": [
-          {
-            "username": "zen-browser",
-            "avatar": "https://avatars.githubusercontent.com/u/165225155?v=4",
-            "url": "https://github.com/zen-browser"
-          }
-        ]
-      },
-      {
-        "rank": 13,
-        "name": "twenty",
-        "author": "twentyhq",
-        "url": "https://github.com/twentyhq/twenty",
-        "description": "Building a modern alternative to Salesforce, powered by the community.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 37660,
-        "forks": 4790,
-        "starsThisWeek": 37660,
-        "builtBy": [
-          {
-            "username": "twentyhq",
-            "avatar": "https://avatars.githubusercontent.com/u/119600397?v=4",
-            "url": "https://github.com/twentyhq"
-          }
-        ]
-      },
-      {
-        "rank": 14,
-        "name": "cherry-studio",
-        "author": "CherryHQ",
-        "url": "https://github.com/CherryHQ/cherry-studio",
-        "description": "🍒 Cherry Studio is a desktop client that supports for multiple LLM providers.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 36925,
-        "forks": 3394,
-        "starsThisWeek": 36925,
-        "builtBy": [
-          {
-            "username": "CherryHQ",
-            "avatar": "https://avatars.githubusercontent.com/u/187777663?v=4",
-            "url": "https://github.com/CherryHQ"
-          }
-        ]
-      },
-      {
-        "rank": 15,
-        "name": "outline",
-        "author": "outline",
-        "url": "https://github.com/outline/outline",
-        "description": "The fastest knowledge base for growing teams. Beautiful, realtime collaborative, feature packed, and markdown compatible.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 36432,
-        "forks": 3006,
-        "starsThisWeek": 36432,
-        "builtBy": [
-          {
-            "username": "outline",
-            "avatar": "https://avatars.githubusercontent.com/u/1765001?v=4",
-            "url": "https://github.com/outline"
-          }
-        ]
-      },
-      {
-        "rank": 16,
-        "name": "marked",
-        "author": "markedjs",
-        "url": "https://github.com/markedjs/marked",
-        "description": "A markdown parser and compiler. Built for speed.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 36331,
-        "forks": 3503,
-        "starsThisWeek": 36331,
-        "builtBy": [
-          {
-            "username": "markedjs",
-            "avatar": "https://avatars.githubusercontent.com/u/19886934?v=4",
-            "url": "https://github.com/markedjs"
-          }
-        ]
-      },
-      {
-        "rank": 17,
-        "name": "Reactive-Resume",
-        "author": "AmruthPillai",
-        "url": "https://github.com/AmruthPillai/Reactive-Resume",
-        "description": "A one-of-a-kind resume builder that keeps your privacy in mind. Completely secure, customizable, portable, open-source and free forever. Try it out today!",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 34194,
-        "forks": 3744,
-        "starsThisWeek": 34194,
-        "builtBy": [
-          {
-            "username": "AmruthPillai",
-            "avatar": "https://avatars.githubusercontent.com/u/1134738?v=4",
-            "url": "https://github.com/AmruthPillai"
-          }
-        ]
-      },
-      {
-        "rank": 18,
-        "name": "Trilium",
-        "author": "TriliumNext",
-        "url": "https://github.com/TriliumNext/Trilium",
-        "description": "Build your personal knowledge base with Trilium Notes",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 33625,
-        "forks": 2234,
-        "starsThisWeek": 33625,
-        "builtBy": [
-          {
-            "username": "TriliumNext",
-            "avatar": "https://avatars.githubusercontent.com/u/160046342?v=4",
-            "url": "https://github.com/TriliumNext"
-          }
-        ]
-      },
-      {
-        "rank": 19,
-        "name": "pnpm",
-        "author": "pnpm",
-        "url": "https://github.com/pnpm/pnpm",
-        "description": "Fast, disk space efficient package manager",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 33502,
-        "forks": 1268,
-        "starsThisWeek": 33502,
-        "builtBy": [
-          {
-            "username": "pnpm",
-            "avatar": "https://avatars.githubusercontent.com/u/21320719?v=4",
-            "url": "https://github.com/pnpm"
-          }
-        ]
-      },
-      {
-        "rank": 20,
-        "name": "netron",
-        "author": "lutzroeder",
-        "url": "https://github.com/lutzroeder/netron",
-        "description": "Visualizer for neural network, deep learning and machine learning models",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 32078,
-        "forks": 3050,
-        "starsThisWeek": 32078,
-        "builtBy": [
-          {
-            "username": "lutzroeder",
-            "avatar": "https://avatars.githubusercontent.com/u/438516?v=4",
-            "url": "https://github.com/lutzroeder"
-          }
-        ]
-      },
-      {
-        "rank": 21,
-        "name": "drizzle-orm",
-        "author": "drizzle-team",
-        "url": "https://github.com/drizzle-team/drizzle-orm",
-        "description": "ORM",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 31997,
-        "forks": 1124,
-        "starsThisWeek": 31997,
-        "builtBy": [
-          {
-            "username": "drizzle-team",
-            "avatar": "https://avatars.githubusercontent.com/u/108468352?v=4",
-            "url": "https://github.com/drizzle-team"
-          }
-        ]
-      },
-      {
-        "rank": 22,
-        "name": "cheerio",
-        "author": "cheeriojs",
-        "url": "https://github.com/cheeriojs/cheerio",
-        "description": "The fast, flexible, and elegant library for parsing and manipulating HTML and XML.",
-        "language": "TypeScript",
-        "languageColor": "#3178c6",
-        "stars": 29966,
-        "forks": 1679,
-        "starsThisWeek": 29966,
-        "builtBy": [
-          {
-            "username": "cheeriojs",
-            "avatar": "https://avatars.githubusercontent.com/u/7230330?v=4",
-            "url": "https://github.com/cheeriojs"
-          }
-        ]
-      },
-      {
-        "rank": 23,
-        "name": "homepage",
-        "author": "gethomepage",
-        "url": "https://github.com/gethomepage/homepage",
-        "description": "A highly customizable homepage (or startpage / application dashboard) with Docker and service API integrations.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 27406,
-        "forks": 1730,
-        "starsThisWeek": 27406,
-        "builtBy": [
-          {
-            "username": "gethomepage",
-            "avatar": "https://avatars.githubusercontent.com/u/122929872?v=4",
-            "url": "https://github.com/gethomepage"
-          }
-        ]
-      },
-      {
-        "rank": 24,
-        "name": "live",
-        "author": "fanmingming",
-        "url": "https://github.com/fanmingming/live",
-        "description": "✯ 可直连访问的电视/广播图标库与相关工具项目 ✯ 🔕 永久免费 直连访问 完整开源 不断完善的台标 支持IPv4/IPv6双栈访问 🔕",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 26922,
-        "forks": 4058,
-        "starsThisWeek": 26922,
-        "builtBy": [
-          {
-            "username": "fanmingming",
-            "avatar": "https://avatars.githubusercontent.com/u/4993993?v=4",
-            "url": "https://github.com/fanmingming"
-          }
-        ]
-      },
-      {
-        "rank": 25,
-        "name": "koodo-reader",
-        "author": "koodo-reader",
-        "url": "https://github.com/koodo-reader/koodo-reader",
-        "description": "A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux, Android, iOS and Web",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 25424,
-        "forks": 1910,
-        "starsThisWeek": 25424,
-        "builtBy": [
-          {
-            "username": "koodo-reader",
-            "avatar": "https://avatars.githubusercontent.com/u/149913075?v=4",
-            "url": "https://github.com/koodo-reader"
           }
         ]
       }
