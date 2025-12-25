@@ -7,6 +7,9 @@ on:
             - master
     # 允许手动触发
     workflow_dispatch:
+    # 数据更新后自动触发
+    repository_dispatch:
+        types: [deploy-requested]
 
 # 设置权限
 permissions:

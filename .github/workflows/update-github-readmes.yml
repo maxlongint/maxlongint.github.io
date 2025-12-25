@@ -42,5 +42,8 @@ jobs:
                   retention-days: 7
 
             - name: Trigger deployment
-              run: |
-                  echo "✅ READMEs data uploaded, deployment will be triggered"
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "github-readmes updated"}'
