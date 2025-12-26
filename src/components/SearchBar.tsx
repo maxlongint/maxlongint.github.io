@@ -21,11 +21,6 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
         }
     };
 
-    const handleSearch = () => {
-        // 点击搜索按钮时搜索
-        setSearchQuery(inputValue);
-    };
-
     const handleClear = () => {
         setInputValue('');
         setSearchQuery('');
@@ -75,13 +70,11 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                                 </svg>
                             </button>
                         )}
-                        <button
-                            onClick={handleSearch}
-                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
-                            aria-label="搜索"
-                        >
-                            搜索
-                        </button>
+                        {!inputValue && (
+                            <kbd className="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">
+                                ⌘ K
+                            </kbd>
+                        )}
                     </div>
                 </div>
             </div>

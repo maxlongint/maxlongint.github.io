@@ -309,7 +309,9 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
             {isFixed && setSearchQuery && (
                 <div className="sticky top-[80px] z-30">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end">
-                        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} compact={true} />
+                        <div className="w-full max-w-2xl shadow-lg">
+                            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} compact={false} />
+                        </div>
                     </div>
                 </div>
             )}
