@@ -9,11 +9,8 @@ const __dirname = path.dirname(__filename);
 // 从环境变量获取 Token（Trending API 不需要，但保留以便未来扩展）
 const token = process.env.GITHUB_TOKEN;
 
-// GitHub Trending API （使用更可靠的第三方服务）
 // 前端相关语言：JavaScript, HTML, CSS
 const TRENDING_LANGUAGES = ['javascript', 'html', 'css'];
-// 使用 GitHub Trending API by huchenme
-const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
 /**
  * 获取当前日期（用于每日趋势）
@@ -124,7 +121,6 @@ function generateMockData() {
                 languageColor: '#3178c6',
                 stars: 85432,
                 forks: 4521,
-                starsToday: 1234,
                 builtBy: [
                     {
                         username: 'shadcn',
@@ -143,7 +139,6 @@ function generateMockData() {
                 languageColor: '#f1e05a',
                 stars: 228000,
                 forks: 46500,
-                starsToday: 892,
                 builtBy: [
                     {
                         username: 'gaearon',
@@ -162,7 +157,6 @@ function generateMockData() {
                 languageColor: '#3178c6',
                 stars: 207000,
                 forks: 33700,
-                starsToday: 654,
                 builtBy: [
                     {
                         username: 'yyx990803',
@@ -178,63 +172,8 @@ function generateMockData() {
 }
 
 /**
- * 使用第三方 GitHub Trending API 获取每日热门仓库（含真实增量）
- */
-async function fetchTrendingByLanguage(language) {
-    const url = `${TRENDING_API_BASE}?language=${language}&since=daily&spoken_language_code=`;
-
-    return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-            reject(new Error('API 请求超时'));
-        }, 10000); // 10秒超时
-
-        https
-            .get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
-                let data = '';
-                res.on('data', chunk => {
-                    data += chunk;
-                });
-                res.on('end', () => {
-                    clearTimeout(timeout);
-                    if (res.statusCode === 200) {
-                        try {
-                            const result = JSON.parse(data);
-                            // 转换为统一格式
-                            const repos = result.map((repo, index) => ({
-                                rank: index + 1,
-                                name: repo.name,
-                                author: repo.author,
-                                url: repo.url,
-                                description: repo.description || '暂无描述',
-                                language: repo.language || language,
-                                languageColor: getLanguageColor(repo.language || language),
-                                stars: repo.stars,
-                                forks: repo.forks,
-                                starsToday: repo.starsToday || 0, // 真实的今日增量
-                                builtBy: (repo.builtBy || []).map(builder => ({
-                                    username: builder.username,
-                                    avatar: builder.avatar,
-                                    url: builder.href,
-                                })),
-                            }));
-                            resolve(repos);
-                        } catch (error) {
-                            reject(new Error(`解析数据失败: ${error.message}`));
-                        }
-                    } else {
-                        reject(new Error(`HTTP ${res.statusCode}: ${data}`));
-                    }
-                });
-            })
-            .on('error', err => {
-                clearTimeout(timeout);
-                reject(err);
-            });
-    });
-}
-
-/**
- * 使用 GitHub Search API 作为降级方案
+ * 使用 GitHub Search API 获取每日热门仓库
+ * 策略：搜索最近推送更新且 Stars 数量高的项目
  */
 async function fetchGitHubTrending(language) {
     const yesterday = new Date();
@@ -275,7 +214,6 @@ async function fetchGitHubTrending(language) {
                             languageColor: getLanguageColor(repo.language || language),
                             stars: repo.stargazers_count,
                             forks: repo.forks_count,
-                            starsToday: 0, // GitHub Search API 无法提供增量，设为 0
                             builtBy: [
                                 {
                                     username: repo.owner.login,
@@ -307,24 +245,17 @@ async function fetchTrending() {
 
         const allRepos = [];
 
-        // 逐个语言抓取（优先使用第三方 API，失败则降级到 GitHub Search API）
+        // 逐个语言抓取
         for (const language of TRENDING_LANGUAGES) {
             try {
                 console.log(`📡 抓取 ${language} trending...`);
-                let repos;
-                try {
-                    repos = await fetchTrendingByLanguage(language);
-                    console.log(`  ✓ ${language}: ${repos.length} 个仓库（含真实增量）`);
-                } catch (trendingError) {
-                    console.warn(`  ⚠ ${language} Trending API 失败，使用降级方案:`, trendingError.message);
-                    repos = await fetchGitHubTrending(language);
-                    console.log(`  ✓ ${language}: ${repos.length} 个仓库（降级方案）`);
-                }
+                const repos = await fetchGitHubTrending(language);
+                console.log(`  ✓ ${language}: ${repos.length} 个仓库`);
                 allRepos.push(...repos);
                 // 避免 API 限流
                 await delay(1000);
             } catch (error) {
-                console.warn(`  ✗ ${language} 抓取完全失败:`, error.message);
+                console.warn(`  ✗ ${language} 抓取失败:`, error.message);
             }
         }
 

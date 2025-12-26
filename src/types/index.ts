@@ -33,7 +33,6 @@ export interface TrendingRepo {
     languageColor: string;
     stars: number;
     forks: number;
-    starsToday: number;
     builtBy: Array<{
         username: string;
         avatar: string;
