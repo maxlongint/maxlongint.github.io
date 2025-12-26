@@ -46,7 +46,7 @@ if (!bookmark) {
     process.exit(1);
 }
 
-const packageName = bookmark.npmPackage || bookmark.title.toLowerCase().replace(/\.js$/i, '').replace(/\s+/g, '-');
+const packageName = bookmark.npmPackage || repo;
 const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 
 console.log(`📦 库名称: ${bookmark.title}`);
