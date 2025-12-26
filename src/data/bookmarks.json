@@ -359,9 +359,9 @@
       "textColor": "hsl(55, 75%, 30%)"
     },
     "__meta__": {
-      "lastColorIndex": 62,
-      "totalTags": 61,
-      "lastUpdated": "2025-12-25T06:52:36.661Z"
+      "lastColorIndex": 63,
+      "totalTags": 62,
+      "lastUpdated": "2025-12-26T01:18:45.436Z"
     },
     "模拟数据": {
       "className": "",
@@ -374,6 +374,12 @@
       "color": "#c0bcf1",
       "backgroundColor": "hsl(245, 65%, 84%)",
       "textColor": "hsl(245, 80%, 34%)"
+    },
+    "模板系统": {
+      "className": "",
+      "color": "#e6ccbc",
+      "backgroundColor": "hsl(22.5, 45%, 82%)",
+      "textColor": "hsl(22.5, 65%, 32%)"
     }
   },
   "bookmarks": [
@@ -1011,6 +1017,14 @@
       "tags": [
         "模拟数据",
         "测试"
+      ]
+    },
+    {
+      "title": "lit",
+      "url": "https://github.com/lit/lit",
+      "description": "Lit 是一个用于构建快速、轻量级 Web 组件的简单库。Lit 的核心是一个消除样板代码的组件基类，它提供了响应式状态、作用域样式以及一个轻量、快速且富有表现力的声明式模板系统。",
+      "tags": [
+        "模板系统"
       ]
     }
   ]
