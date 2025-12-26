@@ -114,7 +114,90 @@ async function fetchGitHubData(fullName) {
         size: data.size || 0,
         lastUpdate: data.pushed_at || new Date().toISOString(),
         description: data.description || '',
+        topics: data.topics || [],
     };
+}
+
+// 获取生态插件数据（基于 GitHub topics 和 package.json）
+async function fetchEcosystemPlugins(fullName, packageName) {
+    const plugins = [];
+
+    try {
+        // 1. 从 GitHub topics 中提取相关插件
+        const headers = {
+            'User-Agent': 'Mozilla/5.0',
+            Accept: 'application/vnd.github.v3+json',
+        };
+
+        if (process.env.GITHUB_TOKEN) {
+            headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+        }
+
+        // 获取仓库信息（包含 topics）
+        const repoUrl = `https://api.github.com/repos/${fullName}`;
+        const repoData = await fetchData(repoUrl, headers);
+
+        if (repoData && repoData.topics) {
+            // 常见的生态关键词映射
+            const ecosystemKeywords = {
+                react: 'React',
+                'react-hook-form': 'React Hook Form',
+                formik: 'Formik',
+                zod: 'Zod',
+                valibot: 'Valibot',
+                typescript: 'TypeScript',
+                trpc: 'tRPC',
+                redux: 'Redux',
+                zustand: 'Zustand',
+                mobx: 'MobX',
+            };
+
+            repoData.topics.forEach(topic => {
+                if (ecosystemKeywords[topic]) {
+                    plugins.push(ecosystemKeywords[topic]);
+                }
+            });
+        }
+
+        // 2. 尝试获取 package.json 中的 peerDependencies 和 keywords
+        const packageJsonUrl = `https://raw.githubusercontent.com/${fullName}/main/package.json`;
+        const packageJsonData = await fetchData(packageJsonUrl, headers);
+
+        if (packageJsonData) {
+            // 从 peerDependencies 中提取
+            if (packageJsonData.peerDependencies) {
+                Object.keys(packageJsonData.peerDependencies).forEach(dep => {
+                    const formattedDep = dep.replace(/^@/, '').replace(/\//, ' ');
+                    if (!plugins.includes(formattedDep) && plugins.length < 5) {
+                        plugins.push(dep);
+                    }
+                });
+            }
+
+            // 从 keywords 中提取相关的生态关键词
+            if (packageJsonData.keywords && Array.isArray(packageJsonData.keywords)) {
+                const ecosystemKeywords = ['react', 'vue', 'angular', 'svelte', 'zod', 'valibot', 'formik'];
+                packageJsonData.keywords.forEach(keyword => {
+                    if (
+                        ecosystemKeywords.includes(keyword.toLowerCase()) &&
+                        !plugins.includes(keyword) &&
+                        plugins.length < 5
+                    ) {
+                        plugins.push(keyword);
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        console.log(`  ⚠ 获取生态插件数据失败: ${error.message}`);
+    }
+
+    // 限制最多返回5个插件，如果数量多则添加 "+ more"
+    if (plugins.length > 3) {
+        return [...plugins.slice(0, 3), `+${plugins.length - 3} more`];
+    }
+
+    return plugins;
 }
 
 // 获取 npm 数据
@@ -178,6 +261,10 @@ async function main() {
         console.log(`  ✓ Weekly Downloads: ${npmData.weeklyDownloads}`);
         console.log(`  ✓ Bundle Size (gzip): ${npmData.bundleSize.gzipped} bytes`);
 
+        console.log('\n📥 获取生态插件数据...');
+        const ecosystemPlugins = await fetchEcosystemPlugins(fullName, packageName);
+        console.log(`  ✓ 发现 ${ecosystemPlugins.length} 个生态插件: ${ecosystemPlugins.join(', ') || '无'}`);
+
         // 构建对比数据
         const dimensions = {
             bundleSize: npmData.bundleSize,
@@ -187,6 +274,7 @@ async function main() {
             lastUpdate: githubData.lastUpdate,
             philosophy: bookmark.description || githubData.description,
             ecosystem: calculateEcosystemScore(githubData.stars, npmData.weeklyDownloads),
+            ecosystemPlugins: ecosystemPlugins,
             npmVersion: npmData.version,
             language: githubData.language,
             repoSize: githubData.size,

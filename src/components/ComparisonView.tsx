@@ -12,6 +12,7 @@ interface Library {
         lastUpdate: string;
         philosophy: string;
         ecosystem: string;
+        ecosystemPlugins?: string[];
         npmVersion: string;
         // 新增维度
         language: string;
@@ -49,6 +50,54 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
             percentA: (valueA / total) * 100,
             percentB: (valueB / total) * 100,
         };
+    };
+
+    // 生态系统标签映射
+    const getEcosystemLabel = (ecosystem: string) => {
+        const labels: Record<string, string> = {
+            Rich: '丰富',
+            Growing: '增长中',
+            Moderate: '适中',
+            Small: '较小',
+        };
+        return labels[ecosystem] || ecosystem;
+    };
+
+    // 生态系统描述
+    const getEcosystemDescription = (libraryId: string, ecosystem: string) => {
+        const descriptions: Record<string, string> = {
+            // Mutative vs Immer
+            mutative: '广泛的社区生态系统。与 React Hook Form 等库原生集成。',
+            immer: '成熟的生态系统,拥有广泛的社区支持和第三方集成。',
+            // Valibot vs Zod
+            valibot: '较新的生态系统。有主要库的官方适配器,但社区插件较少。',
+            zod: '广泛的生态系统。与 React Hook Form、tRPC 等原生集成。',
+        };
+
+        // 如果有特定描述则返回，否则根据等级返回通用描述
+        if (descriptions[libraryId]) {
+            return descriptions[libraryId];
+        }
+
+        const defaultDescriptions: Record<string, string> = {
+            Rich: '成熟的生态系统，拥有广泛的社区支持和丰富的第三方集成。',
+            Growing: '正在成长的生态系统，有核心功能的官方适配器。',
+            Moderate: '适中的生态系统，具备基本的工具和插件支持。',
+            Small: '较小的生态系统，主要依赖核心功能。',
+        };
+        return defaultDescriptions[ecosystem] || '生态系统信息暂无';
+    };
+
+    // 生态系统插件列表（仅使用数据中的 ecosystemPlugins）
+    const getEcosystemPlugins = (library: Library): string[] => {
+        return library.dimensions.ecosystemPlugins || [];
+    };
+
+    // 检查是否应该显示生态 & 插件部分
+    const shouldShowEcosystem = () => {
+        const pluginsA = getEcosystemPlugins(libraryA);
+        const pluginsB = getEcosystemPlugins(libraryB);
+        return pluginsA.length > 0 || pluginsB.length > 0;
     };
 
     const bundleSizePercent = calculatePercentage(
@@ -319,54 +368,65 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                     </div>
 
                     {/* Ecosystem & Plugins */}
-                    <div className="grid grid-cols-1 md:grid-cols-3">
-                        <div className="p-4 md:p-6 bg-gray-50/50 dark:bg-gray-900/30 border-r border-gray-200 dark:border-gray-700 flex items-center md:font-medium text-gray-600 dark:text-gray-400">
-                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
-                                />
-                            </svg>
-                            生态 & 插件
+                    {shouldShowEcosystem() && (
+                        <div className="grid grid-cols-1 md:grid-cols-3">
+                            <div className="p-4 md:p-6 bg-gray-50/50 dark:bg-gray-900/30 border-r border-gray-200 dark:border-gray-700 flex items-center md:font-medium text-gray-600 dark:text-gray-400">
+                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
+                                    />
+                                </svg>
+                                生态 & 插件
+                            </div>
+                            <div className="p-4 md:p-6 border-r border-gray-200 dark:border-gray-700">
+                                <div className="mb-2">
+                                    <span className="text-2xl font-bold">
+                                        {getEcosystemLabel(libraryA.dimensions.ecosystem)}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                    {getEcosystemDescription(libraryA.id, libraryA.dimensions.ecosystem)}
+                                </p>
+                                {getEcosystemPlugins(libraryA).length > 0 && (
+                                    <div className="flex flex-wrap gap-1">
+                                        {getEcosystemPlugins(libraryA).map((plugin, index) => (
+                                            <span
+                                                key={index}
+                                                className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600"
+                                            >
+                                                {plugin}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="p-4 md:p-6">
+                                <div className="mb-2">
+                                    <span className="text-xl font-bold">
+                                        {getEcosystemLabel(libraryB.dimensions.ecosystem)}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                    {getEcosystemDescription(libraryB.id, libraryB.dimensions.ecosystem)}
+                                </p>
+                                {getEcosystemPlugins(libraryB).length > 0 && (
+                                    <div className="flex flex-wrap gap-1">
+                                        {getEcosystemPlugins(libraryB).map((plugin, index) => (
+                                            <span
+                                                key={index}
+                                                className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600"
+                                            >
+                                                {plugin}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div className="p-4 md:p-6 border-r border-gray-200 dark:border-gray-700">
-                            <div className="mb-2">
-                                <span className="text-2xl font-bold">丰富</span>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                广泛的生态系统。与 React Hook Form、tRPC 等原生集成。
-                            </p>
-                            <div className="flex flex-wrap gap-1">
-                                <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600">
-                                    zod-to-ts
-                                </span>
-                                <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600">
-                                    zod-formik
-                                </span>
-                                <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600">
-                                    +50 more
-                                </span>
-                            </div>
-                        </div>
-                        <div className="p-4 md:p-6">
-                            <div className="mb-2">
-                                <span className="text-xl font-bold">增长中</span>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                较新的生态系统。有主要库的官方适配器,但社区插件较少。
-                            </p>
-                            <div className="flex flex-wrap gap-1">
-                                <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600">
-                                    @valibot/to-json-schema
-                                </span>
-                                <span className="px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-xs border border-gray-200 dark:border-gray-600">
-                                    resolvers
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    )}
 
                     {/* Philosophy */}
                     <div className="grid grid-cols-1 md:grid-cols-3">
