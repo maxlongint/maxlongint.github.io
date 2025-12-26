@@ -13,21 +13,32 @@ export default function ClarityProvider({ projectId, enabled = true }: ClarityPr
             return;
         }
 
-        // 避免在开发环境重复初始化
-        if (import.meta.env.DEV && (window as Window & { clarity?: unknown }).clarity) {
+        // 避免重复初始化（全局只初始化一次）
+        if ((window as Window & { clarity?: unknown }).clarity) {
             return;
         }
 
-        // 延迟加载 Clarity，避免阻塞主线程
-        const timer = setTimeout(() => {
+        // 等待页面完全加载后再初始化 Clarity
+        const initClarity = () => {
             try {
                 clarity.init(projectId);
+                console.log('Clarity initialized');
             } catch (error) {
                 console.error('Failed to initialize Microsoft Clarity:', error);
             }
-        }, 2000); // 延迟2秒加载分析脚本
+        };
 
-        return () => clearTimeout(timer);
+        // 如果页面已经加载完成，立即初始化
+        if (document.readyState === 'complete') {
+            setTimeout(initClarity, 3000); // 页面加载完成后再等待3秒
+        } else {
+            // 否则等待 load 事件
+            const handleLoad = () => {
+                setTimeout(initClarity, 3000); // 页面加载完成后再等待3秒
+            };
+            window.addEventListener('load', handleLoad);
+            return () => window.removeEventListener('load', handleLoad);
+        }
     }, [projectId, enabled]);
 
     return null;

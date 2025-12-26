@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ClarityProvider from '../components/ClarityProvider';
 import { getTrendingData } from '../utils/github';
 import type { WeeklyTrending } from '../types';
 
@@ -30,7 +29,6 @@ function Trending() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-            <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
             <Header />
 
             {/* Hero Section */}

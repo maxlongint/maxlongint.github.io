@@ -4,6 +4,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import { ThemeProvider } from './contexts/ThemeContext';
 import LoadingFallback from './components/LoadingFallback';
+import ClarityProvider from './components/ClarityProvider';
 
 // 懒加载页面组件
 const Home = lazy(() => import('./pages/Home'));
@@ -38,6 +39,8 @@ createRoot(document.getElementById('root')!).render(
                     </Routes>
                 </Suspense>
             </HashRouter>
+            {/* Clarity 全局初始化，只初始化一次 */}
+            <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
         </ThemeProvider>
     </StrictMode>
 );

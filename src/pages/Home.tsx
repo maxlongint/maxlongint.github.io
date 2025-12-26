@@ -4,7 +4,6 @@ import SearchBar from '../components/SearchBar';
 import TagFilter from '../components/TagFilter';
 import BookmarkList from '../components/BookmarkList';
 import Footer from '../components/Footer';
-import ClarityProvider from '../components/ClarityProvider';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo } from '../utils/github';
 
@@ -250,9 +249,6 @@ function Home() {
                     </div>
                 </div>
             )}
-
-            {/* Microsoft Clarity - 直接配置 Project ID */}
-            <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
 
             <Header isFixed={isSearchFixed} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
