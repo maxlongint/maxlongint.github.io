@@ -62,6 +62,9 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                                 src={`https://github.com/${githubInfo.owner}.png?size=48`}
                                 alt={`${bookmark.title} icon`}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
+                                width="48"
+                                height="48"
                                 onError={e => {
                                     e.currentTarget.style.display = 'none';
                                     if (e.currentTarget.nextSibling) {
@@ -154,6 +157,9 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                             src={`https://github.com/${githubInfo.owner}.png?size=48`}
                             alt={`${bookmark.title} icon`}
                             className="w-full h-full object-cover"
+                            loading="lazy"
+                            width="48"
+                            height="48"
                             onError={e => {
                                 e.currentTarget.style.display = 'none';
                                 if (e.currentTarget.nextSibling) {

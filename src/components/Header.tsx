@@ -25,7 +25,15 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                 to="/"
                                 className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0"
                             >
-                                <img src="/logo.png" alt="前端工具库" className="w-12 h-12 rounded-lg" />
+                                <img
+                                    src="/logo.png"
+                                    alt="前端工具库"
+                                    className="w-12 h-12 rounded-lg"
+                                    loading="eager"
+                                    fetchPriority="high"
+                                    width="48"
+                                    height="48"
+                                />
                                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">前端工具库</h1>
                             </Link>
 

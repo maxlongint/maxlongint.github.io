@@ -79,9 +79,14 @@ export default defineConfig({
             compress: {
                 drop_console: true, // 生产环境移除 console
                 drop_debugger: true,
+                pure_funcs: ['console.log', 'console.info', 'console.debug'],
             },
         },
         // 启用 CSS 代码分割
         cssCodeSplit: true,
+        // 资源压缩阈值
+        assetsInlineLimit: 4096,
+        // 启用 sourcemap 仅用于错误追踪，不影响性能
+        sourcemap: false,
     },
 });

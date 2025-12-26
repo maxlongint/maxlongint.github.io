@@ -5,6 +5,9 @@
         <link rel="icon" type="image/png" href="/logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+        <!-- 预加载关键资源 -->
+        <link rel="preload" href="/logo.png" as="image" type="image/png" fetchpriority="high" />
+
         <!-- DNS 预解析和预连接 -->
         <link rel="dns-prefetch" href="https://giscus.app" />
         <link rel="preconnect" href="https://giscus.app" crossorigin />
