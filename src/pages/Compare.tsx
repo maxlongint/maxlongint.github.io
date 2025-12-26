@@ -56,6 +56,30 @@ function Compare() {
         return Object.values(comparisonData.libraries) as Library[];
     }, []);
 
+    // 热门对比配置（使用库名称，自动查找ID）
+    const popularComparisons = useMemo(() => {
+        const pairs = [
+            { nameA: 'Mutative', nameB: 'Immer' },
+            { nameA: 'Valibot', nameB: 'Zod' },
+            { nameA: 'Day.js', nameB: 'Moment.js' },
+        ];
+
+        return pairs
+            .map(pair => {
+                const libA = libraries.find(lib => lib.name === pair.nameA);
+                const libB = libraries.find(lib => lib.name === pair.nameB);
+                if (libA && libB) {
+                    return {
+                        idA: libA.id,
+                        idB: libB.id,
+                        label: `${pair.nameA} vs ${pair.nameB}`,
+                    };
+                }
+                return null;
+            })
+            .filter(Boolean) as { idA: string; idB: string; label: string }[];
+    }, [libraries]);
+
     // 筛选库A（排除已选的库B）
     const filteredLibrariesA = useMemo(() => {
         let filtered = libraries;
@@ -160,7 +184,11 @@ function Compare() {
                             {/* 已选择的库 A */}
                             {selectedLibraryA && libraryA && (
                                 <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800/50 shadow-sm">
-                                    <span className="text-xs">💎</span>
+                                    <img
+                                        src={`https://github.com/${libraryA.githubUrl.split('/')[0]}.png?size=24`}
+                                        alt={libraryA.name}
+                                        className="w-5 h-5 rounded"
+                                    />
                                     <span className="text-sm font-medium">{libraryA.name}</span>
                                     <button
                                         onClick={() => setSelectedLibraryA('')}
@@ -181,7 +209,11 @@ function Compare() {
                             {/* 已选择的库 B */}
                             {selectedLibraryB && libraryB && (
                                 <div className="flex items-center gap-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-3 py-1.5 rounded-lg border border-yellow-100 dark:border-yellow-800/50 shadow-sm">
-                                    <span className="text-xs">🤖</span>
+                                    <img
+                                        src={`https://github.com/${libraryB.githubUrl.split('/')[0]}.png?size=24`}
+                                        alt={libraryB.name}
+                                        className="w-5 h-5 rounded"
+                                    />
                                     <span className="text-sm font-medium">{libraryB.name}</span>
                                     <button
                                         onClick={() => setSelectedLibraryB('')}
@@ -281,9 +313,13 @@ function Compare() {
                                                 className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/10 flex items-center justify-between transition-colors group/item border-b border-gray-100 dark:border-gray-700 last:border-0"
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-lg shadow-sm">
-                                                        📦
-                                                    </div>
+                                                    <img
+                                                        src={`https://github.com/${
+                                                            lib.githubUrl.split('/')[0]
+                                                        }.png?size=40`}
+                                                        alt={lib.name}
+                                                        className="w-9 h-9 rounded-lg shadow-sm"
+                                                    />
                                                     <div>
                                                         <div className="font-semibold text-sm text-gray-900 dark:text-white group-hover/item:text-blue-600 transition-colors">
                                                             {lib.name}
@@ -318,26 +354,22 @@ function Compare() {
                     {/* 热门对比提示 */}
                     <div className="mt-3 text-center text-xs text-gray-500 dark:text-gray-400 flex justify-center gap-2">
                         <span>热门对比：</span>
-                        <span
-                            onClick={() => handlePopularComparison('mutative', 'immer')}
-                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
-                        >
-                            Mutative vs Immer
-                        </span>
-                        <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span
-                            onClick={() => handlePopularComparison('valibot', 'zod')}
-                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
-                        >
-                            Valibot vs Zod
-                        </span>
-                        <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span
-                            onClick={() => handlePopularComparison('dayjs', 'moment')}
-                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
-                        >
-                            Day.js vs Moment.js
-                        </span>
+                        {popularComparisons.map((comparison, index) => (
+                            <>
+                                {index > 0 && (
+                                    <span key={`sep-${index}`} className="text-gray-300 dark:text-gray-600">
+                                        |
+                                    </span>
+                                )}
+                                <span
+                                    key={comparison.label}
+                                    onClick={() => handlePopularComparison(comparison.idA, comparison.idB)}
+                                    className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
+                                >
+                                    {comparison.label}
+                                </span>
+                            </>
+                        ))}
                     </div>
                 </div>
 

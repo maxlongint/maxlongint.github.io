@@ -72,9 +72,11 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                     <div className="p-6 border-r border-gray-200 dark:border-gray-700 relative group">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-2xl">
-                                    💎
-                                </div>
+                                <img
+                                    src={`https://github.com/${libraryA.githubUrl.split('/')[0]}.png?size=48`}
+                                    alt={libraryA.name}
+                                    className="w-12 h-12 rounded-lg shadow-sm"
+                                />
                                 <div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">{libraryA.name}</h3>
                                     <a
@@ -107,18 +109,18 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                 TypeScript First
                             </span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 h-10">
-                            {libraryA.dimensions.philosophy}
-                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{libraryA.dimensions.philosophy}</p>
                     </div>
 
                     {/* Library B Header */}
                     <div className="p-6 relative group">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center text-2xl overflow-hidden">
-                                    🤖
-                                </div>
+                                <img
+                                    src={`https://github.com/${libraryB.githubUrl.split('/')[0]}.png?size=48`}
+                                    alt={libraryB.name}
+                                    className="w-12 h-12 rounded-lg shadow-sm"
+                                />
                                 <div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">{libraryB.name}</h3>
                                     <a
@@ -151,9 +153,7 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                 Modular
                             </span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 h-10">
-                            {libraryB.dimensions.philosophy}
-                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{libraryB.dimensions.philosophy}</p>
                     </div>
                 </div>
 
@@ -227,14 +227,14 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">主要语言</div>
                                     <div className="flex items-center gap-2">
                                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                                            {(libraryA.dimensions as any).language || 'JavaScript'}
+                                            {libraryA.dimensions.language || 'JavaScript'}
                                         </span>
                                     </div>
                                 </div>
                                 <div>
                                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">仓库大小</div>
                                     <div className="text-lg font-semibold">
-                                        {formatNumber((libraryA.dimensions as any).repoSize || 0)} KB
+                                        {formatNumber(libraryA.dimensions.repoSize || 0)} KB
                                     </div>
                                 </div>
                             </div>
@@ -245,14 +245,14 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">主要语言</div>
                                     <div className="flex items-center gap-2">
                                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
-                                            {(libraryB.dimensions as any).language || 'TypeScript'}
+                                            {libraryB.dimensions.language || 'TypeScript'}
                                         </span>
                                     </div>
                                 </div>
                                 <div>
                                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">仓库大小</div>
                                     <div className="text-lg font-semibold">
-                                        {formatNumber((libraryB.dimensions as any).repoSize || 0)} KB
+                                        {formatNumber(libraryB.dimensions.repoSize || 0)} KB
                                     </div>
                                 </div>
                             </div>
@@ -277,19 +277,19 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">Fork 数</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryA.dimensions as any).forks || 0)}
+                                        {formatNumber(libraryA.dimensions.forks || 0)}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">关注者</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryA.dimensions as any).watchers || 0)}
+                                        {formatNumber(libraryA.dimensions.watchers || 0)}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">开放 Issue</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryA.dimensions as any).openIssues || 0)}
+                                        {formatNumber(libraryA.dimensions.openIssues || 0)}
                                     </span>
                                 </div>
                             </div>
@@ -299,19 +299,19 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">Fork 数</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryB.dimensions as any).forks || 0)}
+                                        {formatNumber(libraryB.dimensions.forks || 0)}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">关注者</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryB.dimensions as any).watchers || 0)}
+                                        {formatNumber(libraryB.dimensions.watchers || 0)}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 dark:text-gray-400">开放 Issue</span>
                                     <span className="font-semibold">
-                                        {formatNumber((libraryB.dimensions as any).openIssues || 0)}
+                                        {formatNumber(libraryB.dimensions.openIssues || 0)}
                                     </span>
                                 </div>
                             </div>
@@ -403,7 +403,7 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                                 />
                             </svg>
                             周下载量

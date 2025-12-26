@@ -10,7 +10,7 @@
 
 **精选前端工具库集合 - 让开发更高效**
 
-[🚀 在线访问](https://snazzy.top) · [📝 提交工具](https://snazzy.top/#/submit) · [📊 趋势榜](https://snazzy.top/#/trending) · [💬 留言板](https://snazzy.top/#/contact)
+[🚀 在线访问](https://snazzy.top) · [📝 提交工具](https://snazzy.top/#/submit) · [📊 趋势榜](https://snazzy.top/#/trending) · [⚖️ 工具对比](https://snazzy.top/#/compare) · [💬 留言板](https://snazzy.top/#/contact)
 
 </div>
 
@@ -23,6 +23,7 @@
 -   **📚 精选工具库** - 75+ 精心挑选的前端工具和框架
 -   **🔍 智能搜索** - 支持标题、描述、URL、标签的全文搜索
 -   **🏷️ 标签筛选** - 20+ 分类标签,快速定位所需工具
+-   **⚖️ 工具对比** - 深度对比两个工具库的各项指标,帮助选型决策
 -   **📊 实时数据** - GitHub Stars、npm 版本、更新时间实时同步
 -   **📈 趋势榜单** - 展示 GitHub 每日前端热门项目
 -   **📱 响应式设计** - 完美支持桌面端和移动端
@@ -110,6 +111,7 @@ npm run lint
 │       ├── update-github-stats.yml     # 更新 GitHub 数据
 │       ├── update-github-readmes.yml   # 更新 README
 │       ├── update-trending.yml         # 更新趋势榜
+│       ├── update-comparison-data.yml  # 更新对比数据
 │       └── auto-merge-submission.yml   # 自动合并提交
 ├── public/                 # 静态资源
 │   ├── logo.png
@@ -118,6 +120,7 @@ npm run lint
 │   ├── update-github-stats.js      # 获取 GitHub Stars/npm 版本
 │   ├── update-github-readmes.js    # 获取 README 内容
 │   ├── fetch-trending.js           # 获取趋势榜数据
+│   ├── update-comparison-data.js   # 更新对比数据
 │   ├── generate-og-images.js       # 批量生成 OG 图片
 │   ├── generate-og-single.js       # 生成单个 OG 图片
 │   ├── generate-default-og.js      # 生成默认 OG 图片
@@ -126,6 +129,7 @@ npm run lint
 │   ├── components/         # React 组件
 │   │   ├── BookmarkCard.tsx        # 工具卡片组件
 │   │   ├── BookmarkList.tsx        # 工具列表组件
+│   │   ├── ComparisonView.tsx      # 对比视图组件
 │   │   ├── GitHubStats.tsx         # GitHub 统计组件
 │   │   ├── Header.tsx              # 顶部导航
 │   │   ├── Footer.tsx              # 底部信息
@@ -140,10 +144,12 @@ npm run lint
 │   │   ├── github-stats.json       # GitHub 统计数据(同步生成)
 │   │   ├── github-readmes.json     # README 内容(同步生成)
 │   │   ├── trending.json           # 趋势数据(同步生成)
+│   │   ├── comparison-data.json    # 对比数据(同步生成)
 │   │   └── og-images/              # OG 分享图片(同步生成)
 │   ├── pages/              # 页面组件 (懒加载)
 │   │   ├── Home.tsx                # 主页
 │   │   ├── BookmarkDetail.tsx      # 工具详情页
+│   │   ├── Compare.tsx             # 工具对比页面
 │   │   ├── Trending.tsx            # 趋势榜页面
 │   │   ├── Submit.tsx              # 提交工具页面
 │   │   └── Contact.tsx             # 留言板页面
@@ -253,39 +259,74 @@ useEffect(() => {
 -   **⭐ Update GitHub Stats** - 每天凌晨 1:00 北京时间更新 Stars 和 npm 版本
 -   **📖 Update GitHub READMEs** - 每天凌晨 2:00 北京时间更新 README 内容
 -   **🔥 Update Daily Trending** - 每天凌晨 3:00 北京时间更新趋势榜数据
+-   **⚖️ Update Comparison Data** - 每天凌晨 4:00 北京时间更新对比数据
 
 数据更新后自动触发网站部署,用户无需等待下次访问即可看到最新数据。
 
 **性能优化**: 应用启动时延迟 100ms 加载 GitHub 数据,避免阻塞首屏渲染。
 
-#### 自动收录机制
+### 3. 工具对比功能
 
-**🏷️ Auto Label New Submissions** - 当用户提交新工具(Issue 标题包含 `[收录]`)时:
+工具对比页面提供深度的工具库对比功能,帮助开发者做出更明智的选型决策。
 
-1.  自动添加标签: "收录申请" + "待审核"
-2.  自动回复欢迎评论,说明审核流程
+#### 功能特点
 
-**🤖 Auto Merge Submission** - 当管理员审核通过(标记为 "收录通过")时:
+-   **智能选择** - 搜索并选择两个不同的工具库进行对比
+-   **热门对比** - 快速访问热门对比组合（Mutative vs Immer、Valibot vs Zod、Day.js vs Moment.js）
+-   **GitHub 头像** - 显示各个库在 GitHub 上的真实头像
+-   **实时数据** - 每日凌晨 4:00 自动更新对比数据
 
-1.  解析 Issue 内容
-2.  添加到 `bookmarks.json`
-3.  自动生成新标签颜色
-4.  **实时获取 GitHub Stars 数据** → `github-stats.json`
-5.  **实时获取 README 内容** → `github-readmes.json`
-6.  **自动生成 OG 分享图片** → `src/data/og-images/`
-7.  一次性提交所有文件
-8.  触发网站部署
-9.  评论、标记、关闭 Issue
+#### 对比维度
 
-**🚀 Deploy to GitHub Pages** - 自动部署触发条件:
+对比页面展示 6 大维度的详细对比：
 
--   推送代码到 master 分支
--   数据更新任务完成后
--   手动触发
+1.  **打包体积（压缩后）** - 来源：Bundlephobia API
 
-**🏷️ Setup Repository Labels** - 手动触发,初始化仓库标签系统
+    -   gzip 压缩后大小
+    -   可视化百分比对比
+    -   Tree-shaking 支持情况
 
-### 3. 工具提交流程
+2.  **主要语言 & 仓库大小** - 来源：GitHub API
+
+    -   代码主要语言
+    -   仓库存储大小
+
+3.  **社区活跃度** - 来源：GitHub API
+
+    -   Fork 数量
+    -   Watchers 数量
+    -   开放 Issue 数量
+
+4.  **生态 & 插件** - 计算得出
+
+    -   生态系统评估
+    -   相关插件展示
+
+5.  **设计理念** - 来源：bookmarks.json 描述 / GitHub 描述
+
+    -   核心设计哲学
+    -   适用场景
+
+6.  **周下载量** - 来源：npm API
+    -   每周 npm 下载次数
+    -   流行度趋势
+
+#### 数据更新
+
+对比数据通过 GitHub Actions 自动同步：
+
+```bash
+# 每天凌晨 4:00 北京时间自动执行
+scripts/update-comparison-data.js
+```
+
+自动获取：
+
+-   npm Registry API - 包版本和周下载量
+-   GitHub API - Stars、Forks、Issues、语言、仓库大小等
+-   Bundlephobia API - 包体积数据
+
+### 4. 工具提交流程
 
 用户可以通过 [提交页面](https://snazzy.top/#/submit) 提交新工具:
 
@@ -295,7 +336,7 @@ useEffect(() => {
 4.  GitHub Actions 自动合并并同步数据
 5.  自动更新工具库展示
 
-### 4. 缓存策略
+### 5. 缓存策略
 
 为提升性能,项目采用多级缓存:
 
