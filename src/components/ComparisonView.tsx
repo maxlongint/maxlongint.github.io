@@ -43,6 +43,40 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
         return num.toString();
     };
 
+    // 获取生态系统插件列表
+    const getEcosystemPlugins = (library: Library): string[] => {
+        return library.dimensions.ecosystemPlugins || [];
+    };
+
+    // 获取生态系统评级标签
+    const getEcosystemLabel = (ecosystem: string): string => {
+        const labels: { [key: string]: string } = {
+            Rich: '丰富',
+            Growing: '增长中',
+            Moderate: '中等',
+            Small: '较小',
+        };
+        return labels[ecosystem] || ecosystem;
+    };
+
+    // 获取生态系统描述
+    const getEcosystemDescription = (ecosystem: string): string => {
+        const descriptions: { [key: string]: string } = {
+            Rich: '广泛的生态系统，拥有大量社区插件和集成',
+            Growing: '增长中的生态系统，有主要库的官方适配器，但社区插件较少',
+            Moderate: '中等规模的生态系统，有一些常用的插件支持',
+            Small: '较小的生态系统，插件和集成相对较少',
+        };
+        return descriptions[ecosystem] || '生态系统信息';
+    };
+
+    // 检查是否应该显示生态 & 插件部分
+    const shouldShowEcosystem = (): boolean => {
+        const pluginsA = getEcosystemPlugins(libraryA);
+        const pluginsB = getEcosystemPlugins(libraryB);
+        return pluginsA.length > 0 || pluginsB.length > 0;
+    };
+
     const calculatePercentage = (valueA: number, valueB: number) => {
         const total = valueA + valueB;
         if (total === 0) return { percentA: 50, percentB: 50 };
@@ -50,54 +84,6 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
             percentA: (valueA / total) * 100,
             percentB: (valueB / total) * 100,
         };
-    };
-
-    // 生态系统标签映射
-    const getEcosystemLabel = (ecosystem: string) => {
-        const labels: Record<string, string> = {
-            Rich: '丰富',
-            Growing: '增长中',
-            Moderate: '适中',
-            Small: '较小',
-        };
-        return labels[ecosystem] || ecosystem;
-    };
-
-    // 生态系统描述
-    const getEcosystemDescription = (libraryId: string, ecosystem: string) => {
-        const descriptions: Record<string, string> = {
-            // Mutative vs Immer
-            mutative: '广泛的社区生态系统。与 React Hook Form 等库原生集成。',
-            immer: '成熟的生态系统,拥有广泛的社区支持和第三方集成。',
-            // Valibot vs Zod
-            valibot: '较新的生态系统。有主要库的官方适配器,但社区插件较少。',
-            zod: '广泛的生态系统。与 React Hook Form、tRPC 等原生集成。',
-        };
-
-        // 如果有特定描述则返回，否则根据等级返回通用描述
-        if (descriptions[libraryId]) {
-            return descriptions[libraryId];
-        }
-
-        const defaultDescriptions: Record<string, string> = {
-            Rich: '成熟的生态系统，拥有广泛的社区支持和丰富的第三方集成。',
-            Growing: '正在成长的生态系统，有核心功能的官方适配器。',
-            Moderate: '适中的生态系统，具备基本的工具和插件支持。',
-            Small: '较小的生态系统，主要依赖核心功能。',
-        };
-        return defaultDescriptions[ecosystem] || '生态系统信息暂无';
-    };
-
-    // 生态系统插件列表（仅使用数据中的 ecosystemPlugins）
-    const getEcosystemPlugins = (library: Library): string[] => {
-        return library.dimensions.ecosystemPlugins || [];
-    };
-
-    // 检查是否应该显示生态 & 插件部分
-    const shouldShowEcosystem = () => {
-        const pluginsA = getEcosystemPlugins(libraryA);
-        const pluginsB = getEcosystemPlugins(libraryB);
-        return pluginsA.length > 0 || pluginsB.length > 0;
     };
 
     const bundleSizePercent = calculatePercentage(
@@ -388,7 +374,7 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                     </span>
                                 </div>
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                    {getEcosystemDescription(libraryA.id, libraryA.dimensions.ecosystem)}
+                                    {getEcosystemDescription(libraryA.dimensions.ecosystem)}
                                 </p>
                                 {getEcosystemPlugins(libraryA).length > 0 && (
                                     <div className="flex flex-wrap gap-1">
@@ -405,12 +391,12 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                             </div>
                             <div className="p-4 md:p-6">
                                 <div className="mb-2">
-                                    <span className="text-xl font-bold">
+                                    <span className="text-2xl font-bold">
                                         {getEcosystemLabel(libraryB.dimensions.ecosystem)}
                                     </span>
                                 </div>
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                    {getEcosystemDescription(libraryB.id, libraryB.dimensions.ecosystem)}
+                                    {getEcosystemDescription(libraryB.dimensions.ecosystem)}
                                 </p>
                                 {getEcosystemPlugins(libraryB).length > 0 && (
                                     <div className="flex flex-wrap gap-1">

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ComparisonView from '../components/ComparisonView';
@@ -355,20 +355,15 @@ function Compare() {
                     <div className="mt-3 text-center text-xs text-gray-500 dark:text-gray-400 flex justify-center gap-2">
                         <span>热门对比：</span>
                         {popularComparisons.map((comparison, index) => (
-                            <>
-                                {index > 0 && (
-                                    <span key={`sep-${index}`} className="text-gray-300 dark:text-gray-600">
-                                        |
-                                    </span>
-                                )}
+                            <React.Fragment key={comparison.label}>
+                                {index > 0 && <span className="text-gray-300 dark:text-gray-600">|</span>}
                                 <span
-                                    key={comparison.label}
                                     onClick={() => handlePopularComparison(comparison.idA, comparison.idB)}
                                     className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
                                 >
                                     {comparison.label}
                                 </span>
-                            </>
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>
