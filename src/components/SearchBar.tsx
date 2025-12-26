@@ -52,10 +52,10 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
 
     return (
         <div className={compact ? 'relative w-full max-w-3xl shadow-md ' : 'relative max-w-2xl mx-auto'}>
-            <div className="relative bg-gray-50  p-4">
+            <div className="relative bg-gray-50 dark:bg-gray-900 p-4">
                 <div className="relative">
                     <svg
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -73,7 +73,7 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                         onChange={e => setInputValue(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="搜索库、框架或插件..."
-                        className={`w-full pl-12 pr-16 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm bg-white ${
+                        className={`w-full pl-12 pr-16 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-400 focus:border-transparent text-sm bg-white dark:bg-gray-800 dark:text-white ${
                             compact ? 'py-2' : 'py-3.5'
                         }`}
                     />
@@ -81,7 +81,7 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                         {inputValue && (
                             <button
                                 onClick={handleClear}
-                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                                 aria-label="清除搜索"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                                 </svg>
                             </button>
                         )}
-                        <kbd className="px-2 py-1 text-xs font-semibold text-gray-600 bg-gray-100 border border-gray-300 rounded">
+                        <kbd className="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">
                             ⌘ K
                         </kbd>
                     </div>

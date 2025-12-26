@@ -575,25 +575,27 @@ export default function BookmarkDetail() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Toast 提示框 */}
             {showToast && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
                     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowToast(false)} />
                     <div
-                        className={`relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
+                        className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
                             showToast ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
                         }`}
                     >
                         <div className="flex items-start gap-4">
                             <div
                                 className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
-                                    toastType === 'success' ? 'bg-green-100' : 'bg-red-100'
+                                    toastType === 'success'
+                                        ? 'bg-green-100 dark:bg-green-900/30'
+                                        : 'bg-red-100 dark:bg-red-900/30'
                                 }`}
                             >
                                 {toastType === 'success' ? (
                                     <svg
-                                        className="w-6 h-6 text-green-600"
+                                        className="w-6 h-6 text-green-600 dark:text-green-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -607,7 +609,7 @@ export default function BookmarkDetail() {
                                     </svg>
                                 ) : (
                                     <svg
-                                        className="w-6 h-6 text-red-600"
+                                        className="w-6 h-6 text-red-600 dark:text-red-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -624,16 +626,18 @@ export default function BookmarkDetail() {
                             <div className="flex-1">
                                 <h3
                                     className={`text-lg font-semibold mb-1 ${
-                                        toastType === 'success' ? 'text-green-900' : 'text-red-900'
+                                        toastType === 'success'
+                                            ? 'text-green-900 dark:text-green-300'
+                                            : 'text-red-900 dark:text-red-300'
                                     }`}
                                 >
                                     {toastType === 'success' ? '复制成功！' : '复制失败'}
                                 </h3>
-                                <p className="text-gray-600 whitespace-pre-line">{toastMessage}</p>
+                                <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{toastMessage}</p>
                             </div>
                             <button
                                 onClick={() => setShowToast(false)}
-                                className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+                                className="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path
@@ -650,12 +654,12 @@ export default function BookmarkDetail() {
             )}
 
             {/* 面包屑导航 */}
-            <div className="bg-white border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                         <button
                             onClick={() => navigate('/')}
-                            className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                            className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -668,18 +672,18 @@ export default function BookmarkDetail() {
                             <span>首页</span>
                         </button>
                         <span>/</span>
-                        <span className="text-gray-900 truncate">{bookmark.title}</span>
+                        <span className="text-gray-900 dark:text-white truncate">{bookmark.title}</span>
                     </div>
                 </div>
             </div>
 
             {/* Banner区域 */}
-            <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 border-b border-gray-200">
+            <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
                     {/* 移动端布局 */}
                     <div className="block lg:hidden space-y-4">
                         <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-100">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white dark:bg-gray-700 shadow-lg flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-100 dark:border-gray-600">
                                 {githubInfo ? (
                                     <img
                                         src={`https://github.com/${githubInfo.owner}.png?size=80`}
@@ -693,7 +697,7 @@ export default function BookmarkDetail() {
                                 )}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
                                     {bookmark.title}
                                 </h1>
                                 {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
@@ -703,7 +707,9 @@ export default function BookmarkDetail() {
                                 )}
                             </div>
                         </div>
-                        <p className="text-base text-gray-600 leading-relaxed">{bookmark.description}</p>
+                        <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                            {bookmark.description}
+                        </p>
                         <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => {
                                 const tagConfig = (
@@ -778,7 +784,7 @@ export default function BookmarkDetail() {
                     {/* PC端布局 */}
                     <div className="hidden lg:flex items-start gap-8">
                         {/* 左侧图标 */}
-                        <div className="w-24 h-24 rounded-2xl bg-white shadow-lg flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-100">
+                        <div className="w-24 h-24 rounded-2xl bg-white dark:bg-gray-700 shadow-lg flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-100 dark:border-gray-600">
                             {githubInfo ? (
                                 <img
                                     src={`https://github.com/${githubInfo.owner}.png?size=96`}
@@ -794,8 +800,10 @@ export default function BookmarkDetail() {
 
                         {/* 中间信息 */}
                         <div className="flex-1">
-                            <h1 className="text-5xl font-bold text-gray-900 mb-4 tracking-tight">{bookmark.title}</h1>
-                            <p className="text-xl text-gray-600 leading-relaxed mb-6 max-w-3xl">
+                            <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
+                                {bookmark.title}
+                            </h1>
+                            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-6 max-w-3xl">
                                 {bookmark.description}
                             </p>
 
@@ -890,11 +898,11 @@ export default function BookmarkDetail() {
                     {/* 元数据卡片 */}
                     <div className="grid grid-cols-2 gap-3">
                         {/* Bundle Size */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-7 h-7 rounded-lg bg-purple-100 flex items-center justify-center">
+                                <div className="w-7 h-7 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-3.5 h-3.5 text-purple-600"
+                                        className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -907,18 +915,20 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-xs font-semibold text-gray-700">包体积</h3>
+                                <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300">包体积</h3>
                             </div>
-                            <div className="text-2xl font-bold text-gray-900">{bundleSize?.gzip || '—'}</div>
-                            <p className="text-xs text-gray-500 mt-1">Gzipped</p>
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                                {bundleSize?.gzip || '—'}
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Gzipped</p>
                         </div>
 
                         {/* Open Issues */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center">
+                                <div className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-3.5 h-3.5 text-amber-600"
+                                        className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -931,7 +941,7 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-xs font-semibold text-gray-700">Issues</h3>
+                                <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300">Issues</h3>
                             </div>
                             {githubInfo && (
                                 <img
@@ -943,11 +953,11 @@ export default function BookmarkDetail() {
                         </div>
 
                         {/* 最后更新 */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm col-span-2">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm col-span-2">
                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-7 h-7 rounded-lg bg-green-100 flex items-center justify-center">
+                                <div className="w-7 h-7 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-3.5 h-3.5 text-green-600"
+                                        className="w-3.5 h-3.5 text-green-600 dark:text-green-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -960,10 +970,10 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-xs font-semibold text-gray-700">最后更新</h3>
+                                <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300">最后更新</h3>
                             </div>
                             <div className="flex items-baseline gap-2">
-                                <div className="text-xl font-bold text-gray-900">
+                                <div className="text-xl font-bold text-gray-900 dark:text-white">
                                     {repoInfo?.pushed_at
                                         ? new Date(repoInfo.pushed_at).toLocaleDateString('zh-CN', {
                                               month: 'numeric',
@@ -971,7 +981,7 @@ export default function BookmarkDetail() {
                                           })
                                         : '—'}
                                 </div>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                     {repoInfo?.pushed_at
                                         ? new Date(repoInfo.pushed_at).toLocaleDateString('zh-CN', {
                                               year: 'numeric',
@@ -983,11 +993,11 @@ export default function BookmarkDetail() {
                     </div>
 
                     {/* README */}
-                    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-                        <div className="border-b border-gray-200 px-4 py-3 bg-gray-50">
-                            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                        <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-900">
+                            <h2 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                 <svg
-                                    className="w-4 h-4 text-gray-700"
+                                    className="w-4 h-4 text-gray-700 dark:text-gray-300"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1022,8 +1032,10 @@ export default function BookmarkDetail() {
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                         />
                                     </svg>
-                                    <h3 className="text-base font-semibold text-gray-900 mb-1">README 暂时无法加载</h3>
-                                    <p className="text-sm text-gray-500 mb-4 px-4">
+                                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
+                                        README 暂时无法加载
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 px-4">
                                         数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub 查看完整文档。
                                     </p>
                                     <a
@@ -1051,11 +1063,11 @@ export default function BookmarkDetail() {
                     {/* 左侧主要内容 */}
                     <div className="lg:col-span-3">
                         {/* README内容 */}
-                        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-                            <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 flex items-center justify-between">
-                                <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                            <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
+                                <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                     <svg
-                                        className="w-5 h-5 text-gray-700"
+                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1073,7 +1085,7 @@ export default function BookmarkDetail() {
                                 {tocItems.length > 0 && (
                                     <button
                                         onClick={() => setShowToc(!showToc)}
-                                        className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                        className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                                         title="目录"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1096,7 +1108,7 @@ export default function BookmarkDetail() {
                                 ) : readmeError || !readme || readme.trim().length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-16 text-center">
                                         <svg
-                                            className="w-16 h-16 text-gray-300 mb-4"
+                                            className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -1108,10 +1120,10 @@ export default function BookmarkDetail() {
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                             />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                                             README 暂时无法加载
                                         </h3>
-                                        <p className="text-gray-500 mb-6 max-w-md">
+                                        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
                                             数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub 查看完整文档。
                                         </p>
                                         <a
@@ -1128,8 +1140,8 @@ export default function BookmarkDetail() {
                                         {/* 右侧浮动目录 */}
                                         {showToc && tocItems.length > 0 && (
                                             <div className="toc-container float-right w-64 ml-6 mb-4">
-                                                <div className="sticky top-20 bg-white rounded-lg border border-gray-200 p-3">
-                                                    <h3 className="text-xs font-semibold text-gray-700 mb-2 px-2">
+                                                <div className="sticky top-20 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                                    <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 px-2">
                                                         目录
                                                     </h3>
                                                     <nav className="space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
@@ -1156,7 +1168,7 @@ export default function BookmarkDetail() {
                                                                         });
                                                                     }
                                                                 }}
-                                                                className="flex items-start gap-1.5 py-1 px-2 rounded transition-colors text-gray-700 hover:bg-gray-50"
+                                                                className="flex items-start gap-1.5 py-1 px-2 rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                                                 style={{
                                                                     paddingLeft: `${(item.level - 1) * 10 + 8}px`,
                                                                 }}
@@ -1180,11 +1192,11 @@ export default function BookmarkDetail() {
                     {/* 右侧元数据卡片 */}
                     <div className="lg:col-span-1 space-y-4">
                         {/* Bundle Size */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-2 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-4 h-4 text-purple-600"
+                                        className="w-4 h-4 text-purple-600 dark:text-purple-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1197,18 +1209,20 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-sm font-semibold text-gray-700">包体积</h3>
+                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">包体积</h3>
                             </div>
-                            <div className="text-3xl font-bold text-gray-900 mb-1">{bundleSize?.gzip || '—'}</div>
-                            <p className="text-sm text-gray-500">Gzipped</p>
+                            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                                {bundleSize?.gzip || '—'}
+                            </div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Gzipped</p>
                         </div>
 
                         {/* 下载量趋势 */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-2 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-4 h-4 text-blue-600"
+                                        className="w-4 h-4 text-blue-600 dark:text-blue-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1221,9 +1235,9 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-sm font-semibold text-gray-700">NPM 下载</h3>
+                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">NPM 下载</h3>
                             </div>
-                            <div className="text-2xl font-bold text-gray-900 mb-3">
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                                 {npmDownloads.length > 0
                                     ? npmDownloads[npmDownloads.length - 1].downloads.toLocaleString()
                                     : '45,231'}
@@ -1270,15 +1284,15 @@ export default function BookmarkDetail() {
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
-                            <p className="text-xs text-gray-500 mt-3">过去 30 天</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">过去 30 天</p>
                         </div>
 
                         {/* Open Issues */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-2 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-4 h-4 text-amber-600"
+                                        className="w-4 h-4 text-amber-600 dark:text-amber-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1291,7 +1305,7 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-sm font-semibold text-gray-700">Issues</h3>
+                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Issues</h3>
                             </div>
                             {githubInfo && (
                                 <div className="space-y-3">
@@ -1304,7 +1318,7 @@ export default function BookmarkDetail() {
                                         href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/issues`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-xs text-blue-600 hover:text-blue-700 hover:underline block"
+                                        className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline block"
                                     >
                                         查看所有问题 →
                                     </a>
@@ -1313,11 +1327,11 @@ export default function BookmarkDetail() {
                         </div>
 
                         {/* 最后更新时间 */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-2 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                                     <svg
-                                        className="w-4 h-4 text-green-600"
+                                        className="w-4 h-4 text-green-600 dark:text-green-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1330,9 +1344,9 @@ export default function BookmarkDetail() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-sm font-semibold text-gray-700">最后更新</h3>
+                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">最后更新</h3>
                             </div>
-                            <div className="text-2xl font-bold text-gray-900">
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">
                                 {repoInfo?.pushed_at
                                     ? new Date(repoInfo.pushed_at).toLocaleDateString('zh-CN', {
                                           month: 'numeric',
@@ -1340,7 +1354,7 @@ export default function BookmarkDetail() {
                                       })
                                     : '—'}
                             </div>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 {repoInfo?.pushed_at
                                     ? new Date(repoInfo.pushed_at).toLocaleDateString('zh-CN', {
                                           year: 'numeric',

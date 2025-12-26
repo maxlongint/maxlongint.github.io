@@ -33,8 +33,8 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
     return (
         <>
             {/* 热门分类 */}
-            <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4">
-                <h2 className="text-sm font-medium text-gray-700 mb-3">热门分类</h2>
+            <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">热门分类</h2>
                 <div className="flex flex-wrap gap-2">
                     {displayedMainTags.map(tag => (
                         <button
@@ -42,8 +42,8 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                             onClick={() => setSelectedTag(tag)}
                             className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                                 selectedTag === tag
-                                    ? 'bg-black text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-black dark:bg-white text-white dark:text-black'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                             }`}
                         >
                             {tag} <span className="ml-1 text-xs opacity-75">{tagStats[tag]}</span>
@@ -54,12 +54,12 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
 
             {/* 更多标签 */}
             {otherTags.length > 0 && (
-                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4">
+                <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-sm font-medium text-gray-700">更多标签</h2>
+                        <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">更多标签</h2>
                         <button
                             onClick={() => setShowAll(!showAll)}
-                            className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1"
                         >
                             {showAll ? '收起' : '展开全部'}
                             <svg
@@ -97,7 +97,9 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                             );
                         })}
                         {!showAll && otherTags.length > 24 && (
-                            <span className="px-2.5 py-1 text-xs text-gray-500">+ {otherTags.length - 24} 个标签</span>
+                            <span className="px-2.5 py-1 text-xs text-gray-500 dark:text-gray-400">
+                                + {otherTags.length - 24} 个标签
+                            </span>
                         )}
                     </div>
                 </div>

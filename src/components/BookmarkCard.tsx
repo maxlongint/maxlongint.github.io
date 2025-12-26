@@ -51,7 +51,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
     };
 
     return (
-        <div className="group relative bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all duration-300">
+        <div className="group relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300">
             {/* 网格模式或移动端布局 */}
             <div className={viewMode === 'grid' ? 'block' : 'md:hidden'}>
                 {/* 第一行：图标、标题和版本号 */}
@@ -77,7 +77,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                     <div className="flex-1 min-w-0">
                         <h3
                             onClick={handleTitleClick}
-                            className="text-base font-bold text-gray-900 mb-1 cursor-pointer hover:text-blue-600 transition-colors"
+                            className="text-base font-bold text-gray-900 dark:text-white mb-1 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                         >
                             {bookmark.title}
                         </h3>
@@ -102,7 +102,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 </div>
 
                 {/* 第二行：描述 */}
-                <p className="text-gray-600 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
 
                 {/* 第三行：标签 */}
                 <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -125,7 +125,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                     </div>
                     <button
                         onClick={handleShare}
-                        className="flex-shrink-0 p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                        className="flex-shrink-0 p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors"
                         title="分享卡片"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,11 +173,11 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                         <div className="flex-1">
                             <h3
                                 onClick={handleTitleClick}
-                                className="text-base font-bold text-gray-900 mb-1 cursor-pointer hover:text-blue-600 transition-colors"
+                                className="text-base font-bold text-gray-900 dark:text-white mb-1 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                             >
                                 {bookmark.title}
                             </h3>
-                            <p className="text-gray-600 text-sm">{bookmark.description}</p>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">{bookmark.description}</p>
                         </div>
                         {/* Stars 数量徽章 */}
                         {repoInfo && repoInfo.stargazers_count > 0 && (
@@ -220,7 +220,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={handleShare}
-                                className="flex-shrink-0 p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                                className="flex-shrink-0 p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors"
                                 title="分享卡片"
                             >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

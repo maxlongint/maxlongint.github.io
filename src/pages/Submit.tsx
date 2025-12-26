@@ -156,7 +156,7 @@ _此 Issue 由提交表单自动创建_`;
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
             <Header />
 
             {/* Main Content */}
@@ -173,14 +173,14 @@ _此 Issue 由提交表单自动创建_`;
                             />
                         </svg>
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-3">提交新工具</h1>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">提交新工具</h1>
+                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         帮助社区发现优秀的前端库。分享你喜欢的工具或自己的作品。
                     </p>
                 </div>
 
                 {/* 提交说明卡片 */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 border border-blue-200 dark:border-gray-700 rounded-lg p-6 mb-6">
                     <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
                             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -190,42 +190,42 @@ _此 Issue 由提交表单自动创建_`;
                             </div>
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                 <span>📝</span>
                                 如何提交新工具？
                             </h2>
-                            <div className="space-y-2 text-sm text-gray-700">
+                            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                                 <div className="flex items-start gap-2">
                                     <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">1.</span>
                                     <p>
-                                        <strong className="text-gray-900">填写下方表单</strong>：输入工具名称、GitHub
-                                        地址、描述和标签
+                                        <strong className="text-gray-900 dark:text-white">填写下方表单</strong>
+                                        ：输入工具名称、GitHub 地址、描述和标签
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">2.</span>
                                     <p>
-                                        <strong className="text-gray-900">点击"提交工具"</strong>：系统会自动跳转到
-                                        GitHub Issues 页面，内容已预填好
+                                        <strong className="text-gray-900 dark:text-white">点击“提交工具”</strong>
+                                        ：系统会自动跳转到 GitHub Issues 页面，内容已预填好
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">3.</span>
                                     <p>
-                                        <strong className="text-gray-900">在 GitHub 确认提交</strong>
+                                        <strong className="text-gray-900 dark:text-white">在 GitHub 确认提交</strong>
                                         ：检查信息无误后，点击 "Submit new issue" 即可
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">4.</span>
                                     <p>
-                                        <strong className="text-gray-900">等待审核</strong>：我们会在 1-3
-                                        个工作日内审核，通过后工具会出现在主页
+                                        <strong className="text-gray-900 dark:text-white">等待审核</strong>：我们会在
+                                        1-3 个工作日内审核，通过后工具会出现在主页
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 p-3 bg-white border border-blue-200 rounded-lg">
-                                <p className="text-xs text-gray-600 flex items-center gap-2">
+                            <div className="mt-4 p-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-gray-600 rounded-lg">
+                                <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2">
                                     <svg
                                         className="w-4 h-4 text-blue-500 flex-shrink-0"
                                         fill="currentColor"
@@ -256,20 +256,20 @@ _此 Issue 由提交表单自动创建_`;
                 </div>
 
                 {/* Form Card */}
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
                     {/* Tool Information Section */}
-                    <div className="p-6 border-b border-gray-200">
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
-                                <span className="text-blue-600 text-sm font-semibold">ℹ️</span>
+                            <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded flex items-center justify-center">
+                                <span className="text-blue-600 dark:text-blue-300 text-sm font-semibold">ℹ️</span>
                             </div>
-                            <h2 className="text-lg font-semibold text-gray-900">工具信息</h2>
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">工具信息</h2>
                         </div>
 
                         <div className="space-y-4">
                             {/* Tool Name */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-900 mb-2">
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                     工具名称 <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -277,18 +277,22 @@ _此 Issue 由提交表单自动创建_`;
                                     placeholder="例如：React Query"
                                     value={formData.toolName}
                                     onChange={e => setFormData({ ...formData, toolName: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                             </div>
 
                             {/* GitHub Repository */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-900 mb-2">
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                     GitHub 仓库地址 <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <svg
+                                            className="w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
                                             <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
                                         </svg>
                                     </div>
@@ -297,36 +301,40 @@ _此 Issue 由提交表单自动创建_`;
                                         placeholder="github.com/username/repo"
                                         value={formData.githubUrl}
                                         onChange={e => setFormData({ ...formData, githubUrl: e.target.value })}
-                                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
                                 </div>
                             </div>
 
                             {/* Short Description */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-900 mb-2">
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                     工具描述 <span className="text-red-500">*</span>
                                 </label>
-                                <p className="text-xs text-gray-500 mb-2">简要说明。这个工具解决什么问题？</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                    简要说明。这个工具解决什么问题？
+                                </p>
                                 <textarea
                                     rows={4}
                                     placeholder="简要描述这个工具..."
                                     value={formData.description}
                                     onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                                 />
                             </div>
 
                             {/* Tags */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-900 mb-2">
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                     标签 <span className="text-red-500">*</span>
                                 </label>
-                                <p className="text-xs text-gray-500 mb-2">选择已有标签或输入新标签后按回车添加</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                    选择已有标签或输入新标签后按回车添加
+                                </p>
 
                                 {/* 已选标签 */}
                                 {selectedTags.length > 0 && (
-                                    <div className="flex flex-wrap gap-1.5 mb-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                                    <div className="flex flex-wrap gap-1.5 mb-2 p-2 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
                                         {selectedTags.map(tag => (
                                             <span
                                                 key={tag}
@@ -375,12 +383,12 @@ _此 Issue 由提交表单自动创建_`;
                                                 setShowTagDropdown(false);
                                             }
                                         }}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
 
                                     {/* 标签下拉列表 */}
                                     {showTagDropdown && (
-                                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                        <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                                             {/* 筛选后的已有标签 */}
                                             {(() => {
                                                 const filtered = existingTags.filter(
@@ -391,7 +399,7 @@ _此 Issue 由提交表单自动创建_`;
 
                                                 if (filtered.length === 0 && !newTagInput.trim()) {
                                                     return (
-                                                        <div className="px-3 py-2 text-sm text-gray-500">
+                                                        <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
                                                             输入标签名称或从下方选择
                                                         </div>
                                                     );
@@ -412,7 +420,7 @@ _此 Issue 由提交表单自动创建_`;
                                                                             setShowTagDropdown(false);
                                                                         }
                                                                     }}
-                                                                    className="w-full text-left px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium border-b border-gray-200"
+                                                                    className="w-full text-left px-3 py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 font-medium border-b border-gray-200 dark:border-gray-700"
                                                                 >
                                                                     + 添加新标签 "{newTagInput.trim()}"
                                                                 </button>
@@ -421,7 +429,7 @@ _此 Issue 由提交表单自动创建_`;
                                                         {/* 已有标签列表 */}
                                                         {filtered.length > 0 && (
                                                             <div className="py-1">
-                                                                <div className="px-3 py-1 text-xs text-gray-500 font-medium">
+                                                                <div className="px-3 py-1 text-xs text-gray-500 dark:text-gray-400 font-medium">
                                                                     选择已有标签
                                                                 </div>
                                                                 {filtered.map(tag => (
@@ -435,7 +443,7 @@ _此 Issue 由提交表单自动创建_`;
                                                                                 setShowTagDropdown(false);
                                                                             }
                                                                         }}
-                                                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                                                     >
                                                                         {tag}
                                                                     </button>
@@ -447,7 +455,7 @@ _此 Issue 由提交表单自动创建_`;
                                                         {filtered.length === 0 &&
                                                             newTagInput.trim() &&
                                                             existingTags.includes(newTagInput.trim()) && (
-                                                                <div className="px-3 py-2 text-sm text-gray-500">
+                                                                <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
                                                                     此标签已选择
                                                                 </div>
                                                             )}
@@ -459,7 +467,7 @@ _此 Issue 由提交表单自动创建_`;
                                 </div>
 
                                 {/* 提示文本 */}
-                                <p className="text-xs text-gray-500 mt-2">
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                                     💡 提示：输入后按回车添加标签，或从下拉列表选择已有标签
                                 </p>
                             </div>
@@ -467,7 +475,7 @@ _此 Issue 由提交表单自动创建_`;
                     </div>
 
                     {/* Moderation Process */}
-                    <div className="p-6 bg-amber-50 border-t border-amber-100">
+                    <div className="p-6 bg-amber-50 dark:bg-amber-900/20 border-t border-amber-100 dark:border-amber-900">
                         <div className="flex items-start gap-3">
                             <div className="w-6 h-6 bg-amber-500 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -479,8 +487,10 @@ _此 Issue 由提交表单自动创建_`;
                                 </svg>
                             </div>
                             <div>
-                                <h3 className="text-sm font-semibold text-amber-900 mb-1">⏰ 审核流程说明</h3>
-                                <p className="text-sm text-amber-800">
+                                <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-300 mb-1">
+                                    ⏰ 审核流程说明
+                                </h3>
+                                <p className="text-sm text-amber-800 dark:text-amber-200">
                                     提交后会自动创建 GitHub Issue，我们会在 1-3
                                     个工作日内审核。审核通过后，工具会自动添加到主页。我们可能会编辑描述以提高清晰度。
                                 </p>
@@ -489,9 +499,13 @@ _此 Issue 由提交表单自动创建_`;
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="p-6 bg-gray-50 flex items-center justify-between gap-3">
-                        <p className="text-xs text-gray-500">
-                            <svg className="w-4 h-4 inline mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="p-6 bg-gray-50 dark:bg-gray-800 flex items-center justify-between gap-3">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <svg
+                                className="w-4 h-4 inline mr-1 text-gray-400 dark:text-gray-500"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
                                 <path
                                     fillRule="evenodd"
                                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -503,7 +517,7 @@ _此 Issue 由提交表单自动创建_`;
                         <div className="flex items-center gap-3">
                             <Link
                                 to="/"
-                                className="px-6 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                                className="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                             >
                                 取消
                             </Link>
@@ -545,10 +559,10 @@ _此 Issue 由提交表单自动创建_`;
                 </div>
 
                 {/* Info Box */}
-                <div className="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
+                <div className="mt-6 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
                     <div className="flex items-start gap-3">
                         <svg
-                            className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5"
+                            className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -559,18 +573,18 @@ _此 Issue 由提交表单自动创建_`;
                             />
                         </svg>
                         <div className="flex-1">
-                            <h3 className="text-sm font-semibold text-gray-900 mb-2">✨ 提交建议</h3>
-                            <ul className="text-sm text-gray-600 space-y-1">
+                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">✨ 提交建议</h3>
+                            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                                 <li className="flex items-start gap-2">
-                                    <span className="text-gray-400">•</span>
+                                    <span className="text-gray-400 dark:text-gray-500">•</span>
                                     <span>确保工具是开源的，并且在 GitHub 上有活跃维护</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="text-gray-400">•</span>
+                                    <span className="text-gray-400 dark:text-gray-500">•</span>
                                     <span>描述应简洁明了，突出工具的核心价值和使用场景</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="text-gray-400">•</span>
+                                    <span className="text-gray-400 dark:text-gray-500">•</span>
                                     <span>标签应准确反映工具的技术栈和应用领域</span>
                                 </li>
                             </ul>

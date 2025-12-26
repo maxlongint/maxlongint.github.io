@@ -26,6 +26,7 @@
 -   **📊 实时数据** - GitHub Stars、npm 版本、更新时间实时同步
 -   **📈 趋势榜单** - 展示 GitHub 每日前端热门项目
 -   **📱 响应式设计** - 完美支持桌面端和移动端
+-   **🌓 亮色/暗色主题** - 支持主题切换,记忆用户偏好,自动同步 Giscus 评论区主题
 -   **🌓 视图模式** - 列表/网格两种浏览模式,记忆用户偏好
 -   **📖 详情页面** - 包含 README、npm 下载量、Bundle Size、OG 分享卡片等详细信息
 -   **🎨 OG 分享卡片** - 每个工具自动生成精美的分享卡片,支持一键复制分享
@@ -35,6 +36,7 @@
 -   **⚡ 极速加载** - Vite 构建,代码分割优化,总包体积 ~372KB (gzip: ~115KB)
 -   **🔄 数据同步** - 直接导入数据,无需额外请求
 -   **🎯 平滑滚动** - 固定搜索栏、回到顶部等交互优化
+-   **🌓 主题切换** - 亮色/暗色主题无缝切换,localStorage 持久化,Giscus 评论区同步主题
 -   **📊 用户分析** - 集成 Microsoft Clarity,了解用户行为
 -   **🚀 自动部署** - GitHub Actions 自动构建和部署
 
@@ -129,6 +131,8 @@ npm run lint
 │   │   ├── SearchBar.tsx           # 搜索框
 │   │   ├── TagFilter.tsx           # 标签筛选
 │   │   └── ClarityProvider.tsx     # Clarity 分析
+│   ├── contexts/            # React Context
+│   │   └── ThemeContext.tsx        # 主题上下文管理
 │   ├── data/               # 数据文件
 │   │   ├── bookmarks.json          # 工具库数据
 │   │   ├── github-stats.json       # GitHub 统计数据(同步生成)
@@ -319,6 +323,7 @@ useEffect(() => {
 -   🐎 **防抖优化** - 搜索输入采用防抖处理
 -   📝 **useMemo 缓存** - 关键计算结果缓存,避免重复渲染
 -   🎯 **useRef 优化** - 避免不必要的 DOM 操作和重渲染
+-   🌓 **主题优化** - Context API 主题管理,localStorage 持久化,postMessage 同步第三方组件
 
 ### Markdown 渲染优化
 
@@ -415,7 +420,7 @@ npm run build
 
 ### Giscus 评论系统
 
-留言板页面使用 GitHub Discussions 作为评论系统:
+留言板页面使用 GitHub Discussions 作为评论系统,支持主题跟随:
 
 ```
 // src/pages/Contact.tsx
@@ -424,8 +429,11 @@ script.src = 'https://giscus.app/client.js';
 script.setAttribute('data-repo', 'maxlongint/maxlongint.github.io');
 script.setAttribute('data-repo-id', 'R_kgDONdqNSQ');
 script.setAttribute('data-category', 'General');
+script.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
 // ...
 ```
+
+**主题同步**: 当用户切换网站主题时,Giscus 评论区会通过 `postMessage` API 自动同步切换主题。
 
 ---
 

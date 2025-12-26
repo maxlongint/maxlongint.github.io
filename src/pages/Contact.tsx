@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ClarityProvider from '../components/ClarityProvider';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function Contact() {
+    const { theme } = useTheme();
     const giscusLoadedRef = useRef(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -39,7 +41,7 @@ export default function Contact() {
             script.setAttribute('data-reactions-enabled', '1');
             script.setAttribute('data-emit-metadata', '0');
             script.setAttribute('data-input-position', 'top');
-            script.setAttribute('data-theme', 'light');
+            script.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
             script.setAttribute('data-lang', 'zh-CN');
             script.crossOrigin = 'anonymous';
             script.async = true;
@@ -67,18 +69,36 @@ export default function Contact() {
             giscusLoadedRef.current = false;
             setIsLoading(true);
         };
-    }, []);
+    }, [theme]);
+
+    // 主题切换时更新 Giscus 主题
+    useEffect(() => {
+        const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+        if (iframe && iframe.contentWindow) {
+            const giscusTheme = theme === 'dark' ? 'dark' : 'light';
+            iframe.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: giscusTheme,
+                        },
+                    },
+                },
+                'https://giscus.app'
+            );
+        }
+    }, [theme]);
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
             <ClarityProvider projectId="t7y8qtm5hl" enabled={true} />
             <Header />
 
             <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
                 {/* Hero Section */}
                 <div className="text-center mb-12">
-                    <h2 className="text-5xl font-bold text-gray-900 mb-4">保持联系</h2>
-                    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">保持联系</h2>
+                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                         对工具有疑问?分享您的反馈、报告错误,
                         <br />
                         或使用下面的讨论区为我们的工具库推荐新的前端工具。
@@ -87,15 +107,15 @@ export default function Contact() {
 
                 {/* Contact Information Card */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-                    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                        <h3 className="text-lg font-bold text-gray-900 mb-6">联系方式</h3>
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">联系方式</h3>
 
                         <div className="space-y-6">
                             {/* Email */}
                             <div className="flex items-start gap-3">
-                                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
                                     <svg
-                                        className="w-5 h-5 text-blue-600"
+                                        className="w-5 h-5 text-blue-600 dark:text-blue-400"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -109,25 +129,31 @@ export default function Contact() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
+                                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                                         邮箱
                                     </p>
-                                    <p className="text-sm font-medium text-gray-900">190615112@qq.com</p>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                        190615112@qq.com
+                                    </p>
                                 </div>
                             </div>
 
                             {/* QQ */}
                             <div className="flex items-start gap-3">
-                                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                    <svg
+                                        className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
                                         <path d="M21.395 15.035a39.548 39.548 0 00-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.076 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 00-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.54.065 1.229-1.452 1.722-2.983.019.137.038.276.063.415.608 3.416 2.214 5.858 4.051 5.858.956 0 1.815-.867 2.431-2.268.202.012.402.021.607.021s.405-.009.607-.021c.616 1.401 1.475 2.268 2.431 2.268 1.837 0 3.443-2.442 4.051-5.858a14.76 14.76 0 00.063-.415c.493 1.531 1.182 3.048 1.722 2.983.252-.03.583-1.39-.438-4.673z" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
+                                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                                         联系QQ
                                     </p>
-                                    <p className="text-sm font-medium text-gray-900">190615112</p>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">190615112</p>
                                 </div>
                             </div>
                         </div>
@@ -156,12 +182,12 @@ export default function Contact() {
                 </div>
 
                 {/* Giscus Discussion Board */}
-                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
                     {isLoading && (
                         <div className="flex items-center justify-center py-12">
                             <div className="text-center">
                                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-3"></div>
-                                <p className="text-gray-600 text-sm">正在加载评论...</p>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm">正在加载评论...</p>
                             </div>
                         </div>
                     )}

@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+    darkMode: 'class',
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './src/data/**/*.json'],
     safelist: [
         // 确保所有标签颜色类都被包含

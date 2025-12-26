@@ -10,6 +10,11 @@
     --background-rgb: 249, 250, 251;
 }
 
+.dark {
+    --foreground-rgb: 229, 231, 235;
+    --background-rgb: 17, 24, 39;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -32,13 +37,25 @@ body {
     background: #f1f1f1;
 }
 
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
 ::-webkit-scrollbar-thumb {
     background: #c1c1c1;
     border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
 }
 
 /* Tailwind utilities */
@@ -72,6 +89,78 @@ body {
 .masonry-grid > * {
     break-inside: avoid;
     margin-bottom: 1rem;
+}
+
+/* GitHub Markdown 暗色主题样式 */
+.dark .markdown-body {
+    color-scheme: dark;
+    color: #e6edf3;
+    background-color: transparent;
+}
+
+.dark .markdown-body h1,
+.dark .markdown-body h2,
+.dark .markdown-body h3,
+.dark .markdown-body h4,
+.dark .markdown-body h5,
+.dark .markdown-body h6 {
+    color: #e6edf3;
+    border-color: #30363d;
+}
+
+.dark .markdown-body p,
+.dark .markdown-body li,
+.dark .markdown-body td,
+.dark .markdown-body th {
+    color: #e6edf3;
+}
+
+.dark .markdown-body a {
+    color: #58a6ff;
+}
+
+.dark .markdown-body a:hover {
+    color: #79c0ff;
+}
+
+.dark .markdown-body code {
+    background-color: rgba(110, 118, 129, 0.4);
+    color: #e6edf3;
+}
+
+.dark .markdown-body table tr {
+    background-color: transparent;
+    border-color: #30363d;
+}
+
+.dark .markdown-body table tr:nth-child(2n) {
+    background-color: rgba(110, 118, 129, 0.1);
+}
+
+.dark .markdown-body table th,
+.dark .markdown-body table td {
+    border-color: #30363d;
+}
+
+.dark .markdown-body blockquote {
+    color: #8b949e;
+    border-left-color: #3b434b;
+}
+
+.dark .markdown-body hr {
+    background-color: #21262d;
+    border-color: #30363d;
+}
+
+.dark .markdown-body img {
+    background-color: transparent;
+}
+
+.dark .markdown-body kbd {
+    color: #e6edf3;
+    background-color: #161b22;
+    border-color: #30363d;
+    box-shadow: inset 0 -1px 0 #30363d;
 }
 
 /* 仅保留代码高亮的深色主题覆盖 */

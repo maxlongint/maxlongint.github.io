@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import SearchBar from './SearchBar';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface HeaderProps {
     isFixed?: boolean;
@@ -11,10 +12,11 @@ interface HeaderProps {
 export default function Header({ isFixed = false, searchQuery = '', setSearchQuery }: HeaderProps) {
     const location = useLocation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <>
-            <header className="bg-gray-50 border-b border-gray-200 sticky top-0 z-40">
+            <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="flex items-center justify-between gap-4">
                         {/* Logo and Navigation */}
@@ -24,7 +26,7 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                 className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0"
                             >
                                 <img src="/logo.png" alt="前端工具库" className="w-12 h-12 rounded-lg" />
-                                <h1 className="text-xl font-bold text-gray-900">前端工具库</h1>
+                                <h1 className="text-xl font-bold text-gray-900 dark:text-white">前端工具库</h1>
                             </Link>
 
                             {/* 导航链接 */}
@@ -33,8 +35,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     to="/"
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                                         location.pathname === '/'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,8 +53,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     to="/trending"
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                                         location.pathname === '/trending'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -64,8 +66,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     to="/submit"
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                                         location.pathname === '/submit'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,8 +84,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     to="/contact"
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                                         location.pathname === '/contact'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,10 +103,37 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
 
                         {/* Right Actions */}
                         <div className="flex items-center gap-3">
+                            {/* 主题切换按钮 */}
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                aria-label="切换主题"
+                            >
+                                {theme === 'light' ? (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                                        />
+                                    </svg>
+                                )}
+                            </button>
+
                             {/* 移动端菜单按钮 */}
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                                className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 aria-label="菜单"
                             >
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +159,7 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                 href="https://github.com/maxlongint/maxlongint.github.io"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                                className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 aria-label="访问 GitHub"
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -142,15 +171,15 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
 
                     {/* 移动端菜单 */}
                     {mobileMenuOpen && (
-                        <div className="md:hidden border-t border-gray-200">
+                        <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
                             <nav className="px-4 py-3 space-y-1">
                                 <Link
                                     to="/"
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         location.pathname === '/'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <span className="flex items-center gap-2">
@@ -170,8 +199,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         location.pathname === '/trending'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <span className="flex items-center gap-2">
@@ -186,8 +215,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         location.pathname === '/submit'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <span className="flex items-center gap-2">
@@ -207,8 +236,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         location.pathname === '/contact'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <span className="flex items-center gap-2">
