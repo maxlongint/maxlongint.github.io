@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-26T02:33:26.412Z",
+  "updated_at": "2025-12-26T02:36:14.484Z",
   "data": {
     "weekStart": "2025-12-26",
     "weekEnd": "2025-12-26",
@@ -367,6 +367,25 @@
       },
       {
         "rank": 20,
+        "name": "ark-pixel-font",
+        "author": "TakWolf",
+        "url": "https://github.com/TakWolf/ark-pixel-font",
+        "description": "Open source Pan-CJK pixel font / 开源的泛中日韩像素字体",
+        "language": "HTML",
+        "languageColor": "#e34c26",
+        "stars": 4061,
+        "forks": 85,
+        "starsToday": 0,
+        "builtBy": [
+          {
+            "username": "TakWolf",
+            "avatar": "https://avatars.githubusercontent.com/u/6064962?v=4",
+            "url": "https://github.com/TakWolf"
+          }
+        ]
+      },
+      {
+        "rank": 21,
         "name": "certd",
         "author": "certd",
         "url": "https://github.com/certd/certd",
@@ -385,7 +404,7 @@
         ]
       },
       {
-        "rank": 21,
+        "rank": 22,
         "name": "UserScripts",
         "author": "hoothin",
         "url": "https://github.com/hoothin/UserScripts",
@@ -404,7 +423,7 @@
         ]
       },
       {
-        "rank": 22,
+        "rank": 23,
         "name": "hustoj",
         "author": "zhblue",
         "url": "https://github.com/zhblue/hustoj",
@@ -423,7 +442,7 @@
         ]
       },
       {
-        "rank": 23,
+        "rank": 24,
         "name": "schemastore",
         "author": "SchemaStore",
         "url": "https://github.com/SchemaStore/schemastore",
@@ -442,7 +461,7 @@
         ]
       },
       {
-        "rank": 24,
+        "rank": 25,
         "name": "vscode-file-nesting-config",
         "author": "antfu",
         "url": "https://github.com/antfu/vscode-file-nesting-config",
@@ -461,11 +480,11 @@
         ]
       },
       {
-        "rank": 25,
+        "rank": 26,
         "name": "xzs-mysql",
         "author": "mindskip",
         "url": "https://github.com/mindskip/xzs-mysql",
-        "description": "学之思开��考试系统是一款 java + vue 的前后端分离的考试系统。主要优点是开发、部署简单快捷、界面设计友好、代码结构清晰。支持web端和微信小程序，能覆盖到pc机和手机等设备。 支持多种部署方式：集成部署、前后端分离部署、docker部署。",
+        "description": "学之思开源考试系统是一款 java + vue 的前后端分离的考试系统。主要优点是开发、部署简单快捷、界面设计友好、代码结构清晰。支持web端和微信小程序，能覆盖到pc机和手机等设备。 支持多种部署方式：集成部署、前后端分离部署、docker部署。",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
         "stars": 3536,
@@ -476,6 +495,82 @@
             "username": "mindskip",
             "avatar": "https://avatars.githubusercontent.com/u/70456020?v=4",
             "url": "https://github.com/mindskip"
+          }
+        ]
+      },
+      {
+        "rank": 27,
+        "name": "mini-tokyo-3d",
+        "author": "nagix",
+        "url": "https://github.com/nagix/mini-tokyo-3d",
+        "description": "A real-time 3D digital map of Tokyo's public transport system",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 3232,
+        "forks": 292,
+        "starsToday": 0,
+        "builtBy": [
+          {
+            "username": "nagix",
+            "avatar": "https://avatars.githubusercontent.com/u/723188?v=4",
+            "url": "https://github.com/nagix"
+          }
+        ]
+      },
+      {
+        "rank": 28,
+        "name": "QuantumultX-Rewrite",
+        "author": "deezertidal",
+        "url": "https://github.com/deezertidal/QuantumultX-Rewrite",
+        "description": "QuantumultX QX quantumult 圈X quanx 重写 脚本 rewrite 规则 分流 破解 解锁",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 3143,
+        "forks": 180,
+        "starsToday": 0,
+        "builtBy": [
+          {
+            "username": "deezertidal",
+            "avatar": "https://avatars.githubusercontent.com/u/539868?v=4",
+            "url": "https://github.com/deezertidal"
+          }
+        ]
+      },
+      {
+        "rank": 29,
+        "name": "Resources",
+        "author": "Moli-X",
+        "url": "https://github.com/Moli-X/Resources",
+        "description": "基于QuantumultX，Loon，Surge的配置重写，脚本，插件",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 3091,
+        "forks": 127,
+        "starsToday": 0,
+        "builtBy": [
+          {
+            "username": "Moli-X",
+            "avatar": "https://avatars.githubusercontent.com/u/57780930?v=4",
+            "url": "https://github.com/Moli-X"
+          }
+        ]
+      },
+      {
+        "rank": 30,
+        "name": "sveltia-cms",
+        "author": "sveltia",
+        "url": "https://github.com/sveltia/sveltia-cms",
+        "description": "Netlify/Decap CMS successor. Fast, lightweight, Git-based headless CMS. Modern UX, first-class i18n support, mobile support + 100s of improvements. Framework-agnostic, open source & free.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 1984,
+        "forks": 109,
+        "starsToday": 0,
+        "builtBy": [
+          {
+            "username": "sveltia",
+            "avatar": "https://avatars.githubusercontent.com/u/113836621?v=4",
+            "url": "https://github.com/sveltia"
           }
         ]
       }
