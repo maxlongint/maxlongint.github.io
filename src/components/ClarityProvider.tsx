@@ -18,11 +18,16 @@ export default function ClarityProvider({ projectId, enabled = true }: ClarityPr
             return;
         }
 
-        try {
-            clarity.init(projectId);
-        } catch (error) {
-            console.error('Failed to initialize Microsoft Clarity:', error);
-        }
+        // 延迟加载 Clarity，避免阻塞主线程
+        const timer = setTimeout(() => {
+            try {
+                clarity.init(projectId);
+            } catch (error) {
+                console.error('Failed to initialize Microsoft Clarity:', error);
+            }
+        }, 2000); // 延迟2秒加载分析脚本
+
+        return () => clearTimeout(timer);
     }, [projectId, enabled]);
 
     return null;

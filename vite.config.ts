@@ -73,5 +73,15 @@ export default defineConfig({
             },
         },
         chunkSizeWarningLimit: 600,
+        // 启用压缩优化
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true, // 生产环境移除 console
+                drop_debugger: true,
+            },
+        },
+        // 启用 CSS 代码分割
+        cssCodeSplit: true,
     },
 });
