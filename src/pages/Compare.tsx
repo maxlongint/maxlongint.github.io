@@ -36,7 +36,9 @@ function Compare() {
     const [selectedLibraryB, setSelectedLibraryB] = useState<string>('');
     const [dropdownOpenA, setDropdownOpenA] = useState(false);
     const [dropdownOpenB, setDropdownOpenB] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const highlightedItemRef = useRef<HTMLButtonElement>(null);
 
     // 点击外部关闭下拉框
     useEffect(() => {
@@ -131,7 +133,69 @@ function Compare() {
         setSearchQueryB('');
         setDropdownOpenA(false);
         setDropdownOpenB(false);
+        setHighlightedIndex(-1);
     };
+
+    // 选择库的通用处理函数
+    const handleSelectLibrary = (libId: string) => {
+        if (dropdownOpenA && !selectedLibraryA) {
+            setSelectedLibraryA(libId);
+            setSearchQueryA('');
+            setDropdownOpenA(false);
+            setDropdownOpenB(true);
+            setHighlightedIndex(-1);
+        } else if (dropdownOpenB && !selectedLibraryB) {
+            setSelectedLibraryB(libId);
+            setSearchQueryB('');
+            setDropdownOpenB(false);
+            setHighlightedIndex(-1);
+        }
+    };
+
+    // 键盘事件处理
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const currentList = dropdownOpenA ? filteredLibrariesA : filteredLibrariesB;
+
+        if (!currentList.length) return;
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                setHighlightedIndex(prev => (prev < currentList.length - 1 ? prev + 1 : prev));
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                setHighlightedIndex(prev => (prev > 0 ? prev - 1 : 0));
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (highlightedIndex >= 0 && highlightedIndex < currentList.length) {
+                    handleSelectLibrary(currentList[highlightedIndex].id);
+                }
+                break;
+            case 'Escape':
+                e.preventDefault();
+                setDropdownOpenA(false);
+                setDropdownOpenB(false);
+                setHighlightedIndex(-1);
+                break;
+        }
+    };
+
+    // 当下拉框打开或搜索结果变化时，重置高亮索引
+    useEffect(() => {
+        setHighlightedIndex(-1);
+    }, [searchQueryA, searchQueryB, dropdownOpenA, dropdownOpenB]);
+
+    // 当高亮索引变化时，滚动到对应项
+    useEffect(() => {
+        if (highlightedIndex >= 0 && highlightedItemRef.current) {
+            highlightedItemRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            });
+        }
+    }, [highlightedIndex]);
 
     // 获取标签颜色
     const getTagColor = (tag: string) => {
@@ -264,6 +328,7 @@ function Compare() {
                                             setDropdownOpenA(false);
                                         }
                                     }}
+                                    onKeyDown={handleKeyDown}
                                     placeholder={
                                         selectedLibraryA && selectedLibraryB ? '已选择2个库' : '添加要对比的工具...'
                                     }
@@ -292,25 +357,16 @@ function Compare() {
                                 </div>
                                 <div className="max-h-60 overflow-y-auto">
                                     {(dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).length > 0 ? (
-                                        (dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).map(lib => (
+                                        (dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).map((lib, index) => (
                                             <button
                                                 key={lib.id}
-                                                onClick={() => {
-                                                    // 根据当前打开的下拉框来决定设置哪个库
-                                                    if (dropdownOpenA && !selectedLibraryA) {
-                                                        setSelectedLibraryA(lib.id);
-                                                        setSearchQueryA('');
-                                                        // 自动切换到选择第二个库
-                                                        setDropdownOpenA(false);
-                                                        setDropdownOpenB(true);
-                                                    } else if (dropdownOpenB && !selectedLibraryB) {
-                                                        setSelectedLibraryB(lib.id);
-                                                        setSearchQueryB('');
-                                                        // 选择完毕，关闭下拉框
-                                                        setDropdownOpenB(false);
-                                                    }
-                                                }}
-                                                className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/10 flex items-center justify-between transition-colors group/item border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                                ref={index === highlightedIndex ? highlightedItemRef : null}
+                                                onClick={() => handleSelectLibrary(lib.id)}
+                                                className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors group/item border-b border-gray-100 dark:border-gray-700 last:border-0 ${
+                                                    index === highlightedIndex
+                                                        ? 'bg-blue-50 dark:bg-blue-900/20'
+                                                        : 'hover:bg-blue-50 dark:hover:bg-blue-900/10'
+                                                }`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <img
@@ -321,7 +377,13 @@ function Compare() {
                                                         className="w-9 h-9 rounded-lg shadow-sm"
                                                     />
                                                     <div>
-                                                        <div className="font-semibold text-sm text-gray-900 dark:text-white group-hover/item:text-blue-600 transition-colors">
+                                                        <div
+                                                            className={`font-semibold text-sm transition-colors ${
+                                                                index === highlightedIndex
+                                                                    ? 'text-blue-600'
+                                                                    : 'text-gray-900 dark:text-white group-hover/item:text-blue-600'
+                                                            }`}
+                                                        >
                                                             {lib.name}
                                                         </div>
                                                         <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -331,7 +393,11 @@ function Compare() {
                                                     </div>
                                                 </div>
                                                 <svg
-                                                    className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover/item:text-blue-600 opacity-0 group-hover/item:opacity-100 transition-all transform translate-x-2 group-hover/item:translate-x-0"
+                                                    className={`w-5 h-5 transition-all transform ${
+                                                        index === highlightedIndex
+                                                            ? 'text-blue-600 opacity-100 translate-x-0'
+                                                            : 'text-gray-300 dark:text-gray-600 group-hover/item:text-blue-600 opacity-0 group-hover/item:opacity-100 translate-x-2 group-hover/item:translate-x-0'
+                                                    }`}
                                                     fill="currentColor"
                                                     viewBox="0 0 20 20"
                                                 >
