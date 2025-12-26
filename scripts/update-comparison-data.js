@@ -127,6 +127,8 @@ async function processBookmark(bookmark) {
     const fullName = `${owner}/${repo.replace(/\.git$/, '')}`;
     // 优先使用 bookmark 中的 npmPackage 字段，如果没有则从 title 推断
     const packageName = bookmark.npmPackage || bookmark.title.toLowerCase().replace(/\.js$/i, '').replace(/\s+/g, '-');
+    // 生成唯一 ID：使用 title 转小写并替换空格为连字符
+    const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 
     console.log(`Processing ${fullName} (npm: ${packageName})...`);
 
@@ -152,7 +154,7 @@ async function processBookmark(bookmark) {
     };
 
     return {
-        id: bookmark.id,
+        id: id,
         name: bookmark.title,
         githubUrl: fullName,
         npmPackage: packageName,
