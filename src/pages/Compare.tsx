@@ -20,6 +20,12 @@ interface Library {
         philosophy: string;
         ecosystem: string;
         npmVersion: string;
+        // 新增维度
+        language: string;
+        repoSize: number;
+        forks: number;
+        openIssues: number;
+        watchers: number;
     };
 }
 
