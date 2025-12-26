@@ -130,18 +130,19 @@ async function fetchNpmData(packageName) {
 
 // 计算 Bundle Size 评级
 function calculateBundleSizeRating(gzippedSize) {
-    if (gzippedSize === 0) return 'Unknown';
-    if (gzippedSize < 5000) return 'Excellent';
-    if (gzippedSize < 20000) return 'Good';
-    if (gzippedSize < 50000) return 'Medium';
-    return 'Large';
+    if (!gzippedSize) return 'Unknown';
+    if (gzippedSize < 10000) return 'Light';
+    if (gzippedSize < 50000) return 'Moderate';
+    if (gzippedSize < 100000) return 'Heavy';
+    return 'Very Heavy';
 }
 
 // 计算生态系统评分
-function calculateEcosystemScore(stars, downloads) {
-    if (stars > 10000 && downloads > 1000000) return 'Rich';
-    if (stars > 5000 || downloads > 500000) return 'Growing';
-    return 'Emerging';
+function calculateEcosystemScore(stars, weeklyDownloads) {
+    if (stars > 50000 || weeklyDownloads > 10000000) return 'Rich';
+    if (stars > 10000 || weeklyDownloads > 1000000) return 'Growing';
+    if (stars > 1000 || weeklyDownloads > 100000) return 'Moderate';
+    return 'Small';
 }
 
 // 主函数
