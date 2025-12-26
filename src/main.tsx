@@ -11,6 +11,7 @@ const BookmarkDetail = lazy(() => import('./pages/BookmarkDetail'));
 const Trending = lazy(() => import('./pages/Trending'));
 const Submit = lazy(() => import('./pages/Submit'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Compare = lazy(() => import('./pages/Compare'));
 
 // 延迟加载 GitHub 数据
 const loadGitHubDataDeferred = async () => {
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/trending" element={<Trending />} />
+                        <Route path="/compare" element={<Compare />} />
                         <Route path="/submit" element={<Submit />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/:id" element={<BookmarkDetail />} />
