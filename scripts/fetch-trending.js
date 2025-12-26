@@ -10,8 +10,8 @@ const __dirname = path.dirname(__filename);
 const token = process.env.GITHUB_TOKEN;
 
 // GitHub Trending API （使用更可靠的第三方服务）
-// 前端相关语言：JavaScript, TypeScript, HTML, CSS
-const TRENDING_LANGUAGES = ['javascript', 'typescript', 'html', 'css'];
+// 前端相关语言：JavaScript, HTML, CSS
+const TRENDING_LANGUAGES = ['javascript', 'html', 'css'];
 // 使用 GitHub Trending API by huchenme
 const TRENDING_API_BASE = 'https://gtrend.yapie.me/repositories';
 
