@@ -1,9 +1,9 @@
 name: 🔄 Update Comparison Data
 
 on:
-    # 每天凌晨 1:30 北京时间 (UTC时间前一天 17:30)
+    # 每天凌晨 4:00 北京时间 (UTC时间前一天 20:00)
     schedule:
-        - cron: '30 17 * * *'
+        - cron: '0 20 * * *'
     # 允许手动触发
     workflow_dispatch:
 

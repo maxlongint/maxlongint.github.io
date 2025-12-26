@@ -125,9 +125,10 @@ async function processBookmark(bookmark) {
 
     const [, owner, repo] = match;
     const fullName = `${owner}/${repo.replace(/\.git$/, '')}`;
-    const packageName = bookmark.title.toLowerCase().replace(/\s+/g, '-');
+    // 优先使用 bookmark 中的 npmPackage 字段，如果没有则从 title 推断
+    const packageName = bookmark.npmPackage || bookmark.title.toLowerCase().replace(/\.js$/i, '').replace(/\s+/g, '-');
 
-    console.log(`Processing ${fullName}...`);
+    console.log(`Processing ${fullName} (npm: ${packageName})...`);
 
     const [githubData, npmData] = await Promise.all([fetchGitHubData(fullName), fetchNpmData(packageName)]);
 

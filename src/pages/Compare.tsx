@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ComparisonView from '../components/ComparisonView';
@@ -30,6 +30,20 @@ function Compare() {
     const [selectedLibraryB, setSelectedLibraryB] = useState<string>('');
     const [dropdownOpenA, setDropdownOpenA] = useState(false);
     const [dropdownOpenB, setDropdownOpenB] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // 点击外部关闭下拉框
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdownOpenA(false);
+                setDropdownOpenB(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     // 获取所有库
     const libraries = useMemo(() => {
@@ -76,6 +90,19 @@ function Compare() {
     const libraryA = libraries.find(lib => lib.id === selectedLibraryA);
     const libraryB = libraries.find(lib => lib.id === selectedLibraryB);
 
+    // 检查是否选择了2个不同的库
+    const canCompare = selectedLibraryA && selectedLibraryB && selectedLibraryA !== selectedLibraryB;
+
+    // 热门对比快捷选择
+    const handlePopularComparison = (libAId: string, libBId: string) => {
+        setSelectedLibraryA(libAId);
+        setSelectedLibraryB(libBId);
+        setSearchQueryA('');
+        setSearchQueryB('');
+        setDropdownOpenA(false);
+        setDropdownOpenB(false);
+    };
+
     // 获取标签颜色
     const getTagColor = (tag: string) => {
         const tagConfig = (bookmarksData.tags as Record<string, { backgroundColor?: string; textColor?: string }>)[tag];
@@ -121,8 +148,8 @@ function Compare() {
                 </div>
 
                 {/* 选择器区域 - 按设计图样式 */}
-                <div className="max-w-3xl mx-auto mb-12">
-                    <div className="bg-white dark:bg-gray-800 p-1.5 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <div className="max-w-3xl mx-auto mb-12" ref={dropdownRef}>
+                    <div className="relative bg-white dark:bg-gray-800 p-1.5 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
                         <div className="flex flex-wrap items-center gap-2 p-1">
                             {/* 已选择的库 A */}
                             {selectedLibraryA && libraryA && (
@@ -167,89 +194,44 @@ function Compare() {
                             )}
 
                             {/* 搜索输入框 */}
-                            <div className="flex-1 relative group min-w-[200px]">
+                            <div className="flex-1 min-w-[200px]">
                                 <input
                                     type="text"
                                     value={searchQueryA || searchQueryB}
                                     onChange={e => {
+                                        // 如果已经选择了2个库，不允许再输入
+                                        if (selectedLibraryA && selectedLibraryB) {
+                                            return;
+                                        }
                                         if (!selectedLibraryA) {
                                             setSearchQueryA(e.target.value);
                                             setDropdownOpenA(true);
-                                        } else {
+                                            setDropdownOpenB(false);
+                                        } else if (!selectedLibraryB) {
                                             setSearchQueryB(e.target.value);
                                             setDropdownOpenB(true);
+                                            setDropdownOpenA(false);
                                         }
                                     }}
                                     onFocus={() => {
+                                        // 如果已经选择了2个库，不打开下拉框
+                                        if (selectedLibraryA && selectedLibraryB) {
+                                            return;
+                                        }
                                         if (!selectedLibraryA) {
                                             setDropdownOpenA(true);
-                                        } else {
+                                            setDropdownOpenB(false);
+                                        } else if (!selectedLibraryB) {
                                             setDropdownOpenB(true);
+                                            setDropdownOpenA(false);
                                         }
                                     }}
-                                    placeholder="添加要对比的工具..."
+                                    placeholder={
+                                        selectedLibraryA && selectedLibraryB ? '已选择2个库' : '添加要对比的工具...'
+                                    }
                                     className="w-full bg-transparent border-none focus:ring-0 text-sm py-2 px-3 placeholder-gray-400 dark:placeholder-gray-500 font-medium focus:outline-none"
+                                    disabled={!!(selectedLibraryA && selectedLibraryB)}
                                 />
-
-                                {/* 下拉列表 */}
-                                {(dropdownOpenA || dropdownOpenB) && (
-                                    <div className="absolute top-full left-0 right-0 mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 w-[120%] -ml-[10%] z-50 overflow-hidden">
-                                        <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-                                            推荐库
-                                        </div>
-                                        <div className="max-h-60 overflow-y-auto">
-                                            {(dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).length > 0 ? (
-                                                (dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).map(lib => (
-                                                    <button
-                                                        key={lib.id}
-                                                        onClick={() => {
-                                                            if (dropdownOpenA) {
-                                                                setSelectedLibraryA(lib.id);
-                                                                setSearchQueryA('');
-                                                                setDropdownOpenA(false);
-                                                            } else {
-                                                                setSelectedLibraryB(lib.id);
-                                                                setSearchQueryB('');
-                                                                setDropdownOpenB(false);
-                                                            }
-                                                        }}
-                                                        className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/10 flex items-center justify-between transition-colors group/item border-b border-gray-100 dark:border-gray-700 last:border-0"
-                                                    >
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-lg shadow-sm">
-                                                                📦
-                                                            </div>
-                                                            <div>
-                                                                <div className="font-semibold text-sm text-gray-900 dark:text-white group-hover/item:text-blue-600 transition-colors">
-                                                                    {lib.name}
-                                                                </div>
-                                                                <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                                    {lib.npmPackage} · ⭐{' '}
-                                                                    {(lib.dimensions.stars / 1000).toFixed(1)}k
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <svg
-                                                            className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover/item:text-blue-600 opacity-0 group-hover/item:opacity-100 transition-all transform translate-x-2 group-hover/item:translate-x-0"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 20 20"
-                                                        >
-                                                            <path
-                                                                fillRule="evenodd"
-                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                                                clipRule="evenodd"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                ))
-                                            ) : (
-                                                <div className="px-4 py-3 text-gray-500 dark:text-gray-400">
-                                                    未找到匹配的库
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
                             </div>
 
                             <button className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center justify-center">
@@ -263,28 +245,99 @@ function Compare() {
                                 </svg>
                             </button>
                         </div>
+
+                        {/* 下拉列表 - 相对于选择框定位 */}
+                        {(dropdownOpenA || dropdownOpenB) && (
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
+                                <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                                    推荐库
+                                </div>
+                                <div className="max-h-60 overflow-y-auto">
+                                    {(dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).length > 0 ? (
+                                        (dropdownOpenA ? filteredLibrariesA : filteredLibrariesB).map(lib => (
+                                            <button
+                                                key={lib.id}
+                                                onClick={() => {
+                                                    // 根据当前打开的下拉框来决定设置哪个库
+                                                    if (dropdownOpenA && !selectedLibraryA) {
+                                                        setSelectedLibraryA(lib.id);
+                                                        setSearchQueryA('');
+                                                        // 自动切换到选择第二个库
+                                                        setDropdownOpenA(false);
+                                                        setDropdownOpenB(true);
+                                                    } else if (dropdownOpenB && !selectedLibraryB) {
+                                                        setSelectedLibraryB(lib.id);
+                                                        setSearchQueryB('');
+                                                        // 选择完毕，关闭下拉框
+                                                        setDropdownOpenB(false);
+                                                    }
+                                                }}
+                                                className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/10 flex items-center justify-between transition-colors group/item border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-lg shadow-sm">
+                                                        📦
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-semibold text-sm text-gray-900 dark:text-white group-hover/item:text-blue-600 transition-colors">
+                                                            {lib.name}
+                                                        </div>
+                                                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                            {lib.npmPackage} · ⭐{' '}
+                                                            {(lib.dimensions.stars / 1000).toFixed(1)}k
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <svg
+                                                    className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover/item:text-blue-600 opacity-0 group-hover/item:opacity-100 transition-all transform translate-x-2 group-hover/item:translate-x-0"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        ))
+                                    ) : (
+                                        <div className="px-4 py-3 text-gray-500 dark:text-gray-400">未找到匹配的库</div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* 热门对比提示 */}
                     <div className="mt-3 text-center text-xs text-gray-500 dark:text-gray-400 flex justify-center gap-2">
                         <span>热门对比：</span>
-                        <span className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors">
-                            React vs Vue
+                        <span
+                            onClick={() => handlePopularComparison('mutative', 'immer')}
+                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
+                        >
+                            Mutative vs Immer
                         </span>
                         <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors">
-                            Vite vs Webpack
+                        <span
+                            onClick={() => handlePopularComparison('valibot', 'zod')}
+                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
+                        >
+                            Valibot vs Zod
                         </span>
                         <span className="text-gray-300 dark:text-gray-600">|</span>
-                        <span className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors">
-                            Tailwind vs Bootstrap
+                        <span
+                            onClick={() => handlePopularComparison('dayjs', 'moment')}
+                            className="hover:text-blue-600 cursor-pointer border-b border-dashed border-gray-300 hover:border-blue-600 transition-colors"
+                        >
+                            Day.js vs Moment.js
                         </span>
                     </div>
                 </div>
 
                 {/* 对比结果 */}
-                {libraryA && libraryB ? (
-                    <ComparisonView libraryA={libraryA} libraryB={libraryB} getTagColor={getTagColor} />
+                {canCompare ? (
+                    <ComparisonView libraryA={libraryA!} libraryB={libraryB!} getTagColor={getTagColor} />
                 ) : (
                     <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
                         <svg
@@ -300,9 +353,13 @@ function Compare() {
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                             />
                         </svg>
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">请选择两个库进行对比</h3>
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                            请选择两个不同的库进行对比
+                        </h3>
                         <p className="text-gray-500 dark:text-gray-400">
-                            从上方搜索框中分别选择两个库，即可查看详细对比
+                            {selectedLibraryA && selectedLibraryB && selectedLibraryA === selectedLibraryB
+                                ? '不能选择相同的库，请选择两个不同的库进行对比'
+                                : '从上方搜索框中分别选择两个库，即可查看详细对比'}
                         </p>
                     </div>
                 )}
