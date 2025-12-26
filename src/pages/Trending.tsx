@@ -157,7 +157,10 @@ function Trending() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span>+{repo.starsThisWeek.toLocaleString()} 今日</span>
+                                        <span>
+                                            +{(repo.starsToday || (repo as any).starsThisWeek || 0).toLocaleString()}{' '}
+                                            今日
+                                        </span>
                                     </div>
                                 </div>
 
