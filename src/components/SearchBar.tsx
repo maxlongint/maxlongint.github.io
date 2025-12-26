@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SearchBarProps {
     searchQuery: string;
@@ -8,41 +8,22 @@ interface SearchBarProps {
 
 export default function SearchBar({ searchQuery, setSearchQuery, compact = false }: SearchBarProps) {
     const [inputValue, setInputValue] = useState(searchQuery);
-    const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // 同步外部 searchQuery 的变化（比如清除搜索时）
     useEffect(() => {
         setInputValue(searchQuery);
     }, [searchQuery]);
 
-    // 防抖搜索 - 300ms 后触发
-    useEffect(() => {
-        // 清除之前的定时器
-        if (debounceTimerRef.current) {
-            clearTimeout(debounceTimerRef.current);
-        }
-
-        // 设置新的定时器
-        debounceTimerRef.current = setTimeout(() => {
-            setSearchQuery(inputValue);
-        }, 300);
-
-        // 清理函数
-        return () => {
-            if (debounceTimerRef.current) {
-                clearTimeout(debounceTimerRef.current);
-            }
-        };
-    }, [inputValue, setSearchQuery]);
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            // 按回车时立即搜索，清除防抖
-            if (debounceTimerRef.current) {
-                clearTimeout(debounceTimerRef.current);
-            }
+            // 按回车时搜索
             setSearchQuery(inputValue);
         }
+    };
+
+    const handleSearch = () => {
+        // 点击搜索按钮时搜索
+        setSearchQuery(inputValue);
     };
 
     const handleClear = () => {
@@ -94,9 +75,13 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                                 </svg>
                             </button>
                         )}
-                        <kbd className="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">
-                            ⌘ K
-                        </kbd>
+                        <button
+                            onClick={handleSearch}
+                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
+                            aria-label="搜索"
+                        >
+                            搜索
+                        </button>
                     </div>
                 </div>
             </div>
