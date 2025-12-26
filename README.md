@@ -107,24 +107,27 @@ npm run lint
 .
 ├── .github/
 │   └── workflows/          # GitHub Actions 工作流
-│       ├── deploy.yml                  # 自动部署
-│       ├── update-github-stats.yml     # 更新 GitHub 数据
-│       ├── update-github-readmes.yml   # 更新 README
-│       ├── update-trending.yml         # 更新趋势榜
-│       ├── update-comparison-data.yml  # 更新对比数据
-│       └── auto-merge-submission.yml   # 自动合并提交
+│       ├── deploy.yml                       # 自动部署
+│       ├── update-github-stats.yml          # 更新 GitHub 数据
+│       ├── update-github-readmes.yml        # 更新 README
+│       ├── update-trending.yml              # 更新趋势榜
+│       ├── update-comparison-data.yml       # 更新对比数据
+│       ├── update-single-comparison.yml     # 手动更新单个库对比数据
+│       └── auto-merge-submission.yml        # 自动合并提交
 ├── public/                 # 静态资源
 │   ├── logo.png
 │   └── favicon.ico
 ├── scripts/                # 数据获取脚本
-│   ├── update-github-stats.js      # 获取 GitHub Stars/npm 版本
-│   ├── update-github-readmes.js    # 获取 README 内容
-│   ├── fetch-trending.js           # 获取趋势榜数据
-│   ├── update-comparison-data.js   # 更新对比数据
-│   ├── generate-og-images.js       # 批量生成 OG 图片
-│   ├── generate-og-single.js       # 生成单个 OG 图片
-│   ├── generate-default-og.js      # 生成默认 OG 图片
-│   └── regenerate-tag-colors.js    # 重新生成标签颜色
+│   ├── update-github-stats.js         # 获取 GitHub Stars/npm 版本
+│   ├── update-github-readmes.js       # 获取 README 内容
+│   ├── fetch-trending.js              # 获取趋势榜数据
+│   ├── update-comparison-data.js      # 批量更新对比数据
+│   ├── update-comparison-single.js    # 单个库对比数据更新
+│   ├── generate-og-images.js          # 批量生成 OG 图片
+│   ├── generate-og-single.js          # 生成单个 OG 图片
+│   ├── generate-default-og.js         # 生成默认 OG 图片
+│   ├── sync-single-readme.js          # 同步单个 README
+│   └── regenerate-tag-colors.js       # 重新生成标签颜色
 ├── src/
 │   ├── components/         # React 组件
 │   │   ├── BookmarkCard.tsx        # 工具卡片组件
@@ -256,10 +259,10 @@ useEffect(() => {
 
 #### 定时任务
 
--   **⭐ Update GitHub Stats** - 每天凌晨 1:00 北京时间更新 Stars 和 npm 版本
--   **📖 Update GitHub READMEs** - 每天凌晨 2:00 北京时间更新 README 内容
--   **🔥 Update Daily Trending** - 每天凌晨 3:00 北京时间更新趋势榜数据
--   **⚖️ Update Comparison Data** - 每天凌晨 4:00 北京时间更新对比数据
+-   **⭐ Update GitHub Stats** - 每天凌晨 2:00 北京时间更新 Stars 和 npm 版本
+-   **📖 Update GitHub READMEs** - 每天凌晨 3:00 北京时间更新 README 内容
+-   **🔥 Update Daily Trending** - 每天凌晨 4:00 北京时间更新趋势榜数据
+-   **⚖️ Update Comparison Data** - 每天凌晨 5:00 北京时间更新对比数据
 
 数据更新后自动触发网站部署,用户无需等待下次访问即可看到最新数据。
 
@@ -315,9 +318,25 @@ useEffect(() => {
 
 对比数据通过 GitHub Actions 自动同步：
 
+**自动更新**：
+
 ```bash
-# 每天凌晨 4:00 北京时间自动执行
+# 每天凌晨5:00 北京时间自动执行
 scripts/update-comparison-data.js
+```
+
+**手动更新单个库**：
+
+1. 进入 GitHub Actions 页面
+2. 选择 "🔄 Update Single Library Comparison"
+3. 点击 "Run workflow"
+4. 输入仓库路径（例如：`tailwindlabs/tailwindcss`）
+5. 执行完成后自动发布网站
+
+或本地执行：
+
+```bash
+npm run update-comparison-single "tailwindlabs/tailwindcss"
 ```
 
 自动获取：

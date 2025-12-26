@@ -13,24 +13,38 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 从命令行参数获取 GitHub URL
-const githubUrl = process.argv[2];
+// 从命令行参数获取仓库路径 (owner/repo)
+const repoPath = process.argv[2];
 
-if (!githubUrl) {
-    console.error('❌ 请提供 GitHub URL');
-    console.error('用法: node scripts/update-comparison-single.js <github-url>');
+if (!repoPath) {
+    console.error('❌ 请提供仓库路径 (owner/repo)');
+    console.error('用法: node scripts/update-comparison-single.js <owner/repo>');
+    console.error('示例: node scripts/update-comparison-single.js tailwindlabs/tailwindcss');
     process.exit(1);
 }
 
-// 解析 GitHub URL
-const match = githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-if (!match) {
-    console.error('❌ 无效的 GitHub URL:', githubUrl);
-    process.exit(1);
+// 解析仓库路径，支持 owner/repo 或完整 URL
+let owner, repo;
+if (repoPath.includes('github.com')) {
+    // 支持完整 URL 向后兼容
+    const match = repoPath.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    if (!match) {
+        console.error('❌ 无效的 GitHub URL:', repoPath);
+        process.exit(1);
+    }
+    owner = match[1];
+    repo = match[2].replace(/\.git$/, '');
+} else {
+    // owner/repo 格式
+    const parts = repoPath.split('/');
+    if (parts.length !== 2) {
+        console.error('❌ 无效的仓库路径，格式应为 owner/repo:', repoPath);
+        process.exit(1);
+    }
+    owner = parts[0];
+    repo = parts[1].replace(/\.git$/, '');
 }
 
-const owner = match[1];
-const repo = match[2].replace(/\.git$/, '');
 const fullName = `${owner}/${repo}`;
 
 console.log(`\n📊 开始为 ${fullName} 生成对比数据...\n`);
@@ -40,9 +54,9 @@ const bookmarksPath = path.join(__dirname, '../src/data/bookmarks.json');
 const bookmarksData = JSON.parse(fs.readFileSync(bookmarksPath, 'utf8'));
 
 // 查找对应的 bookmark
-const bookmark = bookmarksData.bookmarks.find(b => b.url === githubUrl || b.url.includes(fullName));
+const bookmark = bookmarksData.bookmarks.find(b => b.url.includes(fullName));
 if (!bookmark) {
-    console.error('❌ 在 bookmarks.json 中未找到该库:', githubUrl);
+    console.error('❌ 在 bookmarks.json 中未找到该库:', fullName);
     process.exit(1);
 }
 
