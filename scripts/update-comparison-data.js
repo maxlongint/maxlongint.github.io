@@ -101,6 +101,92 @@ async function fetchGitHubData(fullName) {
     }
 }
 
+// 获取生态插件数据（基于 GitHub topics 和 package.json）
+async function fetchEcosystemPlugins(fullName) {
+    const plugins = [];
+
+    try {
+        // 1. 从 GitHub topics 中提取相关插件
+        const repoResponse = await fetch(`https://api.github.com/repos/${fullName}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
+
+        if (repoResponse.ok) {
+            const repoData = await repoResponse.json();
+
+            if (repoData.topics) {
+                // 常见的生态关键词映射
+                const ecosystemKeywords = {
+                    react: 'React',
+                    'react-hook-form': 'React Hook Form',
+                    formik: 'Formik',
+                    zod: 'Zod',
+                    valibot: 'Valibot',
+                    typescript: 'TypeScript',
+                    trpc: 'tRPC',
+                    redux: 'Redux',
+                    zustand: 'Zustand',
+                    mobx: 'MobX',
+                };
+
+                repoData.topics.forEach(topic => {
+                    if (ecosystemKeywords[topic]) {
+                        plugins.push(ecosystemKeywords[topic]);
+                    }
+                });
+            }
+        }
+
+        // 2. 尝试获取 package.json 中的 peerDependencies 和 keywords
+        const packageJsonResponse = await fetch(`https://raw.githubusercontent.com/${fullName}/main/package.json`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
+
+        if (packageJsonResponse.ok) {
+            const packageJsonData = await packageJsonResponse.json();
+
+            // 从 peerDependencies 中提取
+            if (packageJsonData.peerDependencies) {
+                Object.keys(packageJsonData.peerDependencies).forEach(dep => {
+                    if (!plugins.includes(dep) && plugins.length < 5) {
+                        plugins.push(dep);
+                    }
+                });
+            }
+
+            // 从 keywords 中提取相关的生态关键词
+            if (packageJsonData.keywords && Array.isArray(packageJsonData.keywords)) {
+                const ecosystemKeywords = ['react', 'vue', 'angular', 'svelte', 'zod', 'valibot', 'formik'];
+                packageJsonData.keywords.forEach(keyword => {
+                    if (
+                        ecosystemKeywords.includes(keyword.toLowerCase()) &&
+                        !plugins.includes(keyword) &&
+                        plugins.length < 5
+                    ) {
+                        plugins.push(keyword);
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        // 静默失败，不影响主流程
+    }
+
+    // 限制最多返回3个插件，如果数量多则添加 "+ more"
+    if (plugins.length > 3) {
+        return [...plugins.slice(0, 3), `+${plugins.length - 3} more`];
+    }
+
+    return plugins;
+}
+
 // 计算生态系统评分
 function calculateEcosystemScore(stars, weeklyDownloads) {
     if (stars > 50000 || weeklyDownloads > 10000000) return 'Rich';
@@ -133,7 +219,11 @@ async function processBookmark(bookmark) {
 
     console.log(`Processing ${fullName} (npm: ${packageName})...`);
 
-    const [githubData, npmData] = await Promise.all([fetchGitHubData(fullName), fetchNpmData(packageName)]);
+    const [githubData, npmData, ecosystemPlugins] = await Promise.all([
+        fetchGitHubData(fullName),
+        fetchNpmData(packageName),
+        fetchEcosystemPlugins(fullName),
+    ]);
 
     if (!githubData) return null;
 
@@ -145,6 +235,7 @@ async function processBookmark(bookmark) {
         lastUpdate: githubData.lastUpdate,
         philosophy: bookmark.description || githubData.description || '',
         ecosystem: calculateEcosystemScore(githubData.stars, npmData.weeklyDownloads),
+        ecosystemPlugins: ecosystemPlugins.length > 0 ? ecosystemPlugins : undefined,
         npmVersion: npmData.version,
         // 新增维度
         language: githubData.language,
