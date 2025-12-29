@@ -1,5 +1,6 @@
 import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
+import CompatibilityBadges from './CompatibilityBadges';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -78,7 +79,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
             {/* 网格模式或移动端布局 */}
             <div className={viewMode === 'grid' ? 'block' : 'md:hidden'}>
                 {/* 第一行：图标、标题和版本号 */}
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-start gap-3 mb-3">
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
                         {githubInfo ? (
                             <img
@@ -130,7 +131,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 {/* 第二行：描述 */}
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
 
-                {/* 第三行：标签 */}
+                {/* 第三行：标签和操作按钮 */}
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                     <div className="flex flex-wrap gap-1.5 flex-1">
                         {bookmark.tags.slice(0, 3).map((tag, index) => {
@@ -191,13 +192,16 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 </div>
 
                 {/* 第四行：统计信息 */}
-                <div className="flex-shrink-0">
+                <div className="mb-2">
                     <GitHubStats url={bookmark.url} />
                 </div>
+
+                {/* 第五行：兼容性信息（移动端单独一行） */}
+                {repoInfo?.name && <CompatibilityBadges packageName={repoInfo.name} />}
             </div>
 
             {/* PC端列表模式布局 */}
-            <div className={viewMode === 'list' ? 'hidden md:flex items-center gap-4' : 'hidden'}>
+            <div className={viewMode === 'list' ? 'hidden md:flex items-start gap-4' : 'hidden'}>
                 {/* Icon */}
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white overflow-hidden flex-shrink-0">
                     {githubInfo ? (
@@ -252,8 +256,8 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                         )}
                     </div>
 
-                    {/* Footer: Tags and Stats */}
-                    <div className="flex items-center justify-between gap-4">
+                    {/* Tags and Actions Row */}
+                    <div className="flex items-center justify-between gap-4 mb-2">
                         <div className="flex flex-wrap gap-1.5">
                             {bookmark.tags.slice(0, 3).map((tag, index) => {
                                 const tagColor = getTagColor(tag);
@@ -309,10 +313,13 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                                     />
                                 </svg>
                             </button>
-                            <div className="flex-shrink-0">
-                                <GitHubStats url={bookmark.url} />
-                            </div>
                         </div>
+                    </div>
+
+                    {/* Stats and Compatibility Row */}
+                    <div className="flex items-start justify-between gap-2">
+                        <GitHubStats url={bookmark.url} />
+                        {repoInfo?.name && <CompatibilityBadges packageName={repoInfo.name} />}
                     </div>
                 </div>
             </div>
