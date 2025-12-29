@@ -1,5 +1,447 @@
 {
-    "packages": {},
-    "lastUpdated": "",
-    "totalPackages": 0
+  "packages": {
+    "mutative": {
+      "node": ">=14.0",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "immer": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "valibot": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "zod": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "class-validator": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "iconoir": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "snapdom": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "anime": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "animate.css": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": "> 3%"
+    },
+    "jsoneditor": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "bignumber.js": {
+      "node": "*",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "decimal.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "dinero.js": {
+      "node": "*",
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "nzh": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "wavesurfer.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "store.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "pickr": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "scrollama": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "signature_pad": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "simple-keyboard": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "uuid": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "dayjs": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "moment": {
+      "node": "*",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "socket.io": {
+      "node": ">=10.2.0",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "tinykeys": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "pinyin-pro": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "bpmn-js": {
+      "node": "*",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "qrcodejs": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "fullcalendar": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "clipboard.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "cropperjs": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "video.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "hls.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "plyr": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": ">"
+    },
+    "filepond": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": "last 1 version and not Explorer 10"
+    },
+    "crypto-js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "intro.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "driver.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "axios": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "js-cookie": {
+      "node": ">=14",
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "loaders.css": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "viewerjs": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "swiper": {
+      "node": ">= 4.7.0",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "highlight.js": {
+      "node": ">=12.0.0",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "normalize.css": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "reveal.js": {
+      "node": ">=18.0.0",
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": ">"
+    },
+    "marked": {
+      "node": ">= 20",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "swapy": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "morphdom": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "uppy": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "lucide": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "interact.js": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "lodash": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "file-type": {
+      "node": ">=20",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "monaco-editor": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "js-base64": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "echarts": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "radash": {
+      "node": ">=14.18.0",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "lit": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "tailwindcss": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": false,
+      "browsers": null
+    },
+    "mime": {
+      "node": ">=16",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "unocss": {
+      "node": ">=14",
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    },
+    "jszip": {
+      "node": null,
+      "react": null,
+      "vue": null,
+      "typescript": true,
+      "browsers": null
+    }
+  },
+  "lastUpdated": "2025-12-29T08:52:48.358Z",
+  "totalPackages": 63
 }
