@@ -16,39 +16,39 @@ jobs:
                   script: |
                       const labels = [
                         {
-                          name: '收录申请',
-                          color: '0E8A16',
-                          description: '新工具收录申请'
-                        },
-                        {
                           name: '待审核',
-                          color: 'FBCA04',
-                          description: '等待审核的收录申请'
+                          color: 'FFA500',
+                          description: '等待人工审核的收录申请'
                         },
                         {
                           name: '收录通过',
-                          color: '0E8A16',
-                          description: '审核通过，将自动收录'
-                        },
-                        {
-                          name: 'approved',
-                          color: '0E8A16',
-                          description: 'Approved for inclusion'
+                          color: '2EA44F',
+                          description: '审核通过，将自动收录（仅用于触发）'
                         },
                         {
                           name: '已收录',
-                          color: '5319E7',
+                          color: '8B5CF6',
                           description: '已成功收录到工具库'
                         },
                         {
                           name: '需要修改',
-                          color: 'D93F0B',
+                          color: 'D4A72C',
                           description: '需要修改后重新提交'
                         },
                         {
                           name: '拒绝收录',
-                          color: 'B60205',
+                          color: 'D73A4A',
                           description: '不符合收录标准'
+                        },
+                        {
+                          name: '重复收录',
+                          color: 'E99695',
+                          description: '工具已存在于收录列表中'
+                        },
+                        {
+                          name: '收录失败',
+                          color: 'F85149',
+                          description: '自动收录过程中出现错误'
                         }
                       ];
 

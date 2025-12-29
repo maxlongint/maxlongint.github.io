@@ -7,7 +7,7 @@ module.exports = async ({ github, context, existingTitle }) => {
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: context.issue.number,
-        labels: ['拒绝收录']
+        labels: ['重复收录'],
     });
 
     await github.rest.issues.createComment({
@@ -20,14 +20,14 @@ module.exports = async ({ github, context, existingTitle }) => {
 
 **已存在的工具:** ${existingTitle}
 
-感谢您的关注！如果您认为这是误判，请在评论中说明。`
+感谢您的关注！如果您认为这是误判，请在评论中说明。`,
     });
 
     await github.rest.issues.update({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: context.issue.number,
-        state: 'closed'
+        state: 'closed',
     });
 
     console.log('✅ 重复提交处理完成');
