@@ -64,6 +64,7 @@ export default function BookmarkDetail() {
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const readmeRef = useRef<HTMLDivElement>(null);
+    const mobileReadmeRef = useRef<HTMLDivElement>(null);
     const hasRenderedRef = useRef<boolean>(false); // 追踪是否已渲染
 
     // 显示提示框
@@ -438,66 +439,120 @@ export default function BookmarkDetail() {
     }, [id]); // 只依赖id，避免循环触发
 
     useEffect(() => {
-        if (!renderedReadme || !readmeRef.current) return;
+        if (!renderedReadme) return;
 
-        // 使用 ref 防止重复渲染，更可靠
-        if (hasRenderedRef.current && readmeRef.current.hasChildNodes()) {
-            return; // 已经渲染过且 DOM 仍然存在，跳过
+        // PC端渲染
+        if (readmeRef.current) {
+            // 使用 ref 防止重复渲染，更可靠
+            if (!hasRenderedRef.current || !readmeRef.current.hasChildNodes()) {
+                // 直接设置HTML内容，绕过React的重渲染
+                readmeRef.current.innerHTML = renderedReadme;
+                hasRenderedRef.current = true; // 标记为已渲染
+            }
         }
 
-        // 直接设置HTML内容，绕过React的重渲染
-        readmeRef.current.innerHTML = renderedReadme;
-        hasRenderedRef.current = true; // 标记为已渲染
+        // 移动端渲染
+        if (mobileReadmeRef.current) {
+            if (!mobileReadmeRef.current.hasChildNodes()) {
+                mobileReadmeRef.current.innerHTML = renderedReadme;
+            }
+        }
 
         // 等待DOM更新后再高亮代码
         const timeoutId = setTimeout(() => {
-            if (!readmeRef.current) return;
+            // 对PC端代码块高亮
+            if (readmeRef.current) {
+                const codeBlocks = readmeRef.current.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    const el = block as HTMLElement;
+                    // 清除旧的高亮
+                    el.removeAttribute('data-highlighted');
+                    el.className = el.className
+                        .split(' ')
+                        .filter(c => !c.startsWith('hljs'))
+                        .join(' ');
 
-            // 移除所有已高亮的标记，重新高亮
-            const codeBlocks = readmeRef.current.querySelectorAll('pre code');
+                    // 检查是否有语言标识
+                    const hasLanguage = el.className
+                        .split(' ')
+                        .some(
+                            c =>
+                                c.startsWith('language-') ||
+                                [
+                                    'javascript',
+                                    'typescript',
+                                    'html',
+                                    'css',
+                                    'json',
+                                    'bash',
+                                    'shell',
+                                    'sh',
+                                    'python',
+                                    'swift',
+                                    'jsx',
+                                    'tsx',
+                                    'xml',
+                                ].includes(c)
+                        );
 
-            codeBlocks.forEach(block => {
-                const el = block as HTMLElement;
-                // 清除旧的高亮
-                el.removeAttribute('data-highlighted');
-                el.className = el.className
-                    .split(' ')
-                    .filter(c => !c.startsWith('hljs'))
-                    .join(' ');
+                    // 如果没有语言标识，尝试自动检测
+                    if (!hasLanguage) {
+                        const result = hljs.highlightAuto(el.textContent || '');
+                        el.innerHTML = result.value;
+                        el.className = `hljs ${result.language || ''}`;
+                    } else {
+                        // 有语言标识，使用正常高亮
+                        hljs.highlightElement(el);
+                    }
+                });
+            }
 
-                // 检查是否有语言标识
-                const hasLanguage = el.className
-                    .split(' ')
-                    .some(
-                        c =>
-                            c.startsWith('language-') ||
-                            [
-                                'javascript',
-                                'typescript',
-                                'html',
-                                'css',
-                                'json',
-                                'bash',
-                                'shell',
-                                'sh',
-                                'python',
-                                'swift',
-                                'jsx',
-                                'tsx',
-                                'xml',
-                            ].includes(c)
-                    );
+            // 对移动端代码块高亮
+            if (mobileReadmeRef.current) {
+                const codeBlocks = mobileReadmeRef.current.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    const el = block as HTMLElement;
+                    // 清除旧的高亮
+                    el.removeAttribute('data-highlighted');
+                    el.className = el.className
+                        .split(' ')
+                        .filter(c => !c.startsWith('hljs'))
+                        .join(' ');
 
-                // 如果没有语言标识，尝试自动检测
-                if (!hasLanguage) {
-                    const result = hljs.highlightAuto(el.textContent || '');
-                    el.innerHTML = result.value;
-                    el.className = `hljs ${result.language || ''}`;
-                } else {
-                    // 有语言标识，使用正常高亮
-                    hljs.highlightElement(el);
-                }
-            });
+                    // 检查是否有语言标识
+                    const hasLanguage = el.className
+                        .split(' ')
+                        .some(
+                            c =>
+                                c.startsWith('language-') ||
+                                [
+                                    'javascript',
+                                    'typescript',
+                                    'html',
+                                    'css',
+                                    'json',
+                                    'bash',
+                                    'shell',
+                                    'sh',
+                                    'python',
+                                    'swift',
+                                    'jsx',
+                                    'tsx',
+                                    'xml',
+                                ].includes(c)
+                        );
+
+                    // 如果没有语言标识，尝试自动检测
+                    if (!hasLanguage) {
+                        const result = hljs.highlightAuto(el.textContent || '');
+                        el.innerHTML = result.value;
+                        el.className = `hljs ${result.language || ''}`;
+                    } else {
+                        // 有语言标识，使用正常高亮
+                        hljs.highlightElement(el);
+                    }
+                });
+            }
         }, 150);
 
         return () => clearTimeout(timeoutId);
@@ -509,8 +564,11 @@ export default function BookmarkDetail() {
             const target = e.target as HTMLElement;
             const anchor = target.closest('a') as HTMLAnchorElement;
 
-            // 只处理README容器内的链接
-            if (!anchor || !readmeRef.current?.contains(anchor)) {
+            // 只处理README容器内的链接（PC端或移动端）
+            const inPcReadme = readmeRef.current?.contains(anchor);
+            const inMobileReadme = mobileReadmeRef.current?.contains(anchor);
+
+            if (!anchor || (!inPcReadme && !inMobileReadme)) {
                 return;
             }
 
@@ -528,17 +586,20 @@ export default function BookmarkDetail() {
                     e.stopPropagation();
                     e.stopImmediatePropagation();
 
-                    if (hash && readmeRef.current) {
-                        const targetElement = readmeRef.current.querySelector(`#${CSS.escape(hash)}`);
+                    if (hash) {
+                        const container = inPcReadme ? readmeRef.current : mobileReadmeRef.current;
+                        if (container) {
+                            const targetElement = container.querySelector(`#${CSS.escape(hash)}`);
 
-                        if (targetElement) {
-                            const yOffset = -100;
-                            const elementPosition = targetElement.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset + yOffset;
-                            window.scrollTo({
-                                top: offsetPosition,
-                                behavior: 'smooth',
-                            });
+                            if (targetElement) {
+                                const yOffset = -100;
+                                const elementPosition = targetElement.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset + yOffset;
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: 'smooth',
+                                });
+                            }
                         }
                     }
                     return false;
@@ -1017,7 +1078,7 @@ export default function BookmarkDetail() {
                                 <div className="flex items-center justify-center py-12">
                                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                                 </div>
-                            ) : !readme || readmeError || readme.trim().length === 0 || readme.includes('README.md') ? (
+                            ) : !readme || readmeError || readme.trim().length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <svg
                                         className="w-12 h-12 text-gray-300 mb-3"
@@ -1049,9 +1110,9 @@ export default function BookmarkDetail() {
                                 </div>
                             ) : (
                                 <div
-                                    ref={readmeRef}
-                                    className="prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
-                                    dangerouslySetInnerHTML={{ __html: readme }}
+                                    key="readme-content-mobile"
+                                    ref={mobileReadmeRef}
+                                    className="markdown-body prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
                                 />
                             )}
                         </div>
