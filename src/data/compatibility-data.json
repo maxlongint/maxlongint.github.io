@@ -2,446 +2,653 @@
   "packages": {
     "mutative": {
       "node": ">=14.0",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 705484,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 137727
     },
     "immer": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 892007,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 12422789
     },
     "valibot": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 1738609,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 3497588
     },
     "zod": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 4203811,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 41592150
     },
     "class-validator": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 5278496,
+      "sideEffects": false,
+      "dependenciesCount": 3,
+      "weeklyDownloads": 3510830
     },
     "iconoir": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 7114946,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 4874
     },
     "snapdom": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 83
     },
     "anime": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 4,
+      "weeklyDownloads": 88
     },
     "animate.css": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": "> 3%"
+      "browsers": "> 3%",
+      "license": "MIT",
+      "bundleSize": 279124,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 249922
     },
     "jsoneditor": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 8198917,
+      "sideEffects": null,
+      "dependenciesCount": 8,
+      "weeklyDownloads": 117817
     },
     "bignumber.js": {
       "node": "*",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 351589,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 14488094
     },
     "decimal.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 284347,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 18051401
     },
     "dinero.js": {
       "node": "*",
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 1080898,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 106351
     },
     "nzh": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "BSD-2-Clause",
+      "bundleSize": 77487,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 5840
     },
     "wavesurfer.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "BSD-3-Clause",
+      "bundleSize": 1195636,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 248924
     },
     "store.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": null,
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 56
     },
     "pickr": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 21
     },
     "scrollama": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 369697,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 9090
     },
     "signature_pad": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 447640,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 561540
     },
     "simple-keyboard": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 517805,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 18241
     },
     "uuid": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 66680,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 103166132
     },
     "dayjs": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 678966,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 18002507
     },
     "moment": {
       "node": "*",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 4350323,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 14682583
     },
     "socket.io": {
       "node": ">=10.2.0",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 1416999,
+      "sideEffects": null,
+      "dependenciesCount": 7,
+      "weeklyDownloads": 5305050
     },
     "tinykeys": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 60988,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 59785
     },
     "pinyin-pro": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 927443,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 53208
     },
     "bpmn-js": {
       "node": "*",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "SEE LICENSE IN LICENSE",
+      "bundleSize": 5017125,
+      "sideEffects": [
+        "*.css"
+      ],
+      "dependenciesCount": 8,
+      "weeklyDownloads": 52116
     },
     "qrcodejs": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": null,
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 2784
     },
     "fullcalendar": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 990234,
+      "sideEffects": null,
+      "dependenciesCount": 6,
+      "weeklyDownloads": 105432
     },
     "clipboard.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "LGPL-3.0",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 144
     },
     "cropperjs": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 440291,
+      "sideEffects": null,
+      "dependenciesCount": 2,
+      "weeklyDownloads": 583661
     },
     "video.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 17989618,
+      "sideEffects": null,
+      "dependenciesCount": 12,
+      "weeklyDownloads": 392601
     },
     "hls.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 24746400,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 1462827
     },
     "plyr": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": ">"
+      "browsers": ">",
+      "license": "MIT",
+      "bundleSize": 5323991,
+      "sideEffects": null,
+      "dependenciesCount": 5,
+      "weeklyDownloads": 111008
     },
     "filepond": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": "last 1 version and not Explorer 10"
+      "browsers": "last 1 version and not Explorer 10",
+      "license": "MIT",
+      "bundleSize": 1200391,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 111476
     },
     "crypto-js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 486947,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 6539953
     },
     "intro.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "AGPL-3.0",
+      "bundleSize": 873935,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 68211
     },
     "driver.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 82989,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 171885
     },
     "axios": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 2292298,
+      "sideEffects": false,
+      "dependenciesCount": 3,
+      "weeklyDownloads": 44278515
     },
     "js-cookie": {
       "node": ">=14",
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 26158,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 8513911
     },
     "loaders.css": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 37874
     },
     "viewerjs": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 504010,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 64089
     },
     "swiper": {
       "node": ">= 4.7.0",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 3338062,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 1867639
     },
     "highlight.js": {
       "node": ">=12.0.0",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "BSD-3-Clause",
+      "bundleSize": 5433042,
+      "sideEffects": [
+        "./es/common.js",
+        "./lib/common.js",
+        "*.css",
+        "*.scss"
+      ],
+      "dependenciesCount": 0,
+      "weeklyDownloads": 7283141
     },
     "normalize.css": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 16417,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 606279
     },
     "reveal.js": {
       "node": ">=18.0.0",
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": ">"
+      "browsers": ">",
+      "license": "MIT",
+      "bundleSize": 5805287,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 19583
     },
     "marked": {
       "node": ">= 20",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 432701,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 11180965
     },
     "swapy": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "GPL-3.0",
+      "bundleSize": 99477,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 8785
     },
     "morphdom": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 201557,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 181075
     },
     "uppy": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 5645814,
+      "sideEffects": null,
+      "dependenciesCount": 35,
+      "weeklyDownloads": 14671
     },
     "lucide": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "ISC",
+      "bundleSize": 19827254,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     },
     "interact.js": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 1191
     },
     "lodash": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 1412415,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     },
     "file-type": {
       "node": ">=20",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 109693,
+      "sideEffects": false,
+      "dependenciesCount": 4,
+      "weeklyDownloads": 17160230
     },
     "monaco-editor": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 72633330,
+      "sideEffects": null,
+      "dependenciesCount": 2,
+      "weeklyDownloads": null
     },
     "js-base64": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "BSD-3-Clause",
+      "bundleSize": 39001,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 4535590
     },
     "echarts": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 57572927,
+      "sideEffects": [
+        "index.js",
+        "index.blank.js",
+        "index.common.js",
+        "index.simple.js",
+        "lib/echarts.js",
+        "lib/chart/*.js",
+        "lib/component/*.js",
+        "extension/**/*.js",
+        "theme/*.js",
+        "i18n/*.js"
+      ],
+      "dependenciesCount": 2,
+      "weeklyDownloads": null
     },
     "radash": {
       "node": ">=14.18.0",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 306084,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     },
     "lit": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "BSD-3-Clause",
+      "bundleSize": 106390,
+      "sideEffects": null,
+      "dependenciesCount": 3,
+      "weeklyDownloads": 1817432
     },
     "tailwindcss": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": false,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 748832,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     },
     "mime": {
       "node": ">=16",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 161244,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     },
     "unocss": {
       "node": ">=14",
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 142527,
+      "sideEffects": false,
+      "dependenciesCount": 19,
+      "weeklyDownloads": null
     },
     "jszip": {
       "node": null,
-      "react": null,
-      "vue": null,
       "typescript": true,
-      "browsers": null
+      "browsers": null,
+      "license": "(MIT OR GPL-3.0-or-later)",
+      "bundleSize": 762000,
+      "sideEffects": null,
+      "dependenciesCount": 4,
+      "weeklyDownloads": 8334492
     }
   },
-  "lastUpdated": "2025-12-29T08:52:48.358Z",
+  "lastUpdated": "2025-12-29T09:08:38.070Z",
   "totalPackages": 63
 }
