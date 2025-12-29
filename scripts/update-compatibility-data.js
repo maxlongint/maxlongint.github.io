@@ -20,12 +20,27 @@ async function fetchCompatibility(packageName) {
 
         const data = await response.json();
 
+        // 获取每周下载量
+        let weeklyDownloads = null;
+        try {
+            const downloadsResponse = await fetch(`https://api.npmjs.org/downloads/point/last-week/${packageName}`);
+            if (downloadsResponse.ok) {
+                const downloadsData = await downloadsResponse.json();
+                weeklyDownloads = downloadsData.downloads || null;
+            }
+        } catch (e) {
+            // 忽略下载量获取失败
+        }
+
         return {
             node: data.engines?.node || null,
-            react: data.peerDependencies?.react || data.dependencies?.react || null,
-            vue: data.peerDependencies?.vue || data.dependencies?.vue || null,
             typescript: !!(data.types || data.typings || data.devDependencies?.typescript),
             browsers: data.browserslist?.[0] || data.browserslist || null,
+            license: data.license || null,
+            bundleSize: data.dist?.unpackedSize || null,
+            sideEffects: data.sideEffects !== undefined ? data.sideEffects : null,
+            dependenciesCount: data.dependencies ? Object.keys(data.dependencies).length : 0,
+            weeklyDownloads: weeklyDownloads,
         };
     } catch (error) {
         console.error(`❌ 获取 ${packageName} 兼容性失败:`, error.message);

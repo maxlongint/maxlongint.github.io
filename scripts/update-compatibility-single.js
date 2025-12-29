@@ -22,26 +22,55 @@ async function fetchCompatibility(packageName) {
 
         const data = await response.json();
 
+        // 获取每周下载量
+        let weeklyDownloads = null;
+        try {
+            const downloadsResponse = await fetch(`https://api.npmjs.org/downloads/point/last-week/${packageName}`);
+            if (downloadsResponse.ok) {
+                const downloadsData = await downloadsResponse.json();
+                weeklyDownloads = downloadsData.downloads || null;
+            }
+        } catch (e) {
+            // 忽略下载量获取失败
+        }
+
         const compatibility = {
             node: data.engines?.node || null,
-            react: data.peerDependencies?.react || data.dependencies?.react || null,
-            vue: data.peerDependencies?.vue || data.dependencies?.vue || null,
             typescript: !!(data.types || data.typings || data.devDependencies?.typescript),
             browsers: data.browserslist?.[0] || data.browserslist || null,
+            license: data.license || null,
+            bundleSize: data.dist?.unpackedSize || null,
+            sideEffects: data.sideEffects !== undefined ? data.sideEffects : null,
+            dependenciesCount: data.dependencies ? Object.keys(data.dependencies).length : 0,
+            weeklyDownloads: weeklyDownloads,
         };
 
         console.log(`   ✅ 成功获取兼容性信息`);
         if (compatibility.node) console.log(`      Node.js: ${compatibility.node}`);
-        if (compatibility.react) console.log(`      React: ${compatibility.react}`);
-        if (compatibility.vue) console.log(`      Vue: ${compatibility.vue}`);
         console.log(`      TypeScript: ${compatibility.typescript ? '✅ 支持' : '❌ 不支持'}`);
         if (compatibility.browsers) console.log(`      浏览器: ${compatibility.browsers}`);
+        if (compatibility.license) console.log(`      许可证: ${compatibility.license}`);
+        if (compatibility.bundleSize) console.log(`      包大小: ${formatBytes(compatibility.bundleSize)}`);
+        if (compatibility.sideEffects !== null)
+            console.log(`      副作用: ${compatibility.sideEffects === false ? '无' : '有'}`);
+        console.log(`      依赖数量: ${compatibility.dependenciesCount} 个`);
+        if (compatibility.weeklyDownloads)
+            console.log(`      周下载量: ${compatibility.weeklyDownloads.toLocaleString()}`);
 
         return compatibility;
     } catch (error) {
         console.error(`❌ 获取 ${packageName} 兼容性失败:`, error.message);
         return null;
     }
+}
+
+// 格式化字节大小
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
 // 从 GitHub URL 获取包名
