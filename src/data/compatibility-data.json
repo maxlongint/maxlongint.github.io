@@ -410,7 +410,7 @@
       "bundleSize": null,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 37874
+      "weeklyDownloads": null
     },
     "viewerjs": {
       "node": null,
@@ -420,7 +420,7 @@
       "bundleSize": 504010,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 64089
+      "weeklyDownloads": null
     },
     "swiper": {
       "node": ">= 4.7.0",
@@ -430,7 +430,7 @@
       "bundleSize": 3338062,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 1867639
+      "weeklyDownloads": null
     },
     "highlight.js": {
       "node": ">=12.0.0",
@@ -445,7 +445,7 @@
         "*.scss"
       ],
       "dependenciesCount": 0,
-      "weeklyDownloads": 7283141
+      "weeklyDownloads": null
     },
     "normalize.css": {
       "node": null,
@@ -455,7 +455,7 @@
       "bundleSize": 16417,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 606279
+      "weeklyDownloads": null
     },
     "reveal.js": {
       "node": ">=18.0.0",
@@ -465,7 +465,7 @@
       "bundleSize": 5805287,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 19583
+      "weeklyDownloads": null
     },
     "marked": {
       "node": ">= 20",
@@ -475,7 +475,7 @@
       "bundleSize": 432701,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 11180965
+      "weeklyDownloads": null
     },
     "swapy": {
       "node": null,
@@ -485,7 +485,7 @@
       "bundleSize": 99477,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 8785
+      "weeklyDownloads": null
     },
     "morphdom": {
       "node": null,
@@ -525,7 +525,7 @@
       "bundleSize": null,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 1191
+      "weeklyDownloads": null
     },
     "lodash": {
       "node": null,
@@ -545,7 +545,7 @@
       "bundleSize": 109693,
       "sideEffects": false,
       "dependenciesCount": 4,
-      "weeklyDownloads": 17160230
+      "weeklyDownloads": null
     },
     "monaco-editor": {
       "node": null,
@@ -565,7 +565,7 @@
       "bundleSize": 39001,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": 4535590
+      "weeklyDownloads": null
     },
     "echarts": {
       "node": null,
@@ -606,7 +606,7 @@
       "bundleSize": 106390,
       "sideEffects": null,
       "dependenciesCount": 3,
-      "weeklyDownloads": 1817432
+      "weeklyDownloads": null
     },
     "tailwindcss": {
       "node": null,
@@ -626,7 +626,7 @@
       "bundleSize": 161244,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 50757347
     },
     "unocss": {
       "node": ">=14",
@@ -636,7 +636,7 @@
       "bundleSize": 142527,
       "sideEffects": false,
       "dependenciesCount": 19,
-      "weeklyDownloads": 294919
+      "weeklyDownloads": null
     },
     "jszip": {
       "node": null,
@@ -647,8 +647,164 @@
       "sideEffects": null,
       "dependenciesCount": 4,
       "weeklyDownloads": null
+    },
+    "dompurify": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "(MPL-2.0 OR Apache-2.0)",
+      "bundleSize": 833423,
+      "sideEffects": null,
+      "dependenciesCount": 1,
+      "weeklyDownloads": 9555212
+    },
+    "countup.js": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 1239783,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 332681
+    },
+    "sortablejs": {
+      "node": null,
+      "typescript": false,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 640877,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 1369748
+    },
+    "numeral": {
+      "node": "*",
+      "typescript": false,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 803231
+    },
+    "overlayscrollbars": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 2904915,
+      "sideEffects": [
+        "*.css",
+        "*.scss",
+        "*.sass"
+      ],
+      "dependenciesCount": 0,
+      "weeklyDownloads": 259912
+    },
+    "tippy.js": {
+      "node": null,
+      "typescript": true,
+      "browsers": "> 0.5%",
+      "license": "MIT",
+      "bundleSize": 2067120,
+      "sideEffects": [
+        "**/*.css"
+      ],
+      "dependenciesCount": 1,
+      "weeklyDownloads": 1711890
+    },
+    "hammerjs": {
+      "node": ">=0.8.0",
+      "typescript": false,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": null,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 733331
+    },
+    "docx-preview": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 964025,
+      "sideEffects": null,
+      "dependenciesCount": 1,
+      "weeklyDownloads": null
+    },
+    "tui-image-editor": {
+      "node": null,
+      "typescript": false,
+      "browsers": "last 2 versions",
+      "license": "MIT",
+      "bundleSize": 3671947,
+      "sideEffects": null,
+      "dependenciesCount": 3,
+      "weeklyDownloads": 13157
+    },
+    "codemirror": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 21258,
+      "sideEffects": false,
+      "dependenciesCount": 7,
+      "weeklyDownloads": null
+    },
+    "xterm": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 2344879,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
+    },
+    "tinycolor2": {
+      "node": null,
+      "typescript": false,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 284855,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 4276348
+    },
+    "katex": {
+      "node": null,
+      "typescript": false,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 4040184,
+      "sideEffects": null,
+      "dependenciesCount": 1,
+      "weeklyDownloads": null
+    },
+    "mockjs": {
+      "node": null,
+      "typescript": false,
+      "browsers": null,
+      "license": null,
+      "bundleSize": 1887322,
+      "sideEffects": null,
+      "dependenciesCount": 1,
+      "weeklyDownloads": null
+    },
+    "fuse.js": {
+      "node": ">=10",
+      "typescript": true,
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 456037,
+      "sideEffects": false,
+      "dependenciesCount": 0,
+      "weeklyDownloads": null
     }
   },
-  "lastUpdated": "2025-12-29T10:25:14.184Z",
-  "totalPackages": 63
+  "lastUpdated": "2025-12-29T10:33:43.763Z",
+  "totalPackages": 78
 }
