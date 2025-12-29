@@ -11,28 +11,54 @@ jobs:
             issues: write
 
         steps:
-            - name: Add labels to submission
+            - name: Checkout repository
+              if: contains(github.event.issue.title, '[收录]')
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              if: contains(github.event.issue.title, '[收录]')
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Check for duplicate submission
+              if: contains(github.event.issue.title, '[收录]')
+              id: check-duplicate
+              env:
+                  ISSUE_BODY: ${{ github.event.issue.body }}
+              run: |
+                  # 运行检查脚本并捕获输出
+                  result=$(node -e "
+                    const {checkDuplicateSubmission} = require('./scripts/check-duplicate-submission.cjs');
+                    const result = checkDuplicateSubmission(process.env.ISSUE_BODY);
+                    console.log(JSON.stringify(result));
+                  ")
+
+                  echo "检查结果: $result"
+
+                  # 解析结果
+                  is_duplicate=$(echo "$result" | node -e "const data = JSON.parse(require('fs').readFileSync(0, 'utf-8')); console.log(data.isDuplicate);")
+                  existing_title=$(echo "$result" | node -e "const data = JSON.parse(require('fs').readFileSync(0, 'utf-8')); console.log(data.existingTitle);")
+
+                  echo "is_duplicate=$is_duplicate" >> $GITHUB_OUTPUT
+                  echo "existing_title=$existing_title" >> $GITHUB_OUTPUT
+
+            - name: Handle duplicate submission
+              if: steps.check-duplicate.outputs.is_duplicate == 'true'
               uses: actions/github-script@v7
               with:
                   script: |
-                      const issue = context.payload.issue;
+                      const handleDuplicate = require('./scripts/handle-duplicate-submission.cjs');
+                      await handleDuplicate({
+                        github,
+                        context,
+                        existingTitle: '${{ steps.check-duplicate.outputs.existing_title }}'
+                      });
 
-                      // 检查 Issue 标题是否包含 [收录]
-                      if (issue.title.includes('[收录]')) {
-                        await github.rest.issues.addLabels({
-                          owner: context.repo.owner,
-                          repo: context.repo.repo,
-                          issue_number: issue.number,
-                          labels: ['收录申请', '待审核']
-                        });
-                        
-                        console.log(`✅ 已为 Issue #${issue.number} 添加标签`);
-                        
-                        // 添加欢迎评论
-                        await github.rest.issues.createComment({
-                          owner: context.repo.owner,
-                          repo: context.repo.repo,
-                          issue_number: issue.number,
-                          body: '👋 感谢提交新工具!\n\n您的提交已收到,管理员会尽快审核。\n\n**审核流程:**\n- ⏳ 当前状态: 待审核\n- ✅ 审核通过后会自动添加到工具库\n- 📧 您会收到通知\n\n如有问题,请在评论中说明。'
-                        });
-                      }
+            - name: Handle new submission
+              if: contains(github.event.issue.title, '[收录]') && steps.check-duplicate.outputs.is_duplicate != 'true'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const handleNew = require('./scripts/handle-new-submission.cjs');
+                      await handleNew({ github, context });
