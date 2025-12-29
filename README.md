@@ -129,7 +129,7 @@ npm run update-library-tags "Axios" "网络请求,工具库"
 | `npm run fetch-trending`              | 获取 GitHub 趋势榜数据 | `npm run fetch-trending`                                               | 每天凌晨 4:00 自动执行 |
 | `npm run update-library-tags`         | 修改库的标签           | `npm run update-library-tags "Axios" "网络请求,工具库"`                | 手动执行或 Actions     |
 | `npm run update-comparison-single`    | 更新单个库对比数据     | `npm run update-comparison-single "tailwindlabs/tailwindcss"`          | 手动执行或 Actions     |
-| `npm run update-compatibility`        | 批量更新兼容性数据     | `npm run update-compatibility`                                         | 手动执行               |
+| `npm run update-compatibility`        | 批量更新兼容性数据     | `npm run update-compatibility`                                         | 每天凌晨 6:00 自动执行 |
 | `npm run update-compatibility-single` | 更新单个库兼容性       | `npm run update-compatibility-single "https://github.com/axios/axios"` | 手动执行或 Actions     |
 
 ### OG 图片生成命令
@@ -191,9 +191,15 @@ npm run update-comparison-single "facebook/react"
 
 **获取数据**：
 
--   npm Registry API - 包版本、周下载量
+-   npm Registry API - 包版本、周下载量（优先使用 npmUrl 字段）
 -   GitHub API - Stars、Forks、Issues、语言、仓库大小
 -   Bundlephobia API - 打包体积 (gzip)
+
+**npm 数据获取逻辑**：
+
+-   ✅ 优先使用 bookmarks.json 中的 `npmUrl` 字段（完整 npm 包地址）
+-   ✅ 如果没有 npmUrl，则从 GitHub 仓库名推断包名
+-   ✅ 所有脚本统一使用此逻辑，确保数据获取的准确性
 
 #### 3. 兼容性数据更新：`update-compatibility-single`
 
@@ -214,7 +220,13 @@ npm run update-compatibility-single "https://github.com/axios/axios"
 -   npm 包大小
 -   副作用声明
 -   依赖数量
--   周下载量
+-   周下载量（优先使用 npmUrl 字段）
+
+**数据来源**：
+
+-   优先从 bookmarks.json 的 `npmUrl` 字段获取 npm 包信息
+-   没有 npmUrl 时，从 GitHub 仓库名推断包名
+-   使用 npm registry API 获取包的兼容性元数据
 
 #### 4. OG 图片生成：`generate-og-single`
 
@@ -268,17 +280,22 @@ npm run sync-readme "https://github.com/axios/axios"
 │   ├── logo.png
 │   └── favicon.ico
 ├── scripts/                # 数据获取和管理脚本
-│   ├── update-github-stats.js         # 获取 GitHub Stars/npm 版本
-│   ├── update-github-readmes.js       # 获取 README 内容
-│   ├── fetch-trending.js              # 获取趋势榜数据
-│   ├── update-comparison-data.js      # 批量更新对比数据
-│   ├── update-comparison-single.js    # 单个库对比数据更新
-│   ├── update-library-tags.js         # 修改库的标签
-│   ├── generate-og-images.js          # 批量生成 OG 图片
-│   ├── generate-og-single.js          # 生成单个 OG 图片
-│   ├── generate-default-og.js         # 生成默认 OG 图片
-│   ├── sync-single-readme.js          # 同步单个 README
-│   └── regenerate-tag-colors.js       # 重新生成标签颜色
+│   ├── update-github-stats.js              # 获取 GitHub Stars/npm 版本
+│   ├── update-github-readmes.js            # 获取 README 内容
+│   ├── fetch-trending.js                   # 获取趋势榜数据
+│   ├── update-comparison-data.js           # 批量更新对比数据
+│   ├── update-comparison-single.js         # 单个库对比数据更新
+│   ├── update-compatibility-data.js        # 批量更新兼容性数据
+│   ├── update-compatibility-single.js      # 单个库兼容性数据更新
+│   ├── update-library-tags.js              # 修改库的标签
+│   ├── generate-og-images.js               # 批量生成 OG 图片
+│   ├── generate-og-single.js               # 生成单个 OG 图片
+│   ├── generate-default-og.js              # 生成默认 OG 图片
+│   ├── sync-single-readme.js               # 同步单个 README
+│   ├── regenerate-tag-colors.js            # 重新生成标签颜色
+│   ├── parse-and-merge-issue.cjs           # 自动收录提交的工具
+│   ├── check-duplicate-submission.cjs      # 检查重复提交
+│   └── handle-*.cjs                        # 自动化流程处理脚本
 ├── src/
 │   ├── components/         # React 组件
 │   │   ├── BookmarkCard.tsx        # 工具卡片组件
