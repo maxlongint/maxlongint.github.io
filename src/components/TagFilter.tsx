@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface TagFilterProps {
     tags: string[];
@@ -9,8 +9,6 @@ interface TagFilterProps {
 }
 
 export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag, getTagColor }: TagFilterProps) {
-    const [showAll, setShowAll] = useState(false);
-
     // 热门分类：全部 + 包含库最多的5个标签 - 使用 useMemo 缓存
     const topTags = useMemo(
         () =>
@@ -55,25 +53,9 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
             {/* 更多标签 */}
             {otherTags.length > 0 && (
                 <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">更多标签</h2>
-                        <button
-                            onClick={() => setShowAll(!showAll)}
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1"
-                        >
-                            {showAll ? '收起' : '展开全部'}
-                            <svg
-                                className={`w-4 h-4 transition-transform ${showAll ? 'rotate-180' : ''}`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
+                    <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">更多标签</h2>
                     <div className="flex flex-wrap gap-1.5">
-                        {(showAll ? otherTags : otherTags.slice(0, 24)).map(tag => {
+                        {otherTags.map(tag => {
                             const tagColor = getTagColor(tag);
                             const isStyleObject = typeof tagColor === 'object';
 
@@ -96,11 +78,6 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                                 </button>
                             );
                         })}
-                        {!showAll && otherTags.length > 24 && (
-                            <span className="px-2.5 py-1 text-xs text-gray-500 dark:text-gray-400">
-                                + {otherTags.length - 24} 个标签
-                            </span>
-                        )}
                     </div>
                 </div>
             )}
