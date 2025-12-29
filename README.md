@@ -22,7 +22,7 @@
 
 -   **📚 精选工具库** - 75+ 精心挑选的前端工具和框架
 -   **🔍 智能搜索** - 支持标题、描述、URL、标签的全文搜索
--   **🏷️ 标签筛选** - 20+ 分类标签,快速定位所需工具
+-   **🏷️ 标签筛选** - 18 个精选分类标签,快速定位所需工具
 -   **⚖️ 工具对比** - 深度对比两个工具库的各项指标,帮助选型决策
 -   **📊 实时数据** - GitHub Stars、npm 版本、更新时间实时同步
 -   **📈 趋势榜单** - 展示 GitHub 每日前端热门项目
@@ -41,8 +41,6 @@
 -   **🌓 主题切换** - 亮色/暗色主题无缝切换,localStorage 持久化,Giscus 评论区同步主题
 -   **📊 用户分析** - 集成 Microsoft Clarity (延迟加载,不影响性能)
 -   **🚀 自动部署** - GitHub Actions 自动构建和部署
-
-### 🛠️ 技术栈
 
 -   **前端框架**: React 19.1 + TypeScript 5.9
 -   **构建工具**: Vite 6.0
@@ -94,9 +92,19 @@ npm run preview
 
 ### 代码检查
 
-```
+```bash
 # ESLint 代码检查
 npm run lint
+```
+
+### 管理工具
+
+```bash
+# 修改库的标签
+npm run update-library-tags "库名称" "标签1,标签2,标签3"
+
+# 示例：修改 Axios 的标签
+npm run update-library-tags "Axios" "网络请求,工具库"
 ```
 
 ---
@@ -113,16 +121,18 @@ npm run lint
 │       ├── update-trending.yml              # 更新趋势榜
 │       ├── update-comparison-data.yml       # 更新对比数据
 │       ├── update-single-comparison.yml     # 手动更新单个库对比数据
+│       ├── update-library-tags.yml          # 手动更新库标签
 │       └── auto-merge-submission.yml        # 自动合并提交
 ├── public/                 # 静态资源
 │   ├── logo.png
 │   └── favicon.ico
-├── scripts/                # 数据获取脚本
+├── scripts/                # 数据获取和管理脚本
 │   ├── update-github-stats.js         # 获取 GitHub Stars/npm 版本
 │   ├── update-github-readmes.js       # 获取 README 内容
 │   ├── fetch-trending.js              # 获取趋势榜数据
 │   ├── update-comparison-data.js      # 批量更新对比数据
 │   ├── update-comparison-single.js    # 单个库对比数据更新
+│   ├── update-library-tags.js         # 修改库的标签
 │   ├── generate-og-images.js          # 批量生成 OG 图片
 │   ├── generate-og-single.js          # 生成单个 OG 图片
 │   ├── generate-default-og.js         # 生成默认 OG 图片
@@ -181,6 +191,7 @@ npm run lint
 -   **自动部署** - 代码/数据更新后自动构建并上线
 -   **自动标签** - 新工具自动生成颜色配置
 -   **自动 OG 图片** - 新工具收录时自动生成精美的 OG 分享卡片
+-   **标签管理** - 支持通过 GitHub Actions 可视化修改库的标签分类
 
 ### 🚀 性能优化
 
@@ -200,11 +211,12 @@ npm run lint
 
 ## 📊 项目统计
 
--   **工具数量**: 70+ 精选工具
--   **标签分类**: 60+ 标签
--   **代码行数**: ~5,100 行 TypeScript/React
--   **主 Bundle**: ~177KB (gzip: 56.6KB)
--   **构建时间**: ~8-9 秒 (Vite + Terser)
+-   **工具数量**: 75+ 精选工具
+-   **标签分类**: 18 个精选标签（已优化精简）
+-   **代码行数**: ~5,200 行 TypeScript/React
+-   **构建产物**: 总计 1.97 MB (13 个 JS 文件 + 2 个 CSS 文件)
+-   **主 Bundle**: ~175KB (gzip: 57KB)
+-   **构建时间**: ~7-8 秒 (Vite + Terser)
 -   **部署时间**: ~2-3 分钟
 
 ---
@@ -345,7 +357,46 @@ npm run update-comparison-single "tailwindlabs/tailwindcss"
 -   GitHub API - Stars、Forks、Issues、语言、仓库大小等
 -   Bundlephobia API - 包体积数据
 
-### 4. 工具提交流程
+### 4. 库标签管理
+
+#### 本地修改标签
+
+```bash
+# 基本用法
+npm run update-library-tags "库名称" "标签1,标签2"
+
+# 示例：修改 Axios 的标签
+npm run update-library-tags "Axios" "网络请求,工具库"
+
+# 示例：修改 lodash 为单个标签
+npm run update-library-tags "lodash" "工具库"
+```
+
+**功能特点**：
+
+-   ✅ 支持智能查找（不区分大小写）
+-   ✅ 找不到库时提供相似名称建议
+-   ✅ 自动验证标签是否在已定义列表中
+-   ✅ 显示详细的标签变更报告（添加/移除）
+
+#### 通过 GitHub Actions 修改
+
+1. 进入 GitHub Actions 页面
+2. 选择 "🏷️ Update Library Tags" 工作流
+3. 点击 "Run workflow"
+4. 输入参数：
+    - **库名称**：例如 `Axios`
+    - **新标签**：例如 `网络请求,工具库`（多个标签用逗号分隔）
+5. 执行完成后自动提交并部署
+
+**当前标签列表（18 个）**：
+
+-   数据处理、性能优化、图标、安全、图像处理
+-   动画、样式、交互、工具库、数学
+-   国际化、多媒体、数据可视化、浏览器 API
+-   UI 组件、日期时间、网络请求、文件操作、编辑器
+
+### 5. 工具提交流程
 
 用户可以通过 [提交页面](https://snazzy.top/#/submit) 提交新工具:
 
@@ -355,7 +406,7 @@ npm run update-comparison-single "tailwindlabs/tailwindcss"
 4.  GitHub Actions 自动合并并同步数据
 5.  自动更新工具库展示
 
-### 5. 缓存策略
+### 6. 缓存策略
 
 为提升性能,项目采用多级缓存:
 

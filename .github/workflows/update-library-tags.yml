@@ -1,0 +1,68 @@
+name: 🏷️ Update Library Tags
+
+on:
+    workflow_dispatch:
+        inputs:
+            library_name:
+                description: '库名称 (例如: Axios, lodash, React)'
+                required: true
+                type: string
+            tags:
+                description: '新标签 (多个标签用逗号分隔，例如: 网络请求,工具库)'
+                required: true
+                type: string
+
+jobs:
+    update-tags:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Update library tags
+              run: |
+                  npm run update-library-tags "${{ github.event.inputs.library_name }}" "${{ github.event.inputs.tags }}"
+
+            - name: Check for changes
+              id: check_changes
+              run: |
+                  if git diff --quiet src/data/bookmarks.json; then
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Commit and push changes
+              if: steps.check_changes.outputs.has_changes == 'true'
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add src/data/bookmarks.json
+                  git commit -m "chore: update tags for ${{ github.event.inputs.library_name }} to [${{ github.event.inputs.tags }}]"
+                  git push
+
+            - name: Trigger Deployment
+              if: steps.check_changes.outputs.has_changes == 'true'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "Tags updated for ${{ github.event.inputs.library_name }}"}'
+
+            - name: No changes detected
+              if: steps.check_changes.outputs.has_changes == 'false'
+              run: |
+                  echo "ℹ️ No changes detected - tags may already be the same"

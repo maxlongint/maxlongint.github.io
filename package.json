@@ -12,7 +12,8 @@
         "generate-og": "node scripts/generate-default-og.js && node scripts/generate-og-images.js",
         "generate-og-single": "node scripts/generate-og-single.js",
         "sync-readme": "node scripts/sync-single-readme.js",
-        "update-comparison-single": "node scripts/update-comparison-single.js"
+        "update-comparison-single": "node scripts/update-comparison-single.js",
+        "update-library-tags": "node scripts/update-library-tags.js"
     },
     "dependencies": {
         "@microsoft/clarity": "^1.0.2",
