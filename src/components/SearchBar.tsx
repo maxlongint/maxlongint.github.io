@@ -14,6 +14,16 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
         setInputValue(searchQuery);
     }, [searchQuery]);
 
+    // 处理输入变化 - 只在删除到空时触发搜索
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInputValue(value);
+        // 只在删除到空时自动触发搜索
+        if (value === '' && inputValue !== '') {
+            setSearchQuery('');
+        }
+    };
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             // 按回车时搜索
@@ -46,7 +56,7 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
                     <input
                         type="text"
                         value={inputValue}
-                        onChange={e => setInputValue(e.target.value)}
+                        onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                         placeholder="搜索库、框架或插件..."
                         className={`w-full pl-12 pr-16 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-400 focus:border-transparent text-sm bg-white dark:bg-gray-800 dark:text-white ${

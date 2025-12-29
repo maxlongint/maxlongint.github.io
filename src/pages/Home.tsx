@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Fuse from 'fuse.js';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import TagFilter from '../components/TagFilter';
@@ -151,7 +152,24 @@ function Home() {
         return stats;
     }, []);
 
-    // 筛选和排序书签 - 优化排序性能
+    // 配置 Fuse.js 搜索选项
+    const fuseOptions = useMemo(
+        () => ({
+            keys: [
+                { name: 'title', weight: 0.4 }, // 标题权重最高
+                { name: 'tags', weight: 0.3 }, // 标签权重次之
+                { name: 'url', weight: 0.15 }, // URL权重较低
+                { name: 'description', weight: 0.15 }, // 描述权重较低
+            ],
+            threshold: 0.4, // 模糊匹配阈值（0-1，越小越严格）
+            includeScore: true, // 包含匹配分数
+            minMatchCharLength: 2, // 最小匹配字符长度
+            ignoreLocation: true, // 忽略匹配位置，提升长文本搜索效果
+        }),
+        []
+    );
+
+    // 筛选和排序书签 - 使用 Fuse.js 优化搜索
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
 
@@ -160,18 +178,11 @@ function Home() {
             bookmarks = bookmarks.filter(bookmark => bookmark.tags.includes(selectedTag));
         }
 
-        // 根据搜索关键词筛选
+        // 根据搜索关键词筛选 - 使用 Fuse.js
         if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase().trim();
-            bookmarks = bookmarks.filter(bookmark => {
-                const cleanUrl = bookmark.url.replace(/^https?:\/\//, '').toLowerCase();
-                return (
-                    bookmark.title.toLowerCase().includes(query) ||
-                    bookmark.description.toLowerCase().includes(query) ||
-                    cleanUrl.includes(query) ||
-                    bookmark.tags.some(tag => tag.toLowerCase().includes(query))
-                );
-            });
+            const fuse = new Fuse(bookmarks, fuseOptions);
+            const results = fuse.search(searchQuery.trim());
+            bookmarks = results.map(result => result.item);
         }
 
         // 排序 - 提前缓存 repoInfo 避免重复查询
@@ -201,7 +212,7 @@ function Home() {
         });
 
         return sortedBookmarks.map(item => item.bookmark);
-    }, [selectedTag, searchQuery, selectedSort]);
+    }, [selectedTag, searchQuery, selectedSort, fuseOptions]);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
