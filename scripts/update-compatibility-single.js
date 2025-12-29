@@ -11,11 +11,28 @@ const GITHUB_STATS_PATH = path.join(__dirname, '../src/data/github-stats.json');
 const BOOKMARKS_PATH = path.join(__dirname, '../src/data/bookmarks.json');
 
 // 从 npm API 获取包的兼容性信息
-async function fetchCompatibility(packageName) {
+// 参数可以是包名或完整的 npm URL
+async function fetchCompatibility(packageNameOrUrl) {
     try {
+        let packageName = packageNameOrUrl;
+
+        // 如果是完整的 npm URL，提取包名
+        if (packageNameOrUrl.includes('npmjs.com')) {
+            const match = packageNameOrUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            if (match) {
+                packageName = match[1];
+            }
+        }
+
         console.log(`🔍 正在获取 ${packageName} 的兼容性信息...`);
 
-        const response = await fetch(`https://registry.npmjs.org/${packageName}/latest`);
+        // 修正：使用正确的 npm registry API 端点
+        const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
+            headers: {
+                'User-Agent': 'GitHub-Pages-Builder',
+            },
+        });
+
         if (!response.ok) {
             console.warn(`⚠️  无法获取 ${packageName} 的兼容性信息 (HTTP ${response.status})`);
             return null;
@@ -23,10 +40,21 @@ async function fetchCompatibility(packageName) {
 
         const data = await response.json();
 
+        // 获取最新版本的信息
+        const latestVersion = data['dist-tags']?.latest;
+        if (!latestVersion || !data.versions || !data.versions[latestVersion]) {
+            console.warn(`⚠️  ${packageName} 没有有效的版本信息`);
+            return null;
+        }
+
+        const versionData = data.versions[latestVersion];
+
         // 获取每周下载量
         let weeklyDownloads = null;
         try {
-            const downloadsResponse = await fetch(`https://api.npmjs.org/downloads/point/last-week/${packageName}`);
+            const downloadsResponse = await fetch(
+                `https://api.npmjs.org/downloads/point/last-week/${encodeURIComponent(packageName)}`
+            );
             if (downloadsResponse.ok) {
                 const downloadsData = await downloadsResponse.json();
                 weeklyDownloads = downloadsData.downloads || null;
@@ -36,13 +64,13 @@ async function fetchCompatibility(packageName) {
         }
 
         const compatibility = {
-            node: data.engines?.node || null,
-            typescript: !!(data.types || data.typings || data.devDependencies?.typescript),
-            browsers: data.browserslist?.[0] || data.browserslist || null,
-            license: data.license || null,
-            bundleSize: data.dist?.unpackedSize || null,
-            sideEffects: data.sideEffects !== undefined ? data.sideEffects : null,
-            dependenciesCount: data.dependencies ? Object.keys(data.dependencies).length : 0,
+            node: versionData.engines?.node || null,
+            typescript: !!(versionData.types || versionData.typings || versionData.devDependencies?.typescript),
+            browsers: versionData.browserslist?.[0] || versionData.browserslist || null,
+            license: versionData.license || data.license || null,
+            bundleSize: versionData.dist?.unpackedSize || null,
+            sideEffects: versionData.sideEffects !== undefined ? versionData.sideEffects : null,
+            dependenciesCount: versionData.dependencies ? Object.keys(versionData.dependencies).length : 0,
             weeklyDownloads: weeklyDownloads,
         };
 
@@ -82,19 +110,16 @@ function extractNpmPackageName(npmUrl) {
     return match ? match[1] : null;
 }
 
-// 从 GitHub URL 获取包名
-function getPackageNameFromUrl(githubUrl) {
-    // 1. 优先从 bookmarks.json 中获取 npmUrl
+// 从 GitHub URL 获取包名或 npm URL
+function getPackageIdentifierFromUrl(githubUrl) {
+    // 1. 优先从 bookmarks.json 中获取 npmUrl（完整地址）
     if (fs.existsSync(BOOKMARKS_PATH)) {
         const bookmarksData = JSON.parse(fs.readFileSync(BOOKMARKS_PATH, 'utf-8'));
         const bookmark = bookmarksData.bookmarks.find(b => b.url === githubUrl || b.url.includes(githubUrl));
 
         if (bookmark && bookmark.npmUrl) {
-            const packageName = extractNpmPackageName(bookmark.npmUrl);
-            if (packageName) {
-                console.log(`   ℹ️  从 bookmarks.json 获取到包名: ${packageName}`);
-                return packageName;
-            }
+            console.log(`   ℹ️  从 bookmarks.json 获取到 npm 地址`);
+            return bookmark.npmUrl; // 直接返回完整 URL
         }
     }
 
@@ -112,7 +137,7 @@ function getPackageNameFromUrl(githubUrl) {
         const repoData = repos[normalizedUrl];
         if (repoData && repoData.name) {
             console.log(`   ℹ️  从 github-stats.json 获取到包名: ${repoData.name}`);
-            return repoData.name;
+            return repoData.name; // 返回包名
         }
     }
 
@@ -121,7 +146,7 @@ function getPackageNameFromUrl(githubUrl) {
     if (match) {
         const repoName = match[2].replace(/\.git$/, '');
         console.log(`   ⚠️  从 URL 提取仓库名: ${repoName}（可能不准确）`);
-        return repoName;
+        return repoName; // 返回仓库名
     }
 
     return null;
@@ -141,17 +166,24 @@ async function main() {
     console.log('📊 开始更新单个库的兼容性数据...\n');
     console.log(`🔗 GitHub URL: ${githubUrl}`);
 
-    // 获取包名
-    const packageName = getPackageNameFromUrl(githubUrl);
-    if (!packageName) {
+    // 获取包标识符（npm URL 或包名）
+    const packageIdentifier = getPackageIdentifierFromUrl(githubUrl);
+    if (!packageIdentifier) {
         console.error('❌ 无法从 URL 提取包名');
         process.exit(1);
     }
 
+    // 提取实际的包名（用于显示和存储）
+    let packageName = packageIdentifier;
+    if (packageIdentifier.includes('npmjs.com')) {
+        const match = packageIdentifier.match(/npmjs\.com\/package\/([^/?]+)/);
+        packageName = match ? match[1] : packageIdentifier;
+    }
+
     console.log(`📦 包名: ${packageName}\n`);
 
-    // 获取兼容性数据
-    const compatibility = await fetchCompatibility(packageName);
+    // 获取兼容性数据（传入 identifier，可以是 URL 或包名）
+    const compatibility = await fetchCompatibility(packageIdentifier);
 
     if (!compatibility) {
         console.error('❌ 获取兼容性数据失败');

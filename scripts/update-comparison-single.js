@@ -53,14 +53,6 @@ console.log(`\n📊 开始为 ${fullName} 生成对比数据...\n`);
 const bookmarksPath = path.join(__dirname, '../src/data/bookmarks.json');
 const bookmarksData = JSON.parse(fs.readFileSync(bookmarksPath, 'utf8'));
 
-// 提取npm包名的函数
-function extractNpmPackageName(npmUrl) {
-    if (!npmUrl) return null;
-    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
-    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
-    return match ? match[1] : null;
-}
-
 // 查找对应的 bookmark
 const bookmark = bookmarksData.bookmarks.find(b => b.url.includes(fullName));
 if (!bookmark) {
@@ -68,7 +60,16 @@ if (!bookmark) {
     process.exit(1);
 }
 
-const packageName = extractNpmPackageName(bookmark.npmUrl) || repo;
+// 优先使用 npmUrl（完整地址），其次使用仓库名
+const packageIdentifier = bookmark.npmUrl || repo;
+
+// 提取实际的包名（用于显示和存储）
+let packageName = packageIdentifier;
+if (packageIdentifier.includes('npmjs.com')) {
+    const match = packageIdentifier.match(/npmjs\.com\/package\/([^/?]+)/);
+    packageName = match ? match[1] : packageIdentifier;
+}
+
 const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 
 console.log(`📦 库名称: ${bookmark.title}`);
@@ -209,7 +210,18 @@ async function fetchEcosystemPlugins(fullName, packageName) {
 }
 
 // 获取 npm 数据
-async function fetchNpmData(packageName) {
+// 参数可以是包名或完整的 npm URL
+async function fetchNpmData(packageNameOrUrl) {
+    let packageName = packageNameOrUrl;
+
+    // 如果是完整的 npm URL，提取包名
+    if (packageNameOrUrl.includes('npmjs.com')) {
+        const match = packageNameOrUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+        if (match) {
+            packageName = match[1];
+        }
+    }
+
     const registryUrl = `https://registry.npmjs.org/${encodeURIComponent(packageName)}`;
     const data = await fetchData(registryUrl);
 
@@ -264,7 +276,7 @@ async function main() {
         console.log(`  ✓ Size: ${githubData.size} KB`);
 
         console.log('\n📥 获取 npm 数据...');
-        const npmData = await fetchNpmData(packageName);
+        const npmData = await fetchNpmData(packageIdentifier); // 传入 identifier，可能是 URL 或包名
         console.log(`  ✓ Version: ${npmData.version}`);
         console.log(`  ✓ Weekly Downloads: ${npmData.weeklyDownloads}`);
         console.log(`  ✓ Bundle Size (gzip): ${npmData.bundleSize.gzipped} bytes`);

@@ -26,8 +26,19 @@ console.log(`Found ${githubBookmarks.length} GitHub repositories in bookmarks`);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // 获取npm包信息（包体积、周下载量）
-async function fetchNpmData(packageName) {
+// 参数可以是包名或完整的 npm URL
+async function fetchNpmData(packageNameOrUrl) {
     try {
+        let packageName = packageNameOrUrl;
+
+        // 如果是完整的 npm URL，提取包名
+        if (packageNameOrUrl.includes('npmjs.com')) {
+            const match = packageNameOrUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            if (match) {
+                packageName = match[1];
+            }
+        }
+
         // 获取基本信息和周下载量
         const [registryRes, downloadsRes, bundlephobiaRes] = await Promise.all([
             fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
@@ -204,14 +215,6 @@ function calculateBundleSizeRating(gzippedSize) {
     return 'Very Heavy';
 }
 
-// 提取npm包名的函数
-function extractNpmPackageName(npmUrl) {
-    if (!npmUrl) return null;
-    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
-    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
-    return match ? match[1] : null;
-}
-
 // 处理单个书签
 async function processBookmark(bookmark) {
     const match = bookmark.url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -220,8 +223,16 @@ async function processBookmark(bookmark) {
     const [, owner, repo] = match;
     const fullName = `${owner}/${repo.replace(/\.git$/, '')}`;
     const repoName = repo.replace(/\.git$/, '');
-    // 优先使用 bookmark 中的 npmUrl 字段，其次使用仓库名称
-    const packageName = extractNpmPackageName(bookmark.npmUrl) || repoName;
+    // 优先使用 bookmark 中的 npmUrl（完整地址），其次使用仓库名称
+    const packageIdentifier = bookmark.npmUrl || repoName;
+
+    // 提取实际的包名（用于显示和存储）
+    let packageName = packageIdentifier;
+    if (packageIdentifier.includes('npmjs.com')) {
+        const match = packageIdentifier.match(/npmjs\.com\/package\/([^/?]+)/);
+        packageName = match ? match[1] : packageIdentifier;
+    }
+
     // 生成唯一 ID：使用 title 转小写并替换空格为连字符
     const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 
@@ -229,7 +240,7 @@ async function processBookmark(bookmark) {
 
     const [githubData, npmData, ecosystemPlugins] = await Promise.all([
         fetchGitHubData(fullName),
-        fetchNpmData(packageName),
+        fetchNpmData(packageIdentifier), // 传入 identifier，可能是 URL 或包名
         fetchEcosystemPlugins(fullName),
     ]);
 
