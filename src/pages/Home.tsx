@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import TagFilter from '../components/TagFilter';
@@ -8,7 +9,12 @@ import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo } from '../utils/github';
 
 function Home() {
-    const [selectedTag, setSelectedTag] = useState('全部 (All)');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // 从 URL 参数读取初始标签，如果没有则默认为 '全部 (All)'
+    const initialTag = searchParams.get('tag') || '全部 (All)';
+    const [selectedTag, setSelectedTag] = useState(initialTag);
+
     const [searchQuery, setSearchQuery] = useState('');
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedSort, setSelectedSort] = useState('默认');
@@ -44,6 +50,32 @@ function Home() {
             console.error('Failed to save viewMode to localStorage:', error);
         }
     }, [viewMode]);
+
+    // 监听 URL 参数变化，同步到状态
+    useEffect(() => {
+        const tagFromUrl = searchParams.get('tag');
+        if (tagFromUrl && tagFromUrl !== selectedTag) {
+            setSelectedTag(tagFromUrl);
+        }
+    }, [searchParams, selectedTag]);
+
+    // 包装 setSelectedTag 函数，同时更新 URL 参数
+    const handleTagChange = useCallback(
+        (tag: string) => {
+            setSelectedTag(tag);
+
+            // 更新 URL 参数
+            if (tag === '全部 (All)') {
+                // 如果是全部，移除 tag 参数
+                searchParams.delete('tag');
+            } else {
+                // 否则设置 tag 参数
+                searchParams.set('tag', tag);
+            }
+            setSearchParams(searchParams, { replace: true });
+        },
+        [searchParams, setSearchParams]
+    );
 
     // 监听滚动 - 使用节流优化性能
     useEffect(() => {
@@ -268,7 +300,7 @@ function Home() {
                     tags={Object.keys(tagStats)}
                     tagStats={tagStats}
                     selectedTag={selectedTag}
-                    setSelectedTag={setSelectedTag}
+                    setSelectedTag={handleTagChange}
                     getTagColor={getTagColor}
                 />
 
