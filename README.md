@@ -110,6 +110,146 @@ npm run update-library-tags "Axios" "网络请求,工具库"
 
 ---
 
+## 📚 使用说明
+
+### 基本命令
+
+| 命令               | 说明                | 用法                                             |
+| ------------------ | ------------------- | ------------------------------------------------ |
+| `npm run dev`      | 启动开发服务器      | 本地开发，支持热更新，访问 http://localhost:5173 |
+| `npm run build`    | 构建生产版本        | TypeScript 编译 + Vite 打包，输出到 `dist/` 目录 |
+| `npm run preview`  | 预览生产构建        | 在本地预览 `dist/` 目录的构建结果                |
+| `npm run lint`     | ESLint 代码检查     | 检查代码质量和规范问题                           |
+| `npx tsc --noEmit` | TypeScript 类型检查 | 仅检查类型错误，不生成文件                       |
+
+### 数据管理命令
+
+| 命令                                  | 说明                   | 用法示例                                                               | 执行时机               |
+| ------------------------------------- | ---------------------- | ---------------------------------------------------------------------- | ---------------------- |
+| `npm run fetch-trending`              | 获取 GitHub 趋势榜数据 | `npm run fetch-trending`                                               | 每天凌晨 4:00 自动执行 |
+| `npm run update-library-tags`         | 修改库的标签           | `npm run update-library-tags "Axios" "网络请求,工具库"`                | 手动执行或 Actions     |
+| `npm run update-comparison-single`    | 更新单个库对比数据     | `npm run update-comparison-single "tailwindlabs/tailwindcss"`          | 手动执行或 Actions     |
+| `npm run update-compatibility`        | 批量更新兼容性数据     | `npm run update-compatibility`                                         | 手动执行               |
+| `npm run update-compatibility-single` | 更新单个库兼容性       | `npm run update-compatibility-single "https://github.com/axios/axios"` | 手动执行或 Actions     |
+
+### OG 图片生成命令
+
+| 命令                         | 说明                 | 用法示例                                               | 输出                                |
+| ---------------------------- | -------------------- | ------------------------------------------------------ | ----------------------------------- |
+| `npm run generate-og`        | 批量生成所有 OG 图片 | `npm run generate-og`                                  | 生成到 `public/og-images/`          |
+| `npm run generate-og-single` | 生成单个 OG 图片     | `npm run generate-og-single "Axios"`                   | 生成到 `public/og-images/axios.png` |
+| `npm run sync-readme`        | 同步单个 README      | `npm run sync-readme "https://github.com/axios/axios"` | 更新 `github-readmes.json`          |
+
+### GitHub Actions 自动任务
+
+| 工作流                        | 触发时机                  | 功能                           | 执行时间    |
+| ----------------------------- | ------------------------- | ------------------------------ | ----------- |
+| **Deploy**                    | push 到 main 分支         | 自动构建并部署到 GitHub Pages  | ~2-3 分钟   |
+| **Update GitHub Stats**       | 每天凌晨 2:00             | 更新 Stars、npm 版本、更新时间 | ~3-5 分钟   |
+| **Update GitHub READMEs**     | 每天凌晨 3:00             | 更新所有库的 README 内容       | ~5-8 分钟   |
+| **Update Daily Trending**     | 每天凌晨 4:00             | 更新 GitHub 趋势榜数据         | ~1-2 分钟   |
+| **Update Comparison Data**    | 每天凌晨 5:00             | 更新工具对比数据               | ~10-15 分钟 |
+| **Update Compatibility Data** | 每天凌晨 6:00             | 更新 npm 兼容性信息            | ~8-12 分钟  |
+| **Update Single Library**     | 手动触发                  | 更新单个库的对比数据           | ~1-2 分钟   |
+| **Update Library Tags**       | 手动触发                  | 修改库的标签分类               | ~1 分钟     |
+| **Auto Merge Submission**     | Issue 被标记为 "收录通过" | 自动合并工具提交               | ~5-8 分钟   |
+
+### 脚本详细说明
+
+#### 1. 标签管理：`update-library-tags`
+
+```bash
+# 基本用法
+npm run update-library-tags "库名称" "标签1,标签2,标签3"
+
+# 示例：修改 Axios 的标签
+npm run update-library-tags "Axios" "网络请求,工具库"
+
+# 示例：修改 lodash 为单个标签
+npm run update-library-tags "lodash" "工具库"
+```
+
+**功能特点**：
+
+-   ✅ 支持智能查找（不区分大小写）
+-   ✅ 找不到库时提供相似名称建议
+-   ✅ 自动验证标签是否在已定义列表中
+-   ✅ 显示详细的标签变更报告（添加/移除）
+
+#### 2. 对比数据更新：`update-comparison-single`
+
+```bash
+# 基本用法
+npm run update-comparison-single "owner/repo"
+
+# 示例：更新 Tailwind CSS
+npm run update-comparison-single "tailwindlabs/tailwindcss"
+
+# 示例：更新 React
+npm run update-comparison-single "facebook/react"
+```
+
+**获取数据**：
+
+-   npm Registry API - 包版本、周下载量
+-   GitHub API - Stars、Forks、Issues、语言、仓库大小
+-   Bundlephobia API - 打包体积 (gzip)
+
+#### 3. 兼容性数据更新：`update-compatibility-single`
+
+```bash
+# 基本用法
+npm run update-compatibility-single "GitHub URL"
+
+# 示例：更新 Axios 兼容性信息
+npm run update-compatibility-single "https://github.com/axios/axios"
+```
+
+**获取数据**：
+
+-   Node.js 版本要求
+-   TypeScript 支持
+-   浏览器兼容性
+-   许可证类型
+-   npm 包大小
+-   副作用声明
+-   依赖数量
+-   周下载量
+
+#### 4. OG 图片生成：`generate-og-single`
+
+```bash
+# 基本用法
+npm run generate-og-single "库名称"
+
+# 示例：生成 Axios 的 OG 图片
+npm run generate-og-single "Axios"
+```
+
+**输出**：
+
+-   生成到 `public/og-images/axios.png`
+-   尺寸：1200x630 px
+-   包含：库名称、描述、GitHub 头像、Stars 数
+
+#### 5. README 同步：`sync-readme`
+
+```bash
+# 基本用法
+npm run sync-readme "GitHub URL"
+
+# 示例：同步 Axios 的 README
+npm run sync-readme "https://github.com/axios/axios"
+```
+
+**功能**：
+
+-   获取最新 README.md 内容
+-   更新到 `src/data/github-readmes.json`
+-   自动提交并部署
+
+---
+
 ## 📂 项目结构
 
 ```
@@ -212,14 +352,39 @@ npm run update-library-tags "Axios" "网络请求,工具库"
 
 ## 📊 项目统计
 
--   **工具数量**: 75+ 精选工具
--   **标签分类**: 18 个精选标签（已优化精简）
--   **代码行数**: ~5,300 行 TypeScript/React
--   **构建产物**: 总计 1.97 MB (13 个 JS 文件 + 2 个 CSS 文件)
--   **主 Bundle**: ~180KB (gzip: 57.2KB)
--   **搜索引擎**: Fuse.js (~10KB gzip)
--   **构建时间**: ~7-8 秒 (Vite + Terser)
--   **部署时间**: ~2-3 分钟
+### 代码统计
+
+| 项目         | 数值      | 说明                                             |
+| ------------ | --------- | ------------------------------------------------ |
+| **工具数量** | 75+       | 精选前端工具和框架                               |
+| **标签分类** | 18 个     | 优化精简的分类标签                               |
+| **代码行数** | ~5,300 行 | TypeScript + React                               |
+| **组件数量** | 15+       | 可复用 React 组件                                |
+| **页面数量** | 6 个      | Home, Detail, Compare, Trending, Submit, Contact |
+
+### 构建产物
+
+| 项目           | 数值        | 说明                        |
+| -------------- | ----------- | --------------------------- |
+| **总文件数**   | 104 个      | JS/CSS/HTML/图片            |
+| **总体积**     | 22.18 MB    | 包含 82 个 OG 图片          |
+| **JS 文件**    | 18 个       | 按需加载，代码分割          |
+| **CSS 文件**   | 2 个        | index + BookmarkDetail      |
+| **主 Bundle**  | 179.90 KB   | gzip: 57.28 KB              |
+| **最大 Chunk** | 1,105.09 KB | github.js (gzip: 295.49 KB) |
+| **构建时间**   | ~12.7 秒    | Vite + Terser               |
+| **部署时间**   | ~2-3 分钟   | GitHub Actions              |
+
+### 性能指标
+
+| 指标         | 数值      | 说明                     |
+| ------------ | --------- | ------------------------ |
+| **首屏加载** | < 2s      | 延迟加载 GitHub 数据     |
+| **LCP**      | < 2.5s    | Largest Contentful Paint |
+| **FCP**      | < 1.5s    | First Contentful Paint   |
+| **TTI**      | < 3.5s    | Time to Interactive      |
+| **搜索引擎** | ~10KB     | Fuse.js (gzip)           |
+| **代码分割** | 18 chunks | 按需加载                 |
 
 ---
 
