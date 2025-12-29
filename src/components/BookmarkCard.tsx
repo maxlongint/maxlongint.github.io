@@ -2,6 +2,8 @@ import type { Bookmark } from '../types';
 import GitHubStats from './GitHubStats';
 import { getGitHubRepoInfo, getGitHubInfo } from '../utils/github';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { isFavorite, toggleFavorite } from '../utils/favorites';
 
 interface BookmarkCardProps {
     bookmark: Bookmark;
@@ -13,9 +15,23 @@ interface BookmarkCardProps {
 export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare }: BookmarkCardProps) {
     const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
+    const [favorited, setFavorited] = useState(false);
 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
+
+    // 初始化收藏状态
+    useEffect(() => {
+        setFavorited(isFavorite(bookmark.title));
+
+        // 监听收藏变化事件
+        const handleFavoritesChanged = () => {
+            setFavorited(isFavorite(bookmark.title));
+        };
+
+        window.addEventListener('favorites-changed', handleFavoritesChanged);
+        return () => window.removeEventListener('favorites-changed', handleFavoritesChanged);
+    }, [bookmark.title]);
 
     // 生成URL友好的路由名称（使用title的小写形式）
     const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -48,6 +64,13 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
             onShare?.('自动复制失败，已为您打开图片\n请手动右键保存后分享', 'error');
             window.open(ogImageUrl, '_blank');
         }
+    };
+
+    // 收藏按钮处理
+    const handleFavorite = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const newFavorited = toggleFavorite(bookmark.title);
+        setFavorited(newFavorited);
     };
 
     return (
@@ -126,20 +149,45 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                             );
                         })}
                     </div>
-                    <button
-                        onClick={handleShare}
-                        className="flex-shrink-0 p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors"
-                        title="分享卡片"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                            />
-                        </svg>
-                    </button>
+                    <div className="flex items-center gap-1">
+                        <button
+                            onClick={handleFavorite}
+                            className={`flex-shrink-0 p-1.5 rounded-lg transition-all ${
+                                favorited
+                                    ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'
+                                    : 'text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'
+                            }`}
+                            title={favorited ? '取消收藏' : '添加收藏'}
+                        >
+                            <svg
+                                className="w-4 h-4"
+                                fill={favorited ? 'currentColor' : 'none'}
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={handleShare}
+                            className="flex-shrink-0 p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors"
+                            title="分享卡片"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 {/* 第四行：统计信息 */}
@@ -224,6 +272,29 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                             })}
                         </div>
                         <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleFavorite}
+                                className={`flex-shrink-0 p-1.5 rounded-lg transition-all ${
+                                    favorited
+                                        ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'
+                                        : 'text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'
+                                }`}
+                                title={favorited ? '取消收藏' : '添加收藏'}
+                            >
+                                <svg
+                                    className="w-4 h-4"
+                                    fill={favorited ? 'currentColor' : 'none'}
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                    />
+                                </svg>
+                            </button>
                             <button
                                 onClick={handleShare}
                                 className="flex-shrink-0 p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors"

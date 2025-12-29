@@ -13,6 +13,7 @@ const Trending = lazy(() => import('./pages/Trending'));
 const Submit = lazy(() => import('./pages/Submit'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Compare = lazy(() => import('./pages/Compare'));
+const Favorites = lazy(() => import('./pages/Favorites'));
 
 // 延迟加载 GitHub 数据
 const loadGitHubDataDeferred = async () => {
@@ -31,6 +32,7 @@ createRoot(document.getElementById('root')!).render(
                 <Suspense fallback={<LoadingFallback />}>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/favorites" element={<Favorites />} />
                         <Route path="/trending" element={<Trending />} />
                         <Route path="/compare" element={<Compare />} />
                         <Route path="/submit" element={<Submit />} />

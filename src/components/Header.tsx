@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import { useTheme } from '../contexts/ThemeContext';
+import { getFavoritesCount } from '../utils/favorites';
 
 interface HeaderProps {
     isFixed?: boolean;
@@ -13,6 +14,19 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
     const location = useLocation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { theme, toggleTheme } = useTheme();
+    const [favoritesCount, setFavoritesCount] = useState(0);
+
+    // 监听收藏变化
+    useEffect(() => {
+        setFavoritesCount(getFavoritesCount());
+
+        const handleFavoritesChanged = () => {
+            setFavoritesCount(getFavoritesCount());
+        };
+
+        window.addEventListener('favorites-changed', handleFavoritesChanged);
+        return () => window.removeEventListener('favorites-changed', handleFavoritesChanged);
+    }, []);
 
     return (
         <>
@@ -56,6 +70,28 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                         />
                                     </svg>
                                     工具库
+                                </Link>
+                                <Link
+                                    to="/favorites"
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 relative ${
+                                        location.pathname === '/favorites'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    }`}
+                                >
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                    我的收藏
+                                    {favoritesCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                            {favoritesCount > 9 ? '9+' : favoritesCount}
+                                        </span>
+                                    )}
                                 </Link>
                                 <Link
                                     to="/trending"
@@ -218,6 +254,31 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                             />
                                         </svg>
                                         工具库
+                                    </span>
+                                </Link>
+                                <Link
+                                    to="/favorites"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        location.pathname === '/favorites'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2 relative">
+                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                        我的收藏
+                                        {favoritesCount > 0 && (
+                                            <span className="bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center ml-auto">
+                                                {favoritesCount > 9 ? '9+' : favoritesCount}
+                                            </span>
+                                        )}
                                     </span>
                                 </Link>
                                 <Link
