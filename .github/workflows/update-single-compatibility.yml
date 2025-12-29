@@ -1,0 +1,61 @@
+name: 🔧 Update Single Library Compatibility
+
+on:
+    # 允许手动触发并传入参数
+    workflow_dispatch:
+        inputs:
+            github_url:
+                description: 'GitHub 仓库 URL (例如: https://github.com/axios/axios)'
+                required: true
+                type: string
+
+jobs:
+    update-single-compatibility:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Update Single Library Compatibility
+              run: node scripts/update-compatibility-single.js "${{ inputs.github_url }}"
+
+            - name: Commit and push changes
+              id: commit
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+
+                  git add src/data/compatibility-data.json
+
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "✅ Committing updated compatibility data"
+                    git commit -m "🔄 Update compatibility data for ${{ inputs.github_url }}"
+                    git push
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Trigger deployment
+              if: steps.commit.outputs.has_changes == 'true'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "Single library compatibility updated"}'

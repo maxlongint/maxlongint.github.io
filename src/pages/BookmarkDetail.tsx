@@ -18,6 +18,7 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'rec
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo, getGitHubInfo, getGitHubReadme } from '../utils/github';
 import type { BundleSize, NPMDownloadData } from '../types';
+import CompatibilityCard from '../components/CompatibilityCard';
 
 // 配置 marked 使用 GitHub Flavored Markdown (GFM)
 marked.setOptions({
@@ -1347,6 +1348,11 @@ export default function BookmarkDetail() {
                             </div>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">过去 30 天</p>
                         </div>
+
+                        {/* 兼容性 */}
+                        {repoInfo?.name && repoInfo.npm_version !== 'N/A' && (
+                            <CompatibilityCard packageName={repoInfo.name} />
+                        )}
 
                         {/* Open Issues */}
                         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">

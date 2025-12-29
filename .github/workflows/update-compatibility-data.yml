@@ -1,0 +1,59 @@
+name: 🔧 Update Compatibility Data
+
+on:
+    # 每天凌晨 6:00 北京时间 (UTC时间前一天 22:00)
+    schedule:
+        - cron: '0 22 * * *'
+    # 允许手动触发
+    workflow_dispatch:
+
+jobs:
+    update-compatibility:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Update Compatibility Data
+              run: node scripts/update-compatibility-data.js
+
+            - name: Commit and push changes
+              id: commit
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+
+                  git add src/data/compatibility-data.json
+
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "✅ Committing updated compatibility data"
+                    git commit -m "🔄 Update compatibility data"
+                    git push
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Trigger deployment
+              if: steps.commit.outputs.has_changes == 'true'
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: deploy-requested
+                  client-payload: '{"reason": "Compatibility data updated"}'

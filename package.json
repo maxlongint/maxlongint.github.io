@@ -13,7 +13,9 @@
         "generate-og-single": "node scripts/generate-og-single.js",
         "sync-readme": "node scripts/sync-single-readme.js",
         "update-comparison-single": "node scripts/update-comparison-single.js",
-        "update-library-tags": "node scripts/update-library-tags.js"
+        "update-library-tags": "node scripts/update-library-tags.js",
+        "update-compatibility": "node scripts/update-compatibility-data.js",
+        "update-compatibility-single": "node scripts/update-compatibility-single.js"
     },
     "dependencies": {
         "@microsoft/clarity": "^1.0.2",
