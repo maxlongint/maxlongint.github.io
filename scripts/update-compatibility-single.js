@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const OUTPUT_PATH = path.join(__dirname, '../src/data/compatibility-data.json');
 const GITHUB_STATS_PATH = path.join(__dirname, '../src/data/github-stats.json');
+const BOOKMARKS_PATH = path.join(__dirname, '../src/data/bookmarks.json');
 
 // 从 npm API 获取包的兼容性信息
 async function fetchCompatibility(packageName) {
@@ -73,9 +74,31 @@ function formatBytes(bytes) {
     return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
+// 从 npm URL 提取包名
+function extractNpmPackageName(npmUrl) {
+    if (!npmUrl) return null;
+    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    return match ? match[1] : null;
+}
+
 // 从 GitHub URL 获取包名
 function getPackageNameFromUrl(githubUrl) {
-    // 先尝试从 github-stats.json 获取准确的包名
+    // 1. 优先从 bookmarks.json 中获取 npmUrl
+    if (fs.existsSync(BOOKMARKS_PATH)) {
+        const bookmarksData = JSON.parse(fs.readFileSync(BOOKMARKS_PATH, 'utf-8'));
+        const bookmark = bookmarksData.bookmarks.find(b => b.url === githubUrl || b.url.includes(githubUrl));
+
+        if (bookmark && bookmark.npmUrl) {
+            const packageName = extractNpmPackageName(bookmark.npmUrl);
+            if (packageName) {
+                console.log(`   ℹ️  从 bookmarks.json 获取到包名: ${packageName}`);
+                return packageName;
+            }
+        }
+    }
+
+    // 2. 尝试从 github-stats.json 获取准确的包名
     if (fs.existsSync(GITHUB_STATS_PATH)) {
         const statsData = JSON.parse(fs.readFileSync(GITHUB_STATS_PATH, 'utf-8'));
         const repos = statsData.repos || {};
@@ -88,14 +111,17 @@ function getPackageNameFromUrl(githubUrl) {
 
         const repoData = repos[normalizedUrl];
         if (repoData && repoData.name) {
+            console.log(`   ℹ️  从 github-stats.json 获取到包名: ${repoData.name}`);
             return repoData.name;
         }
     }
 
-    // 如果找不到，尝试从 URL 提取仓库名
+    // 3. 如果找不到，尝试从 URL 提取仓库名（回退方案）
     const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
     if (match) {
-        return match[2].replace(/\.git$/, '');
+        const repoName = match[2].replace(/\.git$/, '');
+        console.log(`   ⚠️  从 URL 提取仓库名: ${repoName}（可能不准确）`);
+        return repoName;
     }
 
     return null;

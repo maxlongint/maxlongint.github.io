@@ -17,14 +17,33 @@ if (!token) {
     process.exit(0);
 }
 
-// 提取所有GitHub仓库URL
+// 提取npm包名的函数
+function extractNpmPackageName(npmUrl) {
+    if (!npmUrl) return null;
+    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    return match ? match[1] : null;
+}
+
+// 提取所有GitHub仓库URL和npm包名的映射
 const githubRepos = new Set();
+const repoNpmMap = new Map(); // 存储 fullName -> npmPackageName 的映射
+
 bookmarksData.bookmarks.forEach(bookmark => {
     if (bookmark.url.includes('github.com')) {
         const match = bookmark.url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
         if (match) {
             const [, owner, repo] = match;
-            githubRepos.add(`${owner}/${repo.replace(/\.git$/, '')}`);
+            const fullName = `${owner}/${repo.replace(/\.git$/, '')}`;
+            githubRepos.add(fullName);
+
+            // 如果有npmUrl字段，提取包名
+            if (bookmark.npmUrl) {
+                const packageName = extractNpmPackageName(bookmark.npmUrl);
+                if (packageName) {
+                    repoNpmMap.set(fullName, packageName);
+                }
+            }
         }
     }
 });
@@ -146,8 +165,9 @@ async function fetchRepoInfo(fullName) {
 
         // 尝试获取npm版本
         let npmVersion = 'N/A';
-        // 使用仓库名作为包名，大多数情况下相同
-        npmVersion = await fetchNpmVersion(data.name);
+        // 优先使用 repoNpmMap 中的包名，其次使用仓库名
+        const packageName = repoNpmMap.get(fullName) || data.name;
+        npmVersion = await fetchNpmVersion(packageName);
 
         return {
             stargazers_count: data.stargazers_count || 0,

@@ -73,7 +73,8 @@ async function main() {
 
     for (let i = 0; i < bookmarks.length; i++) {
         const bookmark = bookmarks[i];
-        const packageName = extractPackageName(bookmark.url);
+        // 优先使用 npmUrl 字段，其次从 URL 提取仓库名
+        const packageName = extractNpmPackageName(bookmark.npmUrl) || extractPackageName(bookmark.url);
 
         if (!packageName) {
             console.log(`⏭️  [${i + 1}/${bookmarks.length}] ${bookmark.title} - 跳过（非 npm 包）`);
@@ -118,14 +119,22 @@ async function main() {
     console.log('='.repeat(50));
 }
 
-// 从 GitHub URL 提取包名
+// 从 npm URL 提取包名
+function extractNpmPackageName(npmUrl) {
+    if (!npmUrl) return null;
+    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    return match ? match[1] : null;
+}
+
+// 从 GitHub URL 提取包名（回退方案）
 function extractPackageName(url) {
     // 尝试从 URL 中提取仓库名作为包名
     const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
     if (match) {
         const repoName = match[2].replace(/\.git$/, '');
         // 通常 npm 包名和仓库名相同，但这只是猜测
-        // 实际应该从 github-stats.json 中获取准确的包名
+        // 实际应该从 npmUrl 字段获取准确的包名
         return repoName;
     }
     return null;
