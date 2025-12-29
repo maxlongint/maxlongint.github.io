@@ -204,6 +204,14 @@ function calculateBundleSizeRating(gzippedSize) {
     return 'Very Heavy';
 }
 
+// 提取npm包名的函数
+function extractNpmPackageName(npmUrl) {
+    if (!npmUrl) return null;
+    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    return match ? match[1] : null;
+}
+
 // 处理单个书签
 async function processBookmark(bookmark) {
     const match = bookmark.url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -212,8 +220,8 @@ async function processBookmark(bookmark) {
     const [, owner, repo] = match;
     const fullName = `${owner}/${repo.replace(/\.git$/, '')}`;
     const repoName = repo.replace(/\.git$/, '');
-    // 优先使用 bookmark 中的 npmPackage 字段，否则使用仓库名称
-    const packageName = bookmark.npmPackage || repoName;
+    // 优先使用 bookmark 中的 npmUrl 字段，其次使用仓库名称
+    const packageName = extractNpmPackageName(bookmark.npmUrl) || repoName;
     // 生成唯一 ID：使用 title 转小写并替换空格为连字符
     const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 

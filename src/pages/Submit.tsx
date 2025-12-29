@@ -11,6 +11,7 @@ export default function Submit() {
     const [formData, setFormData] = useState({
         toolName: '',
         githubUrl: '',
+        npmUrl: '',
         description: '',
     });
 
@@ -81,6 +82,7 @@ export default function Submit() {
 
 **工具名称:** ${formData.toolName}
 **GitHub 仓库地址:** ${formData.githubUrl}
+${formData.npmUrl ? `**npm 地址:** ${formData.npmUrl}` : ''}
 
 ### 描述
 
@@ -138,6 +140,7 @@ _此 Issue 由提交表单自动创建_`;
                 setFormData({
                     toolName: '',
                     githubUrl: '',
+                    npmUrl: '',
                     description: '',
                 });
                 setSelectedTags([]);
@@ -301,6 +304,34 @@ _此 Issue 由提交表单自动创建_`;
                                         placeholder="github.com/username/repo"
                                         value={formData.githubUrl}
                                         onChange={e => setFormData({ ...formData, githubUrl: e.target.value })}
+                                        className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* npm URL */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                    npm 地址
+                                </label>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                    如果 npm 包名与仓库名一致可以不填
+                                </p>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg
+                                            className="w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331zM10.665 10H12v2.667h-1.335V10z" />
+                                        </svg>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        placeholder="https://www.npmjs.com/package/package-name"
+                                        value={formData.npmUrl}
+                                        onChange={e => setFormData({ ...formData, npmUrl: e.target.value })}
                                         className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
                                 </div>

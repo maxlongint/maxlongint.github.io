@@ -53,6 +53,14 @@ console.log(`\n📊 开始为 ${fullName} 生成对比数据...\n`);
 const bookmarksPath = path.join(__dirname, '../src/data/bookmarks.json');
 const bookmarksData = JSON.parse(fs.readFileSync(bookmarksPath, 'utf8'));
 
+// 提取npm包名的函数
+function extractNpmPackageName(npmUrl) {
+    if (!npmUrl) return null;
+    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    return match ? match[1] : null;
+}
+
 // 查找对应的 bookmark
 const bookmark = bookmarksData.bookmarks.find(b => b.url.includes(fullName));
 if (!bookmark) {
@@ -60,7 +68,7 @@ if (!bookmark) {
     process.exit(1);
 }
 
-const packageName = bookmark.npmPackage || repo;
+const packageName = extractNpmPackageName(bookmark.npmUrl) || repo;
 const id = bookmark.title.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '');
 
 console.log(`📦 库名称: ${bookmark.title}`);
