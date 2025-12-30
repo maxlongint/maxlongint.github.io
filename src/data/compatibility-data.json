@@ -410,7 +410,7 @@
       "bundleSize": null,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 33469
+      "weeklyDownloads": null
     },
     "viewerjs": {
       "node": null,
@@ -465,7 +465,7 @@
       "bundleSize": 5805287,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 18942
     },
     "marked": {
       "node": ">= 20",
@@ -485,7 +485,7 @@
       "bundleSize": 99477,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 8448
+      "weeklyDownloads": null
     },
     "morphdom": {
       "node": null,
@@ -495,7 +495,7 @@
       "bundleSize": 201557,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 168359
     },
     "uppy": {
       "node": null,
@@ -505,7 +505,7 @@
       "bundleSize": 5645814,
       "sideEffects": null,
       "dependenciesCount": 35,
-      "weeklyDownloads": 13431
+      "weeklyDownloads": null
     },
     "lucide": {
       "node": null,
@@ -515,7 +515,7 @@
       "bundleSize": 19827254,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 156126
     },
     "interact.js": {
       "node": null,
@@ -565,7 +565,7 @@
       "bundleSize": 39001,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": 4304916
+      "weeklyDownloads": null
     },
     "echarts": {
       "node": null,
@@ -596,7 +596,7 @@
       "bundleSize": 306084,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 334805
     },
     "lit": {
       "node": null,
@@ -606,7 +606,7 @@
       "bundleSize": 106390,
       "sideEffects": null,
       "dependenciesCount": 3,
-      "weeklyDownloads": null
+      "weeklyDownloads": 1700341
     },
     "tailwindcss": {
       "node": null,
@@ -722,7 +722,7 @@
       "bundleSize": null,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": 667439
+      "weeklyDownloads": null
     },
     "docx-preview": {
       "node": null,
@@ -772,7 +772,7 @@
       "bundleSize": 284855,
       "sideEffects": null,
       "dependenciesCount": 0,
-      "weeklyDownloads": null
+      "weeklyDownloads": 4042283
     },
     "katex": {
       "node": null,
@@ -782,7 +782,7 @@
       "bundleSize": 4040184,
       "sideEffects": null,
       "dependenciesCount": 1,
-      "weeklyDownloads": 2649197
+      "weeklyDownloads": null
     },
     "mockjs": {
       "node": null,
@@ -812,7 +812,7 @@
       "bundleSize": 6255076,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": 808732
+      "weeklyDownloads": null
     },
     "@microsoft/fetch-event-source": {
       "node": null,
@@ -822,9 +822,29 @@
       "bundleSize": 62164,
       "sideEffects": false,
       "dependenciesCount": 0,
-      "weeklyDownloads": 491836
+      "weeklyDownloads": null
+    },
+    "@jaames/iro": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MPL-2.0",
+      "bundleSize": 236920,
+      "sideEffects": null,
+      "dependenciesCount": 2,
+      "weeklyDownloads": 18132
+    },
+    "@milkdown/core": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 228822,
+      "sideEffects": false,
+      "dependenciesCount": 7,
+      "weeklyDownloads": 17271
     }
   },
-  "lastUpdated": "2025-12-30T07:38:05.145Z",
-  "totalPackages": 80
+  "lastUpdated": "2025-12-30T22:18:35.007Z",
+  "totalPackages": 82
 }
