@@ -17,6 +17,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
     const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
     const [favorited, setFavorited] = useState(false);
+    const [, forceUpdate] = useState({});
 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
@@ -51,6 +52,16 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
         window.addEventListener('favorites-changed', handleFavoritesChanged);
         return () => window.removeEventListener('favorites-changed', handleFavoritesChanged);
     }, [bookmark.title]);
+
+    // 监听 GitHub 数据加载完成事件
+    useEffect(() => {
+        const handleDataLoaded = () => {
+            forceUpdate({}); // 强制重新渲染，显示最新的 GitHub 数据
+        };
+
+        window.addEventListener('github-data-loaded', handleDataLoaded);
+        return () => window.removeEventListener('github-data-loaded', handleDataLoaded);
+    }, []);
 
     // 生成URL友好的路由名称（使用title的小写形式）
     const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');

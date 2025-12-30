@@ -5,6 +5,7 @@ import './index.css';
 import { ThemeProvider } from './contexts/ThemeContext';
 import LoadingFallback from './components/LoadingFallback';
 import ClarityProvider from './components/ClarityProvider';
+import { loadGitHubData } from './utils/github';
 
 // 懒加载页面组件
 const Home = lazy(() => import('./pages/Home'));
@@ -15,15 +16,8 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Compare = lazy(() => import('./pages/Compare'));
 const Favorites = lazy(() => import('./pages/Favorites'));
 
-// 延迟加载 GitHub 数据
-const loadGitHubDataDeferred = async () => {
-    const { loadGitHubData } = await import('./utils/github');
-    // 延迟执行，避免阻塞初始渲染
-    setTimeout(() => loadGitHubData(), 100);
-};
-
-// 启动时延迟加载数据
-loadGitHubDataDeferred();
+// 立即加载 GitHub 数据（同步执行，无延迟）
+loadGitHubData();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
