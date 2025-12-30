@@ -121,6 +121,26 @@ export default function BookmarkDetail() {
         return bookmark ? getGitHubInfo(bookmark.url) : null;
     }, [bookmark]);
 
+    // 获取 npm 包名：优先使用 npmUrl，其次使用 repoInfo.name，最后使用 githubInfo.repo
+    const npmPackageName = useMemo(() => {
+        // 1. 优先使用 npmUrl
+        if (bookmark?.npmUrl) {
+            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            if (match) {
+                return match[1];
+            }
+        }
+        // 2. 其次使用 repoInfo.name（如果存在）
+        if (repoInfo?.name) {
+            return repoInfo.name;
+        }
+        // 3. 最后使用 githubInfo.repo（直接从 URL 解析）
+        if (githubInfo?.repo) {
+            return githubInfo.repo;
+        }
+        return null;
+    }, [bookmark, repoInfo, githubInfo]);
+
     // 缓存 Markdown 渲染结果
     const renderedReadme = useMemo(() => readme, [readme]);
 
@@ -216,8 +236,8 @@ export default function BookmarkDetail() {
             setLoading(true);
 
             // 生成缓存key
-            const npmCacheKey = `npm_${repoInfo?.name}`;
-            const bundleCacheKey = `bundle_${repoInfo?.name}`;
+            const npmCacheKey = `npm_${npmPackageName}`;
+            const bundleCacheKey = `bundle_${npmPackageName}`;
 
             // 缓存有效期：7天（NPM、Bundle Size）
             const CACHE_EXPIRY_7_DAYS = 7 * 24 * 60 * 60 * 1000;
@@ -327,7 +347,7 @@ export default function BookmarkDetail() {
                 setLoading(false);
 
                 // === 2. 获取NPM下载量数据（带缓存） ===
-                if (repoInfo?.npm_version && repoInfo.npm_version !== 'N/A') {
+                if (npmPackageName && repoInfo?.npm_version !== 'N/A') {
                     const cachedNpm = localStorage.getItem(npmCacheKey);
                     let shouldFetchNpm = true;
 
@@ -347,7 +367,7 @@ export default function BookmarkDetail() {
                     if (shouldFetchNpm) {
                         try {
                             const npmResponse = await fetch(
-                                `https://api.npmjs.org/downloads/range/last-month/${repoInfo.name}`
+                                `https://api.npmjs.org/downloads/range/last-month/${npmPackageName}`
                             );
                             if (npmResponse.ok) {
                                 const npmData = await npmResponse.json();
@@ -381,7 +401,7 @@ export default function BookmarkDetail() {
                 }
 
                 // === 3. 获取Bundle Size（带缓存） ===
-                if (repoInfo?.name && repoInfo.npm_version !== 'N/A') {
+                if (npmPackageName && repoInfo?.npm_version !== 'N/A') {
                     const cachedBundle = localStorage.getItem(bundleCacheKey);
                     let shouldFetchBundle = true;
 
@@ -401,7 +421,7 @@ export default function BookmarkDetail() {
                     if (shouldFetchBundle) {
                         try {
                             const bundleResponse = await fetch(
-                                `https://bundlephobia.com/api/size?package=${repoInfo.name}@latest`
+                                `https://bundlephobia.com/api/size?package=${npmPackageName}@latest`
                             );
                             if (bundleResponse.ok) {
                                 const bundleData = await bundleResponse.json();
@@ -815,7 +835,7 @@ export default function BookmarkDetail() {
                             </a>
                             {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
                                 <a
-                                    href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                                    href={`https://www.npmjs.com/package/${npmPackageName}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full px-5 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all shadow-lg active:shadow-xl flex items-center justify-center gap-2 font-semibold text-sm"
@@ -923,7 +943,7 @@ export default function BookmarkDetail() {
                             </a>
                             {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (
                                 <a
-                                    href={`https://www.npmjs.com/package/${repoInfo.name}`}
+                                    href={`https://www.npmjs.com/package/${npmPackageName}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 font-semibold"
@@ -1350,8 +1370,8 @@ export default function BookmarkDetail() {
                         </div>
 
                         {/* 兼容性 */}
-                        {repoInfo?.name && repoInfo.npm_version !== 'N/A' && (
-                            <CompatibilityCard packageName={repoInfo.name} />
+                        {npmPackageName && repoInfo?.npm_version !== 'N/A' && (
+                            <CompatibilityCard packageName={npmPackageName} />
                         )}
 
                         {/* Open Issues */}
