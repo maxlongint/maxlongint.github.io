@@ -47,6 +47,31 @@ function parseIssueBody(body) {
 }
 
 /**
+ * 自定义 JSON 格式化，保持与原文件一致的格式
+ * - 4个空格缩进
+ * - tags 数组在一行
+ * - 其他属性分行显示
+ * @param {Object} data - 要格式化的数据
+ * @returns {string} 格式化后的 JSON 字符串
+ */
+function formatBookmarksJson(data) {
+    // 使用标准的 JSON.stringify，但需要特殊处理 tags 数组
+    // 先正常序列化，然后处理 tags 数组格式
+    let json = JSON.stringify(data, null, 4);
+
+    // 将 tags 数组从多行格式转换为单行格式
+    // 匹配模式: "tags": [\n            "tag1",\n            "tag2"\n        ]
+    // 替换为: "tags": ["tag1", "tag2"]
+    json = json.replace(/"tags":\s*\[\s*([^\]]+?)\s*\]/g, (match, content) => {
+        // 提取所有标签值
+        const tags = content.match(/"[^"]+"/g) || [];
+        return `"tags": [${tags.join(', ')}]`;
+    });
+
+    return json;
+}
+
+/**
  * 生成标签颜色
  * @param {number} index - 标签索引
  * @returns {Object} 颜色配置
@@ -296,7 +321,10 @@ async function main() {
 
     // 添加到数组最后
     bookmarksData.bookmarks.push(newBookmark);
-    fs.writeFileSync('./src/data/bookmarks.json', JSON.stringify(bookmarksData, null, 2) + '\n', 'utf8');
+
+    // 使用自定义格式化保存文件，保持紧凑风格
+    const formattedJson = formatBookmarksJson(bookmarksData);
+    fs.writeFileSync('./src/data/bookmarks.json', formattedJson + '\n', 'utf8');
 
     // 实时获取GitHub仓库信息并添加到预设数据
     const match = parsed.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -380,4 +408,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { parseIssueBody, generateTagColor, fetchGitHubData, fetchNpmData, fetchReadme };
+module.exports = { parseIssueBody, formatBookmarksJson, generateTagColor, fetchGitHubData, fetchNpmData, fetchReadme };
