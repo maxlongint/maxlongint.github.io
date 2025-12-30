@@ -2272,7 +2272,36 @@
                 "openIssues": 7,
                 "watchers": 23519
             }
+        },
+        "fetch-event-source": {
+            "id": "fetch-event-source",
+            "name": "fetch-event-source",
+            "githubUrl": "Azure/fetch-event-source",
+            "npmPackage": "fetch-event-source",
+            "tags": [
+                "工具库",
+                "浏览器API"
+            ],
+            "dimensions": {
+                "bundleSize": {
+                    "minified": 3691,
+                    "gzipped": 1595
+                },
+                "bundleSizeRating": "Light",
+                "weeklyDownloads": 145,
+                "stars": 2664,
+                "lastUpdate": "2024-04-13T05:50:58Z",
+                "philosophy": "用于发出事件源请求的更好 API，具有 fetch() 的所有功能，可以传递任何 Headers，这对于需要鉴权的 API 至关重要。",
+                "ecosystem": "Moderate",
+                "ecosystemPlugins": [],
+                "npmVersion": "1.0.0-alpha.2",
+                "language": "TypeScript",
+                "repoSize": 36,
+                "forks": 183,
+                "openIssues": 70,
+                "watchers": 2664
+            }
         }
     },
-    "updated_at": "2025-12-30T06:46:32.197Z"
+    "updated_at": "2025-12-30T07:13:50.397Z"
 }
