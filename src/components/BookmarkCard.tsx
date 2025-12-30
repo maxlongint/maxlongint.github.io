@@ -21,15 +21,20 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
 
-    // 从 npmUrl 中提取 npm 包名，如果没有则使用仓库名
+    // 从 npmUrl 中提取 npm 包名，如果没有则从 GitHub URL 提取仓库名
     const getNpmPackageName = () => {
+        // 1. 优先使用 npmUrl
         if (bookmark.npmUrl) {
             const match = bookmark.npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
             if (match) {
                 return match[1];
             }
         }
-        return repoInfo?.name;
+        // 2. 回退到 GitHub 仓库名（直接从 URL 提取，不依赖延迟加载的数据）
+        if (githubInfo) {
+            return githubInfo.repo;
+        }
+        return null;
     };
 
     const npmPackageName = getNpmPackageName();
