@@ -66,7 +66,8 @@ const packageIdentifier = bookmark.npmUrl || repo;
 // 提取实际的包名（用于显示和存储）
 let packageName = packageIdentifier;
 if (packageIdentifier.includes('npmjs.com')) {
-    const match = packageIdentifier.match(/npmjs\.com\/package\/([^/?]+)/);
+    // 支持 scoped packages: @scope/package-name
+    const match = packageIdentifier.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
     packageName = match ? match[1] : packageIdentifier;
 }
 
@@ -214,9 +215,9 @@ async function fetchEcosystemPlugins(fullName, packageName) {
 async function fetchNpmData(packageNameOrUrl) {
     let packageName = packageNameOrUrl;
 
-    // 如果是完整的 npm URL，提取包名
+    // 如果是完整的 npm URL，提取包名（支持 scoped packages）
     if (packageNameOrUrl.includes('npmjs.com')) {
-        const match = packageNameOrUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+        const match = packageNameOrUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
         if (match) {
             packageName = match[1];
         }

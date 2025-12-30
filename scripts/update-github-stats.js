@@ -20,8 +20,10 @@ if (!token) {
 // 提取npm包名的函数
 function extractNpmPackageName(npmUrl) {
     if (!npmUrl) return null;
-    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
-    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    // 从 npm URL 提取包名，支持 scoped packages
+    // https://www.npmjs.com/package/package-name -> package-name
+    // https://www.npmjs.com/package/@scope/package-name -> @scope/package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
     return match ? match[1] : null;
 }
 

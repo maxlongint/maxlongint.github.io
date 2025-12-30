@@ -16,9 +16,9 @@ async function fetchCompatibility(packageNameOrUrl) {
     try {
         let packageName = packageNameOrUrl;
 
-        // 如果是完整的 npm URL，提取包名
+        // 如果是完整的 npm URL，提取包名（支持 scoped packages）
         if (packageNameOrUrl.includes('npmjs.com')) {
-            const match = packageNameOrUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            const match = packageNameOrUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
             if (match) {
                 packageName = match[1];
             }
@@ -105,8 +105,10 @@ function formatBytes(bytes) {
 // 从 npm URL 提取包名
 function extractNpmPackageName(npmUrl) {
     if (!npmUrl) return null;
-    // 从 npm URL 提取包名：https://www.npmjs.com/package/package-name -> package-name
-    const match = npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+    // 从 npm URL 提取包名，支持 scoped packages
+    // https://www.npmjs.com/package/package-name -> package-name
+    // https://www.npmjs.com/package/@scope/package-name -> @scope/package-name
+    const match = npmUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
     return match ? match[1] : null;
 }
 
@@ -176,7 +178,8 @@ async function main() {
     // 提取实际的包名（用于显示和存储）
     let packageName = packageIdentifier;
     if (packageIdentifier.includes('npmjs.com')) {
-        const match = packageIdentifier.match(/npmjs\.com\/package\/([^/?]+)/);
+        // 支持 scoped packages: @scope/package-name
+        const match = packageIdentifier.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
         packageName = match ? match[1] : packageIdentifier;
     }
 
