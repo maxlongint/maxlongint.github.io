@@ -7,7 +7,7 @@ const https = require('https');
  * @returns {Object} 解析后的工具信息
  */
 function parseIssueBody(body) {
-    const result = { toolName: '', githubUrl: '', description: '', tags: [] };
+    const result = { toolName: '', githubUrl: '', npmUrl: '', description: '', tags: [] };
 
     // 匹配 **工具名称:** Mock.js
     const nameMatch = body.match(/\*\*工具名称:\*\*\s*([^\n]+)/i);
@@ -18,6 +18,16 @@ function parseIssueBody(body) {
     if (urlMatch) {
         result.githubUrl = urlMatch[1].trim();
         if (!result.githubUrl.startsWith('http')) result.githubUrl = 'https://' + result.githubUrl;
+    }
+
+    // 匹配 **npm 地址:** https://www.npmjs.com/package/...
+    const npmMatch = body.match(/\*\*npm\s*地址:\*\*\s*([^\n]+)/i);
+    if (npmMatch) {
+        result.npmUrl = npmMatch[1].trim();
+        // 确保是有效的 npm URL
+        if (result.npmUrl && !result.npmUrl.startsWith('http')) {
+            result.npmUrl = 'https://' + result.npmUrl;
+        }
     }
 
     // 匹配 ### 描述 后面的内容
@@ -227,6 +237,7 @@ async function main() {
     console.log('=== Parsed Result ===');
     console.log('Tool Name:', parsed.toolName);
     console.log('GitHub URL:', parsed.githubUrl);
+    console.log('npm URL:', parsed.npmUrl || '(未提供)');
     console.log('Description:', parsed.description);
     console.log('Tags:', parsed.tags);
     console.log('=====================');
@@ -277,6 +288,11 @@ async function main() {
         description: parsed.description,
         tags: parsed.tags,
     };
+
+    // 如果有 npm URL，添加到 bookmark
+    if (parsed.npmUrl) {
+        newBookmark.npmUrl = parsed.npmUrl;
+    }
 
     // 添加到数组最后
     bookmarksData.bookmarks.push(newBookmark);
