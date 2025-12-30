@@ -123,9 +123,9 @@ export default function BookmarkDetail() {
 
     // 获取 npm 包名：优先使用 npmUrl，其次使用 repoInfo.name，最后使用 githubInfo.repo
     const npmPackageName = useMemo(() => {
-        // 1. 优先使用 npmUrl
+        // 1. 优先使用 npmUrl（支持 scoped packages）
         if (bookmark?.npmUrl) {
-            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
             if (match) {
                 return match[1];
             }

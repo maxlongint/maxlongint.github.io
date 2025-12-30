@@ -24,9 +24,9 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
 
     // 从 npmUrl 中提取 npm 包名，如果没有则从 GitHub URL 提取仓库名
     const getNpmPackageName = () => {
-        // 1. 优先使用 npmUrl
+        // 1. 优先使用 npmUrl（支持 scoped packages）
         if (bookmark.npmUrl) {
-            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
             if (match) {
                 return match[1];
             }
