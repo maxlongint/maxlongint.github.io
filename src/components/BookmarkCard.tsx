@@ -21,6 +21,19 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
     // 获取仓库的 GitHub 信息（用于显示 Stars）
     const repoInfo = getGitHubRepoInfo(bookmark.url);
 
+    // 从 npmUrl 中提取 npm 包名，如果没有则使用仓库名
+    const getNpmPackageName = () => {
+        if (bookmark.npmUrl) {
+            const match = bookmark.npmUrl.match(/npmjs\.com\/package\/([^/?]+)/);
+            if (match) {
+                return match[1];
+            }
+        }
+        return repoInfo?.name;
+    };
+
+    const npmPackageName = getNpmPackageName();
+
     // 初始化收藏状态
     useEffect(() => {
         setFavorited(isFavorite(bookmark.title));
@@ -197,7 +210,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 </div>
 
                 {/* 第五行：兼容性信息（移动端单独一行） */}
-                {repoInfo?.name && <CompatibilityBadges packageName={repoInfo.name} />}
+                {npmPackageName && <CompatibilityBadges packageName={npmPackageName} />}
             </div>
 
             {/* PC端列表模式布局 */}
@@ -319,7 +332,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                     {/* Stats and Compatibility Row */}
                     <div className="flex items-start justify-between gap-2">
                         <GitHubStats url={bookmark.url} />
-                        {repoInfo?.name && <CompatibilityBadges packageName={repoInfo.name} />}
+                        {npmPackageName && <CompatibilityBadges packageName={npmPackageName} />}
                     </div>
                 </div>
             </div>

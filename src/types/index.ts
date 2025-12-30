@@ -3,6 +3,7 @@ export interface Bookmark {
     url: string;
     description: string;
     tags: string[];
+    npmUrl?: string;
 }
 
 export interface GitHubRepoInfo {
