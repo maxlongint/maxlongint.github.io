@@ -147,520 +147,603 @@
             "title": "Mutative",
             "url": "https://github.com/unadlib/mutative",
             "description": "一个用于高效不可变更新的JavaScript库，其速度比手动编写的简单reducer快2-6倍，比Immer快10倍以上。",
-            "tags": ["数据处理"]
+            "tags": ["数据处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Immer",
             "url": "https://github.com/immerjs/immer",
             "description": "Immer是一个用于JavaScript的库,它允许你以一种简单、直观的方式编写不可变数据更新逻辑。通过使用\"写时复制\"机制,你可以像修改普通对象一样编写代码,Immer会自动生成新的不可变状态。适用场景:Redux状态管理、React状态更新、复杂嵌套数据结构修改。",
-            "tags": ["数据处理"]
+            "tags": ["数据处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Valibot",
             "url": "https://github.com/fabian-hiller/valibot",
             "description": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
-            "tags": ["数据处理"]
+            "tags": ["数据处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Zod",
             "url": "https://github.com/colinhacks/zod",
             "description": "Zod是一个用于TypeScript的运行时类型检查库,它允许你定义数据结构,并在运行时验证数据是否符合这些结构。支持链式API、类型推断、自定义错误消息等。适用场景:表单验证、API请求/响应校验、环境变量验证、配置文件校验。",
-            "tags": ["数据处理"]
+            "tags": ["数据处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "class-validator",
             "url": "https://github.com/typestack/class-validator",
             "description": "该库支持基于装饰器和非基于装饰器的验证方式。它内部使用 validator.js 来执行验证。Class-validator 可以在浏览器和 Node.js 平台上使用。通过装饰器如@IsEmail、@MinLength等对类属性进行验证。适用场景:NestJS后端数据验证、DTO对象校验、TypeScript类数据验证、表单数据校验。",
-            "tags": ["数据处理"]
+            "tags": ["数据处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Mage Icons",
             "url": "https://github.com/Mage-Icons/mage-icons",
             "npmUrl": "https://www.npmjs.com/package/@mage-icons/react",
             "description": "Mage Icons是一个精心策划的图标库,专为网页和移动应用的用户界面设计而打造。提供SVG、React、Vue等多种格式,图标风格现代简洁。适用场景:UI界面设计、后台管理系统、移动端应用、Web应用图标需求。",
-            "tags": ["图标"]
+            "tags": ["图标"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Iconoir",
             "url": "https://github.com/iconoir-icons/iconoir",
             "description": "一个拥有 1600 多个图标的开源图标库，支持 React、React Native、Flutter、Vue、Figma 和 Framer。",
-            "tags": ["图标"]
+            "tags": ["图标"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "DOMPurify",
             "url": "https://github.com/cure53/DOMPurify",
             "npmUrl": "https://www.npmjs.com/package/dompurify",
             "description": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS(跨站脚本)清理器,可用于HTML、MathML和SVG。可以过滤用户输入的HTML内容,防止XSS攻击,同时保留安全的标签和属性。适用场景:富文本编辑器内容过滤、用户评论系统、Markdown渲染后清理、第三方HTML内容展示。",
-            "tags": ["安全"]
+            "tags": ["安全"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "SnapDOM",
             "url": "https://github.com/zumerlab/snapdom",
             "description": "SnapDOM能够以极快的速度和极高的精度将HTML元素捕获为图片,同时支持伪元素、Shadow DOM、网页字体等。比html2canvas更快更准确,支持现代CSS特性。适用场景:页面截图功能、数据可视化导出、海报生成、分享卡片制作、图表导出为图片。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Animejs",
             "url": "https://github.com/juliangarnier/anime",
             "description": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
-            "tags": ["动画"]
+            "tags": ["动画"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Animate.css",
             "url": "https://github.com/animate-css/animate.css",
             "description": "一个跨浏览器的 CSS 动画库,使用起来非常简单。包含淡入淡出、弹跳、缩放、旋转等60+种预设动画效果,只需添加CSS类即可使用。适用场景:页面元素进场动画、按钮点击反馈、弹窗出现效果、页面切换过渡、提示消息动画。",
-            "tags": ["样式", "动画"]
+            "tags": ["样式", "动画"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "CountUp.js",
             "url": "https://github.com/inorganik/CountUp.js",
             "npmUrl": "https://www.npmjs.com/package/countup.js",
             "description": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库,可用于快速创建动画,以一种更有趣的方式展示数值数据。数字从0滚动到目标值,支持自定义持续时间、小数位数、前缀后缀等。适用场景:数据大屏展示、统计数据动画、销售额滚动显示、用户数量展示、计数器效果。",
-            "tags": ["动画"]
+            "tags": ["动画"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "SortableJS",
             "url": "https://github.com/SortableJS/Sortable",
             "npmUrl": "https://www.npmjs.com/package/sortablejs",
             "description": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。支持拖拽排序、多列表拖拽、分组、过滤等功能,无需jQuery,支持触摸设备。适用场景:任务列表排序、看板系统(如Trello)、文件管理器、菜单项排序、表格行拖拽排序。",
-            "tags": ["拖拽"]
+            "tags": ["拖拽"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "JSON Editor",
             "url": "https://github.com/josdejong/jsoneditor",
             "description": "一个基于网页的工具,用于查看、编辑、格式化和验证JSON。提供树形视图、代码视图、表单视图三种模式,支持搜索、排序、撤销重做等功能。适用场景:API调试工具、配置文件编辑、数据结构可视化、JSON数据管理后台、开发者工具。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Bignumber.js",
             "url": "https://github.com/MikeMcl/bignumber.js",
             "description": "一个用于任意精度十进制和非十进制算术的JavaScript库。解决JavaScript浮点数精度问题,支持超大数字运算、二进制/八进制/十六进制运算。适用场景:金融计算、加密货币交易、科学计算、精确的价格计算、超大数字运算。",
-            "tags": ["数学"]
+            "tags": ["数学"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "decimal.js",
             "url": "https://github.com/MikeMcl/decimal.js",
             "description": "一个用于 JavaScript 的任意精度 Decimal 类型库。与Bignumber.js类似但更注重十进制运算,符合IEEE 754标准,提供更精确的舍入控制。适用场景:财务报表、会计系统、电商价格计算、税务计算、精确的数学运算。",
-            "tags": ["数学"]
+            "tags": ["数学"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Dinero.js",
             "url": "https://github.com/dinerojs/dinero.js",
             "description": "在JavaScript和Typescript中创建,计算和格式化货币。专门用于货币计算,使用整数存储(避免浮点精度问题),支持多币种、货币转换、格式化。适用场景:电商购物车、支付系统、多币种转换、账单计算、金融应用货币处理。",
-            "tags": ["数学"]
+            "tags": ["数学"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Nzh",
             "url": "https://github.com/cnwhy/nzh",
             "description": "数字转中文(大写,小写)数字,金额。支持阿拉伯数字转中文数字(如:一千二百三十四)、金额大写(如:壹仟贰佰叁拾肆元整)。适用场景:财务系统发票打印、合同金额显示、支票打印、中文数字展示、报表系统。",
-            "tags": ["国际化"]
+            "tags": ["国际化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Numeral.js",
             "url": "https://github.com/adamwdraper/Numeral-js",
             "npmUrl": "https://www.npmjs.com/package/numeral",
             "description": "一个用于格式化和操作数字的JavaScript库。支持千位分隔符、货币符号、百分比、时间格式化等,类似Moment.js的API风格。适用场景:数字格式化显示、货币格式化、百分比展示、文件大小格式化、数据报表展示。",
-            "tags": ["数学"]
+            "tags": ["数学"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Wavesurfer.js",
             "url": "https://github.com/katspaugh/wavesurfer.js",
             "description": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
-            "tags": ["多媒体", "数据可视化"]
+            "tags": ["多媒体", "数据可视化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Store.js",
             "url": "https://github.com/marcuswestin/store.js",
             "description": "Store.js 是一个通用的跨浏览器存储库。统一的API封装localStorage、sessionStorage、cookie等存储方式,自动选择最佳存储方案,支持IE6+。适用场景:用户偏好设置存储、购物车数据持久化、表单数据缓存、用户登录状态、跨页面数据共享。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "iro.js",
             "url": "https://github.com/jaames/iro.js",
             "npmUrl": "https://www.npmjs.com/package/@jaames/iro",
             "description": "一个模块化的 JavaScript 拾色器小部件，支持多种颜色格式。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Pickr",
             "url": "https://github.com/simonwep/pickr",
             "description": "Pickr — 一个简单、多主题、响应式且可定制的拾色器库。它没有依赖项，无需 jQuery，并且与所有 CSS 框架（如 Bootstrap 和 Materialize）兼容。它支持 alpha 通道、rgba、hsla、hsva 等多种颜色格式。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "OverlayScrollbars",
             "url": "https://github.com/KingSora/OverlayScrollbars",
             "npmUrl": "https://www.npmjs.com/package/overlayscrollbars",
             "description": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
-            "tags": ["滚动"]
+            "tags": ["滚动"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Scrollama",
             "url": "https://github.com/russellsamora/scrollama",
             "description": "Scrollama 是一个现代化且轻量级的 JavaScript 库，用于通过使用 IntersectionObserver 来实现滚动式叙事，以替代传统的滚动事件。",
-            "tags": ["滚动"]
+            "tags": ["滚动"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Signature Pad",
             "url": "https://github.com/szimek/signature_pad",
             "description": "一个基于 HTML5 Canvas 的平滑签名绘制库。支持鼠标和触摸设备,可导出为PNG/JPG/SVG格式,支持撤销重做、清空、调整画笔颜色和粗细。适用场景:电子合同签名、快递签收、医疗文档签字、在线协议签署、移动端手写签名。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "simple-keyboard",
             "url": "https://github.com/hodgef/simple-keyboard",
             "description": "一个 JavaScript 虚拟键盘库,可自定义、响应式且轻量。支持多语言、自定义布局、主题定制、物理键盘同步。适用场景:触摸屏设备输入、自助终端、银行ATM界面、公共设备信息输入、无物理键盘设备、密码输入键盘。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "uuid",
             "url": "https://github.com/uuidjs/uuid",
             "description": "在 JavaScript 中生成符合 RFC 标准的 UUID。支持UUID v1(基于时间)、v4(随机)、v5(基于命名空间)等多个版本,保证唯一性。适用场景:数据库主键生成、文件唯一标识、订单号生成、分布式系统ID、临时数据标识。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Tippy.js",
             "url": "https://github.com/atomiks/tippyjs",
             "npmUrl": "https://www.npmjs.com/package/tippy.js",
             "description": "一个用于制作工具提示（Tooltip）、气泡框（Popover）、下拉菜单（Dropdown）和普通菜单（Menu）的库。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Day.js",
             "url": "https://github.com/iamkun/dayjs",
             "description": "Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样. 如果您曾经用过 Moment.js, 那么您已经知道如何使用 Day.js。",
-            "tags": ["日期时间"]
+            "tags": ["日期时间"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Moment.js",
             "url": "https://github.com/moment/moment",
             "description": "Moment.js 是一个用于解析、验证、操作和显示日期的 JavaScript 库。",
-            "tags": ["日期时间"]
+            "tags": ["日期时间"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Socket.IO",
             "url": "https://github.com/socketio/socket.io",
             "description": "Socket.IO 是一个库,它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。基于WebSocket,支持自动重连、房间、命名空间、二进制传输,兼容不支持WebSocket的浏览器。适用场景:即时聊天应用、在线协作工具、实时游戏、股票行情推送、实时通知系统、多人在线编辑。",
-            "tags": ["网络请求"]
+            "tags": ["网络请求"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "tinykeys",
             "url": "https://github.com/jamiebuilds/tinykeys",
             "description": "一个用于键盘绑定的微型(约 650 B)且现代化的库。支持组合键(Ctrl+S)、序列键(g i)、按键修饰符,体积极小。适用场景:编辑器快捷键、应用快捷操作、游戏按键绑定、表单快速提交、导航快捷键、开发者工具快捷键。",
-            "tags": ["快捷键"]
+            "tags": ["快捷键"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "pinyin-pro",
             "url": "https://github.com/zh-lx/pinyin-pro",
             "description": "中文转拼音、拼音音调、拼音声母、拼音韵母、多音字拼音、姓氏拼音、拼音匹配、中文分词。支持简繁体、多音字智能识别、音调标注。适用场景:中文输入法、拼音搜索功能、汉语学习应用、姓名拼音转换、文本分词处理、语音输入辅助。",
-            "tags": ["国际化"]
+            "tags": ["国际化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "bpmn-js",
             "url": "https://github.com/bpmn-io/bpmn-js",
             "description": "流程图绘制工具库。一个BPMN 2.0流程图设计器和渲染引擎,支持创建、编辑、查看业务流程图,符合BPMN国际标准。适用场景:工作流设计器、业务流程管理(BPM)、企业流程自动化、低代码平台、流程可视化系统、OA办公系统。",
-            "tags": ["数据可视化"]
+            "tags": ["数据可视化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "QRCode.js",
             "url": "https://github.com/davidshimjs/qrcodejs",
             "description": "QRCode.js 是一个用于制作二维码的 JavaScript 库。QRCode.js 支持跨浏览器，可使用 HTML5 Canvas 和 DOM 中的表格标签来生成二维码。此外，它没有任何依赖。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "FullCalendar",
             "url": "https://github.com/fullcalendar/fullcalendar",
             "description": "一个用 JavaScript 实现的全功能拖放事件日历。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "clipboard.js",
             "url": "https://github.com/zenorocha/clipboard.js",
             "description": "现代版可复制到剪贴板。无需 Flash。仅 3kb(已压缩)大小。通过data属性或JS API实现文本复制,无依赖,体积小。适用场景:复制代码段、复制链接、复制分享文案、复制口令、内容分享功能、文档网站复制按钮。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Cropper.js",
             "url": "https://github.com/fengyuanchen/cropperjs",
             "description": "JavaScript 图像裁剪工具。支持自由裁剪、固定比例、旋转、缩放、翻转等功能,响应式设计,支持触摸设备。适用场景:头像上传裁剪、图片编辑器、图片比例调整、证件照裁剪、商品图片处理、社交应用图片编辑。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Video.js",
             "url": "https://github.com/videojs/video.js",
             "description": "Video.js 是一款功能齐全的开源视频播放器，适用于所有基于网络的平台。",
-            "tags": ["多媒体"]
+            "tags": ["多媒体"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "HLS.js",
             "url": "https://github.com/video-dev/hls.js",
             "description": "HLS.js 是一个 JavaScript 库，它可以在支持 MSE（媒体源扩展）的浏览器中播放 HLS（HTTP 直播流）。",
-            "tags": ["多媒体"]
+            "tags": ["多媒体"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Plyr",
             "url": "https://github.com/sampotts/plyr",
             "description": "Plyr 是一款简单、轻量、易于使用且可定制的 HTML5、YouTube 和 Vimeo 媒体播放器，支持现代浏览器。",
-            "tags": ["多媒体"]
+            "tags": ["多媒体"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "FilePond",
             "url": "https://github.com/pqina/filepond",
             "description": "一款 JavaScript 库，能够处理您所上传的任何内容，会优化图片以加快上传速度，并提供出色、易用且流畅顺滑的用户体验。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "crypto-js",
             "url": "https://github.com/brix/crypto-js",
             "description": "加密标准的 JavaScript 库。支持MD5、SHA-1、SHA-256、AES、DES、HMAC等多种加密算法,纯JavaScript实现。适用场景:密码加密、数据加密传输、文件哈希值计算、Token生成、API签名验证、前端数据加密。",
-            "tags": ["安全"]
+            "tags": ["安全"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Intro.js",
             "url": "https://github.com/usablica/intro.js",
             "description": "轻量级、用户友好型的上手引导教程库。提供分步引导、提示框、高亮区域等功能,支持自定义样式和按钮。适用场景:新用户引导、功能介绍、产品演示、后台系统入门教程、复杂表单填写指导、SaaS产品引导。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "driver.js",
             "url": "https://github.com/kamranahmedse/driver.js",
             "description": "一个轻巧的,无依赖的JavaScript库,用于指导用户在页面上的重点。比Intro.js更轻量,支持单页面高亮、弹出提示、页面变暗等效果。适用场景:功能点高亮展示、新功能推介、页面引导流、产品特性展示、快速上手指导、分步操作提示。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Axios",
             "url": "https://github.com/axios/axios",
             "description": "基于承诺的浏览器及 Node.js  HTTP 客户端。 Axios 是一款专为浏览器和 Node.js 设计的基于 Promise 的 HTTP 客户端。Axios 提供了一个小巧且易于使用的库，其接口具有高度的可扩展性。",
-            "tags": ["网络请求"]
+            "tags": ["网络请求"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Cookie",
             "url": "https://github.com/js-cookie/js-cookie",
             "description": "一个简单、轻量级的 JavaScript API,用于处理浏览器中的 Cookie 数据。支持读写删除Cookie,设置过期时间、路径、域名等,API简洁易用。适用场景:用户登录状态保持、记住密码功能、用户偏好设置、跟踪统计数据、购物车信息存储、多语言切换记忆。",
-            "tags": ["浏览器API"]
+            "tags": ["浏览器API"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Loaders.css",
             "url": "https://github.com/ConnorAtherton/loaders.css",
             "description": "令人愉悦、以表现力为导向的纯 CSS 加载动画。",
-            "tags": ["样式", "动画"]
+            "tags": ["样式", "动画"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Viewer.js",
             "url": "https://github.com/fengyuanchen/viewerjs",
             "description": "JavaScript 图像查看器。支持图片放大缩小、旋转、翻转、全屏查看、幻灯片模式、缩略图,支持触摸手势。适用场景:图片画廊、产品详情图预览、照片查看器、文档图片查看、设计作品展示、电商商品图预览。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Swiper",
             "url": "https://github.com/nolimits4web/swiper",
             "description": "大多数现代的触摸式移动滑动界面都具备硬件加速的过渡效果。功能强大的轮播图/幻灯片库,支持水平/垂直滚动、循环、懒加载、分页、缩略图等。适用场景:网站首页轮播图、商品图展示、幻灯片制作、移动端卡片切换、图文列表滚动、广告轮播。",
-            "tags": ["UI组件"]
+            "tags": ["UI组件"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Highlight.js",
             "url": "https://github.com/highlightjs/highlight.js",
             "description": "带有语言自动检测功能且无需任何依赖项的 JavaScript 语法高亮显示器。支持190+种语言,提供多种代码主题,自动识别语言类型。适用场景:技术博客、文档网站、在线代码展示、API文档、教程网站、开发者社区。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Normalize.css",
             "url": "https://github.com/necolas/normalize.css",
             "description": "CSS 重置的现代 HTML5 就绪替代方案Normalize.css使浏览器更一致地呈现所有元素并符合现代标准。它精确地只针对需要规范化的样式。",
-            "tags": ["样式"]
+            "tags": ["样式"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "reveal.js",
             "url": "https://github.com/hakimel/reveal.js",
             "description": "reveal.js 是一个开源的 HTML 演示框架。它能让任何拥有网络浏览器的人免费创建出美观的演示文稿。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "hammer.js",
             "url": "https://github.com/hammerjs/hammer.js",
             "npmUrl": "https://www.npmjs.com/package/hammerjs",
             "description": "一个用于检测触摸手势的 JavaScript 库。支持点击、双击、滑动、缩放、旋转、长按等多种触摸手势识别。适用场景:移动端Web应用、图片查看器手势、地图应用交互、游戏手势控制、触摸屏设备交互、移动端导航手势。",
-            "tags": ["手势"]
+            "tags": ["手势"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Marked",
             "url": "https://github.com/markedjs/marked",
             "description": "一个 Markdown 解析器和编译器。专为提高速度而设计。符合CommonMark和GFM规范,支持手动高亮、自定义渲染器,速度快。适用场景:博客系统、文档生成器、Markdown编辑器、README文件渲染、内容管理系统、在线文档平台。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Milkdown",
             "url": "https://github.com/Milkdown/milkdown",
             "npmUrl": "https://www.npmjs.com/package/@milkdown/core",
             "description": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Swapy",
             "url": "https://github.com/TahaSh/swapy",
             "description": "一款与框架无关的工具,只需几行代码就能将任何布局转换为可拖动替换的布局形式。支持卡片位置互换、布局重新排列,配置简单。适用场景:仪表盘布局定制、组件位置调整、可自定义工作台、程序界面布局、组件交换位置、灵活的卡片布局。",
-            "tags": ["拖拽"]
+            "tags": ["拖拽"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "morphdom",
             "url": "https://github.com/patrick-steele-idem/morphdom",
             "description": "快速且轻量级的 DOM 差异对比/补丁处理(无需虚拟DOM)。直接操作真DOM,性能优秀,适合服务端渲染(SSR)场景的客户端水合。适用场景:SSR应用水合、局部DOM更新优化、轻量级前端框架、HTMX类库的基础、无虚拟DOM的高性能更新。",
-            "tags": ["性能优化"]
+            "tags": ["性能优化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Uppy",
             "url": "https://github.com/transloadit/uppy",
             "description": "Uppy 是一款时尚、模块化的 JavaScript 文件上传工具，可与任何应用程序无缝集成。它速度快，API 易于理解，让您无需为构建文件上传器而操心，能够专注于更重要的问题。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Lucide",
             "url": "https://github.com/lucide-icons/lucide",
             "description": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
-            "tags": ["图标"]
+            "tags": ["图标"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "docxjs",
             "url": "https://github.com/VolodymyrBaydalka/docxjs",
             "npmUrl": "https://www.npmjs.com/package/docx-preview",
             "description": "DOCX 渲染库。在浏览器中直接渲染并显示Word文档(.docx),无需后端转换,支持大部分Word格式。适用场景:在线文档预览、OA系统文档查看、合同在线阅读、文档管理系统、网盘文件预览、电子签章系统。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "tui.image-editor",
             "url": "https://github.com/nhn/tui.image-editor",
             "npmUrl": "https://www.npmjs.com/package/tui-image-editor",
             "description": "一个基于 Web 的图像编辑器，提供了丰富的编辑功能，如裁剪、旋转、缩放等。",
-            "tags": ["图像处理"]
+            "tags": ["图像处理"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "interact.js",
             "url": "https://github.com/taye/interact.js",
             "description": "适用于现代浏览器（以及 IE9+）的 JavaScript 拖放、调整大小以及具有惯性和捕捉功能的多点触摸手势，支持网格式拖动",
-            "tags": ["拖拽", "手势"]
+            "tags": ["拖拽", "手势"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "lodash",
             "url": "https://github.com/lodash/lodash",
             "description": "一个一致性、模块化、高性能的 JavaScript 实用工具库。提供300+个工具函数,包括数组、对象、字符串、函数操作等,支持按需导入。适用场景:数据处理和转换、数组/对象操作、函数式编程、性能优化(debounce/throttle)、深克隆/深对比、所有JavaScript项目。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "CodeMirror 5",
             "url": "https://github.com/codemirror/codemirror5",
             "npmUrl": "https://www.npmjs.com/package/codemirror",
             "description": "一个功能强大的文本编辑器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "xterm.js",
             "url": "https://github.com/xtermjs/xterm.js",
             "npmUrl": "https://www.npmjs.com/package/xterm",
             "description": "一个功能强大的终端模拟器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "file-type",
             "url": "https://github.com/sindresorhus/file-type",
             "description": "检测文件、流或数据的文件类型;支持 Node.js、浏览器。通过文件魔数字签名检测真实文件类型,不依赖文件扩展名,支持70+种文件类型。适用场景:文件上传验证、图片/视频格式检测、文件类型安全校验、多媒体应用、防止伪装文件上传。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-12-29"
         },
         {
             "title": "monaco-editor",
             "url": "https://github.com/microsoft/monaco-editor",
             "description": "一个基于浏览器的代码编辑器，支持语法高亮、代码折叠、自动完成等功能。",
-            "tags": ["编辑器"]
+            "tags": ["编辑器"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "TinyColor",
             "url": "https://github.com/bgrins/TinyColor",
             "npmUrl": "https://www.npmjs.com/package/tinycolor2",
             "description": "一个用于处理颜色的 JavaScript 库，支持颜色转换、混合、渐变等功能。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "js-base64",
             "url": "https://github.com/dankogai/js-base64",
             "description": "一个用于 Base64 编码/解码的 JavaScript 库，支持 Node.js、浏览器。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "ECharts",
             "url": "https://github.com/apache/echarts",
             "description": "一个基于 JavaScript 的开源可视化库，提供了丰富的图表类型和交互功能。",
-            "tags": ["数据可视化"]
+            "tags": ["数据可视化"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "radash",
             "url": "https://github.com/sodiray/radash",
             "description": "一个功能强大的 JavaScript 实用工具库，提供了丰富的功能，如数组操作、对象操作、字符串操作等。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "KaTeX",
             "url": "https://github.com/KaTeX/KaTeX",
             "npmUrl": "https://www.npmjs.com/package/katex",
             "description": "KaTeX/KaTeX 是一个快速的数学排版库，用于在网页上展示数学公式。",
-            "tags": ["数学"]
+            "tags": ["数学"],
+            "addedDate": "2025-11-11"
         },
         {
             "title": "Mock.js",
             "url": "https://github.com/nuysoft/Mock",
             "npmUrl": "https://www.npmjs.com/package/mockjs",
             "description": "Mock.js 是一个模拟数据生成器，可帮助前端开发和原型与后端进度分离，并减少一些单调性，特别是在编写自动化测试时。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-12-24"
         },
         {
             "title": "lit",
             "url": "https://github.com/lit/lit",
             "description": "Lit 是一个用于构建快速、轻量级 Web 组件的简单库。Lit 的核心是一个消除样板代码的组件基类，它提供了响应式状态、作用域样式以及一个轻量、快速且富有表现力的声明式模板系统。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-12-26"
         },
         {
             "title": "Tailwind CSS",
             "url": "https://github.com/tailwindlabs/tailwindcss",
             "npmUrl": "https://www.npmjs.com/package/tailwindcss",
             "description": "实用程序优先的 CSS 框架，包含 flex、pt-4、text-center 和rotate-90 等类，可以直接在标记中组合这些类来构建任何设计。",
-            "tags": ["样式"]
+            "tags": ["样式"],
+            "addedDate": "2025-12-26"
         },
         {
             "title": "mime",
             "url": "https://github.com/broofa/mime",
             "description": "mime 是一个为 JavaScript 提供 MIME 类型信息的 API，它支持全面的 MIME 类型（超过 800 种）和文件扩展名（超过 1000 种），提供了一个轻量级、无依赖、支持 TypeScript 的解决方案。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-12-29"
         },
         {
             "title": "UnoCSS",
             "url": "https://github.com/unocss/unocss",
             "description": "即时按需原子化 CSS 引擎。比Tailwind更快,支持自定义规则、预设配置、图标集成,构建时生成CSS。适用场景:Vite/Vue/React项目、高性能样式方案、自定义设计系统、快速原型开发、组件库开发、现代前端工程。",
-            "tags": ["样式"]
+            "tags": ["样式"],
+            "addedDate": "2025-12-29"
         },
         {
             "title": "jszip",
             "url": "https://github.com/Stuk/jszip",
             "description": "jszip 是一个用于在 JavaScript 中创建、读取和编辑.zip 文件的库。支持浏览器和Node.js,可以压缩/解压文件,生成zip包下载。适用场景:批量文件下载打包、在线文档打包、图片批量导出、数据备份压缩、文件解压预览、前端文件处理。",
-            "tags": ["文件操作"]
+            "tags": ["文件操作"],
+            "addedDate": "2025-12-29"
         },
         {
             "title": "Fuse.js",
             "url": "https://github.com/krisk/Fuse",
             "npmUrl": "https://www.npmjs.com/package/fuse.js",
             "description": "Fuse.js 是一个轻量级的零依赖17KB大小的JavaScript 模糊搜索库，支持 ES5 兼容的所有浏览器，并提供了丰富的文档和开发指南。",
-            "tags": ["工具库"]
+            "tags": ["工具库"],
+            "addedDate": "2025-12-29"
         },
         {
             "title": "GSAP",
             "url": "https://github.com/greensock/GSAP",
             "npmUrl": "https://www.npmjs.com/package/gsap",
             "description": "GSAP 是一个与框架无关的 JavaScript 动画库，可将开发人员变成动画超级英雄。构建适用于所有主要浏览器的高性能动画。",
-            "tags": ["动画", "滚动"]
+            "tags": ["动画", "滚动"],
+            "addedDate": "2025-12-30"
         },
         {
             "title": "fetch-event-source",
             "url": "https://github.com/Azure/fetch-event-source",
             "npmUrl": "https://www.npmjs.com/package/@microsoft/fetch-event-source",
             "description": "用于发出事件源请求的更好 API，具有 fetch() 的所有功能，可以传递任何 Headers，这对于需要鉴权的 API 至关重要。",
-            "tags": ["工具库", "浏览器API"]
+            "tags": ["工具库", "浏览器API"],
+            "addedDate": "2025-12-30"
         }
     ]
 }

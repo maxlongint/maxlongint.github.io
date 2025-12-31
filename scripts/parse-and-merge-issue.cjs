@@ -68,6 +68,9 @@ function formatBookmarksJson(data) {
         return `"tags": [${tags.join(', ')}]`;
     });
 
+    // 将 addedDate 保持在同一行（如果存在）
+    json = json.replace(/"addedDate":\s+"([^"]+)"/g, '"addedDate": "$1"');
+
     return json;
 }
 
@@ -318,6 +321,14 @@ async function main() {
     if (parsed.npmUrl) {
         newBookmark.npmUrl = parsed.npmUrl;
     }
+
+    // 添加收录时间（当前日期）
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    newBookmark.addedDate = `${year}-${month}-${day}`;
+    console.log(`收录时间: ${newBookmark.addedDate}`);
 
     // 添加到数组最后
     bookmarksData.bookmarks.push(newBookmark);

@@ -4,6 +4,7 @@ export interface Bookmark {
     description: string;
     tags: string[];
     npmUrl?: string;
+    addedDate?: string;
 }
 
 export interface GitHubRepoInfo {
