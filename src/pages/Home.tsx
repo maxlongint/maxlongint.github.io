@@ -344,6 +344,7 @@ function Home() {
                     selectedTag={selectedTag}
                     setSelectedTag={handleTagChange}
                     getTagColor={getTagColor}
+                    bookmarks={bookmarksData.bookmarks}
                 />
 
                 <div className="mt-8">

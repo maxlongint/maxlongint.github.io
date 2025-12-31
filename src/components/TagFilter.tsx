@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Bookmark } from '../types';
 
 interface TagFilterProps {
     tags: string[];
@@ -6,9 +7,40 @@ interface TagFilterProps {
     selectedTag: string;
     setSelectedTag: (tag: string) => void;
     getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
+    bookmarks: Bookmark[];
 }
 
-export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag, getTagColor }: TagFilterProps) {
+export default function TagFilter({
+    tags,
+    tagStats,
+    selectedTag,
+    setSelectedTag,
+    getTagColor,
+    bookmarks,
+}: TagFilterProps) {
+    // 判断是否为新收录（7天内）
+    const isNewBookmark = (addedDate?: string) => {
+        if (!addedDate) return false;
+        const added = new Date(addedDate);
+        const now = new Date();
+        const diffDays = (now.getTime() - added.getTime()) / (1000 * 60 * 60 * 24);
+        return diffDays <= 7;
+    };
+
+    // 检查标签是否包含新收录的库
+    const tagHasNewBookmarks = useMemo(() => {
+        const result: Record<string, boolean> = {};
+        tags.forEach(tag => {
+            // 排除 "全部 (All)" 标签
+            if (tag === '全部 (All)') {
+                result[tag] = false;
+            } else {
+                result[tag] = bookmarks.some(b => b.tags.includes(tag) && isNewBookmark(b.addedDate));
+            }
+        });
+        return result;
+    }, [bookmarks, tags]);
+
     // 热门分类：全部 + 包含库最多的5个标签 - 使用 useMemo 缓存
     const topTags = useMemo(
         () =>
@@ -44,7 +76,14 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                             }`}
                         >
-                            {tag} <span className="ml-1 text-xs opacity-75">{tagStats[tag]}</span>
+                            <span className="inline-flex items-center gap-1.5">
+                                {tag} <span className="ml-1 text-xs opacity-75">{tagStats[tag]}</span>
+                                {tagHasNewBookmarks[tag] && (
+                                    <span className="px-1.5 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-bold rounded-full animate-pulse">
+                                        NEW
+                                    </span>
+                                )}
+                            </span>
                         </button>
                     ))}
                 </div>
@@ -74,7 +113,14 @@ export default function TagFilter({ tags, tagStats, selectedTag, setSelectedTag,
                                     }`}
                                     style={isStyleObject ? tagColor : undefined}
                                 >
-                                    {tag} <span className="ml-0.5 opacity-75">{tagStats[tag]}</span>
+                                    <span className="inline-flex items-center gap-1">
+                                        {tag} <span className="ml-0.5 opacity-75">{tagStats[tag]}</span>
+                                        {tagHasNewBookmarks[tag] && (
+                                            <span className="px-1.5 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-bold rounded-full animate-pulse">
+                                                NEW
+                                            </span>
+                                        )}
+                                    </span>
                                 </button>
                             );
                         })}

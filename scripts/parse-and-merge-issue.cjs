@@ -322,13 +322,15 @@ async function main() {
         newBookmark.npmUrl = parsed.npmUrl;
     }
 
-    // 添加收录时间（当前日期）
+    // 添加收录时间（使用北京时间 UTC+8）
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
+    // 转换为北京时间（UTC+8）
+    const beijingTime = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const year = beijingTime.getUTCFullYear();
+    const month = String(beijingTime.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(beijingTime.getUTCDate()).padStart(2, '0');
     newBookmark.addedDate = `${year}-${month}-${day}`;
-    console.log(`收录时间: ${newBookmark.addedDate}`);
+    console.log(`收录时间（北京时间）: ${newBookmark.addedDate}`);
 
     // 添加到数组最后
     bookmarksData.bookmarks.push(newBookmark);
