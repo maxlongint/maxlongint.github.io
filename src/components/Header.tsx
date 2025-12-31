@@ -43,8 +43,8 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
                                     src="/logo.png"
                                     alt="前端工具库"
                                     className="w-12 h-12 rounded-lg"
-                                    loading="eager"
-                                    fetchPriority="high"
+                                    loading="lazy"
+                                    decoding="async"
                                     width="48"
                                     height="48"
                                 />

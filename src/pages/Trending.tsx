@@ -21,8 +21,8 @@ function Trending() {
                 .then(result => {
                     setTrendingData(result.data); // 注意：使用 result.data
                 })
-                .catch(err => {
-                    console.error('Failed to load trending data:', err);
+                .catch(() => {
+                    // 静默失败，显示空状态
                 });
         }
     }, []);

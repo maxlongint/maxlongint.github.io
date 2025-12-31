@@ -47,8 +47,8 @@ function Home() {
     useEffect(() => {
         try {
             localStorage.setItem('viewMode', viewMode);
-        } catch (error) {
-            console.error('Failed to save viewMode to localStorage:', error);
+        } catch {
+            // 静默失败
         }
     }, [viewMode]);
 

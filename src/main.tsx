@@ -16,8 +16,10 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Compare = lazy(() => import('./pages/Compare'));
 const Favorites = lazy(() => import('./pages/Favorites'));
 
-// 立即加载 GitHub 数据（同步执行，无延迟）
-loadGitHubData();
+// 异步加载 GitHub 数据，不阻塞初始渲染
+setTimeout(() => {
+    loadGitHubData();
+}, 100); // 等待初始渲染完成后加载
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -5,18 +5,23 @@
         <link rel="icon" type="image/png" href="/logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <!-- 预加载关键资源 -->
-        <link rel="preload" href="/logo.png" as="image" type="image/png" fetchpriority="high" />
+        <!-- 预加载关键资源 - 移除 logo.png 预加载，改为懒加载 -->
+        <!-- 预加载关键 CSS -->
+        <link rel="preload" href="/src/index.css" as="style" />
 
-        <!-- DNS 预解析和预连接 -->
-        <link rel="dns-prefetch" href="https://giscus.app" />
-        <link rel="preconnect" href="https://giscus.app" crossorigin />
+        <!-- 字体优化：使用系统字体，无需额外加载 -->
+        <style>
+            /* 预设字体，减少 FOUT (Flash of Unstyled Text) */
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            }
+        </style>
+
+        <!-- DNS 预解析和预连接 - 仅保留关键第三方服务 -->
         <link rel="dns-prefetch" href="https://github.com" />
         <link rel="preconnect" href="https://github.com" crossorigin />
-        <link rel="dns-prefetch" href="https://www.clarity.ms" />
-        <link rel="preconnect" href="https://www.clarity.ms" crossorigin />
         <link rel="dns-prefetch" href="https://img.shields.io" />
-        <link rel="preconnect" href="https://img.shields.io" crossorigin />
+        <!-- Clarity 延迟加载，不需要预连接 -->
 
         <meta
             name="description"

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import clarity from '@microsoft/clarity';
 
 interface ClarityProviderProps {
     projectId: string;
@@ -18,26 +17,30 @@ export default function ClarityProvider({ projectId, enabled = true }: ClarityPr
             return;
         }
 
-        // 等待页面完全加载后再初始化 Clarity
-        const initClarity = () => {
+        // 延迟加载 Clarity，等待用户交互或页面空闲时加载
+        const initClarity = async () => {
             try {
+                // 动态导入 Clarity，只在需要时加载
+                const { default: clarity } = await import('@microsoft/clarity');
                 clarity.init(projectId);
-                console.log('Clarity initialized');
-            } catch (error) {
-                console.error('Failed to initialize Microsoft Clarity:', error);
+            } catch {
+                // 静默失败，不影响主功能
             }
         };
 
-        // 如果页面已经加载完成，立即初始化
-        if (document.readyState === 'complete') {
-            setTimeout(initClarity, 3000); // 页面加载完成后再等待3秒
+        // 使用 requestIdleCallback 在浏览器空闲时加载，降低对性能的影响
+        if ('requestIdleCallback' in window) {
+            const idleCallback = requestIdleCallback(
+                () => {
+                    setTimeout(initClarity, 5000); // 空闲后再等待5秒
+                },
+                { timeout: 10000 }
+            );
+            return () => cancelIdleCallback(idleCallback);
         } else {
-            // 否则等待 load 事件
-            const handleLoad = () => {
-                setTimeout(initClarity, 3000); // 页面加载完成后再等待3秒
-            };
-            window.addEventListener('load', handleLoad);
-            return () => window.removeEventListener('load', handleLoad);
+            // 降级方案：页面加载完成后延迟加载
+            const timer = setTimeout(initClarity, 8000);
+            return () => clearTimeout(timer);
         }
     }, [projectId, enabled]);
 

@@ -18,6 +18,7 @@
 body {
     margin: 0;
     padding: 0;
+    /* 优化字体栈：优先使用系统字体，提升性能 */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro SC', 'SF Pro Display', 'SF Pro Text',
         'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -25,12 +26,43 @@ body {
     color: rgb(var(--foreground-rgb));
     background: rgb(var(--background-rgb));
     -webkit-overflow-scrolling: touch;
+    /* 字体渲染优化 */
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1; /* 启用字距调整 */
+    font-variant-ligatures: common-ligatures; /* 启用常见连字 */
+}
+
+/* 字体显示策略优化 - 确保文本立即显示，不会因字体加载而阻塞 */
+@font-face {
+    font-family: 'SF Pro SC';
+    font-display: swap; /* 文本立即显示，字体加载完成后替换 */
+    src: local('SF Pro SC'), local('PingFang SC');
+}
+
+@font-face {
+    font-family: 'PingFang SC';
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei');
 }
 
 /* 滚动条样式 */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
+}
+
+/* 代码字体优化 - 使用系统等宽字体 */
+code,
+pre,
+kbd,
+samp,
+.markdown-body code,
+.markdown-body pre {
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Source Code Pro', 'Menlo', 'Consolas',
+        'DejaVu Sans Mono', monospace;
+    font-feature-settings: 'liga' 0; /* 禁用连字，保持代码清晰 */
+    text-rendering: optimizeSpeed; /* 代码优先速度而非美观 */
+    font-variant-ligatures: none; /* 禁用连字 */
 }
 
 ::-webkit-scrollbar-track {

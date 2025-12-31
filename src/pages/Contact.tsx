@@ -19,7 +19,6 @@ export default function Contact() {
             // 检查容器中是否已经有 Giscus iframe
             const existingFrame = container.querySelector('iframe.giscus-frame');
             if (existingFrame) {
-                console.log('✅ Giscus already loaded');
                 return;
             }
 
