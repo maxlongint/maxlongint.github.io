@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import type { Bookmark } from '../types';
 import BookmarkCard from './BookmarkCard';
 
@@ -9,6 +10,50 @@ interface BookmarkListProps {
 }
 
 export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare }: BookmarkListProps) {
+    const [columns, setColumns] = useState<Bookmark[][]>([[], [], []]);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // 根据屏幕宽度确定列数
+    const getColumnCount = () => {
+        const width = window.innerWidth;
+        if (width >= 1024) return 3; // 桌面
+        if (width >= 768) return 2; // 平板
+        return 1; // 移动端
+    };
+
+    // 按照横向顺序分配到各列（简化版本：轮流分配）
+    useEffect(() => {
+        if (viewMode !== 'grid') return;
+
+        const columnCount = getColumnCount();
+        const newColumns: Bookmark[][] = Array.from({ length: columnCount }, () => []);
+
+        // 按照横向顺序分配：第1个到第1列，第2个到第2列，第3个到第3列，第4个回到第1列
+        bookmarks.forEach((bookmark, index) => {
+            const columnIndex = index % columnCount;
+            newColumns[columnIndex].push(bookmark);
+        });
+
+        setColumns(newColumns);
+    }, [bookmarks, viewMode]);
+
+    // 监听窗口大小变化
+    useEffect(() => {
+        if (viewMode !== 'grid') return;
+
+        const handleResize = () => {
+            const columnCount = getColumnCount();
+            const newColumns: Bookmark[][] = Array.from({ length: columnCount }, () => []);
+            bookmarks.forEach((bookmark, index) => {
+                const columnIndex = index % columnCount;
+                newColumns[columnIndex].push(bookmark);
+            });
+            setColumns(newColumns);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [bookmarks, viewMode]);
     if (bookmarks.length === 0) {
         return (
             <div className="text-center py-12">
@@ -26,16 +71,36 @@ export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare
     }
 
     return (
-        <div className={viewMode === 'grid' ? 'masonry-grid' : 'space-y-4'}>
-            {bookmarks.map((bookmark, index) => (
-                <BookmarkCard
-                    key={`${bookmark.url}-${index}`}
-                    bookmark={bookmark}
-                    viewMode={viewMode}
-                    getTagColor={getTagColor}
-                    onShare={onShare}
-                />
-            ))}
+        <div ref={containerRef}>
+            {viewMode === 'grid' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+                    {columns.map((column, columnIndex) => (
+                        <div key={columnIndex} className="flex flex-col gap-4">
+                            {column.map((bookmark, index) => (
+                                <BookmarkCard
+                                    key={`${bookmark.url}-${index}`}
+                                    bookmark={bookmark}
+                                    viewMode={viewMode}
+                                    getTagColor={getTagColor}
+                                    onShare={onShare}
+                                />
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {bookmarks.map((bookmark, index) => (
+                        <BookmarkCard
+                            key={`${bookmark.url}-${index}`}
+                            bookmark={bookmark}
+                            viewMode={viewMode}
+                            getTagColor={getTagColor}
+                            onShare={onShare}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
