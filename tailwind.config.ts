@@ -18,12 +18,14 @@ const config: Config = {
         extend: {
             fontFamily: {
                 sans: [
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    'Segoe UI',
                     'SF Pro SC',
                     'SF Pro Display',
                     'SF Pro Text',
                     'PingFang SC',
-                    '-apple-system',
-                    'BlinkMacSystemFont',
+                    'Microsoft YaHei',
                     'Helvetica Neue',
                     'Arial',
                     'sans-serif',

@@ -328,7 +328,7 @@ function Home() {
 
             {/* Hero Section */}
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-                <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">找到完美的前端工具。</h2>
+                <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">找到完美的前端工具</h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
                     浏览精选的库、框架和插件集合，
                     <br />
@@ -357,8 +357,8 @@ function Home() {
                             个工具
                         </p>
                         <div className="flex items-center gap-4">
-                            {/* 视图模式切换 */}
-                            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 overflow-hidden">
+                            {/* 视图模式切换 - 移动端隐藏 */}
+                            <div className="hidden md:flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 overflow-hidden">
                                 <button
                                     onClick={() => setViewMode('list')}
                                     className={`px-3 py-2 transition-colors focus:outline-none ${

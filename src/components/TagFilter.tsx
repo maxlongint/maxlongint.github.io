@@ -70,20 +70,18 @@ export default function TagFilter({
                         <button
                             key={tag}
                             onClick={() => setSelectedTag(tag)}
-                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-1.5 ${
                                 selectedTag === tag
                                     ? 'bg-black dark:bg-white text-white dark:text-black'
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                             }`}
                         >
-                            <span className="inline-flex items-center gap-1.5">
-                                {tag} <span className="ml-1 text-xs opacity-75">{tagStats[tag]}</span>
-                                {tagHasNewBookmarks[tag] && (
-                                    <span className="px-1.5 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-bold rounded-full animate-pulse">
-                                        NEW
-                                    </span>
-                                )}
-                            </span>
+                            {tag} <span className="text-xs opacity-75">{tagStats[tag]}</span>
+                            {tagHasNewBookmarks[tag] && (
+                                <span className="ml-0.5 px-1.5 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-bold rounded-md uppercase tracking-wide">
+                                    NEW
+                                </span>
+                            )}
                         </button>
                     ))}
                 </div>
@@ -102,7 +100,7 @@ export default function TagFilter({
                                 <button
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
                                         selectedTag === tag
                                             ? isStyleObject
                                                 ? 'ring-2 ring-offset-1 ring-blue-500'
@@ -113,14 +111,12 @@ export default function TagFilter({
                                     }`}
                                     style={isStyleObject ? tagColor : undefined}
                                 >
-                                    <span className="inline-flex items-center gap-1">
-                                        {tag} <span className="ml-0.5 opacity-75">{tagStats[tag]}</span>
-                                        {tagHasNewBookmarks[tag] && (
-                                            <span className="px-1.5 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-bold rounded-full animate-pulse">
-                                                NEW
-                                            </span>
-                                        )}
-                                    </span>
+                                    {tag} <span className="opacity-75">{tagStats[tag]}</span>
+                                    {tagHasNewBookmarks[tag] && (
+                                        <span className="ml-0.5 px-1.5 py-[1px] bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[9px] font-bold rounded-md uppercase tracking-wide">
+                                            NEW
+                                        </span>
+                                    )}
                                 </button>
                             );
                         })}
