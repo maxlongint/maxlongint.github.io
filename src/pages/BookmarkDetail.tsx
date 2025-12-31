@@ -86,7 +86,25 @@ export default function BookmarkDetail() {
         try {
             // 获取图片并转换为 Blob
             const response = await fetch(ogImageUrl);
+
+            console.log('Fetch response:', response.status, response.ok, response.headers.get('content-type'));
+
+            // 严格检查响应状态和内容类型
+            if (!response.ok || response.status !== 200) {
+                throw new Error(`图片不存在 (HTTP ${response.status})`);
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.startsWith('image/')) {
+                throw new Error(`返回的不是图片文件 (${contentType})`);
+            }
+
             const blob = await response.blob();
+
+            // 再次验证 blob 类型
+            if (!blob.type.startsWith('image/')) {
+                throw new Error(`Blob 类型不正确 (${blob.type})`);
+            }
 
             // 使用 Clipboard API 复制图片
             await navigator.clipboard.write([
@@ -99,9 +117,8 @@ export default function BookmarkDetail() {
             showToastMessage('分享卡片已复制到剪贴板！\n可以直接粘贴到 QQ、微信等应用分享啦~', 'success');
         } catch (error) {
             console.error('复制失败:', error);
-            // 降级方案：打开图片
-            showToastMessage('自动复制失败，已为您打开图片\n请手动右键保存后分享', 'error');
-            window.open(ogImageUrl, '_blank');
+            // 显示错误提示
+            showToastMessage('分享图片不存在或复制失败\n请联系管理员生成分享图片', 'error');
         }
     };
 
