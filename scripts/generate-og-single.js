@@ -18,7 +18,7 @@ if (!toolIdentifier) {
 // 读取数据
 const bookmarksPath = path.join(__dirname, '../src/data/bookmarks.json');
 const statsPath = path.join(__dirname, '../src/data/github-stats.json');
-const outputDir = path.join(__dirname, '../src/data/og-images');
+const outputDir = path.join(__dirname, '../public/og-images');
 
 const bookmarksData = JSON.parse(fs.readFileSync(bookmarksPath, 'utf-8'));
 const statsData = fs.existsSync(statsPath) ? JSON.parse(fs.readFileSync(statsPath, 'utf-8')) : { repos: {} };

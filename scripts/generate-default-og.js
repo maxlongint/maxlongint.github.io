@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const outputDir = path.join(__dirname, '../src/data/og-images');
+const outputDir = path.join(__dirname, '../public/og-images');
 
 // 确保输出目录存在
 if (!fs.existsSync(outputDir)) {

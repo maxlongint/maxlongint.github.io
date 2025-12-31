@@ -697,7 +697,7 @@ npm run update-library-tags "lodash" "工具库"
 -   ⭐ **动态数据** - 自动显示 GitHub Stars 数、工具描述等实时信息
 -   📱 **自适应布局** - 根据描述长度自动调整字体大小(24-36px)
 -   🖼️ **自动生成** - 新工具收录时自动生成 OG 图片
--   💾 **优化存储** - 图片存储在 `src/data/og-images/`,Git 追踪,构建时复制
+-   💾 **优化存储** - 图片存储在 `public/og-images/`,Git 追踪,Vite 自动处理
 
 ### 生成方式
 
@@ -713,7 +713,7 @@ npm run generate-og-single "工具名称"
 
 -   **尺寸**: 1200x630px (符合 Open Graph 标准)
 -   **格式**: PNG
--   **存储**: `src/data/og-images/*.png`
+-   **存储**: `public/og-images/*.png`
 -   **访问**: `/og-images/*.png`
 
 ### 使用场景
