@@ -137,9 +137,15 @@
             "textColor": "hsl(315, 65%, 38%)"
         },
         "__meta__": {
-            "lastColorIndex": 21,
-            "totalTags": 21,
-            "lastUpdated": "2025-12-29T01:00:00.000Z"
+            "lastColorIndex": 22,
+            "totalTags": 23,
+            "lastUpdated": "2025-12-31T02:33:41.575Z"
+        },
+        "实时协作": {
+            "className": "",
+            "color": "#b0e8c7",
+            "backgroundColor": "hsl(145, 55%, 80%)",
+            "textColor": "hsl(145, 75%, 30%)"
         }
     },
     "bookmarks": [
@@ -744,6 +750,13 @@
             "description": "用于发出事件源请求的更好 API，具有 fetch() 的所有功能，可以传递任何 Headers，这对于需要鉴权的 API 至关重要。",
             "tags": ["工具库", "浏览器API"],
             "addedDate": "2025-12-30"
+        },
+        {
+            "title": "yjs",
+            "url": "https://github.com/yjs/yjs",
+            "description": "Yjs 是一个 CRDT 框架，提供了一系列共享数据类型，用于构建协作软件，支持实时协作编辑，包括富文本编辑器、离线编辑、版本快照、撤销 / 重做功能和共享光标等。",
+            "tags": ["实时协作"],
+            "addedDate": "2025-12-31"
         }
     ]
 }
