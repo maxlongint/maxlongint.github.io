@@ -15,7 +15,21 @@ const config: Config = {
         },
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: [
+                    'SF Pro SC',
+                    'SF Pro Display',
+                    'SF Pro Text',
+                    'PingFang SC',
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    'Helvetica Neue',
+                    'Arial',
+                    'sans-serif',
+                ],
+            },
+        },
         screens: {
             xs: '475px',
             sm: '640px',
