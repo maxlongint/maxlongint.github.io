@@ -103,6 +103,15 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
         setFavorited(newFavorited);
     };
 
+    // 判断是否为新收录（7天内）
+    const isNew = () => {
+        if (!bookmark.addedDate) return false;
+        const added = new Date(bookmark.addedDate);
+        const now = new Date();
+        const diffDays = (now.getTime() - added.getTime()) / (1000 * 60 * 60 * 24);
+        return diffDays <= 7;
+    };
+
     return (
         <div className="group relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300">
             {/* 网格模式或移动端布局 */}
@@ -131,12 +140,20 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                         </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3
-                            onClick={handleTitleClick}
-                            className="text-base font-bold text-gray-900 dark:text-white mb-1 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                        >
-                            {bookmark.title}
-                        </h3>
+                        <div className="flex items-center gap-2 mb-1">
+                            <h3
+                                onClick={handleTitleClick}
+                                className="text-base font-bold text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            >
+                                {bookmark.title}
+                            </h3>
+                            {/* NEW 徽章 */}
+                            {isNew() && (
+                                <span className="px-2 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs font-bold rounded-full animate-pulse">
+                                    NEW
+                                </span>
+                            )}
+                        </div>
                         {/* Stars 数量徽章 */}
                         {repoInfo && repoInfo.stargazers_count > 0 && (
                             <a
@@ -158,22 +175,7 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 </div>
 
                 {/* 第二行：描述 */}
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 leading-relaxed">{bookmark.description}</p>
-
-                {/* 收录时间 */}
-                {bookmark.addedDate && (
-                    <div className="text-xs text-gray-500 dark:text-gray-500 mb-3 flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                        </svg>
-                        <span>收录于 {bookmark.addedDate}</span>
-                    </div>
-                )}
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 leading-relaxed">{bookmark.description}</p>
 
                 {/* 第三行：标签和操作按钮 */}
                 <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -273,27 +275,21 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4 mb-2">
                         <div className="flex-1">
-                            <h3
-                                onClick={handleTitleClick}
-                                className="text-base font-bold text-gray-900 dark:text-white mb-1 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                            >
-                                {bookmark.title}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{bookmark.description}</p>
-                            {/* 收录时间 */}
-                            {bookmark.addedDate && (
-                                <div className="text-xs text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    <span>收录于 {bookmark.addedDate}</span>
-                                </div>
-                            )}
+                            <div className="flex items-center gap-2 mb-1">
+                                <h3
+                                    onClick={handleTitleClick}
+                                    className="text-base font-bold text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                >
+                                    {bookmark.title}
+                                </h3>
+                                {/* NEW 徽章 */}
+                                {isNew() && (
+                                    <span className="px-2 py-0.5 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs font-bold rounded-full animate-pulse">
+                                        NEW
+                                    </span>
+                                )}
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">{bookmark.description}</p>
                         </div>
                         {/* Stars 数量徽章 */}
                         {repoInfo && repoInfo.stargazers_count > 0 && (

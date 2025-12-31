@@ -279,7 +279,7 @@ export default function BookmarkDetail() {
                             const crossRepoMatch = cleanSrc.match(/^([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);
                             if (crossRepoMatch) {
                                 const [, owner, repo, branch, path] = crossRepoMatch;
-                                return `<img${attrs}src="https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}" onerror="this.src=this.src.replace('/${branch}/', '/master/')"`;
+                                return `<img${attrs}src="https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}" onerror="if(!this.dataset.failed){this.dataset.failed='1';this.src=this.src.replace('/${branch}/', '/master/');}else{this.style.display='none';}"`;
                             }
 
                             // 移除 /blob/ 路径（如果存在）
@@ -288,7 +288,7 @@ export default function BookmarkDetail() {
                             const fullSrc = cleanSrc.startsWith('/')
                                 ? `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main${cleanSrc}`
                                 : `https://raw.githubusercontent.com/${githubInfo.owner}/${githubInfo.repo}/main/${cleanSrc}`;
-                            return `<img${attrs}src="${fullSrc}" onerror="this.src=this.src.replace('/main/', '/master/')"`;
+                            return `<img${attrs}src="${fullSrc}" onerror="if(!this.dataset.failed){this.dataset.failed='1';this.src=this.src.replace('/main/', '/master/');}else{this.style.display='none';}"`;
                         }
                     );
 
@@ -792,20 +792,6 @@ export default function BookmarkDetail() {
                         <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                             {bookmark.description}
                         </p>
-                        {/* 收录时间 */}
-                        {bookmark.addedDate && (
-                            <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 flex items-center gap-1.5">
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    />
-                                </svg>
-                                <span>收录于 {bookmark.addedDate}</span>
-                            </div>
-                        )}
                         <div className="flex flex-wrap gap-2">
                             {bookmark.tags.map((tag, index) => {
                                 const tagConfig = (
@@ -902,21 +888,6 @@ export default function BookmarkDetail() {
                             <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-6 max-w-3xl">
                                 {bookmark.description}
                             </p>
-
-                            {/* 收录时间 */}
-                            {bookmark.addedDate && (
-                                <div className="text-sm text-gray-500 dark:text-gray-500 mb-6 flex items-center gap-2">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    <span>收录于 {bookmark.addedDate}</span>
-                                </div>
-                            )}
 
                             <div className="flex items-center gap-3 mb-6">
                                 {repoInfo?.npm_version && repoInfo.npm_version !== 'N/A' && (

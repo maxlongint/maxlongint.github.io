@@ -169,6 +169,15 @@ function Home() {
         []
     );
 
+    // 判断是否为新收录（7天内）
+    const isNewBookmark = useCallback((addedDate?: string) => {
+        if (!addedDate) return false;
+        const added = new Date(addedDate);
+        const now = new Date();
+        const diffDays = (now.getTime() - added.getTime()) / (1000 * 60 * 60 * 24);
+        return diffDays <= 7;
+    }, []);
+
     // 筛选和排序书签 - 使用 Fuse.js 优化搜索
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
@@ -185,9 +194,27 @@ function Home() {
             bookmarks = results.map(result => result.item);
         }
 
-        // 排序 - 提前缓存 repoInfo 避免重复查询
+        // 排序逻辑
         if (selectedSort === '默认') {
-            return bookmarks;
+            // 默认排序：新收录工具（7天内）优先，然后按 Star 数排序
+            const bookmarksWithInfo = bookmarks.map(bookmark => ({
+                bookmark,
+                repoInfo: getGitHubRepoInfo(bookmark.url),
+                isNew: isNewBookmark(bookmark.addedDate),
+            }));
+
+            const sortedBookmarks = [...bookmarksWithInfo].sort((a, b) => {
+                // 新收录的优先
+                if (a.isNew && !b.isNew) return -1;
+                if (!a.isNew && b.isNew) return 1;
+
+                // 都是新收录或都不是新收录，按 Star 数排序
+                const starsA = a.repoInfo?.stargazers_count || 0;
+                const starsB = b.repoInfo?.stargazers_count || 0;
+                return starsB - starsA;
+            });
+
+            return sortedBookmarks.map(item => item.bookmark);
         }
 
         // 先缓存所有需要的 repoInfo
@@ -199,20 +226,24 @@ function Home() {
         const sortedBookmarks = [...bookmarksWithInfo].sort((a, b) => {
             if (selectedSort === '名称') {
                 return a.bookmark.title.localeCompare(b.bookmark.title, 'zh-CN');
-            } else if (selectedSort === 'Stars') {
+            } else if (selectedSort === 'Stars数量') {
                 const starsA = a.repoInfo?.stargazers_count || 0;
                 const starsB = b.repoInfo?.stargazers_count || 0;
                 return starsB - starsA;
-            } else if (selectedSort === '更新日期') {
+            } else if (selectedSort === '更新时间') {
                 const dateA = a.repoInfo?.pushed_at || '';
                 const dateB = b.repoInfo?.pushed_at || '';
+                return dateB.localeCompare(dateA);
+            } else if (selectedSort === '收录时间') {
+                const dateA = a.bookmark.addedDate || '';
+                const dateB = b.bookmark.addedDate || '';
                 return dateB.localeCompare(dateA);
             }
             return 0;
         });
 
         return sortedBookmarks.map(item => item.bookmark);
-    }, [selectedTag, searchQuery, selectedSort, fuseOptions]);
+    }, [selectedTag, searchQuery, selectedSort, fuseOptions, isNewBookmark]);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
@@ -408,21 +439,30 @@ function Home() {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    setSelectedSort('Stars');
+                                                    setSelectedSort('Stars数量');
                                                     setSortOpen(false);
                                                 }}
                                                 className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                                             >
-                                                Stars
+                                                Stars数量
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    setSelectedSort('更新日期');
+                                                    setSelectedSort('更新时间');
                                                     setSortOpen(false);
                                                 }}
                                                 className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                                             >
-                                                更新日期
+                                                更新时间
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedSort('收录时间');
+                                                    setSortOpen(false);
+                                                }}
+                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                                            >
+                                                收录时间
                                             </button>
                                         </div>
                                     </div>
