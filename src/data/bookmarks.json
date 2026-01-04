@@ -137,15 +137,21 @@
             "textColor": "hsl(315, 65%, 38%)"
         },
         "__meta__": {
-            "lastColorIndex": 22,
-            "totalTags": 23,
-            "lastUpdated": "2025-12-31T02:33:41.575Z"
+            "lastColorIndex": 23,
+            "totalTags": 24,
+            "lastUpdated": "2026-01-04T09:35:54.851Z"
         },
         "实时协作": {
             "className": "",
             "color": "#b0e8c7",
             "backgroundColor": "hsl(145, 55%, 80%)",
             "textColor": "hsl(145, 75%, 30%)"
+        },
+        "文本操作": {
+            "className": "",
+            "color": "#d6a2eb",
+            "backgroundColor": "hsl(282.5, 65%, 78%)",
+            "textColor": "hsl(282.5, 80%, 28%)"
         }
     },
     "bookmarks": [
@@ -750,6 +756,14 @@
             "description": "Yjs 是一个 CRDT 框架，提供了一系列共享数据类型，用于构建协作软件，支持实时协作编辑，包括富文本编辑器、离线编辑、版本快照、撤销 / 重做功能和共享光标等。",
             "tags": ["实时协作"],
             "addedDate": "2025-12-31"
+        },
+        {
+            "title": "Turndown",
+            "url": "https://github.com/mixmark-io/turndown",
+            "description": "Turndown 是一个用于将 HTML 转换为 Markdown 的库，支持 Node.js 和浏览器环境。",
+            "tags": ["文本操作", "文件操作"],
+            "npmUrl": "https://www.npmjs.com/package/turndown",
+            "addedDate": "2026-01-04"
         }
     ]
 }
