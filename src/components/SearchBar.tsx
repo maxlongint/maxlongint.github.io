@@ -27,6 +27,7 @@ export default function SearchBar({ searchQuery, setSearchQuery, compact = false
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             // 按回车时搜索
+            console.log('回车键被按下，搜索关键词:', inputValue);
             setSearchQuery(inputValue);
         }
     };

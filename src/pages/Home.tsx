@@ -156,15 +156,16 @@ function Home() {
     const fuseOptions = useMemo(
         () => ({
             keys: [
-                { name: 'title', weight: 0.4 }, // 标题权重最高
-                { name: 'tags', weight: 0.3 }, // 标签权重次之
-                { name: 'url', weight: 0.15 }, // URL权重较低
-                { name: 'description', weight: 0.15 }, // 描述权重较低
+                { name: 'title', weight: 0.5 }, // 标题权重最高
+                { name: 'tags', weight: 0.25 }, // 标签权重次之
+                { name: 'description', weight: 0.2 }, // 描述权重较低
+                { name: 'url', weight: 0.05 }, // URL权重最低
             ],
-            threshold: 0.4, // 模糊匹配阈值（0-1，越小越严格）
+            threshold: 0.3, // 模糊匹配阈值（0-1，越小越严格）降低到0.3使搜索更精确
             includeScore: true, // 包含匹配分数
             minMatchCharLength: 2, // 最小匹配字符长度
             ignoreLocation: true, // 忽略匹配位置，提升长文本搜索效果
+            distance: 100, // 匹配位置的距离限制
         }),
         []
     );
@@ -180,6 +181,7 @@ function Home() {
 
     // 筛选和排序书签 - 使用 Fuse.js 优化搜索
     const filteredBookmarks = useMemo(() => {
+        console.log('filteredBookmarks 重新计算, searchQuery:', searchQuery);
         let bookmarks = bookmarksData.bookmarks;
 
         // 根据标签筛选
@@ -189,8 +191,11 @@ function Home() {
 
         // 根据搜索关键词筛选 - 使用 Fuse.js
         if (searchQuery.trim()) {
+            console.log('开始 Fuse.js 搜索，关键词:', searchQuery.trim());
             const fuse = new Fuse(bookmarks, fuseOptions);
             const results = fuse.search(searchQuery.trim());
+            console.log('Fuse.js 搜索结果数量:', results.length);
+            console.log('搜索结果:', results);
             bookmarks = results.map(result => result.item);
         }
 
