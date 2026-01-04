@@ -64,8 +64,14 @@ export default function BookmarkDetail() {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
+    const [activeTab, setActiveTab] = useState<'appreciate' | 'readme'>('appreciate'); // 当前激活的标签
+    const [appreciate, setAppreciate] = useState<string>(''); // 鉴赏报告内容
+    const [appreciateLoaded, setAppreciateLoaded] = useState(false); // 鉴赏报告是否加载完成
+    const [appreciateError, setAppreciateError] = useState(false); // 鉴赏报告加载失败
     const readmeRef = useRef<HTMLDivElement>(null);
     const mobileReadmeRef = useRef<HTMLDivElement>(null);
+    const appreciateRef = useRef<HTMLDivElement>(null); // PC端鉴赏报告ref
+    const mobileAppreciateRef = useRef<HTMLDivElement>(null); // 移动端鉴赏报告ref
     const hasRenderedRef = useRef<boolean>(false); // 追踪是否已渲染
 
     // 显示提示框
@@ -165,6 +171,9 @@ export default function BookmarkDetail() {
     useEffect(() => {
         window.scrollTo(0, 0);
         hasRenderedRef.current = false; // 重置渲染状态
+        setAppreciateLoaded(false); // 重置鉴赏报告加载状态
+        setAppreciateError(false);
+        setAppreciate('');
     }, [id]); // 当路由参数变化时触发
 
     // 设置页面标题和 OG meta 标签
@@ -260,6 +269,55 @@ export default function BookmarkDetail() {
             const CACHE_EXPIRY_7_DAYS = 7 * 24 * 60 * 60 * 1000;
 
             try {
+                // === 0. 尝试加载鉴赏报告 ===
+                const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                const appreciatePath = `/appreciates/${routeName}.md`;
+
+                try {
+                    const appreciateResponse = await fetch(appreciatePath);
+
+                    // 严格检查响应状态和内容类型
+                    if (appreciateResponse.ok && appreciateResponse.status === 200) {
+                        const contentType = appreciateResponse.headers.get('content-type');
+
+                        // 确保不是HTML内容（Vite错误页面会返回text/html）
+                        if (
+                            contentType &&
+                            !contentType.includes('text/html') &&
+                            (contentType.includes('text/') || contentType.includes('markdown'))
+                        ) {
+                            const appreciateText = await appreciateResponse.text();
+
+                            // 额外检查：确保内容不是HTML标签开头（双重保障）
+                            if (
+                                appreciateText &&
+                                appreciateText.trim().length > 0 &&
+                                !appreciateText.trim().startsWith('<!DOCTYPE') &&
+                                !appreciateText.trim().startsWith('<html')
+                            ) {
+                                const appreciateHtml = await marked(appreciateText);
+                                setAppreciate(appreciateHtml);
+                                setAppreciateLoaded(true);
+                                setAppreciateError(false);
+                                setActiveTab('appreciate'); // 如果有鉴赏报告，默认显示鉴赏报告
+                            } else {
+                                setAppreciateError(true);
+                                setActiveTab('readme'); // 内容为空或是HTML，默认显示README
+                            }
+                        } else {
+                            setAppreciateError(true);
+                            setActiveTab('readme'); // 不是文本内容，默认显示README
+                        }
+                    } else {
+                        setAppreciateError(true);
+                        setActiveTab('readme'); // 文件不存在，默认显示README
+                    }
+                } catch (error) {
+                    // 静默处理，不在控制台输出错误（404是正常情况）
+                    setAppreciateError(true);
+                    setActiveTab('readme'); // 加载失败，默认显示README
+                }
+
                 // === 1. 获取README内容（从预构建数据） ===
                 // 添加重试逻辑，等待数据加载完成
                 let readmeText: string | null = null;
@@ -475,6 +533,40 @@ export default function BookmarkDetail() {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]); // 只依赖id，避免循环触发
+
+    // 渲染鉴赏报告
+    useEffect(() => {
+        if (!appreciate) return;
+
+        // PC端渲染
+        if (appreciateRef.current) {
+            appreciateRef.current.innerHTML = appreciate;
+        }
+
+        // 移动端渲染
+        if (mobileAppreciateRef.current) {
+            mobileAppreciateRef.current.innerHTML = appreciate;
+        }
+
+        // 代码高亮
+        const timeoutId = setTimeout(() => {
+            [appreciateRef.current, mobileAppreciateRef.current].forEach(container => {
+                if (!container) return;
+                const codeBlocks = container.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    const el = block as HTMLElement;
+                    el.removeAttribute('data-highlighted');
+                    el.className = el.className
+                        .split(' ')
+                        .filter(c => !c.startsWith('hljs'))
+                        .join(' ');
+                    hljs.highlightElement(el);
+                });
+            });
+        }, 150);
+
+        return () => clearTimeout(timeoutId);
+    }, [appreciate]);
 
     useEffect(() => {
         if (!renderedReadme) return;
@@ -1091,82 +1183,63 @@ export default function BookmarkDetail() {
                         </div>
                     </div>
 
-                    {/* README */}
+                    {/* 文档内容区域 - 带标签切换 */}
                     <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-                        <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-900">
-                            <h2 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                <svg
-                                    className="w-4 h-4 text-gray-700 dark:text-gray-300"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                        {/* 标签切换 - 只有当鉴赏报告存在时才显示 */}
+                        {appreciateLoaded && !appreciateError ? (
+                            <div className="border-b border-gray-200 dark:border-gray-700 px-4 bg-gray-50 dark:bg-gray-900 flex items-center">
+                                <button
+                                    onClick={() => setActiveTab('appreciate')}
+                                    className={`px-4 py-3 text-sm font-semibold transition-colors relative ${
+                                        activeTab === 'appreciate'
+                                            ? 'text-blue-600 dark:text-blue-400'
+                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                    }`}
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                    />
-                                </svg>
-                                README
-                            </h2>
-                        </div>
-                        <div className="p-4">
-                            {loading ? (
-                                <div className="flex items-center justify-center py-12">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                                </div>
-                            ) : !readme || readmeError || readme.trim().length === 0 ? (
-                                <div className="flex flex-col items-center justify-center py-12 text-center">
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                                            />
+                                        </svg>
+                                        鉴赏报告
+                                    </span>
+                                    {activeTab === 'appreciate' && (
+                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                                    )}
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('readme')}
+                                    className={`px-4 py-3 text-sm font-semibold transition-colors relative ${
+                                        activeTab === 'readme'
+                                            ? 'text-blue-600 dark:text-blue-400'
+                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                            />
+                                        </svg>
+                                        README
+                                    </span>
+                                    {activeTab === 'readme' && (
+                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                                    )}
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900">
+                                <h2 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                     <svg
-                                        className="w-12 h-12 text-gray-300 mb-3"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                        />
-                                    </svg>
-                                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                                        README 暂时无法加载
-                                    </h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 px-4">
-                                        数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub 查看完整文档。
-                                    </p>
-                                    <a
-                                        href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}#readme`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                                    >
-                                        在 GitHub 查看 README
-                                    </a>
-                                </div>
-                            ) : (
-                                <div
-                                    key="readme-content-mobile"
-                                    ref={mobileReadmeRef}
-                                    className="markdown-body prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
-                                />
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* PC端布局：保持原样 */}
-                <div className="hidden lg:grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* 左侧主要内容 */}
-                    <div className="lg:col-span-3">
-                        {/* README内容 */}
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-                            <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                    <svg
-                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
+                                        className="w-4 h-4 text-gray-700 dark:text-gray-300"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1180,34 +1253,193 @@ export default function BookmarkDetail() {
                                     </svg>
                                     README
                                 </h2>
-                                {/* 目录按钮 */}
-                                {tocItems.length > 0 && (
-                                    <button
-                                        onClick={() => setShowToc(!showToc)}
-                                        className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                                        title="目录"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M4 6h16M4 12h16M4 18h7"
-                                            />
-                                        </svg>
-                                        目录
-                                    </button>
-                                )}
                             </div>
-                            <div className="p-6 relative">
-                                {loading ? (
-                                    <div className="flex items-center justify-center py-16">
-                                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+                        )}
+
+                        {/* 内容区域 */}
+                        <div className="p-4">
+                            {loading ? (
+                                <div className="flex items-center justify-center py-12">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                </div>
+                            ) : (
+                                <>
+                                    {/* 鉴赏报告内容 */}
+                                    <div style={{ display: activeTab === 'appreciate' ? 'block' : 'none' }}>
+                                        {appreciateLoaded && !appreciateError ? (
+                                            <div
+                                                key="appreciate-content-mobile"
+                                                ref={mobileAppreciateRef}
+                                                className="markdown-body prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
+                                            />
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                                <svg
+                                                    className="w-12 h-12 text-gray-300 mb-3"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                    />
+                                                </svg>
+                                                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
+                                                    暂无鉴赏报告
+                                                </h3>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                    该库暂时还没有鉴赏报告
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
-                                ) : readmeError || !readme || readme.trim().length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center py-16 text-center">
+
+                                    {/* README内容 */}
+                                    <div style={{ display: activeTab === 'readme' ? 'block' : 'none' }}>
+                                        {!readme || readmeError || readme.trim().length === 0 ? (
+                                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                                <svg
+                                                    className="w-12 h-12 text-gray-300 mb-3"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                    />
+                                                </svg>
+                                                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
+                                                    README 暂时无法加载
+                                                </h3>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 px-4">
+                                                    数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub
+                                                    查看完整文档。
+                                                </p>
+                                                <a
+                                                    href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}#readme`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                                                >
+                                                    在 GitHub 查看 README
+                                                </a>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                key="readme-content-mobile"
+                                                ref={mobileReadmeRef}
+                                                className="markdown-body prose prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:inline-block prose-img:my-0"
+                                            />
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* PC端布局：保持原样 */}
+                <div className="hidden lg:grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* 左侧主要内容 */}
+                    <div className="lg:col-span-3">
+                        {/* 文档内容区域 - 带标签切换 */}
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                            {/* 标签切换 - 只有当鉴赏报告存在时才显示标签 */}
+                            {appreciateLoaded && !appreciateError ? (
+                                <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-0 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <button
+                                            onClick={() => setActiveTab('appreciate')}
+                                            className={`px-4 py-4 text-base font-semibold transition-colors relative ${
+                                                activeTab === 'appreciate'
+                                                    ? 'text-blue-600 dark:text-blue-400'
+                                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                            }`}
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <svg
+                                                    className="w-5 h-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                                                    />
+                                                </svg>
+                                                鉴赏报告
+                                            </span>
+                                            {activeTab === 'appreciate' && (
+                                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                                            )}
+                                        </button>
+                                        <button
+                                            onClick={() => setActiveTab('readme')}
+                                            className={`px-4 py-4 text-base font-semibold transition-colors relative ${
+                                                activeTab === 'readme'
+                                                    ? 'text-blue-600 dark:text-blue-400'
+                                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                            }`}
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <svg
+                                                    className="w-5 h-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                    />
+                                                </svg>
+                                                README
+                                            </span>
+                                            {activeTab === 'readme' && (
+                                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {/* 目录按钮 - 只在README标签时显示 */}
+                                    {activeTab === 'readme' && tocItems.length > 0 && (
+                                        <button
+                                            onClick={() => setShowToc(!showToc)}
+                                            className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                                            title="目录"
+                                        >
+                                            <svg
+                                                className="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M4 6h16M4 12h16M4 18h7"
+                                                />
+                                            </svg>
+                                            目录
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                         <svg
-                                            className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4"
+                                            className="w-5 h-5 text-gray-700 dark:text-gray-300"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -1219,69 +1451,168 @@ export default function BookmarkDetail() {
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                             />
                                         </svg>
-                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                                            README 暂时无法加载
-                                        </h3>
-                                        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
-                                            数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub 查看完整文档。
-                                        </p>
-                                        <a
-                                            href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}#readme`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                                        README
+                                    </h2>
+                                    {/* 目录按钮 */}
+                                    {tocItems.length > 0 && (
+                                        <button
+                                            onClick={() => setShowToc(!showToc)}
+                                            className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                                            title="目录"
                                         >
-                                            在 GitHub 查看 README
-                                        </a>
+                                            <svg
+                                                className="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M4 6h16M4 12h16M4 18h7"
+                                                />
+                                            </svg>
+                                            目录
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* 内容区域 */}
+                            <div className="p-6 relative">
+                                {loading ? (
+                                    <div className="flex items-center justify-center py-16">
+                                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
                                     </div>
                                 ) : (
                                     <>
-                                        {/* 右侧浮动目录 */}
-                                        {showToc && tocItems.length > 0 && (
-                                            <div className="toc-container float-right w-64 ml-6 mb-4">
-                                                <div className="sticky top-20 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-                                                    <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 px-2">
-                                                        目录
+                                        {/* 鉴赏报告内容 */}
+                                        <div style={{ display: activeTab === 'appreciate' ? 'block' : 'none' }}>
+                                            {appreciateLoaded && !appreciateError ? (
+                                                <div
+                                                    key="appreciate-content"
+                                                    ref={appreciateRef}
+                                                    className="markdown-body"
+                                                />
+                                            ) : (
+                                                <div className="flex flex-col items-center justify-center py-16 text-center">
+                                                    <svg
+                                                        className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                        />
+                                                    </svg>
+                                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                                                        暂无鉴赏报告
                                                     </h3>
-                                                    <nav className="space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
-                                                        {tocItems.map((item, index) => (
-                                                            <a
-                                                                key={index}
-                                                                href={`#${item.id}`}
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    const element = readmeRef.current?.querySelector(
-                                                                        `#${item.id}`
-                                                                    );
-                                                                    if (element) {
-                                                                        const yOffset = -100; // 固定头部高度的偏移
-                                                                        const elementPosition =
-                                                                            element.getBoundingClientRect().top;
-                                                                        const offsetPosition =
-                                                                            elementPosition +
-                                                                            window.pageYOffset +
-                                                                            yOffset;
-                                                                        window.scrollTo({
-                                                                            top: offsetPosition,
-                                                                            behavior: 'smooth',
-                                                                        });
-                                                                    }
-                                                                }}
-                                                                className="flex items-start gap-1.5 py-1 px-2 rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                                                style={{
-                                                                    paddingLeft: `${(item.level - 1) * 10 + 8}px`,
-                                                                }}
-                                                            >
-                                                                <span className="w-1 h-1 rounded-full bg-current flex-shrink-0 mt-1.5"></span>
-                                                                <span className="flex-1 leading-snug">{item.text}</span>
-                                                            </a>
-                                                        ))}
-                                                    </nav>
+                                                    <p className="text-gray-500 dark:text-gray-400">
+                                                        该库暂时还没有鉴赏报告
+                                                    </p>
                                                 </div>
-                                            </div>
-                                        )}
-                                        <div key="readme-content" ref={readmeRef} className="markdown-body" />
-                                        {/* HTML内容通过useEffect中的innerHTML设置 */}
+                                            )}
+                                        </div>
+
+                                        {/* README内容 */}
+                                        <div style={{ display: activeTab === 'readme' ? 'block' : 'none' }}>
+                                            {readmeError || !readme || readme.trim().length === 0 ? (
+                                                <div className="flex flex-col items-center justify-center py-16 text-center">
+                                                    <svg
+                                                        className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                        />
+                                                    </svg>
+                                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                                                        README 暂时无法加载
+                                                    </h3>
+                                                    <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+                                                        数据正在同步中，稍后会自动更新。您也可以直接访问 GitHub
+                                                        查看完整文档。
+                                                    </p>
+                                                    <a
+                                                        href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}#readme`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                                                    >
+                                                        在 GitHub 查看 README
+                                                    </a>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {/* 右侧浮动目录 */}
+                                                    {showToc && tocItems.length > 0 && (
+                                                        <div className="toc-container float-right w-64 ml-6 mb-4">
+                                                            <div className="sticky top-20 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                                                <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 px-2">
+                                                                    目录
+                                                                </h3>
+                                                                <nav className="space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto text-xs">
+                                                                    {tocItems.map((item, index) => (
+                                                                        <a
+                                                                            key={index}
+                                                                            href={`#${item.id}`}
+                                                                            onClick={e => {
+                                                                                e.preventDefault();
+                                                                                const element =
+                                                                                    readmeRef.current?.querySelector(
+                                                                                        `#${item.id}`
+                                                                                    );
+                                                                                if (element) {
+                                                                                    const yOffset = -100;
+                                                                                    const elementPosition =
+                                                                                        element.getBoundingClientRect()
+                                                                                            .top;
+                                                                                    const offsetPosition =
+                                                                                        elementPosition +
+                                                                                        window.pageYOffset +
+                                                                                        yOffset;
+                                                                                    window.scrollTo({
+                                                                                        top: offsetPosition,
+                                                                                        behavior: 'smooth',
+                                                                                    });
+                                                                                }
+                                                                            }}
+                                                                            className="flex items-start gap-1.5 py-1 px-2 rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                                                            style={{
+                                                                                paddingLeft: `${
+                                                                                    (item.level - 1) * 10 + 8
+                                                                                }px`,
+                                                                            }}
+                                                                        >
+                                                                            <span className="w-1 h-1 rounded-full bg-current flex-shrink-0 mt-1.5"></span>
+                                                                            <span className="flex-1 leading-snug">
+                                                                                {item.text}
+                                                                            </span>
+                                                                        </a>
+                                                                    ))}
+                                                                </nav>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    <div
+                                                        key="readme-content"
+                                                        ref={readmeRef}
+                                                        className="markdown-body"
+                                                    />
+                                                </>
+                                            )}
+                                        </div>
                                     </>
                                 )}
                             </div>
