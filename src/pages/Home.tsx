@@ -181,7 +181,6 @@ function Home() {
 
     // 筛选和排序书签 - 使用 Fuse.js 优化搜索
     const filteredBookmarks = useMemo(() => {
-        console.log('filteredBookmarks 重新计算, searchQuery:', searchQuery);
         let bookmarks = bookmarksData.bookmarks;
 
         // 根据标签筛选
@@ -191,11 +190,8 @@ function Home() {
 
         // 根据搜索关键词筛选 - 使用 Fuse.js
         if (searchQuery.trim()) {
-            console.log('开始 Fuse.js 搜索，关键词:', searchQuery.trim());
             const fuse = new Fuse(bookmarks, fuseOptions);
             const results = fuse.search(searchQuery.trim());
-            console.log('Fuse.js 搜索结果数量:', results.length);
-            console.log('搜索结果:', results);
             bookmarks = results.map(result => result.item);
         }
 

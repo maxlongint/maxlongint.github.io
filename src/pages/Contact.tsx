@@ -56,17 +56,19 @@ export default function Contact() {
             }, 100);
 
             // 10秒超时
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 clearInterval(checkGiscusLoaded);
                 setIsLoading(false);
             }, 10000);
-        }
 
-        // 离开页面时清理
-        return () => {
-            giscusLoadedRef.current = false;
-            setIsLoading(true);
-        };
+            // 离开页面时清理
+            return () => {
+                clearInterval(checkGiscusLoaded);
+                clearTimeout(timeoutId);
+                giscusLoadedRef.current = false;
+                setIsLoading(true);
+            };
+        }
     }, [theme]);
 
     // 主题切换时更新 Giscus 主题

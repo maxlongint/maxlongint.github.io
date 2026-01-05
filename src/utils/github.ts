@@ -70,16 +70,13 @@ export const loadGitHubData = async () => {
 
         // 将数据保存到全局
         (window as Window & { __GITHUB_STATS__?: Record<string, GitHubRepoInfo> }).__GITHUB_STATS__ = statsData;
-        console.log('✅ Loaded GitHub stats from bundled data');
 
         // 保存 readmes 数据
         (window as Window & { __GITHUB_READMES__?: Record<string, string> }).__GITHUB_READMES__ =
             githubReadmesData.readmes || {};
-        console.log('✅ Loaded GitHub readmes from bundled data');
 
         // 保存 trending 数据
         (window as Window & { __TRENDING_DATA__?: WeeklyTrending }).__TRENDING_DATA__ = trendingData.data;
-        console.log('✅ Loaded trending data from bundled data');
 
         // 数据加载完成后触发自定义事件,通知组件重新渲染
         window.dispatchEvent(new Event('github-data-loaded'));

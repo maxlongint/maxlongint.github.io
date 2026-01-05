@@ -93,8 +93,6 @@ export default function BookmarkDetail() {
             // 获取图片并转换为 Blob
             const response = await fetch(ogImageUrl);
 
-            console.log('Fetch response:', response.status, response.ok, response.headers.get('content-type'));
-
             // 严格检查响应状态和内容类型
             if (!response.ok || response.status !== 200) {
                 throw new Error(`图片不存在 (HTTP ${response.status})`);
@@ -271,7 +269,7 @@ export default function BookmarkDetail() {
             try {
                 // === 0. 尝试加载鉴赏报告 ===
                 // 从 GitHub URL 提取库名称（与生成脚本逻辑保持一致）
-                const match = bookmark.url.match(/github\.com\/[^\/]+\/([^\/\?#]+)/);
+                const match = bookmark.url.match(/github\.com\/[^/]+\/([^/?#]+)/);
                 let fileName = '';
                 if (match) {
                     fileName = match[1].toLowerCase();
@@ -321,7 +319,7 @@ export default function BookmarkDetail() {
                         setAppreciateError(true);
                         setActiveTab('readme'); // 文件不存在，默认显示README
                     }
-                } catch (error) {
+                } catch {
                     // 静默处理，不在控制台输出错误（404是正常情况）
                     setAppreciateError(true);
                     setActiveTab('readme'); // 加载失败，默认显示README

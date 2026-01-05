@@ -21,8 +21,8 @@ export default defineConfig({
                     'router-vendor': ['react-router-dom'],
                     'chart-vendor': ['recharts'],
                     'markdown-vendor': ['marked', 'highlight.js'],
-                    'search-vendor': ['fuse.js'], // Fuse.js 分离
-                    // Clarity 延迟加载，不需要单独 chunk
+                    'search-vendor': ['fuse.js'],
+                    'emoji-vendor': ['gemoji', 'marked-emoji'],
                 },
             },
         },

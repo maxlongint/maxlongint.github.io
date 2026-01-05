@@ -37,18 +37,26 @@ export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare
         setColumns(newColumns);
     }, [bookmarks, viewMode]);
 
-    // 监听窗口大小变化
+    // 监听窗口大小变化 - 使用节流优化性能
     useEffect(() => {
         if (viewMode !== 'grid') return;
 
+        let ticking = false;
+
         const handleResize = () => {
-            const columnCount = getColumnCount();
-            const newColumns: Bookmark[][] = Array.from({ length: columnCount }, () => []);
-            bookmarks.forEach((bookmark, index) => {
-                const columnIndex = index % columnCount;
-                newColumns[columnIndex].push(bookmark);
-            });
-            setColumns(newColumns);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const columnCount = getColumnCount();
+                    const newColumns: Bookmark[][] = Array.from({ length: columnCount }, () => []);
+                    bookmarks.forEach((bookmark, index) => {
+                        const columnIndex = index % columnCount;
+                        newColumns[columnIndex].push(bookmark);
+                    });
+                    setColumns(newColumns);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
         window.addEventListener('resize', handleResize);

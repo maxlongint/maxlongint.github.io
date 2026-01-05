@@ -81,8 +81,6 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
         try {
             const response = await fetch(ogImageUrl);
 
-            console.log('Fetch response:', response.status, response.ok, response.headers.get('content-type'));
-
             // 严格检查响应状态和内容类型
             if (!response.ok || response.status !== 200) {
                 throw new Error(`图片不存在 (HTTP ${response.status})`);
