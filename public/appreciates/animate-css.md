@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：animate.css
+# 技术尽职调查报告：animate.css
 
 ## 1. 项目速览
 

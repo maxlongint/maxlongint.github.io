@@ -1,4 +1,4 @@
-# 🔍 技术尽职调查报告: cure53/DOMPurify
+# 技术尽职调查报告：cure53/DOMPurify
 
 ### 1. 项目速览 (Executive Summary)
 

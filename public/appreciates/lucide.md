@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：Lucide (lucide-icons/lucide)
+# 技术尽职调查报告：Lucide (lucide-icons/lucide)
 
 ## 1. 项目速览
 

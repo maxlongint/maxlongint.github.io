@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：microsoft/monaco-editor
+# 技术尽职调查报告：microsoft/monaco-editor
 
 ## 1. 项目速览
 

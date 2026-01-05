@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：anime.js
+# 技术尽职调查报告：anime.js
 
 ## 1. 项目速览 (Project Snapshot)
 

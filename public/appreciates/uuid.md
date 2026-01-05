@@ -1,4 +1,4 @@
-# 🔍 前端仓库鉴赏报告: uuidjs/uuid
+# 技术尽职调查报告：uuidjs/uuid
 
 ### 1. 项目速览 (Executive Summary)
 

@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：GreenSock Animation Platform (GSAP)
+# 技术尽职调查报告：GreenSock Animation Platform (GSAP)
 
 ## 1. 项目速览 (Project Overview)
 

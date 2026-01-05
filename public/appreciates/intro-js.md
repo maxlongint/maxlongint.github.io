@@ -1,4 +1,4 @@
-# 前端仓库鉴赏报告：usablica/intro.js
+# 技术尽职调查报告：usablica/intro.js
 
 ## 1. 项目速览
 
