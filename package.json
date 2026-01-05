@@ -15,7 +15,8 @@
         "update-comparison-single": "node scripts/update-comparison-single.js",
         "update-library-tags": "node scripts/update-library-tags.js",
         "update-compatibility": "node scripts/update-compatibility-data.js",
-        "update-compatibility-single": "node scripts/update-compatibility-single.js"
+        "update-compatibility-single": "node scripts/update-compatibility-single.js",
+        "generate-appreciates-deepseek": "node scripts/generate-appreciates-deepseek.js"
     },
     "dependencies": {
         "@microsoft/clarity": "^1.0.2",

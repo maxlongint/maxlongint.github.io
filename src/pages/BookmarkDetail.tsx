@@ -270,8 +270,17 @@ export default function BookmarkDetail() {
 
             try {
                 // === 0. 尝试加载鉴赏报告 ===
-                const routeName = bookmark.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                const appreciatePath = `/appreciates/${routeName}.md`;
+                // 从 GitHub URL 提取库名称（与生成脚本逻辑保持一致）
+                const match = bookmark.url.match(/github\.com\/[^\/]+\/([^\/\?#]+)/);
+                let fileName = '';
+                if (match) {
+                    fileName = match[1].toLowerCase();
+                } else {
+                    fileName = bookmark.url.split('/').pop()?.toLowerCase() || '';
+                }
+                // 将点号替换为横杠
+                fileName = fileName.replace(/\./g, '-');
+                const appreciatePath = `/appreciates/${fileName}.md`;
 
                 try {
                     const appreciateResponse = await fetch(appreciatePath);
