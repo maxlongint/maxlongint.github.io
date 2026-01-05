@@ -31,7 +31,10 @@ export default function GitHubStats({ url }: GitHubStatsProps) {
         if (diffDays < 7) return `${diffDays}天前`;
         if (diffDays < 30) return `${Math.floor(diffDays / 7)}周前`;
         if (diffDays < 365) return `${Math.floor(diffDays / 30)}个月前`;
-        return `${Math.floor(diffDays / 365)}年前`;
+
+        const years = Math.floor(diffDays / 365);
+        if (years < 10) return `${years}年前`;
+        return '很久远';
     };
 
     return (

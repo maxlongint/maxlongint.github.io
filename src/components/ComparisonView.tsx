@@ -43,6 +43,27 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
         return num.toString();
     };
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - date.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 7) {
+            return `${diffDays} 天前`;
+        } else if (diffDays < 30) {
+            return `${Math.ceil(diffDays / 7)} 周前`;
+        } else if (diffDays < 365) {
+            return `${Math.ceil(diffDays / 30)} 个月前`;
+        } else {
+            const years = Math.floor(diffDays / 365);
+            if (years < 10) {
+                return `${years} 年前`;
+            }
+            return '很久远';
+        }
+    };
+
     // 获取生态系统插件列表
     const getEcosystemPlugins = (library: Library): string[] => {
         return library.dimensions.ecosystemPlugins || [];
@@ -468,6 +489,41 @@ function ComparisonView({ libraryA, libraryB }: ComparisonViewProps) {
                                     {formatNumber(libraryB.dimensions.weeklyDownloads)}
                                 </span>
                                 <span className="text-sm text-green-500 mb-1">▲ 15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Last Update */}
+                    <div className="grid grid-cols-1 md:grid-cols-3">
+                        <div className="p-4 md:p-6 bg-gray-50/50 dark:bg-gray-900/30 border-r border-gray-200 dark:border-gray-700 flex items-center md:font-medium text-gray-600 dark:text-gray-400">
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                            最后更新时间
+                        </div>
+                        <div className="p-4 md:p-6 border-r border-gray-200 dark:border-gray-700">
+                            <div className="space-y-1">
+                                <div className="text-lg font-semibold">
+                                    {formatDate(libraryA.dimensions.lastUpdate)}
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    {new Date(libraryA.dimensions.lastUpdate).toLocaleDateString('zh-CN')}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-4 md:p-6">
+                            <div className="space-y-1">
+                                <div className="text-lg font-semibold">
+                                    {formatDate(libraryB.dimensions.lastUpdate)}
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    {new Date(libraryB.dimensions.lastUpdate).toLocaleDateString('zh-CN')}
+                                </div>
                             </div>
                         </div>
                     </div>
