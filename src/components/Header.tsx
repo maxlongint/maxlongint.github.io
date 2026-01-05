@@ -15,6 +15,9 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { theme, toggleTheme } = useTheme();
     const [favoritesCount, setFavoritesCount] = useState(0);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
     // 监听收藏变化
     useEffect(() => {
@@ -28,8 +31,130 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
         return () => window.removeEventListener('favorites-changed', handleFavoritesChanged);
     }, []);
 
+    // 分享网站按钮处理
+    const handleShareSite = async () => {
+        const ogImageUrl = `${window.location.origin}/og-images/default.png`;
+
+        try {
+            const response = await fetch(ogImageUrl);
+
+            // 严格检查响应状态和内容类型
+            if (!response.ok || response.status !== 200) {
+                throw new Error(`图片不存在 (HTTP ${response.status})`);
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.startsWith('image/')) {
+                throw new Error(`返回的不是图片文件 (${contentType})`);
+            }
+
+            const blob = await response.blob();
+
+            // 再次验证 blob 类型
+            if (!blob.type.startsWith('image/')) {
+                throw new Error(`Blob 类型不正确 (${blob.type})`);
+            }
+
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    [blob.type]: blob,
+                }),
+            ]);
+
+            // 显示成功提示
+            setToastMessage('网站卡片已复制到剪贴板！\n可以直接粘贴到 QQ、微信等应用分享啦~');
+            setToastType('success');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
+        } catch (error) {
+            console.error('复制失败:', error);
+            // 显示错误提示
+            setToastMessage('分享图片不存在或复制失败\n请联系管理员');
+            setToastType('error');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
+        }
+    };
+
     return (
         <>
+            {/* Toast 提示框 */}
+            {showToast && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowToast(false)} />
+                    <div
+                        className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
+                            showToast ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+                        }`}
+                    >
+                        <div className="flex items-start gap-4">
+                            <div
+                                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                                    toastType === 'success'
+                                        ? 'bg-green-100 dark:bg-green-900/30'
+                                        : 'bg-red-100 dark:bg-red-900/30'
+                                }`}
+                            >
+                                {toastType === 'success' ? (
+                                    <svg
+                                        className="w-6 h-6 text-green-600 dark:text-green-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        className="w-6 h-6 text-red-600 dark:text-red-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <h3
+                                    className={`text-lg font-semibold mb-1 ${
+                                        toastType === 'success'
+                                            ? 'text-green-900 dark:text-green-300'
+                                            : 'text-red-900 dark:text-red-300'
+                                    }`}
+                                >
+                                    {toastType === 'success' ? '复制成功！' : '复制失败'}
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{toastMessage}</p>
+                            </div>
+                            <button
+                                onClick={() => setShowToast(false)}
+                                className="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="flex items-center justify-between gap-4">
@@ -165,6 +290,23 @@ export default function Header({ isFixed = false, searchQuery = '', setSearchQue
 
                         {/* Right Actions */}
                         <div className="flex items-center gap-3">
+                            {/* 分享网站按钮 */}
+                            <button
+                                onClick={handleShareSite}
+                                className="p-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                                aria-label="分享网站"
+                                title="分享网站卡片"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                                    />
+                                </svg>
+                            </button>
+
                             {/* 主题切换按钮 */}
                             <button
                                 onClick={toggleTheme}

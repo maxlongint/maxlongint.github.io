@@ -15,6 +15,11 @@ if (!fs.existsSync(outputDir)) {
 
 async function generateDefaultOG() {
     try {
+        // 读取 logo.png 并转换为 base64
+        const logoPath = path.join(__dirname, '../public/logo.png');
+        const logoBuffer = fs.readFileSync(logoPath);
+        const logoBase64 = `data:image/png;base64,${logoBuffer.toString('base64')}`;
+
         const imageResponse = new ImageResponse(
             {
                 type: 'div',
@@ -33,13 +38,18 @@ async function generateDefaultOG() {
                     children: [
                         // Logo
                         {
-                            type: 'div',
+                            type: 'img',
                             props: {
+                                src: logoBase64,
+                                width: 160,
+                                height: 160,
                                 style: {
-                                    fontSize: '120px',
                                     marginBottom: '40px',
+                                    borderRadius: '32px',
+                                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                                    backgroundColor: 'white',
+                                    padding: '12px',
                                 },
-                                children: '🛠️',
                             },
                         },
                         // 标题
