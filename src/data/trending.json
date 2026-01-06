@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-01-05T19:15:38.419Z",
+  "updated_at": "2026-01-06T19:11:16.059Z",
   "data": {
-    "weekStart": "2026-01-05",
-    "weekEnd": "2026-01-05",
+    "weekStart": "2026-01-06",
+    "weekEnd": "2026-01-06",
     "repos": [
       {
         "rank": 1,
@@ -12,8 +12,8 @@
         "description": "The library for web and native user interfaces.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 242036,
-        "forks": 50287,
+        "stars": 242057,
+        "forks": 50302,
         "builtBy": [
           {
             "username": "facebook",
@@ -30,8 +30,8 @@
         "description": "The React Framework",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 136950,
-        "forks": 30197,
+        "stars": 136982,
+        "forks": 30203,
         "builtBy": [
           {
             "username": "vercel",
@@ -48,8 +48,8 @@
         "description": "Node.js JavaScript runtime ✨🐢🚀✨",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 115046,
-        "forks": 34254,
+        "stars": 115073,
+        "forks": 34269,
         "builtBy": [
           {
             "username": "nodejs",
@@ -66,7 +66,7 @@
         "description": "JavaScript 3D Library.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 110168,
+        "stars": 110188,
         "forks": 36193,
         "builtBy": [
           {
@@ -78,37 +78,37 @@
       },
       {
         "rank": 5,
-        "name": "axios",
-        "author": "axios",
-        "url": "https://github.com/axios/axios",
-        "description": "Promise based HTTP client for the browser and node.js",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 108429,
-        "forks": 11471,
-        "builtBy": [
-          {
-            "username": "axios",
-            "avatar": "https://avatars.githubusercontent.com/u/32372333?v=4",
-            "url": "https://github.com/axios"
-          }
-        ]
-      },
-      {
-        "rank": 6,
         "name": "material-ui",
         "author": "mui",
         "url": "https://github.com/mui/material-ui",
         "description": "Material UI: Comprehensive React component library that implements Google's Material Design. Free forever.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 97558,
+        "stars": 97570,
         "forks": 32789,
         "builtBy": [
           {
             "username": "mui",
             "avatar": "https://avatars.githubusercontent.com/u/33663932?v=4",
             "url": "https://github.com/mui"
+          }
+        ]
+      },
+      {
+        "rank": 6,
+        "name": "Web-Dev-For-Beginners",
+        "author": "microsoft",
+        "url": "https://github.com/microsoft/Web-Dev-For-Beginners",
+        "description": "24 Lessons, 12 Weeks, Get Started as a Web Developer",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 94908,
+        "forks": 14980,
+        "builtBy": [
+          {
+            "username": "microsoft",
+            "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4",
+            "url": "https://github.com/microsoft"
           }
         ]
       },
@@ -120,8 +120,8 @@
         "description": "web development for the rest of us",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 85351,
-        "forks": 4722,
+        "stars": 85362,
+        "forks": 4723,
         "builtBy": [
           {
             "username": "sveltejs",
@@ -132,86 +132,14 @@
       },
       {
         "rank": 8,
-        "name": "github-readme-stats",
-        "author": "anuraghazra",
-        "url": "https://github.com/anuraghazra/github-readme-stats",
-        "description": ":zap: Dynamically generated stats for your github readmes",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 77800,
-        "forks": 28959,
-        "builtBy": [
-          {
-            "username": "anuraghazra",
-            "avatar": "https://avatars.githubusercontent.com/u/35374649?v=4",
-            "url": "https://github.com/anuraghazra"
-          }
-        ]
-      },
-      {
-        "rank": 9,
-        "name": "express",
-        "author": "expressjs",
-        "url": "https://github.com/expressjs/express",
-        "description": "Fast, unopinionated, minimalist web framework for node.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 68492,
-        "forks": 22049,
-        "builtBy": [
-          {
-            "username": "expressjs",
-            "avatar": "https://avatars.githubusercontent.com/u/5658226?v=4",
-            "url": "https://github.com/expressjs"
-          }
-        ]
-      },
-      {
-        "rank": 10,
-        "name": "webpack",
-        "author": "webpack",
-        "url": "https://github.com/webpack/webpack",
-        "description": "A bundler for javascript and friends. Packs many modules into a few bundled assets. Code Splitting allows for loading parts of the application on demand. Through \"loaders\", modules can be CommonJs, AMD, ES6 modules, CSS, Images, JSON, Coffeescript, LESS, ... and your custom stuff.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 65868,
-        "forks": 9211,
-        "builtBy": [
-          {
-            "username": "webpack",
-            "avatar": "https://avatars.githubusercontent.com/u/2105791?v=4",
-            "url": "https://github.com/webpack"
-          }
-        ]
-      },
-      {
-        "rank": 11,
-        "name": "gatsby",
-        "author": "gatsbyjs",
-        "url": "https://github.com/gatsbyjs/gatsby",
-        "description": "The best React-based framework with performance, scalability and security built in.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 55960,
-        "forks": 10253,
-        "builtBy": [
-          {
-            "username": "gatsbyjs",
-            "avatar": "https://avatars.githubusercontent.com/u/12551863?v=4",
-            "url": "https://github.com/gatsbyjs"
-          }
-        ]
-      },
-      {
-        "rank": 12,
         "name": "Ghost",
         "author": "TryGhost",
         "url": "https://github.com/TryGhost/Ghost",
         "description": "Independent technology for modern publishing, memberships, subscriptions and newsletters.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 51527,
-        "forks": 11248,
+        "stars": 51536,
+        "forks": 11249,
         "builtBy": [
           {
             "username": "TryGhost",
@@ -221,14 +149,14 @@
         ]
       },
       {
-        "rank": 13,
+        "rank": 9,
         "name": "prettier",
         "author": "prettier",
         "url": "https://github.com/prettier/prettier",
         "description": "Prettier is an opinionated code formatter.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 51351,
+        "stars": 51364,
         "forks": 4627,
         "builtBy": [
           {
@@ -239,15 +167,33 @@
         ]
       },
       {
-        "rank": 14,
+        "rank": 10,
+        "name": "monaco-editor",
+        "author": "microsoft",
+        "url": "https://github.com/microsoft/monaco-editor",
+        "description": "A browser based code editor",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 45170,
+        "forks": 3952,
+        "builtBy": [
+          {
+            "username": "microsoft",
+            "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4",
+            "url": "https://github.com/microsoft"
+          }
+        ]
+      },
+      {
+        "rank": 11,
         "name": "Leaflet",
         "author": "Leaflet",
         "url": "https://github.com/Leaflet/Leaflet",
         "description": "🍃 JavaScript library for mobile-friendly interactive maps 🇺🇦",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 44245,
-        "forks": 6066,
+        "stars": 44256,
+        "forks": 6067,
         "builtBy": [
           {
             "username": "Leaflet",
@@ -257,33 +203,33 @@
         ]
       },
       {
-        "rank": 15,
-        "name": "awesome-compose",
-        "author": "docker",
-        "url": "https://github.com/docker/awesome-compose",
-        "description": "Awesome Docker Compose samples",
+        "rank": 12,
+        "name": "tabler",
+        "author": "tabler",
+        "url": "https://github.com/tabler/tabler",
+        "description": "Tabler is free and open-source HTML Dashboard UI Kit built on Bootstrap",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 43280,
-        "forks": 7928,
+        "stars": 40596,
+        "forks": 4321,
         "builtBy": [
           {
-            "username": "docker",
-            "avatar": "https://avatars.githubusercontent.com/u/5429470?v=4",
-            "url": "https://github.com/docker"
+            "username": "tabler",
+            "avatar": "https://avatars.githubusercontent.com/u/35471246?v=4",
+            "url": "https://github.com/tabler"
           }
         ]
       },
       {
-        "rank": 16,
+        "rank": 13,
         "name": "bruno",
         "author": "usebruno",
         "url": "https://github.com/usebruno/bruno",
         "description": "Opensource IDE For Exploring and Testing API's (lightweight alternative to Postman/Insomnia)",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 39650,
-        "forks": 2036,
+        "stars": 39685,
+        "forks": 2039,
         "builtBy": [
           {
             "username": "usebruno",
@@ -293,20 +239,74 @@
         ]
       },
       {
-        "rank": 17,
+        "rank": 14,
         "name": "desktop",
         "author": "zen-browser",
         "url": "https://github.com/zen-browser/desktop",
         "description": "Welcome to a calmer internet",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 39269,
-        "forks": 1260,
+        "stars": 39306,
+        "forks": 1262,
         "builtBy": [
           {
             "username": "zen-browser",
             "avatar": "https://avatars.githubusercontent.com/u/165225155?v=4",
             "url": "https://github.com/zen-browser"
+          }
+        ]
+      },
+      {
+        "rank": 15,
+        "name": "puter",
+        "author": "HeyPuter",
+        "url": "https://github.com/HeyPuter/puter",
+        "description": "🌐 The Internet Computer! Free, Open-Source, and Self-Hostable.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 38483,
+        "forks": 3372,
+        "builtBy": [
+          {
+            "username": "HeyPuter",
+            "avatar": "https://avatars.githubusercontent.com/u/103972607?v=4",
+            "url": "https://github.com/HeyPuter"
+          }
+        ]
+      },
+      {
+        "rank": 16,
+        "name": "preact",
+        "author": "preactjs",
+        "url": "https://github.com/preactjs/preact",
+        "description": "⚛️ Fast 3kB React alternative with the same modern API. Components & Virtual DOM.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 38265,
+        "forks": 2028,
+        "builtBy": [
+          {
+            "username": "preactjs",
+            "avatar": "https://avatars.githubusercontent.com/u/26872990?v=4",
+            "url": "https://github.com/preactjs"
+          }
+        ]
+      },
+      {
+        "rank": 17,
+        "name": "fastify",
+        "author": "fastify",
+        "url": "https://github.com/fastify/fastify",
+        "description": "Fast and low overhead web framework, for Node.js",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 35363,
+        "forks": 2545,
+        "builtBy": [
+          {
+            "username": "fastify",
+            "avatar": "https://avatars.githubusercontent.com/u/24939410?v=4",
+            "url": "https://github.com/fastify"
           }
         ]
       },
@@ -318,8 +318,8 @@
         "description": "An open source collection of animated, interactive & fully customizable React components for building memorable websites.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 33177,
-        "forks": 1464,
+        "stars": 33250,
+        "forks": 1467,
         "builtBy": [
           {
             "username": "DavidHDev",
@@ -330,32 +330,14 @@
       },
       {
         "rank": 19,
-        "name": "learnGitBranching",
-        "author": "pcottle",
-        "url": "https://github.com/pcottle/learnGitBranching",
-        "description": "An interactive git visualization and tutorial. Aspiring students of git can use this app to educate and challenge themselves towards mastery of git!",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 32974,
-        "forks": 5945,
-        "builtBy": [
-          {
-            "username": "pcottle",
-            "avatar": "https://avatars.githubusercontent.com/u/1135007?v=4",
-            "url": "https://github.com/pcottle"
-          }
-        ]
-      },
-      {
-        "rank": 20,
         "name": "netron",
         "author": "lutzroeder",
         "url": "https://github.com/lutzroeder/netron",
         "description": "Visualizer for neural network, deep learning and machine learning models",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 32139,
-        "forks": 3055,
+        "stars": 32143,
+        "forks": 3056,
         "builtBy": [
           {
             "username": "lutzroeder",
@@ -365,32 +347,14 @@
         ]
       },
       {
-        "rank": 21,
-        "name": "docsify",
-        "author": "docsifyjs",
-        "url": "https://github.com/docsifyjs/docsify",
-        "description": "🃏 A magical documentation site generator.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 30772,
-        "forks": 5845,
-        "builtBy": [
-          {
-            "username": "docsifyjs",
-            "avatar": "https://avatars.githubusercontent.com/u/40133106?v=4",
-            "url": "https://github.com/docsifyjs"
-          }
-        ]
-      },
-      {
-        "rank": 22,
+        "rank": 20,
         "name": "layui",
         "author": "layui",
         "url": "https://github.com/layui/layui",
-        "description": "一套遵循原生态开发模式的 Web UI 组件库���采用自身轻量级模块化规范，易上手，可以更简单快速地构建网页界面。",
+        "description": "一套遵循原生态开发模式的 Web UI 组件库，采用自身轻量级模块化规范，易上手，可以更简单快速地构建网页界面。",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 30484,
+        "stars": 30485,
         "forks": 7422,
         "builtBy": [
           {
@@ -401,33 +365,15 @@
         ]
       },
       {
-        "rank": 23,
-        "name": "3x-ui",
-        "author": "MHSanaei",
-        "url": "https://github.com/MHSanaei/3x-ui",
-        "description": "Xray panel supporting multi-protocol multi-user expire day & traffic & IP limit (Vmess, Vless, Trojan, ShadowSocks, Wireguard, Tunnel, Mixed, HTTP) ",
-        "language": "HTML",
-        "languageColor": "#e34c26",
-        "stars": 28187,
-        "forks": 5586,
-        "builtBy": [
-          {
-            "username": "MHSanaei",
-            "avatar": "https://avatars.githubusercontent.com/u/33454419?v=4",
-            "url": "https://github.com/MHSanaei"
-          }
-        ]
-      },
-      {
-        "rank": 24,
+        "rank": 21,
         "name": "homepage",
         "author": "gethomepage",
         "url": "https://github.com/gethomepage/homepage",
         "description": "A highly customizable homepage (or startpage / application dashboard) with Docker and service API integrations.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 27659,
-        "forks": 1745,
+        "stars": 27669,
+        "forks": 1746,
         "builtBy": [
           {
             "username": "gethomepage",
@@ -437,14 +383,14 @@
         ]
       },
       {
-        "rank": 25,
+        "rank": 22,
         "name": "mongoose",
         "author": "Automattic",
         "url": "https://github.com/Automattic/mongoose",
         "description": "MongoDB object modeling designed to work in an asynchronous environment.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 27438,
+        "stars": 27439,
         "forks": 3959,
         "builtBy": [
           {
@@ -455,7 +401,7 @@
         ]
       },
       {
-        "rank": 26,
+        "rank": 23,
         "name": "live",
         "author": "fanmingming",
         "url": "https://github.com/fanmingming/live",
@@ -463,7 +409,7 @@
         "language": "JavaScript",
         "languageColor": "#f1e05a",
         "stars": 26979,
-        "forks": 4060,
+        "forks": 4061,
         "builtBy": [
           {
             "username": "fanmingming",
@@ -473,15 +419,87 @@
         ]
       },
       {
+        "rank": 24,
+        "name": "eslint",
+        "author": "eslint",
+        "url": "https://github.com/eslint/eslint",
+        "description": "Find and fix problems in your JavaScript code.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 26773,
+        "forks": 4877,
+        "builtBy": [
+          {
+            "username": "eslint",
+            "avatar": "https://avatars.githubusercontent.com/u/6019716?v=4",
+            "url": "https://github.com/eslint"
+          }
+        ]
+      },
+      {
+        "rank": 25,
+        "name": "koodo-reader",
+        "author": "koodo-reader",
+        "url": "https://github.com/koodo-reader/koodo-reader",
+        "description": "A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux, Android, iOS and Web",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 25594,
+        "forks": 1925,
+        "builtBy": [
+          {
+            "username": "koodo-reader",
+            "avatar": "https://avatars.githubusercontent.com/u/149913075?v=4",
+            "url": "https://github.com/koodo-reader"
+          }
+        ]
+      },
+      {
+        "rank": 26,
+        "name": "core-js",
+        "author": "zloirock",
+        "url": "https://github.com/zloirock/core-js",
+        "description": "Standard Library",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 25385,
+        "forks": 1690,
+        "builtBy": [
+          {
+            "username": "zloirock",
+            "avatar": "https://avatars.githubusercontent.com/u/2213682?v=4",
+            "url": "https://github.com/zloirock"
+          }
+        ]
+      },
+      {
         "rank": 27,
+        "name": "claude-task-master",
+        "author": "eyaltoledano",
+        "url": "https://github.com/eyaltoledano/claude-task-master",
+        "description": "An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 24647,
+        "forks": 2371,
+        "builtBy": [
+          {
+            "username": "eyaltoledano",
+            "avatar": "https://avatars.githubusercontent.com/u/3160046?v=4",
+            "url": "https://github.com/eyaltoledano"
+          }
+        ]
+      },
+      {
+        "rank": 28,
         "name": "OpenClash",
         "author": "vernesong",
         "url": "https://github.com/vernesong/OpenClash",
         "description": "A Clash Client For OpenWrt",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 23435,
-        "forks": 3683,
+        "stars": 23455,
+        "forks": 3684,
         "builtBy": [
           {
             "username": "vernesong",
@@ -491,56 +509,38 @@
         ]
       },
       {
-        "rank": 28,
-        "name": "uikit",
-        "author": "uikit",
-        "url": "https://github.com/uikit/uikit",
-        "description": "A lightweight and modular front-end framework for developing fast and powerful web interfaces",
-        "language": "HTML",
-        "languageColor": "#e34c26",
-        "stars": 18531,
-        "forks": 2314,
-        "builtBy": [
-          {
-            "username": "uikit",
-            "avatar": "https://avatars.githubusercontent.com/u/4173184?v=4",
-            "url": "https://github.com/uikit"
-          }
-        ]
-      },
-      {
         "rank": 29,
-        "name": "al-folio",
-        "author": "alshedivat",
-        "url": "https://github.com/alshedivat/al-folio",
-        "description": "A beautiful, simple, clean, and responsive Jekyll theme for academics",
+        "name": "fonts",
+        "author": "google",
+        "url": "https://github.com/google/fonts",
+        "description": "Font files available from Google Fonts, and a public issue tracker for all things Google Fonts",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 14843,
-        "forks": 12682,
+        "stars": 19581,
+        "forks": 2823,
         "builtBy": [
           {
-            "username": "alshedivat",
-            "avatar": "https://avatars.githubusercontent.com/u/2126561?v=4",
-            "url": "https://github.com/alshedivat"
+            "username": "google",
+            "avatar": "https://avatars.githubusercontent.com/u/1342004?v=4",
+            "url": "https://github.com/google"
           }
         ]
       },
       {
         "rank": 30,
-        "name": "extensions",
-        "author": "keiyoushi",
-        "url": "https://github.com/keiyoushi/extensions",
-        "description": "Extension repository for Mihon and variants",
+        "name": "opensource.guide",
+        "author": "github",
+        "url": "https://github.com/github/opensource.guide",
+        "description": "📚 Community guides for open source creators",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 12646,
-        "forks": 1007,
+        "stars": 15119,
+        "forks": 15217,
         "builtBy": [
           {
-            "username": "keiyoushi",
-            "avatar": "https://avatars.githubusercontent.com/u/113362897?v=4",
-            "url": "https://github.com/keiyoushi"
+            "username": "github",
+            "avatar": "https://avatars.githubusercontent.com/u/9919?v=4",
+            "url": "https://github.com/github"
           }
         ]
       }
