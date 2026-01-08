@@ -853,8 +853,20 @@
       "sideEffects": null,
       "dependenciesCount": 1,
       "weeklyDownloads": 1319239
+    },
+    "ionicons": {
+      "node": null,
+      "typescript": true,
+      "browsers": null,
+      "license": "MIT",
+      "bundleSize": 6219148,
+      "sideEffects": [
+        "icons/imports/"
+      ],
+      "dependenciesCount": 1,
+      "weeklyDownloads": 381458
     }
   },
-  "lastUpdated": "2026-01-07T22:19:16.711Z",
-  "totalPackages": 83
+  "lastUpdated": "2026-01-08T06:27:42.905Z",
+  "totalPackages": 84
 }
