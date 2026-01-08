@@ -209,10 +209,22 @@ function Home() {
                 if (a.isNew && !b.isNew) return -1;
                 if (!a.isNew && b.isNew) return 1;
 
-                // 都是新收录或都不是新收录，按 Star 数排序
+                // 都是新收录的，按收录时间排序（最新的在前）
+                if (a.isNew && b.isNew) {
+                    const dateA = a.bookmark.addedDate || '';
+                    const dateB = b.bookmark.addedDate || '';
+                    if (dateA !== dateB) return dateB.localeCompare(dateA);
+                    // 收录时间相同按名称排序保证稳定性
+                    return a.bookmark.title.localeCompare(b.bookmark.title, 'zh-CN');
+                }
+
+                // 都不是新收录的，按 Star 数排序
                 const starsA = a.repoInfo?.stargazers_count || 0;
                 const starsB = b.repoInfo?.stargazers_count || 0;
-                return starsB - starsA;
+                if (starsB !== starsA) return starsB - starsA;
+
+                // Star 数相同按名称排序保证稳定性
+                return a.bookmark.title.localeCompare(b.bookmark.title, 'zh-CN');
             });
 
             return sortedBookmarks.map(item => item.bookmark);
