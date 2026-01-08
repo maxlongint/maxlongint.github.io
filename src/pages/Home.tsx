@@ -183,16 +183,16 @@ function Home() {
     const filteredBookmarks = useMemo(() => {
         let bookmarks = bookmarksData.bookmarks;
 
-        // 根据标签筛选
-        if (selectedTag !== '全部 (All)') {
-            bookmarks = bookmarks.filter(bookmark => bookmark.tags.includes(selectedTag));
-        }
-
-        // 根据搜索关键词筛选 - 使用 Fuse.js
+        // 如果有搜索关键词，忽略标签过滤，在全部书签中搜索
+        // 如果没有搜索关键词，才根据标签筛选
         if (searchQuery.trim()) {
+            // 根据搜索关键词筛选 - 使用 Fuse.js（在全部书签中搜索）
             const fuse = new Fuse(bookmarks, fuseOptions);
             const results = fuse.search(searchQuery.trim());
             bookmarks = results.map(result => result.item);
+        } else if (selectedTag !== '全部 (All)') {
+            // 没有搜索时，根据标签筛选
+            bookmarks = bookmarks.filter(bookmark => bookmark.tags.includes(selectedTag));
         }
 
         // 排序逻辑
