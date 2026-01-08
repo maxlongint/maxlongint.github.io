@@ -490,6 +490,7 @@ function Home() {
                         viewMode={viewMode}
                         getTagColor={getTagColor}
                         onShare={handleShare}
+                        onTagClick={handleTagChange}
                     />
                 </div>
             </main>

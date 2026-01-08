@@ -7,9 +7,10 @@ interface BookmarkListProps {
     viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
     onShare?: (message: string, type: 'success' | 'error') => void;
+    onTagClick?: (tag: string) => void;
 }
 
-export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare }: BookmarkListProps) {
+export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare, onTagClick }: BookmarkListProps) {
     const [columns, setColumns] = useState<Bookmark[][]>([[], [], []]);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -91,6 +92,7 @@ export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare
                                     viewMode={viewMode}
                                     getTagColor={getTagColor}
                                     onShare={onShare}
+                                    onTagClick={onTagClick}
                                 />
                             ))}
                         </div>
@@ -105,6 +107,7 @@ export default function BookmarkList({ bookmarks, viewMode, getTagColor, onShare
                             viewMode={viewMode}
                             getTagColor={getTagColor}
                             onShare={onShare}
+                            onTagClick={onTagClick}
                         />
                     ))}
                 </div>

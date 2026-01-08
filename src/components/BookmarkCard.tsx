@@ -11,9 +11,10 @@ interface BookmarkCardProps {
     viewMode: 'list' | 'grid';
     getTagColor: (tag: string) => string | { backgroundColor: string; color: string };
     onShare?: (message: string, type: 'success' | 'error') => void;
+    onTagClick?: (tag: string) => void;
 }
 
-export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare }: BookmarkCardProps) {
+export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare, onTagClick }: BookmarkCardProps) {
     const navigate = useNavigate();
     const githubInfo = getGitHubInfo(bookmark.url);
     const [favorited, setFavorited] = useState(false);
@@ -214,8 +215,12 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                         return (
                             <span
                                 key={`${tag}-${index}`}
-                                className={`px-2 py-0.5 rounded text-xs font-medium ${isStyleObject ? '' : tagColor}`}
+                                className={`px-2 py-0.5 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${isStyleObject ? '' : tagColor}`}
                                 style={isStyleObject ? tagColor : undefined}
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    onTagClick?.(tag);
+                                }}
                             >
                                 {tag}
                             </span>
@@ -348,10 +353,14 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                                 return (
                                     <span
                                         key={`${tag}-${index}`}
-                                        className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                                        className={`px-2 py-0.5 rounded text-xs font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                                             isStyleObject ? '' : tagColor
                                         }`}
                                         style={isStyleObject ? tagColor : undefined}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            onTagClick?.(tag);
+                                        }}
                                     >
                                         {tag}
                                     </span>
