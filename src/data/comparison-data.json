@@ -2355,7 +2355,35 @@
                 "openIssues": 60,
                 "watchers": 17970
             }
+        },
+        "es-toolkit": {
+            "id": "es-toolkit",
+            "name": "es-toolkit",
+            "githubUrl": "toss/es-toolkit",
+            "npmPackage": "es-toolkit",
+            "tags": [
+                "工具函数"
+            ],
+            "dimensions": {
+                "bundleSize": {
+                    "minified": 73266,
+                    "gzipped": 21669
+                },
+                "bundleSizeRating": "Moderate",
+                "weeklyDownloads": 7139010,
+                "stars": 10655,
+                "lastUpdate": "2025-12-19T06:17:28Z",
+                "philosophy": "es-toolkit 是一个先进的、高性能 JavaScript 工具库，具有极小的包体积（bundle size）和强大的类型注解。",
+                "ecosystem": "Growing",
+                "ecosystemPlugins": [],
+                "npmVersion": "1.43.0",
+                "language": "TypeScript",
+                "repoSize": 14906,
+                "forks": 516,
+                "openIssues": 101,
+                "watchers": 10655
+            }
         }
     },
-    "updated_at": "2026-01-08T06:27:42.520Z"
+    "updated_at": "2026-01-08T07:14:04.380Z"
 }
