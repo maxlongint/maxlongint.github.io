@@ -400,9 +400,12 @@ export default function BookmarkCard({ bookmark, viewMode, getTagColor, onShare 
                     </div>
 
                     {/* Stats and Compatibility Row */}
-                    <div className="flex items-start justify-between gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
-                        <GitHubStats url={bookmark.url} />
-                        {npmPackageName && <CompatibilityBadges packageName={npmPackageName} />}
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+                        <GitHubStats url={bookmark.url} showOnly="version" />
+                        <div className="flex items-center gap-4">
+                            <GitHubStats url={bookmark.url} showOnly="other" />
+                            {npmPackageName && <CompatibilityBadges packageName={npmPackageName} />}
+                        </div>
                     </div>
                 </div>
             </div>
