@@ -1,0 +1,75 @@
+name: 🔄 Sync GitHub Labels to Local
+
+on:
+    # 当 Label 变更时触发
+    label:
+        types: [created, edited, deleted]
+    
+    # 手动触发
+    workflow_dispatch:
+
+jobs:
+    sync-labels:
+        runs-on: ubuntu-latest
+        # 只处理分类标签（以 "分类:" 开头）
+        if: |
+            github.event_name == 'workflow_dispatch' || 
+            startsWith(github.event.label.name, '分类:')
+        
+        permissions:
+            contents: write
+        
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+            
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+            
+            - name: Sync Labels to bookmarks.json
+              id: sync
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+              run: node scripts/sync-github-labels.cjs
+            
+            - name: Check for changes
+              id: changes
+              run: |
+                  if git diff --quiet src/data/bookmarks.json; then
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+            
+            - name: Commit and push changes
+              if: steps.changes.outputs.has_changes == 'true'
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git add src/data/bookmarks.json
+                  
+                  # 根据事件类型生成提交信息
+                  if [ "${{ github.event_name }}" == "label" ]; then
+                    LABEL_NAME="${{ github.event.label.name }}"
+                    ACTION="${{ github.event.action }}"
+                    git commit -m "🏷️ 同步标签变更: ${ACTION} ${LABEL_NAME}"
+                  else
+                    git commit -m "🔄 手动同步 GitHub Labels"
+                  fi
+                  
+                  git push
+            
+            - name: Summary
+              run: |
+                  echo "## 🏷️ 标签同步结果" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
+                    echo "✅ 标签已同步到 bookmarks.json" >> $GITHUB_STEP_SUMMARY
+                  else
+                    echo "📝 无变更需要同步" >> $GITHUB_STEP_SUMMARY
+                  fi

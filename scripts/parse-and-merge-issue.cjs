@@ -1,5 +1,6 @@
 const fs = require('fs');
 const https = require('https');
+const { addPrefix, filterCategoryLabels, labelToTagName } = require('./lib/label-utils.cjs');
 
 /**
  * 解析 Issue 正文内容
@@ -178,6 +179,142 @@ function fetchGitHubData(fullName, token) {
 }
 
 /**
+ * 获取仓库的所有 Labels
+ * @param {string} owner - 仓库所有者
+ * @param {string} repo - 仓库名称
+ * @param {string} token - GitHub Token
+ * @returns {Promise<Array>} Labels 列表
+ */
+function fetchGitHubLabels(owner, repo, token) {
+    return new Promise((resolve, reject) => {
+        const allLabels = [];
+        
+        function fetchPage(page = 1) {
+            const options = {
+                hostname: 'api.github.com',
+                path: `/repos/${owner}/${repo}/labels?per_page=100&page=${page}`,
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/vnd.github.v3+json',
+                    'User-Agent': 'GitHub-Actions-Bot',
+                },
+            };
+
+            https.get(options, res => {
+                let data = '';
+                res.on('data', chunk => { data += chunk; });
+                res.on('end', () => {
+                    if (res.statusCode === 200) {
+                        const labels = JSON.parse(data);
+                        allLabels.push(...labels);
+                        
+                        const linkHeader = res.headers.link;
+                        if (linkHeader && linkHeader.includes('rel="next"')) {
+                            fetchPage(page + 1);
+                        } else {
+                            resolve(allLabels);
+                        }
+                    } else {
+                        reject(new Error(`获取 Labels 失败: HTTP ${res.statusCode}`));
+                    }
+                });
+            }).on('error', reject);
+        }
+        
+        fetchPage();
+    });
+}
+
+/**
+ * 创建 GitHub Label
+ * @param {string} owner - 仓库所有者
+ * @param {string} repo - 仓库名称
+ * @param {string} token - GitHub Token
+ * @param {string} name - Label 名称
+ * @param {string} color - Label 颜色（不带 #）
+ * @returns {Promise<Object>} 创建的 Label
+ */
+function createGitHubLabel(owner, repo, token, name, color) {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify({ name, color });
+        
+        const options = {
+            hostname: 'api.github.com',
+            path: `/repos/${owner}/${repo}/labels`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+                'User-Agent': 'GitHub-Actions-Bot',
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData),
+            },
+        };
+
+        const req = https.request(options, res => {
+            let data = '';
+            res.on('data', chunk => { data += chunk; });
+            res.on('end', () => {
+                if (res.statusCode === 201) {
+                    resolve(JSON.parse(data));
+                } else {
+                    reject(new Error(`创建 Label 失败: HTTP ${res.statusCode} - ${data}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.write(postData);
+        req.end();
+    });
+}
+
+/**
+ * 为 Issue 添加 Labels
+ * @param {string} owner - 仓库所有者
+ * @param {string} repo - 仓库名称
+ * @param {string} token - GitHub Token
+ * @param {number} issueNumber - Issue 编号
+ * @param {Array<string>} labels - Label 名称列表
+ * @returns {Promise<void>}
+ */
+function addLabelsToIssue(owner, repo, token, issueNumber, labels) {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify({ labels });
+        
+        const options = {
+            hostname: 'api.github.com',
+            path: `/repos/${owner}/${repo}/issues/${issueNumber}/labels`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+                'User-Agent': 'GitHub-Actions-Bot',
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData),
+            },
+        };
+
+        const req = https.request(options, res => {
+            let data = '';
+            res.on('data', chunk => { data += chunk; });
+            res.on('end', () => {
+                if (res.statusCode === 200) {
+                    resolve();
+                } else {
+                    reject(new Error(`添加 Labels 失败: HTTP ${res.statusCode} - ${data}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.write(postData);
+        req.end();
+    });
+}
+
+/**
  * 获取 npm 包版本
  * @param {string} packageName - npm 包名
  * @returns {Promise<string>} 版本号
@@ -255,6 +392,8 @@ function fetchReadme(fullName, token) {
 async function main() {
     const issueBody = process.env.ISSUE_BODY;
     const githubToken = process.env.GITHUB_TOKEN;
+    const repository = process.env.GITHUB_REPOSITORY;
+    const issueNumber = process.env.ISSUE_NUMBER;
 
     console.log('=== Issue Body ===');
     console.log(issueBody);
@@ -282,7 +421,73 @@ async function main() {
         process.exit(0);
     }
 
-    // 自动为新标签生成样式
+    // 获取当前仓库信息
+    const [repoOwner, repoName] = repository ? repository.split('/') : ['', ''];
+
+    // 获取 GitHub Labels 并验证/创建标签
+    let githubLabels = [];
+    const labelsToAdd = [];
+    
+    if (repoOwner && repoName && githubToken) {
+        try {
+            console.log('\n📋 获取 GitHub Labels...');
+            githubLabels = await fetchGitHubLabels(repoOwner, repoName, githubToken);
+            
+            // 过滤出分类标签，构建已存在标签映射
+            const categoryLabels = filterCategoryLabels(githubLabels);
+            const existingTagNames = new Set(
+                categoryLabels.map(l => labelToTagName(l.name)).filter(Boolean)
+            );
+            
+            console.log(`  ✓ 已有 ${categoryLabels.length} 个分类标签`);
+            
+            // 检查每个提交的标签
+            for (const tag of parsed.tags) {
+                const labelName = addPrefix(tag);
+                
+                if (existingTagNames.has(tag)) {
+                    console.log(`  ✓ 标签 "${tag}" 已存在`);
+                    labelsToAdd.push(labelName);
+                } else {
+                    // 标签不存在，需要创建
+                    console.log(`  → 创建新标签 "${tag}"...`);
+                    
+                    // 计算颜色索引
+                    let colorIndex = categoryLabels.length + labelsToAdd.length - parsed.tags.indexOf(tag);
+                    if (bookmarksData.tags.__meta__?.lastColorIndex) {
+                        colorIndex = bookmarksData.tags.__meta__.lastColorIndex + 1 + parsed.tags.indexOf(tag);
+                    }
+                    
+                    // 生成颜色
+                    const colorConfig = generateTagColor(colorIndex);
+                    const hexColor = colorConfig.color.replace('#', '');
+                    
+                    try {
+                        await createGitHubLabel(repoOwner, repoName, githubToken, labelName, hexColor);
+                        console.log(`    ✓ 已创建 GitHub Label: ${labelName}`);
+                        labelsToAdd.push(labelName);
+                    } catch (err) {
+                        console.log(`    ⚠️ 创建 Label 失败: ${err.message}`);
+                    }
+                }
+            }
+            
+            // 为 Issue 添加分类标签
+            if (labelsToAdd.length > 0 && issueNumber) {
+                try {
+                    await addLabelsToIssue(repoOwner, repoName, githubToken, parseInt(issueNumber), labelsToAdd);
+                    console.log(`  ✓ 已为 Issue #${issueNumber} 添加 ${labelsToAdd.length} 个标签`);
+                } catch (err) {
+                    console.log(`  ⚠️ 添加 Issue Labels 失败: ${err.message}`);
+                }
+            }
+        } catch (error) {
+            console.log(`  ⚠️ 获取 GitHub Labels 失败: ${error.message}`);
+            console.log(`  → 将使用本地标签处理`);
+        }
+    }
+
+    // 自动为新标签生成样式（本地 bookmarks.json）
     let tagsUpdated = false;
     let nextColorIndex = 0;
     if (bookmarksData.tags.__meta__ && typeof bookmarksData.tags.__meta__.lastColorIndex === 'number') {
@@ -296,7 +501,7 @@ async function main() {
         if (!bookmarksData.tags[tag]) {
             const newColorConfig = generateTagColor(nextColorIndex);
             bookmarksData.tags[tag] = newColorConfig;
-            console.log(`添加新标签: ${tag}`);
+            console.log(`添加新标签到本地: ${tag}`);
             nextColorIndex++;
             tagsUpdated = true;
         }
@@ -421,4 +626,14 @@ if (require.main === module) {
     });
 }
 
-module.exports = { parseIssueBody, formatBookmarksJson, generateTagColor, fetchGitHubData, fetchNpmData, fetchReadme };
+module.exports = { 
+    parseIssueBody, 
+    formatBookmarksJson, 
+    generateTagColor, 
+    fetchGitHubData, 
+    fetchGitHubLabels,
+    createGitHubLabel,
+    addLabelsToIssue,
+    fetchNpmData, 
+    fetchReadme 
+};

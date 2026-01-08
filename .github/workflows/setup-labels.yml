@@ -14,7 +14,8 @@ jobs:
               uses: actions/github-script@v7
               with:
                   script: |
-                      const labels = [
+                      // 系统标签（用于 Issue 流程管理）
+                      const systemLabels = [
                         {
                           name: '待审核',
                           color: 'FFA500',
@@ -52,7 +53,65 @@ jobs:
                         }
                       ];
 
-                      for (const label of labels) {
+                      // 分类标签（用于工具分类，前缀: 分类:）
+                      // 颜色使用黄金角度算法生成，确保视觉区分度
+                      const categoryLabels = [
+                        // 核心功能类
+                        { name: '分类:状态管理', color: 'd6bce6', description: '状态管理相关库' },
+                        { name: '分类:数据校验', color: 'f1bcd2', description: '数据验证和校验' },
+                        { name: '分类:动画效果', color: 'b0d1e8', description: '动画和过渡效果' },
+                        { name: '分类:图表可视化', color: 'b0e8c7', description: '图表和数据可视化' },
+                        { name: '分类:流程图', color: 'eeeed3', description: '流程图和图形编辑' },
+                        { name: '分类:富文本编辑', color: 'e6c2bc', description: '富文本编辑器' },
+                        { name: '分类:代码编辑', color: 'c8efdd', description: '代码编辑和高亮' },
+                        { name: '分类:终端模拟', color: 'f1d4bc', description: '终端和命令行模拟' },
+                        { name: '分类:视频播放', color: 'bce6f1', description: '视频播放器' },
+                        { name: '分类:音频处理', color: 'f1bcdd', description: '音频处理和播放' },
+                        { name: '分类:图片处理', color: 'c2e6bc', description: '图片编辑和处理' },
+                        { name: '分类:图片生成', color: 'e8d4b0', description: '图片和二维码生成' },
+                        { name: '分类:文件上传', color: 'bcbce6', description: '文件上传组件' },
+                        { name: '分类:文件解析', color: 'e6bcbc', description: '文件解析和转换' },
+                        { name: '分类:文件检测', color: 'd3eeb0', description: '文件类型检测' },
+                        { name: '分类:拖拽排序', color: 'e6bcd6', description: '拖拽和排序功能' },
+                        { name: '分类:滚动交互', color: 'bce6d6', description: '滚动效果和交互' },
+                        { name: '分类:手势识别', color: 'f1e6bc', description: '手势和触摸交互' },
+                        { name: '分类:网络请求', color: 'bcd6e6', description: 'HTTP 请求和通信' },
+                        { name: '分类:实时协作', color: 'e6d6bc', description: '实时协作和同步' },
+                        { name: '分类:日期时间', color: 'd6e6bc', description: '日期时间处理' },
+                        { name: '分类:数学计算', color: 'e6bcf1', description: '数学和数值计算' },
+                        { name: '分类:公式渲染', color: 'bce6e6', description: '数学公式渲染' },
+                        { name: '分类:国际化', color: 'f1bcbc', description: '国际化和本地化' },
+                        { name: '分类:安全防护', color: 'bceeb0', description: '安全和加密' },
+                        { name: '分类:本地存储', color: 'e6c8bc', description: '本地数据存储' },
+                        { name: '分类:剪贴板', color: 'c8bce6', description: '剪贴板操作' },
+                        { name: '分类:快捷键', color: 'e6f1bc', description: '键盘快捷键' },
+                        { name: '分类:用户引导', color: 'bcf1e6', description: '用户引导和教程' },
+                        // UI组件类
+                        { name: '分类:图标库', color: 'f1c8bc', description: '图标集合' },
+                        { name: '分类:颜色选择', color: 'bce6c8', description: '颜色选择器' },
+                        { name: '分类:轮播组件', color: 'e6bce6', description: '轮播和滑动组件' },
+                        { name: '分类:日历组件', color: 'c8e6bc', description: '日历和日期选择' },
+                        { name: '分类:提示组件', color: 'e6e6bc', description: '提示和弹出框' },
+                        { name: '分类:签名组件', color: 'bcd6f1', description: '签名和手写' },
+                        { name: '分类:虚拟键盘', color: 'f1bce6', description: '虚拟键盘' },
+                        { name: '分类:加载动画', color: 'bce6bc', description: '加载和进度指示' },
+                        { name: '分类:JSON编辑', color: 'e6bcf1', description: 'JSON 编辑器' },
+                        // 工具类
+                        { name: '分类:工具函数', color: 'd6f1bc', description: '通用工具函数库' },
+                        { name: '分类:唯一标识', color: 'f1bcd6', description: 'UUID 和 ID 生成' },
+                        { name: '分类:模糊搜索', color: 'bce6f1', description: '模糊搜索和匹配' },
+                        { name: '分类:模拟数据', color: 'e6d6f1', description: '模拟数据生成' },
+                        { name: '分类:编码转换', color: 'c8f1bc', description: '编码和解码' },
+                        { name: '分类:DOM操作', color: 'f1e6d6', description: 'DOM 操作和处理' },
+                        { name: '分类:演示文稿', color: 'bcd6bc', description: '演示和幻灯片' },
+                        // 样式类
+                        { name: '分类:CSS框架', color: 'e6c8f1', description: 'CSS 框架和工具' },
+                        { name: '分类:CSS重置', color: 'd6bcd6', description: 'CSS 重置和规范化' }
+                      ];
+
+                      const allLabels = [...systemLabels, ...categoryLabels];
+
+                      for (const label of allLabels) {
                         try {
                           // 尝试获取标签
                           await github.rest.issues.getLabel({
@@ -90,3 +149,6 @@ jobs:
                       }
 
                       console.log('🎉 标签设置完成！');
+                      console.log(`   系统标签: ${systemLabels.length} 个`);
+                      console.log(`   分类标签: ${categoryLabels.length} 个`);
+
