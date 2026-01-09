@@ -29,11 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 65,
-            "totalTags": 47,
-            "lastUpdated": "2026-01-08T03:54:27.523Z",
-            "migratedFromMapping": true,
-            "syncedFromGitHub": true
+            "lastColorIndex": 66,
+            "totalTags": 48,
+            "lastUpdated": "2026-01-09T00:48:52.443Z"
         },
         "实时协作": {
             "className": "",
@@ -292,6 +290,12 @@
             "color": "#d6bcd6",
             "backgroundColor": "hsl(300, 24%, 79%)",
             "textColor": "hsl(300, 44%, 24%)"
+        },
+        "压缩解压": {
+            "className": "",
+            "color": "#e7eed3",
+            "backgroundColor": "hsl(75, 45%, 88%)",
+            "textColor": "hsl(75, 65%, 38%)"
         }
     },
     "bookmarks": [
@@ -919,6 +923,14 @@
             "tags": ["工具函数"],
             "npmUrl": "https://www.npmjs.com/package/es-toolkit",
             "addedDate": "2026-01-08"
+        },
+        {
+            "title": "pako",
+            "url": "https://github.com/nodeca/pako",
+            "description": "pako 是一个高性能、纯 JavaScript 实现的 zlib 压缩/解压缩库，可在浏览器和 Node.js 环境中无缝运行，为前端提供原生级别的数据压缩能力。",
+            "tags": ["文件解析", "压缩解压"],
+            "npmUrl": "https://www.npmjs.com/package/pako",
+            "addedDate": "2026-01-09"
         }
     ]
 }
