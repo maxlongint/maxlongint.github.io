@@ -24,10 +24,13 @@ function parseIssueBody(body) {
     // 匹配 **npm 地址:** https://www.npmjs.com/package/...
     const npmMatch = body.match(/\*\*npm\s*地址:\*\*\s*([^\n]+)/i);
     if (npmMatch) {
-        result.npmUrl = npmMatch[1].trim();
-        // 确保是有效的 npm URL
-        if (result.npmUrl && !result.npmUrl.startsWith('http')) {
-            result.npmUrl = 'https://' + result.npmUrl;
+        const npmValue = npmMatch[1].trim();
+        // 只有当内容是有效的 npm URL 时才保存
+        if (npmValue && npmValue.includes('npmjs.com')) {
+            result.npmUrl = npmValue;
+            if (!result.npmUrl.startsWith('http')) {
+                result.npmUrl = 'https://' + result.npmUrl;
+            }
         }
     }
 

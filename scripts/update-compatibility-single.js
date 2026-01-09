@@ -119,7 +119,7 @@ function getPackageIdentifierFromUrl(githubUrl) {
         const bookmarksData = JSON.parse(fs.readFileSync(BOOKMARKS_PATH, 'utf-8'));
         const bookmark = bookmarksData.bookmarks.find(b => b.url === githubUrl || b.url.includes(githubUrl));
 
-        if (bookmark && bookmark.npmUrl) {
+        if (bookmark && bookmark.npmUrl && bookmark.npmUrl.includes('npmjs.com')) {
             console.log(`   ℹ️  从 bookmarks.json 获取到 npm 地址`);
             return bookmark.npmUrl; // 直接返回完整 URL
         }
