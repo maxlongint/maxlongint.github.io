@@ -67,6 +67,19 @@ jobs:
               run: |
                   npm run update-compatibility-single "${{ steps.parse-issue.outputs.tool_url }}"
 
+            - name: Generate Appreciate Report for New Tool
+              if: steps.parse-issue.outputs.already_exists == 'false'
+              continue-on-error: true
+              env:
+                  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+              run: |
+                  if [ -n "$DEEPSEEK_API_KEY" ]; then
+                    echo "🤖 Generating appreciate report..."
+                    node scripts/generate-appreciates-deepseek.js --library "${{ steps.parse-issue.outputs.tool_name }}" || echo "⚠️ Appreciate report generation failed, continuing..."
+                  else
+                    echo "⚠️ DEEPSEEK_API_KEY not set, skipping appreciate report generation"
+                  fi
+
             - name: Commit All Changes
               if: steps.parse-issue.outputs.already_exists == 'false'
               id: commit
@@ -77,6 +90,7 @@ jobs:
                   # 添加所有修改的文件
                   git add src/data/bookmarks.json
                   git add public/og-images/
+                  git add public/appreciates/ 2>/dev/null || true
                               
                   # 如果有同步数据，也一起提交
                   if [ -f "src/data/github-stats.json" ]; then
@@ -106,6 +120,7 @@ jobs:
                   COMMIT_MSG="${COMMIT_MSG}\n- Generated OG image"
                   COMMIT_MSG="${COMMIT_MSG}\n- Generated comparison data"
                   COMMIT_MSG="${COMMIT_MSG}\n- Generated compatibility data"
+                  COMMIT_MSG="${COMMIT_MSG}\n- Generated appreciate report"
 
                   git commit -m "${COMMIT_MSG}"
                   git push
