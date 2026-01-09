@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 66,
-            "totalTags": 48,
-            "lastUpdated": "2026-01-09T00:48:52.443Z"
+            "lastColorIndex": 67,
+            "totalTags": 49,
+            "lastUpdated": "2026-01-09T10:00:18.435Z"
         },
         "实时协作": {
             "className": "",
@@ -296,6 +296,12 @@
             "color": "#e7eed3",
             "backgroundColor": "hsl(75, 45%, 88%)",
             "textColor": "hsl(75, 65%, 38%)"
+        },
+        "思维导图": {
+            "className": "",
+            "color": "#c8daef",
+            "backgroundColor": "hsl(212.5, 55%, 86%)",
+            "textColor": "hsl(212.5, 75%, 36%)"
         }
     },
     "bookmarks": [
@@ -937,6 +943,14 @@
             "url": "https://github.com/tailwindlabs/heroicons",
             "description": "一组免费的 MIT 许可的高质量 SVG 图标，用于 UI 开发。",
             "tags": ["图标库"],
+            "addedDate": "2026-01-09"
+        },
+        {
+            "title": "Mind Elixir",
+            "url": "https://github.com/ssshooter/mind-elixir-core",
+            "description": "mind-elixir 是一个开源的 JavaScript 思维导图核心库，支持与任何前端框架一起使用，提供了丰富的用户体验、性能优化、核心功能、导出与自定义选项。",
+            "tags": ["思维导图"],
+            "npmUrl": "https://www.npmjs.com/package/mind-elixir",
             "addedDate": "2026-01-09"
         }
     ]
