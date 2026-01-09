@@ -15,6 +15,19 @@ export interface GitHubRepoInfo {
     pushed_at?: string;
 }
 
+export interface RepoInfo {
+    stargazers_count?: number;
+    npm_version?: string;
+    name?: string;
+    full_name?: string;
+    pushed_at?: string;
+}
+
+export interface GitHubInfo {
+    owner: string;
+    repo: string;
+}
+
 export interface NPMDownloadData {
     date: string;
     downloads: number;

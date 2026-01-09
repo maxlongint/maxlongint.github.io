@@ -9,6 +9,230 @@ import Footer from '../components/Footer';
 import bookmarksData from '../data/bookmarks.json';
 import { getGitHubRepoInfo } from '../utils/github';
 
+// ============ Props 接口定义 ============
+
+interface ToastNotificationProps {
+    show: boolean;
+    message: string;
+    type: 'success' | 'error';
+    onClose: () => void;
+}
+
+interface HeroSectionProps {
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+}
+
+interface SortDropdownProps {
+    sortOpen: boolean;
+    setSortOpen: (open: boolean) => void;
+    selectedSort: string;
+    setSelectedSort: (sort: string) => void;
+}
+
+interface ViewModeToggleProps {
+    viewMode: 'list' | 'grid';
+    setViewMode: (mode: 'list' | 'grid') => void;
+}
+
+interface ScrollToTopButtonProps {
+    show: boolean;
+    onClick: () => void;
+}
+
+// ============ 子组件函数 ============
+
+function ToastNotification({ show, message, type, onClose }: ToastNotificationProps) {
+    if (!show) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose} />
+            <div
+                className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
+                    show ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+                }`}
+            >
+                <div className="flex items-start gap-4">
+                    <div
+                        className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                            type === 'success'
+                                ? 'bg-green-100 dark:bg-green-900/30'
+                                : 'bg-red-100 dark:bg-red-900/30'
+                        }`}
+                    >
+                        {type === 'success' ? (
+                            <svg
+                                className="w-6 h-6 text-green-600 dark:text-green-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                />
+                            </svg>
+                        ) : (
+                            <svg
+                                className="w-6 h-6 text-red-600 dark:text-red-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        )}
+                    </div>
+                    <div className="flex-1">
+                        <h3
+                            className={`text-lg font-semibold mb-1 ${
+                                type === 'success'
+                                    ? 'text-green-900 dark:text-green-300'
+                                    : 'text-red-900 dark:text-red-300'
+                            }`}
+                        >
+                            {type === 'success' ? '复制成功！' : '复制失败'}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{message}</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function HeroSection({ searchQuery, setSearchQuery }: HeroSectionProps) {
+    return (
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">找到完美的前端工具</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                浏览精选的库、框架和插件集合，
+                <br />
+                让您的开发流程更加高效。
+            </p>
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        </div>
+    );
+}
+
+function SortDropdown({ sortOpen, setSortOpen, selectedSort, setSelectedSort }: SortDropdownProps) {
+    const sortOptions = ['默认', '名称', 'Stars数量', '更新时间', '收录时间'];
+
+    return (
+        <div className="relative sort-dropdown">
+            <button
+                onClick={() => setSortOpen(!sortOpen)}
+                className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+                排序: {selectedSort}
+                <svg
+                    className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            {sortOpen && (
+                <div className="absolute top-full mt-2 right-0 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                    <div className="p-2">
+                        {sortOptions.map(option => (
+                            <button
+                                key={option}
+                                onClick={() => {
+                                    setSelectedSort(option);
+                                    setSortOpen(false);
+                                }}
+                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function ViewModeToggle({ viewMode, setViewMode }: ViewModeToggleProps) {
+    return (
+        <div className="hidden md:flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 overflow-hidden">
+            <button
+                onClick={() => setViewMode('list')}
+                className={`px-3 py-2 transition-colors focus:outline-none ${
+                    viewMode === 'list'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+                title="列表模式"
+            >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <button
+                onClick={() => setViewMode('grid')}
+                className={`px-3 py-2 transition-colors focus:outline-none ${
+                    viewMode === 'grid'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+                title="网格模式"
+            >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    />
+                </svg>
+            </button>
+        </div>
+    );
+}
+
+function ScrollToTopButton({ show, onClick }: ScrollToTopButtonProps) {
+    if (!show) return null;
+
+    return (
+        <button
+            onClick={onClick}
+            className="fixed bottom-8 right-8 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110"
+            aria-label="回到顶部"
+        >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    );
+}
+
+// ============ 主页面组件 ============
+
 function Home() {
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -260,95 +484,16 @@ function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-            {/* Toast 提示框 */}
-            {showToast && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-                    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowToast(false)} />
-                    <div
-                        className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full transform transition-all ${
-                            showToast ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-                        }`}
-                    >
-                        <div className="flex items-start gap-4">
-                            <div
-                                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
-                                    toastType === 'success'
-                                        ? 'bg-green-100 dark:bg-green-900/30'
-                                        : 'bg-red-100 dark:bg-red-900/30'
-                                }`}
-                            >
-                                {toastType === 'success' ? (
-                                    <svg
-                                        className="w-6 h-6 text-green-600 dark:text-green-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M5 13l4 4L19 7"
-                                        />
-                                    </svg>
-                                ) : (
-                                    <svg
-                                        className="w-6 h-6 text-red-600 dark:text-red-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    </svg>
-                                )}
-                            </div>
-                            <div className="flex-1">
-                                <h3
-                                    className={`text-lg font-semibold mb-1 ${
-                                        toastType === 'success'
-                                            ? 'text-green-900 dark:text-green-300'
-                                            : 'text-red-900 dark:text-red-300'
-                                    }`}
-                                >
-                                    {toastType === 'success' ? '复制成功！' : '复制失败'}
-                                </h3>
-                                <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{toastMessage}</p>
-                            </div>
-                            <button
-                                onClick={() => setShowToast(false)}
-                                className="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <ToastNotification
+                show={showToast}
+                message={toastMessage}
+                type={toastType}
+                onClose={() => setShowToast(false)}
+            />
 
             <Header isFixed={isSearchFixed} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-            {/* Hero Section */}
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-                <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">找到完美的前端工具</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                    浏览精选的库、框架和插件集合，
-                    <br />
-                    让您的开发流程更加高效。
-                </p>
-                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-            </div>
+            <HeroSection searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
             <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
                 <TagFilter
@@ -370,118 +515,13 @@ function Home() {
                             个工具
                         </p>
                         <div className="flex items-center gap-4">
-                            {/* 视图模式切换 - 移动端隐藏 */}
-                            <div className="hidden md:flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 overflow-hidden">
-                                <button
-                                    onClick={() => setViewMode('list')}
-                                    className={`px-3 py-2 transition-colors focus:outline-none ${
-                                        viewMode === 'list'
-                                            ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
-                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                                    }`}
-                                    title="列表模式"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                    </svg>
-                                </button>
-                                <button
-                                    onClick={() => setViewMode('grid')}
-                                    className={`px-3 py-2 transition-colors focus:outline-none ${
-                                        viewMode === 'grid'
-                                            ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
-                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                                    }`}
-                                    title="网格模式"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <div className="relative sort-dropdown">
-                                <button
-                                    onClick={() => setSortOpen(!sortOpen)}
-                                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                                >
-                                    排序: {selectedSort}
-                                    <svg
-                                        className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`}
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M19 9l-7 7-7-7"
-                                        />
-                                    </svg>
-                                </button>
-                                {sortOpen && (
-                                    <div className="absolute top-full mt-2 right-0 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
-                                        <div className="p-2">
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedSort('默认');
-                                                    setSortOpen(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                                            >
-                                                默认
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedSort('名称');
-                                                    setSortOpen(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                                            >
-                                                名称
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedSort('Stars数量');
-                                                    setSortOpen(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                                            >
-                                                Stars数量
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedSort('更新时间');
-                                                    setSortOpen(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                                            >
-                                                更新时间
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedSort('收录时间');
-                                                    setSortOpen(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                                            >
-                                                收录时间
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                            <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
+                            <SortDropdown
+                                sortOpen={sortOpen}
+                                setSortOpen={setSortOpen}
+                                selectedSort={selectedSort}
+                                setSelectedSort={setSelectedSort}
+                            />
                         </div>
                     </div>
 
@@ -497,23 +537,7 @@ function Home() {
 
             <Footer />
 
-            {/* 回到顶部按钮 */}
-            {showScrollTop && (
-                <button
-                    onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110"
-                    aria-label="回到顶部"
-                >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 10l7-7m0 0l7 7m-7-7v18"
-                        />
-                    </svg>
-                </button>
-            )}
+            <ScrollToTopButton show={showScrollTop} onClick={scrollToTop} />
         </div>
     );
 }
