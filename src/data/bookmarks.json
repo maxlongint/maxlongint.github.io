@@ -302,12 +302,6 @@
             "color": "#c8daef",
             "backgroundColor": "hsl(212.5, 55%, 86%)",
             "textColor": "hsl(212.5, 75%, 36%)"
-        },
-        "模板系统": {
-            "className": "",
-            "color": "#f1bcc5",
-            "backgroundColor": "hsl(350, 65%, 84%)",
-            "textColor": "hsl(350, 80%, 34%)"
         }
     },
     "bookmarks": [
@@ -965,13 +959,6 @@
             "description": "一个高性能、轻量级的 Signals（信号） 库",
             "tags": ["状态管理"],
             "npmUrl": "https://www.npmjs.com/package/alien-signals",
-            "addedDate": "2026-01-12"
-        },
-        {
-            "title": "lit",
-            "url": "https://github.com/lit/lit",
-            "description": "Lit 是一个用于构建快速、轻量级 Web 组件的简单库。Lit 的核心是一个消除样板代码的组件基类，它提供了响应式状态、作用域样式以及一个轻量、快速且富有表现力的声明式模板系统。",
-            "tags": ["模板系统"],
             "addedDate": "2026-01-12"
         }
     ]
