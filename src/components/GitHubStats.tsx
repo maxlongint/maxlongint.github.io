@@ -52,7 +52,9 @@ export default function GitHubStats({ url, showOnly }: GitHubStatsProps) {
                 className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
                 title="查看 npm 包"
             >
-                <span className="text-red-500">📦</span>
+                <svg className="w-4 h-4 text-red-500" viewBox="0 0 256 256" fill="currentColor">
+                    <path d="M0 256V0h256v256H0zm41-41h43v-128h42v128h43V41H41v174z"/>
+                </svg>
                 <span className="font-mono">v{repoInfo.npm_version}</span>
             </a>
         );
@@ -106,7 +108,9 @@ export default function GitHubStats({ url, showOnly }: GitHubStatsProps) {
                     className="flex items-center gap-1 hover:text-blue-600 transition-colors"
                     title="查看 npm 包"
                 >
-                    <span className="text-red-500">📦</span>
+                    <svg className="w-4 h-4 text-red-500" viewBox="0 0 256 256" fill="currentColor">
+                        <path d="M0 256V0h256v256H0zm41-41h43v-128h42v128h43V41H41v174z"/>
+                    </svg>
                     <span className="font-mono">v{repoInfo.npm_version}</span>
                 </a>
             )}

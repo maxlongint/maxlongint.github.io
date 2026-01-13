@@ -78,8 +78,8 @@ export default function CompatibilityBadges({ packageName }: CompatibilityBadges
                 </span>
             )}
 
-            {/* 依赖数量 */}
-            {compatibility.dependenciesCount !== null && compatibility.dependenciesCount !== undefined && (
+            {/* 依赖数量 - 只有大于0才显示 */}
+            {compatibility.dependenciesCount !== null && compatibility.dependenciesCount !== undefined && compatibility.dependenciesCount > 0 && (
                 <span className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
