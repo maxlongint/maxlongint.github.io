@@ -132,7 +132,7 @@ function GiscusSection({ isLoading }: GiscusSectionProps) {
 // ============================================================================
 
 export default function Contact() {
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const giscusLoadedRef = useRef(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -167,7 +167,7 @@ export default function Contact() {
             script.setAttribute('data-reactions-enabled', '1');
             script.setAttribute('data-emit-metadata', '0');
             script.setAttribute('data-input-position', 'top');
-            script.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+            script.setAttribute('data-theme', resolvedTheme === 'dark' ? 'dark' : 'light');
             script.setAttribute('data-lang', 'zh-CN');
             script.crossOrigin = 'anonymous';
             script.async = true;
@@ -197,13 +197,13 @@ export default function Contact() {
                 setIsLoading(true);
             };
         }
-    }, [theme]);
+    }, [resolvedTheme]);
 
     // 主题切换时更新 Giscus 主题
     useEffect(() => {
         const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
         if (iframe && iframe.contentWindow) {
-            const giscusTheme = theme === 'dark' ? 'dark' : 'light';
+            const giscusTheme = resolvedTheme === 'dark' ? 'dark' : 'light';
             iframe.contentWindow.postMessage(
                 {
                     giscus: {
@@ -215,7 +215,7 @@ export default function Contact() {
                 'https://giscus.app'
             );
         }
-    }, [theme]);
+    }, [resolvedTheme]);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">

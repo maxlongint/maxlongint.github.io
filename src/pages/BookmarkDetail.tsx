@@ -240,59 +240,55 @@ function MetadataCard({ icon, iconBgColor, title, value, subtitle, children }: M
 function TabSwitcher({ activeTab, setActiveTab, hasAppreciate, tocItems, showToc, setShowToc }: TabSwitcherProps) {
     if (hasAppreciate) {
         return (
-            <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-3 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
-                <div className="flex gap-1">
+            <div className="px-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-end justify-between">
+                <div className="flex gap-6">
                     <button
                         onClick={() => setActiveTab('appreciate')}
-                        className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        className={`relative py-3 text-sm font-medium transition-colors flex items-center gap-1.5 ${
                             activeTab === 'appreciate'
-                                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'text-blue-600 dark:text-blue-400'
+                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                         }`}
                     >
-                        <span className="flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                                />
-                            </svg>
-                            鉴赏
-                        </span>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                            />
+                        </svg>
+                        鉴赏
                         {activeTab === 'appreciate' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                            <div className="absolute -bottom-px left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
                         )}
                     </button>
                     <button
                         onClick={() => setActiveTab('readme')}
-                        className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        className={`relative py-3 text-sm font-medium transition-colors flex items-center gap-1.5 ${
                             activeTab === 'readme'
-                                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'text-blue-600 dark:text-blue-400'
+                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                         }`}
                     >
-                        <span className="flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                />
-                            </svg>
-                            README
-                        </span>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                        </svg>
+                        README
                         {activeTab === 'readme' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
+                            <div className="absolute -bottom-px left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400" />
                         )}
                     </button>
                 </div>
                 {activeTab === 'readme' && tocItems.length > 0 && (
                     <button
                         onClick={() => setShowToc(!showToc)}
-                        className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        className="toc-button flex items-center gap-1.5 px-3 py-1.5 mb-2 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                         title="目录"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -306,9 +302,9 @@ function TabSwitcher({ activeTab, setActiveTab, hasAppreciate, tocItems, showToc
     }
 
     return (
-        <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="px-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-end justify-between">
+            <h2 className="py-3 text-sm font-medium text-gray-900 dark:text-white flex items-center gap-1.5">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -321,7 +317,7 @@ function TabSwitcher({ activeTab, setActiveTab, hasAppreciate, tocItems, showToc
             {tocItems.length > 0 && (
                 <button
                     onClick={() => setShowToc(!showToc)}
-                    className="toc-button flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    className="toc-button flex items-center gap-1.5 px-3 py-1.5 mb-2 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                     title="目录"
                 >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

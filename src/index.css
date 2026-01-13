@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 覆盖 markdown-body 默认背景色，使其透明以适配外层容器 */
+.markdown-body {
+    background-color: transparent !important;
+}
+
 :root {
     --foreground-rgb: 31, 41, 55;
     --background-rgb: 249, 250, 251;
@@ -111,8 +116,16 @@ samp,
 }
 
 /* GitHub Markdown 暗色主题样式 */
+/* 覆盖 github-markdown-css 的 CSS 变量，使其适配 .dark 类 */
 .dark .markdown-body {
     color-scheme: dark;
+    --bgColor-default: transparent;
+    --bgColor-muted: rgba(110, 118, 129, 0.1);
+    --fgColor-default: #e6edf3;
+    --fgColor-muted: #8b949e;
+    --fgColor-accent: #58a6ff;
+    --borderColor-default: #30363d;
+    --borderColor-muted: #21262d;
     color: #e6edf3;
     background-color: transparent;
 }
