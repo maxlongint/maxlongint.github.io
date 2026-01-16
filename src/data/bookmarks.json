@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 68,
+            "lastColorIndex": 69,
             "totalTags": 50,
-            "lastUpdated": "2026-01-12T08:02:34.266Z"
+            "lastUpdated": "2026-01-16T02:51:48.566Z"
         },
         "实时协作": {
             "className": "",
@@ -302,6 +302,12 @@
             "color": "#c8daef",
             "backgroundColor": "hsl(212.5, 55%, 86%)",
             "textColor": "hsl(212.5, 75%, 36%)"
+        },
+        "图片占位": {
+            "className": "",
+            "color": "#bce6c2",
+            "backgroundColor": "hsl(127.5, 45%, 82%)",
+            "textColor": "hsl(127.5, 65%, 32%)"
         }
     },
     "bookmarks": [
@@ -960,6 +966,14 @@
             "tags": ["状态管理"],
             "npmUrl": "https://www.npmjs.com/package/alien-signals",
             "addedDate": "2026-01-12"
+        },
+        {
+            "title": "Holder",
+            "url": "https://github.com/imsky/holder",
+            "description": "Holder 是一个客户端图片占位符的服务，用于在网页开发过程中显示临时图片，以便更好地预览设计效果。",
+            "tags": ["图片占位"],
+            "npmUrl": "https://www.npmjs.com/package/holderjs",
+            "addedDate": "2026-01-16"
         }
     ]
 }
