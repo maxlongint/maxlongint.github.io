@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 69,
-            "totalTags": 50,
-            "lastUpdated": "2026-01-16T02:51:48.566Z"
+            "lastColorIndex": 70,
+            "totalTags": 51,
+            "lastUpdated": "2026-02-24T06:15:24.116Z"
         },
         "实时协作": {
             "className": "",
@@ -308,6 +308,12 @@
             "color": "#bce6c2",
             "backgroundColor": "hsl(127.5, 45%, 82%)",
             "textColor": "hsl(127.5, 65%, 32%)"
+        },
+        "弹出框": {
+            "className": "",
+            "color": "#c7b0e8",
+            "backgroundColor": "hsl(265, 55%, 80%)",
+            "textColor": "hsl(265, 75%, 30%)"
         }
     },
     "bookmarks": [
@@ -974,6 +980,13 @@
             "tags": ["图片占位"],
             "npmUrl": "https://www.npmjs.com/package/holderjs",
             "addedDate": "2026-01-16"
+        },
+        {
+            "title": "sweetalert2",
+            "url": "https://github.com/sweetalert2/sweetalert2",
+            "description": "一个漂亮的、响应式的、高度可定制的和可访问的（WAI-ARIA）JavaScript 弹出框的替代品。零依赖。",
+            "tags": ["弹出框", "提示组件"],
+            "addedDate": "2026-02-24"
         }
     ]
 }
