@@ -20,13 +20,27 @@
     --background-rgb: 17, 24, 39;
 }
 
+@font-face {
+    font-family: 'ABC ROM Black Italic';
+    src: url('GQV5qDpftICYIGc3tnMNBHrIjg.woff2') format('woff2');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SmileySans';
+    src: url('SmileySans-Oblique.otf.woff2') format('woff2');
+    font-weight: normal;
+    font-style: oblique;
+    font-display: swap;
+}
+
 body {
     margin: 0;
     padding: 0;
     /* 系统字体栈：英文字体在前，中文字体在后 */
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
-        'Microsoft YaHei', sans-serif;
+    font-family: 'ABC ROM Black Italic', 'SmileySans', Arial, sans-serif;
     line-height: 1.6;
     font-size: 16px;
     color: rgb(var(--foreground-rgb));
@@ -50,8 +64,7 @@ kbd,
 samp,
 .markdown-body code,
 .markdown-body pre {
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
-        Consolas, 'Liberation Mono', monospace;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
     font-size: 0.9em;
     font-feature-settings: 'liga' 0;
     font-variant-ligatures: none;
