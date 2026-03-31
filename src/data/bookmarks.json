@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 70,
-            "totalTags": 51,
-            "lastUpdated": "2026-02-24T06:15:24.116Z"
+            "lastColorIndex": 72,
+            "totalTags": 53,
+            "lastUpdated": "2026-03-31T01:14:12.193Z"
         },
         "实时协作": {
             "className": "",
@@ -314,6 +314,18 @@
             "color": "#c7b0e8",
             "backgroundColor": "hsl(265, 55%, 80%)",
             "textColor": "hsl(265, 75%, 30%)"
+        },
+        "前端库": {
+            "className": "",
+            "color": "#ebd6a2",
+            "backgroundColor": "hsl(42.5, 65%, 78%)",
+            "textColor": "hsl(42.5, 80%, 28%)"
+        },
+        "Web Component": {
+            "className": "",
+            "color": "#d3eeee",
+            "backgroundColor": "hsl(180, 45%, 88%)",
+            "textColor": "hsl(180, 65%, 38%)"
         }
     },
     "bookmarks": [
@@ -987,6 +999,13 @@
             "description": "一个漂亮的、响应式的、高度可定制的和可访问的（WAI-ARIA）JavaScript 弹出框的替代品。零依赖。",
             "tags": ["弹出框", "提示组件"],
             "addedDate": "2026-02-24"
+        },
+        {
+            "title": "lit",
+            "url": "https://github.com/lit/lit",
+            "description": "Lit 是一个用于构建快速、轻量级 Web 组件的简单库。Lit 的核心是一个消除样板代码的组件基类，它提供了响应式状态、作用域样式以及一个轻量、快速且富有表现力的声明式模板系统。",
+            "tags": ["前端库", "Web Component"],
+            "addedDate": "2026-03-31"
         }
     ]
 }
