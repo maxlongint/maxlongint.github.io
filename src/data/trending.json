@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-04-10T19:37:55.292Z",
+  "updated_at": "2026-04-11T19:29:33.009Z",
   "data": {
-    "weekStart": "2026-04-10",
-    "weekEnd": "2026-04-10",
+    "weekStart": "2026-04-11",
+    "weekEnd": "2026-04-11",
     "repos": [
       {
         "rank": 1,
@@ -12,8 +12,8 @@
         "description": "f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy.",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 159139,
-        "forks": 20842,
+        "stars": 159303,
+        "forks": 20860,
         "builtBy": [
           {
             "username": "f",
@@ -30,8 +30,8 @@
         "description": "The React Framework",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 138823,
-        "forks": 30843,
+        "stars": 138853,
+        "forks": 30865,
         "builtBy": [
           {
             "username": "vercel",
@@ -48,8 +48,8 @@
         "description": "Node.js JavaScript runtime ✨🐢🚀✨",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 116664,
-        "forks": 35311,
+        "stars": 116677,
+        "forks": 35315,
         "builtBy": [
           {
             "username": "nodejs",
@@ -66,8 +66,8 @@
         "description": "JavaScript 3D Library.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 111853,
-        "forks": 36328,
+        "stars": 111870,
+        "forks": 36329,
         "builtBy": [
           {
             "username": "mrdoob",
@@ -84,8 +84,8 @@
         "description": "Promise based HTTP client for the browser and node.js",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 108979,
-        "forks": 11610,
+        "stars": 108984,
+        "forks": 11616,
         "builtBy": [
           {
             "username": "axios",
@@ -96,32 +96,14 @@
       },
       {
         "rank": 6,
-        "name": "material-ui",
-        "author": "mui",
-        "url": "https://github.com/mui/material-ui",
-        "description": "Material UI: Comprehensive React component library that implements Google's Material Design. Free forever.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 98103,
-        "forks": 32690,
-        "builtBy": [
-          {
-            "username": "mui",
-            "avatar": "https://avatars.githubusercontent.com/u/33663932?v=4",
-            "url": "https://github.com/mui"
-          }
-        ]
-      },
-      {
-        "rank": 7,
         "name": "Web-Dev-For-Beginners",
         "author": "microsoft",
         "url": "https://github.com/microsoft/Web-Dev-For-Beginners",
         "description": "24 Lessons, 12 Weeks, Get Started as a Web Developer",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 95552,
-        "forks": 15341,
+        "stars": 95561,
+        "forks": 15345,
         "builtBy": [
           {
             "username": "microsoft",
@@ -131,20 +113,38 @@
         ]
       },
       {
-        "rank": 8,
+        "rank": 7,
         "name": "svelte",
         "author": "sveltejs",
         "url": "https://github.com/sveltejs/svelte",
         "description": "web development for the rest of us",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 86271,
-        "forks": 4885,
+        "stars": 86279,
+        "forks": 4886,
         "builtBy": [
           {
             "username": "sveltejs",
             "avatar": "https://avatars.githubusercontent.com/u/23617963?v=4",
             "url": "https://github.com/sveltejs"
+          }
+        ]
+      },
+      {
+        "rank": 8,
+        "name": "reveal.js",
+        "author": "hakimel",
+        "url": "https://github.com/hakimel/reveal.js",
+        "description": "The HTML Presentation Framework",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 70968,
+        "forks": 16812,
+        "builtBy": [
+          {
+            "username": "hakimel",
+            "avatar": "https://avatars.githubusercontent.com/u/629429?v=4",
+            "url": "https://github.com/hakimel"
           }
         ]
       },
@@ -156,8 +156,8 @@
         "description": "A bundler for javascript and friends. Packs many modules into a few bundled assets. Code Splitting allows for loading parts of the application on demand. Through \"loaders\", modules can be CommonJs, AMD, ES6 modules, CSS, Images, JSON, Coffeescript, LESS, ... and your custom stuff.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 65846,
-        "forks": 9383,
+        "stars": 65839,
+        "forks": 9380,
         "builtBy": [
           {
             "username": "webpack",
@@ -168,32 +168,14 @@
       },
       {
         "rank": 10,
-        "name": "drawio-desktop",
-        "author": "jgraph",
-        "url": "https://github.com/jgraph/drawio-desktop",
-        "description": "Official electron build of draw.io",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 60350,
-        "forks": 5649,
-        "builtBy": [
-          {
-            "username": "jgraph",
-            "avatar": "https://avatars.githubusercontent.com/u/1769238?v=4",
-            "url": "https://github.com/jgraph"
-          }
-        ]
-      },
-      {
-        "rank": 11,
         "name": "anything-llm",
         "author": "Mintplex-Labs",
         "url": "https://github.com/Mintplex-Labs/anything-llm",
         "description": "The all-in-one AI productivity accelerator. On device and privacy first with no annoying setup or configuration.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 58037,
-        "forks": 6273,
+        "stars": 58086,
+        "forks": 6277,
         "builtBy": [
           {
             "username": "Mintplex-Labs",
@@ -203,25 +185,7 @@
         ]
       },
       {
-        "rank": 12,
-        "name": "html5-boilerplate",
-        "author": "h5bp",
-        "url": "https://github.com/h5bp/html5-boilerplate",
-        "description": "A professional front-end template for building fast, robust, and adaptable web apps or sites.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 57423,
-        "forks": 12304,
-        "builtBy": [
-          {
-            "username": "h5bp",
-            "avatar": "https://avatars.githubusercontent.com/u/1136800?v=4",
-            "url": "https://github.com/h5bp"
-          }
-        ]
-      },
-      {
-        "rank": 13,
+        "rank": 11,
         "name": "pdf.js",
         "author": "mozilla",
         "url": "https://github.com/mozilla/pdf.js",
@@ -229,7 +193,7 @@
         "language": "JavaScript",
         "languageColor": "#f1e05a",
         "stars": 53104,
-        "forks": 10602,
+        "forks": 10604,
         "builtBy": [
           {
             "username": "mozilla",
@@ -239,15 +203,15 @@
         ]
       },
       {
-        "rank": 14,
+        "rank": 12,
         "name": "Ghost",
         "author": "TryGhost",
         "url": "https://github.com/TryGhost/Ghost",
         "description": "Independent technology for modern publishing, memberships, subscriptions and newsletters.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 52458,
-        "forks": 11452,
+        "stars": 52470,
+        "forks": 11456,
         "builtBy": [
           {
             "username": "TryGhost",
@@ -257,33 +221,15 @@
         ]
       },
       {
-        "rank": 15,
-        "name": "prettier",
-        "author": "prettier",
-        "url": "https://github.com/prettier/prettier",
-        "description": "Prettier is an opinionated code formatter.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 51781,
-        "forks": 4697,
-        "builtBy": [
-          {
-            "username": "prettier",
-            "avatar": "https://avatars.githubusercontent.com/u/25822731?v=4",
-            "url": "https://github.com/prettier"
-          }
-        ]
-      },
-      {
-        "rank": 16,
+        "rank": 13,
         "name": "get-shit-done",
         "author": "gsd-build",
         "url": "https://github.com/gsd-build/get-shit-done",
         "description": "A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code by TÂCHES.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 50285,
-        "forks": 4187,
+        "stars": 50618,
+        "forks": 4223,
         "builtBy": [
           {
             "username": "gsd-build",
@@ -293,14 +239,14 @@
         ]
       },
       {
-        "rank": 17,
+        "rank": 14,
         "name": "htmx",
         "author": "bigskysoftware",
         "url": "https://github.com/bigskysoftware/htmx",
         "description": "</> htmx - high power tools for HTML",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 47782,
+        "stars": 47784,
         "forks": 1582,
         "builtBy": [
           {
@@ -311,51 +257,15 @@
         ]
       },
       {
-        "rank": 18,
-        "name": "monaco-editor",
-        "author": "microsoft",
-        "url": "https://github.com/microsoft/monaco-editor",
-        "description": "A browser based code editor",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 45805,
-        "forks": 4034,
-        "builtBy": [
-          {
-            "username": "microsoft",
-            "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4",
-            "url": "https://github.com/microsoft"
-          }
-        ]
-      },
-      {
-        "rank": 19,
-        "name": "awesome-cheatsheets",
-        "author": "LeCoupa",
-        "url": "https://github.com/LeCoupa/awesome-cheatsheets",
-        "description": "👩‍💻👨‍💻 Awesome cheatsheets for popular programming languages, frameworks and development tools. They include everything you should know in one single file.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 45641,
-        "forks": 6680,
-        "builtBy": [
-          {
-            "username": "LeCoupa",
-            "avatar": "https://avatars.githubusercontent.com/u/1658644?v=4",
-            "url": "https://github.com/LeCoupa"
-          }
-        ]
-      },
-      {
-        "rank": 20,
+        "rank": 15,
         "name": "Leaflet",
         "author": "Leaflet",
         "url": "https://github.com/Leaflet/Leaflet",
         "description": "🍃 JavaScript library for mobile-friendly interactive maps 🇺🇦",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 44812,
-        "forks": 6108,
+        "stars": 44824,
+        "forks": 6107,
         "builtBy": [
           {
             "username": "Leaflet",
@@ -365,15 +275,15 @@
         ]
       },
       {
-        "rank": 21,
+        "rank": 16,
         "name": "BMAD-METHOD",
         "author": "bmad-code-org",
         "url": "https://github.com/bmad-code-org/BMAD-METHOD",
         "description": "Breakthrough Method for Agile Ai Driven Development",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 44229,
-        "forks": 5251,
+        "stars": 44303,
+        "forks": 5259,
         "builtBy": [
           {
             "username": "bmad-code-org",
@@ -383,51 +293,51 @@
         ]
       },
       {
-        "rank": 22,
-        "name": "bruno",
-        "author": "usebruno",
-        "url": "https://github.com/usebruno/bruno",
-        "description": "Opensource IDE For Exploring and Testing API's (lightweight alternative to Postman/Insomnia)",
+        "rank": 17,
+        "name": "EasySpider",
+        "author": "NaiboWang",
+        "url": "https://github.com/NaiboWang/EasySpider",
+        "description": "A visual no-code/code-free web crawler/spider易采集：一个可视化浏览器自动化测试/数据采集/爬虫软件，可以无代码图形化的设计和执行爬虫任务。别名：ServiceWrapper面向Web应用的智能化服务封装系统。",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 42808,
-        "forks": 2291,
+        "stars": 43763,
+        "forks": 5333,
         "builtBy": [
           {
-            "username": "usebruno",
-            "avatar": "https://avatars.githubusercontent.com/u/114530840?v=4",
-            "url": "https://github.com/usebruno"
+            "username": "NaiboWang",
+            "avatar": "https://avatars.githubusercontent.com/u/30287768?v=4",
+            "url": "https://github.com/NaiboWang"
           }
         ]
       },
       {
-        "rank": 23,
-        "name": "yarn",
-        "author": "yarnpkg",
-        "url": "https://github.com/yarnpkg/yarn",
-        "description": "The 1.x line is frozen - features and bugfixes now happen on https://github.com/yarnpkg/berry",
+        "rank": 18,
+        "name": "swiper",
+        "author": "nolimits4web",
+        "url": "https://github.com/nolimits4web/swiper",
+        "description": "Most modern mobile touch slider with hardware accelerated transitions",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 41517,
-        "forks": 2731,
+        "stars": 41828,
+        "forks": 9691,
         "builtBy": [
           {
-            "username": "yarnpkg",
-            "avatar": "https://avatars.githubusercontent.com/u/22247014?v=4",
-            "url": "https://github.com/yarnpkg"
+            "username": "nolimits4web",
+            "avatar": "https://avatars.githubusercontent.com/u/999588?v=4",
+            "url": "https://github.com/nolimits4web"
           }
         ]
       },
       {
-        "rank": 24,
+        "rank": 19,
         "name": "desktop",
         "author": "zen-browser",
         "url": "https://github.com/zen-browser/desktop",
         "description": "Welcome to a calmer internet",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 41282,
-        "forks": 1437,
+        "stars": 41305,
+        "forks": 1441,
         "builtBy": [
           {
             "username": "zen-browser",
@@ -437,32 +347,14 @@
         ]
       },
       {
-        "rank": 25,
-        "name": "puter",
-        "author": "HeyPuter",
-        "url": "https://github.com/HeyPuter/puter",
-        "description": "🌐 The Internet Computer! Free, Open-Source, and Self-Hostable.",
-        "language": "JavaScript",
-        "languageColor": "#f1e05a",
-        "stars": 40227,
-        "forks": 3604,
-        "builtBy": [
-          {
-            "username": "HeyPuter",
-            "avatar": "https://avatars.githubusercontent.com/u/103972607?v=4",
-            "url": "https://github.com/HeyPuter"
-          }
-        ]
-      },
-      {
-        "rank": 26,
+        "rank": 20,
         "name": "phaser",
         "author": "phaserjs",
         "url": "https://github.com/phaserjs/phaser",
         "description": "Phaser is a fun, free and fast 2D game framework for making HTML5 games for desktop and mobile web browsers, supporting Canvas and WebGL rendering.",
         "language": "JavaScript",
         "languageColor": "#f1e05a",
-        "stars": 39333,
+        "stars": 39341,
         "forks": 7130,
         "builtBy": [
           {
@@ -473,74 +365,182 @@
         ]
       },
       {
-        "rank": 27,
-        "name": "alpine",
-        "author": "alpinejs",
-        "url": "https://github.com/alpinejs/alpine",
-        "description": "A rugged, minimal framework for composing JavaScript behavior in your markup. ",
+        "rank": 21,
+        "name": "claude-code-best-practice",
+        "author": "shanraisshan",
+        "url": "https://github.com/shanraisshan/claude-code-best-practice",
+        "description": "practice made claude perfect",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 31426,
-        "forks": 1364,
+        "stars": 36869,
+        "forks": 3458,
         "builtBy": [
           {
-            "username": "alpinejs",
-            "avatar": "https://avatars.githubusercontent.com/u/59030169?v=4",
-            "url": "https://github.com/alpinejs"
+            "username": "shanraisshan",
+            "avatar": "https://avatars.githubusercontent.com/u/11731897?v=4",
+            "url": "https://github.com/shanraisshan"
+          }
+        ]
+      },
+      {
+        "rank": 22,
+        "name": "CyberChef",
+        "author": "gchq",
+        "url": "https://github.com/gchq/CyberChef",
+        "description": "The Cyber Swiss Army Knife - a web app for encryption, encoding, compression and data analysis",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 34541,
+        "forks": 3902,
+        "builtBy": [
+          {
+            "username": "gchq",
+            "avatar": "https://avatars.githubusercontent.com/u/15800240?v=4",
+            "url": "https://github.com/gchq"
+          }
+        ]
+      },
+      {
+        "rank": 23,
+        "name": "docsify",
+        "author": "docsifyjs",
+        "url": "https://github.com/docsifyjs/docsify",
+        "description": "🃏 A magical documentation site generator.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 31121,
+        "forks": 5830,
+        "builtBy": [
+          {
+            "username": "docsifyjs",
+            "avatar": "https://avatars.githubusercontent.com/u/40133106?v=4",
+            "url": "https://github.com/docsifyjs"
+          }
+        ]
+      },
+      {
+        "rank": 24,
+        "name": "webtorrent",
+        "author": "webtorrent",
+        "url": "https://github.com/webtorrent/webtorrent",
+        "description": "⚡️ Streaming torrent client for the web",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 30866,
+        "forks": 2785,
+        "builtBy": [
+          {
+            "username": "webtorrent",
+            "avatar": "https://avatars.githubusercontent.com/u/5800008?v=4",
+            "url": "https://github.com/webtorrent"
+          }
+        ]
+      },
+      {
+        "rank": 25,
+        "name": "homepage",
+        "author": "gethomepage",
+        "url": "https://github.com/gethomepage/homepage",
+        "description": "A highly customizable homepage (or startpage / application dashboard) with Docker and service API integrations.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 29474,
+        "forks": 1866,
+        "builtBy": [
+          {
+            "username": "gethomepage",
+            "avatar": "https://avatars.githubusercontent.com/u/122929872?v=4",
+            "url": "https://github.com/gethomepage"
+          }
+        ]
+      },
+      {
+        "rank": 26,
+        "name": "eslint",
+        "author": "eslint",
+        "url": "https://github.com/eslint/eslint",
+        "description": "Find and fix problems in your JavaScript code.",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 27185,
+        "forks": 4971,
+        "builtBy": [
+          {
+            "username": "eslint",
+            "avatar": "https://avatars.githubusercontent.com/u/6019716?v=4",
+            "url": "https://github.com/eslint"
+          }
+        ]
+      },
+      {
+        "rank": 27,
+        "name": "nanoid",
+        "author": "ai",
+        "url": "https://github.com/ai/nanoid",
+        "description": "A tiny (118 bytes), secure, URL-friendly, unique string ID generator for JavaScript",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 26723,
+        "forks": 844,
+        "builtBy": [
+          {
+            "username": "ai",
+            "avatar": "https://avatars.githubusercontent.com/u/19343?v=4",
+            "url": "https://github.com/ai"
           }
         ]
       },
       {
         "rank": 28,
+        "name": "koodo-reader",
+        "author": "koodo-reader",
+        "url": "https://github.com/koodo-reader/koodo-reader",
+        "description": "A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux, Android, iOS and Web",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 26497,
+        "forks": 1960,
+        "builtBy": [
+          {
+            "username": "koodo-reader",
+            "avatar": "https://avatars.githubusercontent.com/u/149913075?v=4",
+            "url": "https://github.com/koodo-reader"
+          }
+        ]
+      },
+      {
+        "rank": 29,
+        "name": "shields",
+        "author": "badges",
+        "url": "https://github.com/badges/shields",
+        "description": "Concise, consistent, and legible badges in SVG and raster format",
+        "language": "JavaScript",
+        "languageColor": "#f1e05a",
+        "stars": 26427,
+        "forks": 5591,
+        "builtBy": [
+          {
+            "username": "badges",
+            "avatar": "https://avatars.githubusercontent.com/u/6254238?v=4",
+            "url": "https://github.com/badges"
+          }
+        ]
+      },
+      {
+        "rank": 30,
         "name": "awesome-quant",
         "author": "wilsonfreitas",
         "url": "https://github.com/wilsonfreitas/awesome-quant",
         "description": "A curated list of insanely awesome libraries, packages and resources for Quants (Quantitative Finance)",
         "language": "HTML",
         "languageColor": "#e34c26",
-        "stars": 25422,
-        "forks": 3368,
+        "stars": 25439,
+        "forks": 3370,
         "builtBy": [
           {
             "username": "wilsonfreitas",
             "avatar": "https://avatars.githubusercontent.com/u/1583922?v=4",
             "url": "https://github.com/wilsonfreitas"
-          }
-        ]
-      },
-      {
-        "rank": 29,
-        "name": "OpenClash",
-        "author": "vernesong",
-        "url": "https://github.com/vernesong/OpenClash",
-        "description": "A Clash Client For OpenWrt",
-        "language": "HTML",
-        "languageColor": "#e34c26",
-        "stars": 25204,
-        "forks": 3846,
-        "builtBy": [
-          {
-            "username": "vernesong",
-            "avatar": "https://avatars.githubusercontent.com/u/42875168?v=4",
-            "url": "https://github.com/vernesong"
-          }
-        ]
-      },
-      {
-        "rank": 30,
-        "name": "fonts",
-        "author": "google",
-        "url": "https://github.com/google/fonts",
-        "description": "Font files available from Google Fonts, and a public issue tracker for all things Google Fonts",
-        "language": "HTML",
-        "languageColor": "#e34c26",
-        "stars": 19905,
-        "forks": 2861,
-        "builtBy": [
-          {
-            "username": "google",
-            "avatar": "https://avatars.githubusercontent.com/u/1342004?v=4",
-            "url": "https://github.com/google"
           }
         ]
       }
