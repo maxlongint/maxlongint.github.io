@@ -102,6 +102,40 @@ function formatBytes(bytes) {
     return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
+// 从 GitHub 仓库的 package.json 获取 npm 包名
+async function fetchPackageNameFromGitHub(githubUrl) {
+    const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+    if (!match) return null;
+
+    const owner = match[1];
+    const repo = match[2].replace(/\.git$/, '');
+
+    for (const branch of ['main', 'master']) {
+        try {
+            const response = await fetch(
+                `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/package.json`,
+                {
+                    headers: {
+                        'User-Agent': 'GitHub-Pages-Builder',
+                    },
+                }
+            );
+
+            if (!response.ok) continue;
+
+            const pkg = await response.json();
+            if (pkg.name) {
+                console.log(`   ℹ️  从 GitHub package.json 获取到包名: ${pkg.name}`);
+                return pkg.name;
+            }
+        } catch {
+            // 尝试下一个分支
+        }
+    }
+
+    return null;
+}
+
 // 从 npm URL 提取包名
 function extractNpmPackageName(npmUrl) {
     if (!npmUrl) return null;
@@ -186,7 +220,17 @@ async function main() {
     console.log(`📦 包名: ${packageName}\n`);
 
     // 获取兼容性数据（传入 identifier，可以是 URL 或包名）
-    const compatibility = await fetchCompatibility(packageIdentifier);
+    let compatibility = await fetchCompatibility(packageIdentifier);
+
+    // npm 404 时，尝试从 GitHub package.json 获取真实包名（仓库名与 npm 包名可能不一致）
+    if (!compatibility) {
+        const githubPackageName = await fetchPackageNameFromGitHub(githubUrl);
+        if (githubPackageName && githubPackageName !== packageName) {
+            packageName = githubPackageName;
+            console.log(`📦 修正包名: ${packageName}\n`);
+            compatibility = await fetchCompatibility(packageName);
+        }
+    }
 
     if (!compatibility) {
         console.error('❌ 获取兼容性数据失败');

@@ -558,7 +558,14 @@ async function main() {
 
         try {
             const repoData = await fetchGitHubData(fullName, githubToken);
-            const npmVersion = await fetchNpmData(repoData.name);
+            let npmPackageName = repoData.name;
+            if (parsed.npmUrl) {
+                const npmMatch = parsed.npmUrl.match(/npmjs\.com\/package\/(@[^/]+\/[^/?]+|[^/?]+)/);
+                if (npmMatch) {
+                    npmPackageName = npmMatch[1];
+                }
+            }
+            const npmVersion = await fetchNpmData(npmPackageName);
 
             const presetData = {
                 stargazers_count: repoData.stargazers_count || 0,
