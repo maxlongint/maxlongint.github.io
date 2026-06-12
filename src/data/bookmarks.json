@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 72,
-            "totalTags": 53,
-            "lastUpdated": "2026-03-31T01:14:12.193Z"
+            "lastColorIndex": 76,
+            "totalTags": 57,
+            "lastUpdated": "2026-06-12T03:53:19.320Z"
         },
         "实时协作": {
             "className": "",
@@ -326,6 +326,30 @@
             "color": "#d3eeee",
             "backgroundColor": "hsl(180, 45%, 88%)",
             "textColor": "hsl(180, 65%, 38%)"
+        },
+        "Office预览": {
+            "className": "",
+            "color": "#efc8e3",
+            "backgroundColor": "hsl(317.5, 55%, 86%)",
+            "textColor": "hsl(317.5, 75%, 36%)"
+        },
+        "ppt.pptx": {
+            "className": "",
+            "color": "#d2f1bc",
+            "backgroundColor": "hsl(95, 65%, 84%)",
+            "textColor": "hsl(95, 80%, 34%)"
+        },
+        "excel.xlsx": {
+            "className": "",
+            "color": "#bcc2e6",
+            "backgroundColor": "hsl(232.5, 45%, 82%)",
+            "textColor": "hsl(232.5, 65%, 32%)"
+        },
+        "word.docx": {
+            "className": "",
+            "color": "#e8b9b0",
+            "backgroundColor": "hsl(10, 55%, 80%)",
+            "textColor": "hsl(10, 75%, 30%)"
         }
     },
     "bookmarks": [
@@ -1013,6 +1037,13 @@
             "description": "具有即时搜索功能的图标资源管理器，由 Iconify 提供支持",
             "tags": ["图标库"],
             "addedDate": "2026-05-27"
+        },
+        {
+            "title": "office-open-xml-viewer",
+            "url": "https://github.com/yukiyokotani/office-open-xml-viewer",
+            "description": "基于浏览器的 Office Open XML 文档查看器，可呈现为 HTML Canvas 元素。",
+            "tags": ["Office预览", "ppt.pptx", "excel.xlsx", "word.docx"],
+            "addedDate": "2026-06-12"
         }
     ]
 }
