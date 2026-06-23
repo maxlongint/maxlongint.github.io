@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 76,
-            "totalTags": 57,
-            "lastUpdated": "2026-06-12T03:53:19.320Z"
+            "lastColorIndex": 77,
+            "totalTags": 58,
+            "lastUpdated": "2026-06-23T10:00:58.235Z"
         },
         "实时协作": {
             "className": "",
@@ -350,6 +350,12 @@
             "color": "#e8b9b0",
             "backgroundColor": "hsl(10, 55%, 80%)",
             "textColor": "hsl(10, 75%, 30%)"
+        },
+        "动画库": {
+            "className": "",
+            "color": "#a2ebc4",
+            "backgroundColor": "hsl(147.5, 65%, 78%)",
+            "textColor": "hsl(147.5, 80%, 28%)"
         }
     },
     "bookmarks": [
@@ -1044,6 +1050,14 @@
             "description": "基于浏览器的 Office Open XML 文档查看器，可呈现为 HTML Canvas 元素。",
             "tags": ["Office预览", "ppt.pptx", "excel.xlsx", "word.docx"],
             "addedDate": "2026-06-12"
+        },
+        {
+            "title": "Motion",
+            "url": "https://github.com/motiondivision/motion",
+            "description": "用于 React 和 JavaScript 的现代动画库",
+            "tags": ["动画库", "动画效果"],
+            "npmUrl": "https://www.npmjs.com/package/motion",
+            "addedDate": "2026-06-23"
         }
     ]
 }
