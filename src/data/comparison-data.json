@@ -1,5 +1,5 @@
 {
-  "lastUpdate": "2026-07-03T20:58:01.509Z",
+  "lastUpdate": "2026-07-04T20:47:23.751Z",
   "libraries": {
     "mutative": {
       "id": "mutative",
@@ -42,8 +42,8 @@
       ],
       "dimensions": {
         "bundleSize": {
-          "minified": 18066,
-          "gzipped": 6506
+          "minified": 18116,
+          "gzipped": 6522
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 52199181,
@@ -77,7 +77,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 12868170,
-        "stars": 8808,
+        "stars": 8809,
         "lastUpdate": "2026-06-28T15:14:12Z",
         "philosophy": "Valibot是一个开源的TypeScript模式校验库，它专注于小巧的打包体积、类型安全和出色的开发者体验。Valibot 的功能与 Zod 非常相似。最大的区别在于我们 API 的模块化设计，以及通过摇树优化和代码拆分将包大小降至最低的能力。根据架构的不同，Valibot 可以将包大小比 Zod 减少高达 95%。这对于客户端表单验证和无服务器环境来说，无疑是一个巨大的优势。",
         "ecosystem": "Rich",
@@ -89,7 +89,7 @@
         "repoSize": 13412,
         "forks": 353,
         "openIssues": 148,
-        "watchers": 8808
+        "watchers": 8809
       }
     },
     "zod": {
@@ -107,8 +107,8 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 213650167,
-        "stars": 43102,
-        "lastUpdate": "2026-07-03T03:48:02Z",
+        "stars": 43109,
+        "lastUpdate": "2026-07-04T13:14:52Z",
         "philosophy": "Zod是一个用于TypeScript的运行时类型检查库,它允许你定义数据结构,并在运行时验证数据是否符合这些结构。支持链式API、类型推断、自定义错误消息等。适用场景:表单验证、API请求/响应校验、环境变量验证、配置文件校验。",
         "ecosystem": "Rich",
         "ecosystemPlugins": [
@@ -116,10 +116,10 @@
         ],
         "npmVersion": "4.4.3",
         "language": "TypeScript",
-        "repoSize": 23930,
+        "repoSize": 23950,
         "forks": 2047,
-        "openIssues": 233,
-        "watchers": 43102
+        "openIssues": 237,
+        "watchers": 43109
       }
     },
     "class-validator": {
@@ -147,7 +147,7 @@
         "npmVersion": "0.15.1",
         "language": "TypeScript",
         "repoSize": 5002,
-        "forks": 845,
+        "forks": 846,
         "openIssues": 312,
         "watchers": 11803
       }
@@ -224,16 +224,16 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 46324421,
-        "stars": 17180,
-        "lastUpdate": "2026-07-03T19:56:37Z",
+        "stars": 17184,
+        "lastUpdate": "2026-07-04T11:19:20Z",
         "philosophy": "DOMPurify是一个仅限于DOM的、超快、超级宽容的XSS(跨站脚本)清理器,可用于HTML、MathML和SVG。可以过滤用户输入的HTML内容,防止XSS攻击,同时保留安全的标签和属性。适用场景:富文本编辑器内容过滤、用户评论系统、Markdown渲染后清理、第三方HTML内容展示。",
         "ecosystem": "Rich",
         "npmVersion": "3.4.11",
         "language": "JavaScript",
-        "repoSize": 12684,
+        "repoSize": 12699,
         "forks": 855,
         "openIssues": 1,
-        "watchers": 17180
+        "watchers": 17184
       }
     },
     "snapdom": {
@@ -278,7 +278,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 113,
-        "stars": 70609,
+        "stars": 70628,
         "lastUpdate": "2026-06-22T15:28:21Z",
         "philosophy": "Anime.js 是一个快速、多功能且轻量级的JavaScript动画库，它拥有一个简单而强大的API。该库支持对CSS属性、SVG、DOM属性和JavaScript对象进行动画处理。",
         "ecosystem": "Rich",
@@ -287,7 +287,7 @@
         "repoSize": 182753,
         "forks": 4762,
         "openIssues": 112,
-        "watchers": 70609
+        "watchers": 70628
       }
     },
     "animatecss": {
@@ -306,16 +306,16 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 628682,
-        "stars": 82631,
+        "stars": 82633,
         "lastUpdate": "2024-07-29T19:34:21Z",
         "philosophy": "一个跨浏览器的 CSS 动画库,使用起来非常简单。包含淡入淡出、弹跳、缩放、旋转等60+种预设动画效果,只需添加CSS类即可使用。适用场景:页面元素进场动画、按钮点击反馈、弹窗出现效果、页面切换过渡、提示消息动画。",
         "ecosystem": "Rich",
         "npmVersion": "4.1.1",
         "language": "CSS",
         "repoSize": 2002,
-        "forks": 15965,
+        "forks": 15963,
         "openIssues": 81,
-        "watchers": 82631
+        "watchers": 82633
       }
     },
     "countupjs": {
@@ -328,12 +328,12 @@
       ],
       "dimensions": {
         "bundleSize": {
-          "minified": 6799,
-          "gzipped": 2199
+          "minified": 0,
+          "gzipped": 0
         },
-        "bundleSizeRating": "Light",
+        "bundleSizeRating": "Unknown",
         "weeklyDownloads": 786945,
-        "stars": 8161,
+        "stars": 8160,
         "lastUpdate": "2026-07-02T13:12:43Z",
         "philosophy": "CountUp.js 是一个无依赖、轻量级的 JavaScript 类库,可用于快速创建动画,以一种更有趣的方式展示数值数据。数字从0滚动到目标值,支持自定义持续时间、小数位数、前缀后缀等。适用场景:数据大屏展示、统计数据动画、销售额滚动显示、用户数量展示、计数器效果。",
         "ecosystem": "Moderate",
@@ -342,7 +342,7 @@
         "repoSize": 3310,
         "forks": 1361,
         "openIssues": 15,
-        "watchers": 8161
+        "watchers": 8160
       }
     },
     "sortablejs": {
@@ -360,7 +360,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 3978097,
-        "stars": 31141,
+        "stars": 31143,
         "lastUpdate": "2026-03-24T22:02:22Z",
         "philosophy": "一个用于现代浏览器和触摸设备的可重新排序的拖放列表库。支持拖拽排序、多列表拖拽、分组、过滤等功能,无需jQuery,支持触摸设备。适用场景:任务列表排序、看板系统(如Trello)、文件管理器、菜单项排序、表格行拖拽排序。",
         "ecosystem": "Growing",
@@ -369,7 +369,7 @@
         "repoSize": 2775,
         "forks": 3729,
         "openIssues": 523,
-        "watchers": 31141
+        "watchers": 31143
       }
     },
     "json-editor": {
@@ -387,7 +387,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 299396,
-        "stars": 12257,
+        "stars": 12258,
         "lastUpdate": "2026-06-30T13:25:08Z",
         "philosophy": "一个基于网页的工具,用于查看、编辑、格式化和验证JSON。提供树形视图、代码视图、表单视图三种模式,支持搜索、排序、撤销重做等功能。适用场景:API调试工具、配置文件编辑、数据结构可视化、JSON数据管理后台、开发者工具。",
         "ecosystem": "Growing",
@@ -396,7 +396,7 @@
         "repoSize": 61063,
         "forks": 2084,
         "openIssues": 234,
-        "watchers": 12257
+        "watchers": 12258
       }
     },
     "bignumberjs": {
@@ -414,7 +414,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 42804539,
-        "stars": 7003,
+        "stars": 7005,
         "lastUpdate": "2026-06-16T18:34:35Z",
         "philosophy": "一个用于任意精度十进制和非十进制算术的JavaScript库。解决JavaScript浮点数精度问题,支持超大数字运算、二进制/八进制/十六进制运算。适用场景:金融计算、加密货币交易、科学计算、精确的价格计算、超大数字运算。",
         "ecosystem": "Rich",
@@ -423,7 +423,7 @@
         "repoSize": 5438,
         "forks": 753,
         "openIssues": 6,
-        "watchers": 7003
+        "watchers": 7005
       }
     },
     "decimaljs": {
@@ -441,7 +441,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 66170880,
-        "stars": 7211,
+        "stars": 7210,
         "lastUpdate": "2025-07-06T22:50:07Z",
         "philosophy": "一个用于 JavaScript 的任意精度 Decimal 类型库。与Bignumber.js类似但更注重十进制运算,符合IEEE 754标准,提供更精确的舍入控制。适用场景:财务报表、会计系统、电商价格计算、税务计算、精确的数学运算。",
         "ecosystem": "Rich",
@@ -450,7 +450,7 @@
         "repoSize": 8415,
         "forks": 492,
         "openIssues": 21,
-        "watchers": 7211
+        "watchers": 7210
       }
     },
     "dinerojs": {
@@ -552,7 +552,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 1009192,
-        "stars": 10305,
+        "stars": 10307,
         "lastUpdate": "2026-06-30T17:56:13Z",
         "philosophy": "Wavesurfer.js 是一个交互式的波形渲染和音频播放库，非常适合网页应用。它利用现代网络技术来提供强大且具有视觉吸引力的音频体验。",
         "ecosystem": "Growing",
@@ -563,8 +563,8 @@
         "language": "TypeScript",
         "repoSize": 53483,
         "forks": 1753,
-        "openIssues": 38,
-        "watchers": 10305
+        "openIssues": 40,
+        "watchers": 10307
       }
     },
     "storejs": {
@@ -663,7 +663,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 618879,
-        "stars": 5168,
+        "stars": 5170,
         "lastUpdate": "2026-05-09T09:13:21Z",
         "philosophy": "一个 JavaScript 滚动条插件，它能隐藏原生滚动条，提供可自定义样式的覆盖层滚动条，同时保留了原生的功能和使用体验。",
         "ecosystem": "Moderate",
@@ -676,7 +676,7 @@
         "repoSize": 177049,
         "forks": 248,
         "openIssues": 10,
-        "watchers": 5168
+        "watchers": 5170
       }
     },
     "scrollama": {
@@ -829,7 +829,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 58506412,
-        "stars": 48666,
+        "stars": 48668,
         "lastUpdate": "2026-06-30T11:46:54Z",
         "philosophy": "Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样. 如果您曾经用过 Moment.js, 那么您已经知道如何使用 Day.js。",
         "ecosystem": "Rich",
@@ -838,7 +838,7 @@
         "repoSize": 6152,
         "forks": 2452,
         "openIssues": 1280,
-        "watchers": 48666
+        "watchers": 48668
       }
     },
     "momentjs": {
@@ -863,7 +863,7 @@
         "npmVersion": "2.30.1",
         "language": "JavaScript",
         "repoSize": 22191,
-        "forks": 6994,
+        "forks": 6993,
         "openIssues": 304,
         "watchers": 47952
       }
@@ -884,16 +884,16 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 14834541,
-        "stars": 63198,
+        "stars": 63196,
         "lastUpdate": "2026-06-25T14:35:58Z",
         "philosophy": "Socket.IO 是一个库,它能够实现客户端与服务器之间低延迟、双向以及基于事件的通信。基于WebSocket,支持自动重连、房间、命名空间、二进制传输,兼容不支持WebSocket的浏览器。适用场景:即时聊天应用、在线协作工具、实时游戏、股票行情推送、实时通知系统、多人在线编辑。",
         "ecosystem": "Rich",
         "npmVersion": "4.8.3",
         "language": "TypeScript",
         "repoSize": 33415,
-        "forks": 10146,
+        "forks": 10145,
         "openIssues": 178,
-        "watchers": 63198
+        "watchers": 63196
       }
     },
     "tinykeys": {
@@ -943,7 +943,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 206142,
-        "stars": 4649,
+        "stars": 4650,
         "lastUpdate": "2026-06-06T02:26:35Z",
         "philosophy": "中文转拼音、拼音音调、拼音声母、拼音韵母、多音字拼音、姓氏拼音、拼音匹配、中文分词。支持简繁体、多音字智能识别、音调标注。适用场景:中文输入法、拼音搜索功能、汉语学习应用、姓名拼音转换、文本分词处理、语音输入辅助。",
         "ecosystem": "Moderate",
@@ -952,7 +952,7 @@
         "repoSize": 14270,
         "forks": 387,
         "openIssues": 3,
-        "watchers": 4649
+        "watchers": 4650
       }
     },
     "bpmn-js": {
@@ -970,16 +970,16 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 264090,
-        "stars": 9580,
-        "lastUpdate": "2026-06-30T07:45:04Z",
+        "stars": 9581,
+        "lastUpdate": "2026-07-03T21:24:19Z",
         "philosophy": "流程图绘制工具库。一个BPMN 2.0流程图设计器和渲染引擎,支持创建、编辑、查看业务流程图,符合BPMN国际标准。适用场景:工作流设计器、业务流程管理(BPM)、企业流程自动化、低代码平台、流程可视化系统、OA办公系统。",
         "ecosystem": "Moderate",
         "npmVersion": "18.19.0",
         "language": "JavaScript",
-        "repoSize": 16817,
-        "forks": 1469,
+        "repoSize": 16818,
+        "forks": 1468,
         "openIssues": 141,
-        "watchers": 9580
+        "watchers": 9581
       }
     },
     "qrcodejs": {
@@ -1051,7 +1051,7 @@
         },
         "bundleSizeRating": "Unknown",
         "weeklyDownloads": 258,
-        "stars": 34139,
+        "stars": 34138,
         "lastUpdate": "2026-02-12T18:51:57Z",
         "philosophy": "现代版可复制到剪贴板。无需 Flash。仅 3kb(已压缩)大小。通过data属性或JS API实现文本复制,无依赖,体积小。适用场景:复制代码段、复制链接、复制分享文案、复制口令、内容分享功能、文档网站复制按钮。",
         "ecosystem": "Growing",
@@ -1060,7 +1060,7 @@
         "repoSize": 3631,
         "forks": 3913,
         "openIssues": 16,
-        "watchers": 34139
+        "watchers": 34138
       }
     },
     "cropperjs": {
@@ -1078,7 +1078,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 1590098,
-        "stars": 13848,
+        "stars": 13847,
         "lastUpdate": "2026-04-11T03:31:33Z",
         "philosophy": "JavaScript 图像裁剪工具。支持自由裁剪、固定比例、旋转、缩放、翻转等功能,响应式设计,支持触摸设备。适用场景:头像上传裁剪、图片编辑器、图片比例调整、证件照裁剪、商品图片处理、社交应用图片编辑。",
         "ecosystem": "Growing",
@@ -1087,7 +1087,7 @@
         "repoSize": 16014,
         "forks": 2442,
         "openIssues": 43,
-        "watchers": 13848
+        "watchers": 13847
       }
     },
     "videojs": {
@@ -1105,16 +1105,16 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 1059686,
-        "stars": 39808,
+        "stars": 39806,
         "lastUpdate": "2026-06-29T14:46:38Z",
         "philosophy": "Video.js 是一款功能齐全的开源视频播放器，适用于所有基于网络的平台。",
         "ecosystem": "Growing",
         "npmVersion": "8.23.9",
         "language": "JavaScript",
         "repoSize": 127905,
-        "forks": 7492,
+        "forks": 7493,
         "openIssues": 667,
-        "watchers": 39808
+        "watchers": 39806
       }
     },
     "hlsjs": {
@@ -1132,16 +1132,16 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 6207460,
-        "stars": 16803,
+        "stars": 16805,
         "lastUpdate": "2026-07-02T11:32:10Z",
         "philosophy": "HLS.js 是一个 JavaScript 库，它可以在支持 MSE（媒体源扩展）的浏览器中播放 HLS（HTTP 直播流）。",
         "ecosystem": "Growing",
         "npmVersion": "1.6.16",
         "language": "TypeScript",
         "repoSize": 247787,
-        "forks": 2741,
+        "forks": 2740,
         "openIssues": 82,
-        "watchers": 16803
+        "watchers": 16805
       }
     },
     "plyr": {
@@ -1159,7 +1159,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 366051,
-        "stars": 29877,
+        "stars": 29878,
         "lastUpdate": "2026-01-03T16:10:02Z",
         "philosophy": "Plyr 是一款简单、轻量、易于使用且可定制的 HTML5、YouTube 和 Vimeo 媒体播放器，支持现代浏览器。",
         "ecosystem": "Growing",
@@ -1168,7 +1168,7 @@
         "repoSize": 66324,
         "forks": 3113,
         "openIssues": 932,
-        "watchers": 29877
+        "watchers": 29878
       }
     },
     "filepond": {
@@ -1186,7 +1186,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 236071,
-        "stars": 16386,
+        "stars": 16385,
         "lastUpdate": "2026-07-02T11:44:35Z",
         "philosophy": "一款 JavaScript 库，能够处理您所上传的任何内容，会优化图片以加快上传速度，并提供出色、易用且流畅顺滑的用户体验。",
         "ecosystem": "Growing",
@@ -1195,7 +1195,7 @@
         "repoSize": 7781,
         "forks": 855,
         "openIssues": 142,
-        "watchers": 16386
+        "watchers": 16385
       }
     },
     "crypto-js": {
@@ -1240,7 +1240,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 187213,
-        "stars": 23482,
+        "stars": 23480,
         "lastUpdate": "2026-01-04T18:23:52Z",
         "philosophy": "轻量级、用户友好型的上手引导教程库。提供分步引导、提示框、高亮区域等功能,支持自定义样式和按钮。适用场景:新用户引导、功能介绍、产品演示、后台系统入门教程、复杂表单填写指导、SaaS产品引导。",
         "ecosystem": "Growing",
@@ -1249,7 +1249,7 @@
         "repoSize": 53488,
         "forks": 2556,
         "openIssues": 76,
-        "watchers": 23482
+        "watchers": 23480
       }
     },
     "driverjs": {
@@ -1267,16 +1267,16 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 1103283,
-        "stars": 26186,
+        "stars": 26187,
         "lastUpdate": "2026-06-27T01:49:35Z",
         "philosophy": "一个轻巧的,无依赖的JavaScript库,用于指导用户在页面上的重点。比Intro.js更轻量,支持单页面高亮、弹出提示、页面变暗等效果。适用场景:功能点高亮展示、新功能推介、页面引导流、产品特性展示、快速上手指导、分步操作提示。",
         "ecosystem": "Growing",
         "npmVersion": "1.6.0",
         "language": "TypeScript",
         "repoSize": 7790,
-        "forks": 1185,
+        "forks": 1184,
         "openIssues": 36,
-        "watchers": 26186
+        "watchers": 26187
       }
     },
     "axios": {
@@ -1294,16 +1294,16 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 111783908,
-        "stars": 109106,
+        "stars": 109108,
         "lastUpdate": "2026-07-02T11:38:39Z",
         "philosophy": "基于承诺的浏览器及 Node.js  HTTP 客户端。 Axios 是一款专为浏览器和 Node.js 设计的基于 Promise 的 HTTP 客户端。Axios 提供了一个小巧且易于使用的库，其接口具有高度的可扩展性。",
         "ecosystem": "Rich",
         "npmVersion": "1.18.1",
         "language": "JavaScript",
         "repoSize": 27544,
-        "forks": 11741,
-        "openIssues": 89,
-        "watchers": 109106
+        "forks": 11744,
+        "openIssues": 73,
+        "watchers": 109108
       }
     },
     "cookie": {
@@ -1322,14 +1322,14 @@
         "bundleSizeRating": "Light",
         "weeklyDownloads": 25703001,
         "stars": 22602,
-        "lastUpdate": "2026-07-01T21:32:35Z",
+        "lastUpdate": "2026-07-03T21:32:46Z",
         "philosophy": "一个简单、轻量级的 JavaScript API,用于处理浏览器中的 Cookie 数据。支持读写删除Cookie,设置过期时间、路径、域名等,API简洁易用。适用场景:用户登录状态保持、记住密码功能、用户偏好设置、跟踪统计数据、购物车信息存储、多语言切换记忆。",
         "ecosystem": "Rich",
         "npmVersion": "3.0.8",
         "language": "JavaScript",
-        "repoSize": 1397,
+        "repoSize": 1509,
         "forks": 2052,
-        "openIssues": 7,
+        "openIssues": 8,
         "watchers": 22602
       }
     },
@@ -1402,7 +1402,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 4279946,
-        "stars": 41868,
+        "stars": 41867,
         "lastUpdate": "2026-07-03T16:05:48Z",
         "philosophy": "大多数现代的触摸式移动滑动界面都具备硬件加速的过渡效果。功能强大的轮播图/幻灯片库,支持水平/垂直滚动、循环、懒加载、分页、缩略图等。适用场景:网站首页轮播图、商品图展示、幻灯片制作、移动端卡片切换、图文列表滚动、广告轮播。",
         "ecosystem": "Growing",
@@ -1411,7 +1411,7 @@
         "repoSize": 84281,
         "forks": 9659,
         "openIssues": 249,
-        "watchers": 41868
+        "watchers": 41867
       }
     },
     "highlightjs": {
@@ -1429,7 +1429,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 26034975,
-        "stars": 24957,
+        "stars": 24955,
         "lastUpdate": "2026-06-24T04:00:14Z",
         "philosophy": "带有语言自动检测功能且无需任何依赖项的 JavaScript 语法高亮显示器。支持190+种语言,提供多种代码主题,自动识别语言类型。适用场景:技术博客、文档网站、在线代码展示、API文档、教程网站、开发者社区。",
         "ecosystem": "Rich",
@@ -1438,7 +1438,7 @@
         "repoSize": 15654,
         "forks": 3733,
         "openIssues": 247,
-        "watchers": 24957
+        "watchers": 24955
       }
     },
     "normalizecss": {
@@ -1456,7 +1456,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 1481842,
-        "stars": 53546,
+        "stars": 53545,
         "lastUpdate": "2024-06-12T20:36:06Z",
         "philosophy": "CSS 重置的现代 HTML5 就绪替代方案Normalize.css使浏览器更一致地呈现所有元素并符合现代标准。它精确地只针对需要规范化的样式。",
         "ecosystem": "Rich",
@@ -1465,7 +1465,7 @@
         "repoSize": 379,
         "forks": 10363,
         "openIssues": 76,
-        "watchers": 53546
+        "watchers": 53545
       }
     },
     "revealjs": {
@@ -1483,7 +1483,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 71164,
-        "stars": 71867,
+        "stars": 71876,
         "lastUpdate": "2026-05-21T19:20:20Z",
         "philosophy": "reveal.js 是一个开源的 HTML 演示框架。它能让任何拥有网络浏览器的人免费创建出美观的演示文稿。",
         "ecosystem": "Rich",
@@ -1492,7 +1492,7 @@
         "repoSize": 34577,
         "forks": 16809,
         "openIssues": 910,
-        "watchers": 71867
+        "watchers": 71876
       }
     },
     "hammerjs": {
@@ -1510,7 +1510,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 1892756,
-        "stars": 24358,
+        "stars": 24357,
         "lastUpdate": "2026-01-04T10:52:57Z",
         "philosophy": "一个用于检测触摸手势的 JavaScript 库。支持点击、双击、滑动、缩放、旋转、长按等多种触摸手势识别。适用场景:移动端Web应用、图片查看器手势、地图应用交互、游戏手势控制、触摸屏设备交互、移动端导航手势。",
         "ecosystem": "Growing",
@@ -1519,7 +1519,7 @@
         "repoSize": 10186,
         "forks": 2569,
         "openIssues": 317,
-        "watchers": 24358
+        "watchers": 24357
       }
     },
     "marked": {
@@ -1537,7 +1537,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 50449565,
-        "stars": 36952,
+        "stars": 36953,
         "lastUpdate": "2026-06-30T04:23:30Z",
         "philosophy": "一个 Markdown 解析器和编译器。专为提高速度而设计。符合CommonMark和GFM规范,支持手动高亮、自定义渲染器,速度快。适用场景:博客系统、文档生成器、Markdown编辑器、README文件渲染、内容管理系统、在线文档平台。",
         "ecosystem": "Rich",
@@ -1546,7 +1546,7 @@
         "repoSize": 10769,
         "forks": 3551,
         "openIssues": 15,
-        "watchers": 36952
+        "watchers": 36953
       }
     },
     "milkdown": {
@@ -1564,8 +1564,8 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 221915,
-        "stars": 11673,
-        "lastUpdate": "2026-07-03T05:28:43Z",
+        "stars": 11679,
+        "lastUpdate": "2026-07-04T06:16:28Z",
         "philosophy": "一个由插件驱动的框架，用于构建所见即所得的 Markdown 编辑器。",
         "ecosystem": "Growing",
         "ecosystemPlugins": [
@@ -1573,10 +1573,10 @@
         ],
         "npmVersion": "7.21.2",
         "language": "TypeScript",
-        "repoSize": 108613,
+        "repoSize": 108614,
         "forks": 528,
-        "openIssues": 29,
-        "watchers": 11673
+        "openIssues": 28,
+        "watchers": 11679
       }
     },
     "swapy": {
@@ -1594,7 +1594,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 18666,
-        "stars": 8485,
+        "stars": 8486,
         "lastUpdate": "2025-01-19T12:36:20Z",
         "philosophy": "一款与框架无关的工具,只需几行代码就能将任何布局转换为可拖动替换的布局形式。支持卡片位置互换、布局重新排列,配置简单。适用场景:仪表盘布局定制、组件位置调整、可自定义工作台、程序界面布局、组件交换位置、灵活的卡片布局。",
         "ecosystem": "Moderate",
@@ -1603,7 +1603,7 @@
         "repoSize": 305,
         "forks": 178,
         "openIssues": 51,
-        "watchers": 8485
+        "watchers": 8486
       }
     },
     "morphdom": {
@@ -1621,7 +1621,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 665563,
-        "stars": 3557,
+        "stars": 3559,
         "lastUpdate": "2026-01-24T05:16:21Z",
         "philosophy": "快速且轻量级的 DOM 差异对比/补丁处理(无需虚拟DOM)。直接操作真DOM,性能优秀,适合服务端渲染(SSR)场景的客户端水合。适用场景:SSR应用水合、局部DOM更新优化、轻量级前端框架、HTMX类库的基础、无虚拟DOM的高性能更新。",
         "ecosystem": "Moderate",
@@ -1630,7 +1630,7 @@
         "repoSize": 932,
         "forks": 149,
         "openIssues": 64,
-        "watchers": 3557
+        "watchers": 3559
       }
     },
     "uppy": {
@@ -1648,7 +1648,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 42300,
-        "stars": 30864,
+        "stars": 30863,
         "lastUpdate": "2026-07-03T05:19:58Z",
         "philosophy": "Uppy 是一款时尚、模块化的 JavaScript 文件上传工具，可与任何应用程序无缝集成。它速度快，API 易于理解，让您无需为构建文件上传器而操心，能够专注于更重要的问题。",
         "ecosystem": "Growing",
@@ -1657,7 +1657,7 @@
         "repoSize": 455399,
         "forks": 2103,
         "openIssues": 215,
-        "watchers": 30864
+        "watchers": 30863
       }
     },
     "lucide": {
@@ -1670,12 +1670,12 @@
       ],
       "dimensions": {
         "bundleSize": {
-          "minified": 420742,
-          "gzipped": 99079
+          "minified": 0,
+          "gzipped": 0
         },
-        "bundleSizeRating": "Heavy",
+        "bundleSizeRating": "Unknown",
         "weeklyDownloads": 752178,
-        "stars": 23253,
+        "stars": 23269,
         "lastUpdate": "2026-07-03T18:04:48Z",
         "philosophy": "一个拥有 1600 多个图标的由社区打造的精美且统一的图标工具包。",
         "ecosystem": "Growing",
@@ -1685,9 +1685,9 @@
         "npmVersion": "1.23.0",
         "language": "TypeScript",
         "repoSize": 21197,
-        "forks": 1445,
+        "forks": 1446,
         "openIssues": 536,
-        "watchers": 23253
+        "watchers": 23269
       }
     },
     "docxjs": {
@@ -1705,7 +1705,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 1044279,
-        "stars": 2010,
+        "stars": 2011,
         "lastUpdate": "2026-03-22T23:50:09Z",
         "philosophy": "DOCX 渲染库。在浏览器中直接渲染并显示Word文档(.docx),无需后端转换,支持大部分Word格式。适用场景:在线文档预览、OA系统文档查看、合同在线阅读、文档管理系统、网盘文件预览、电子签章系统。",
         "ecosystem": "Growing",
@@ -1714,7 +1714,7 @@
         "repoSize": 4065,
         "forks": 267,
         "openIssues": 61,
-        "watchers": 2010
+        "watchers": 2011
       }
     },
     "tuiimage-editor": {
@@ -1732,7 +1732,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 28926,
-        "stars": 7658,
+        "stars": 7659,
         "lastUpdate": "2023-11-20T10:48:41Z",
         "philosophy": "一个基于 Web 的图像编辑器，提供了丰富的编辑功能，如裁剪、旋转、缩放等。",
         "ecosystem": "Moderate",
@@ -1741,7 +1741,7 @@
         "repoSize": 27043,
         "forks": 1378,
         "openIssues": 289,
-        "watchers": 7658
+        "watchers": 7659
       }
     },
     "interactjs": {
@@ -1755,12 +1755,12 @@
       ],
       "dimensions": {
         "bundleSize": {
-          "minified": 63668,
-          "gzipped": 18667
+          "minified": 0,
+          "gzipped": 0
         },
-        "bundleSizeRating": "Moderate",
+        "bundleSizeRating": "Unknown",
         "weeklyDownloads": 3624,
-        "stars": 12910,
+        "stars": 12908,
         "lastUpdate": "2024-03-28T20:47:50Z",
         "philosophy": "适用于现代浏览器（以及 IE9+）的 JavaScript 拖放、调整大小以及具有惯性和捕捉功能的多点触摸手势，支持网格式拖动",
         "ecosystem": "Growing",
@@ -1772,7 +1772,7 @@
         "repoSize": 31432,
         "forks": 805,
         "openIssues": 96,
-        "watchers": 12910
+        "watchers": 12908
       }
     },
     "lodash": {
@@ -1790,7 +1790,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 155065463,
-        "stars": 61240,
+        "stars": 61244,
         "lastUpdate": "2026-07-03T19:48:01Z",
         "philosophy": "一个一致性、模块化、高性能的 JavaScript 实用工具库。提供300+个工具函数,包括数组、对象、字符串、函数操作等,支持按需导入。适用场景:数据处理和转换、数组/对象操作、函数式编程、性能优化(debounce/throttle)、深克隆/深对比、所有JavaScript项目。",
         "ecosystem": "Rich",
@@ -1799,7 +1799,7 @@
         "repoSize": 49920,
         "forks": 7173,
         "openIssues": 90,
-        "watchers": 61240
+        "watchers": 61244
       }
     },
     "codemirror-5": {
@@ -1817,7 +1817,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 8986344,
-        "stars": 27251,
+        "stars": 27252,
         "lastUpdate": "2026-04-16T15:39:18Z",
         "philosophy": "一个功能强大的文本编辑器，支持语法高亮、代码折叠、自动完成等功能。",
         "ecosystem": "Growing",
@@ -1826,7 +1826,7 @@
         "repoSize": 19580,
         "forks": 4943,
         "openIssues": 439,
-        "watchers": 27251
+        "watchers": 27252
       }
     },
     "xtermjs": {
@@ -1844,7 +1844,7 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 462081,
-        "stars": 20852,
+        "stars": 20855,
         "lastUpdate": "2026-06-29T01:27:40Z",
         "philosophy": "一个功能强大的终端模拟器，支持语法高亮、代码折叠、自动完成等功能。",
         "ecosystem": "Growing",
@@ -1854,9 +1854,9 @@
         "npmVersion": "5.3.0",
         "language": "TypeScript",
         "repoSize": 35326,
-        "forks": 1917,
+        "forks": 1918,
         "openIssues": 186,
-        "watchers": 20852
+        "watchers": 20855
       }
     },
     "file-type": {
@@ -1901,7 +1901,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 7152781,
-        "stars": 46287,
+        "stars": 46292,
         "lastUpdate": "2026-06-25T12:19:20Z",
         "philosophy": "一个基于浏览器的代码编辑器，支持语法高亮、代码折叠、自动完成等功能。",
         "ecosystem": "Growing",
@@ -1913,7 +1913,7 @@
         "repoSize": 139570,
         "forks": 4089,
         "openIssues": 830,
-        "watchers": 46287
+        "watchers": 46292
       }
     },
     "tinycolor": {
@@ -1958,7 +1958,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 14689774,
-        "stars": 4367,
+        "stars": 4368,
         "lastUpdate": "2026-06-25T21:06:58Z",
         "philosophy": "一个用于 Base64 编码/解码的 JavaScript 库，支持 Node.js、浏览器。",
         "ecosystem": "Rich",
@@ -1967,7 +1967,7 @@
         "repoSize": 350,
         "forks": 1294,
         "openIssues": 11,
-        "watchers": 4367
+        "watchers": 4368
       }
     },
     "echarts": {
@@ -1985,16 +1985,16 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 3657347,
-        "stars": 66733,
+        "stars": 66740,
         "lastUpdate": "2026-07-01T06:29:56Z",
         "philosophy": "一个基于 JavaScript 的开源可视化库，提供了丰富的图表类型和交互功能。",
         "ecosystem": "Rich",
         "npmVersion": "6.1.0",
         "language": "TypeScript",
         "repoSize": 270504,
-        "forks": 19806,
+        "forks": 19807,
         "openIssues": 1614,
-        "watchers": 66733
+        "watchers": 66740
       }
     },
     "radash": {
@@ -2069,7 +2069,7 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 129757,
-        "stars": 19608,
+        "stars": 19609,
         "lastUpdate": "2024-03-15T01:53:57Z",
         "philosophy": "Mock.js 是一个模拟数据生成器，可帮助前端开发和原型与后端进度分离，并减少一些单调性，特别是在编写自动化测试时。",
         "ecosystem": "Growing",
@@ -2078,7 +2078,7 @@
         "repoSize": 5409,
         "forks": 2639,
         "openIssues": 341,
-        "watchers": 19608
+        "watchers": 19609
       }
     },
     "tailwind-css": {
@@ -2096,7 +2096,7 @@
         },
         "bundleSizeRating": "Heavy",
         "weeklyDownloads": 118099399,
-        "stars": 95782,
+        "stars": 95791,
         "lastUpdate": "2026-07-03T19:13:16Z",
         "philosophy": "实用程序优先的 CSS 框架，包含 flex、pt-4、text-center 和rotate-90 等类，可以直接在标记中组合这些类来构建任何设计。",
         "ecosystem": "Rich",
@@ -2105,7 +2105,7 @@
         "repoSize": 114294,
         "forks": 5317,
         "openIssues": 59,
-        "watchers": 95782
+        "watchers": 95791
       }
     },
     "mime": {
@@ -2150,7 +2150,7 @@
         },
         "bundleSizeRating": "Very Heavy",
         "weeklyDownloads": 372894,
-        "stars": 18861,
+        "stars": 18862,
         "lastUpdate": "2026-07-03T09:27:41Z",
         "philosophy": "即时按需原子化 CSS 引擎。比Tailwind更快,支持自定义规则、预设配置、图标集成,构建时生成CSS。适用场景:Vite/Vue/React项目、高性能样式方案、自定义设计系统、快速原型开发、组件库开发、现代前端工程。",
         "ecosystem": "Growing",
@@ -2159,7 +2159,7 @@
         "repoSize": 20670,
         "forks": 975,
         "openIssues": 151,
-        "watchers": 18861
+        "watchers": 18862
       }
     },
     "jszip": {
@@ -2204,16 +2204,16 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 10564480,
-        "stars": 20364,
-        "lastUpdate": "2026-07-03T04:06:10Z",
+        "stars": 20365,
+        "lastUpdate": "2026-07-03T23:33:03Z",
         "philosophy": "Fuse.js 是一个轻量级的零依赖17KB大小的JavaScript 模糊搜索库，支持 ES5 兼容的所有浏览器，并提供了丰富的文档和开发指南。",
         "ecosystem": "Rich",
         "npmVersion": "7.4.2",
         "language": "JavaScript",
-        "repoSize": 11731,
+        "repoSize": 11811,
         "forks": 811,
-        "openIssues": 2,
-        "watchers": 20364
+        "openIssues": 1,
+        "watchers": 20365
       }
     },
     "gsap": {
@@ -2232,16 +2232,16 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 3574274,
-        "stars": 26364,
+        "stars": 26381,
         "lastUpdate": "2026-04-13T13:08:58Z",
         "philosophy": "GSAP 是一个与框架无关的 JavaScript 动画库，可将开发人员变成动画超级英雄。构建适用于所有主要浏览器的高性能动画。",
         "ecosystem": "Growing",
         "npmVersion": "3.15.0",
         "language": "JavaScript",
         "repoSize": 14456,
-        "forks": 2056,
+        "forks": 2058,
         "openIssues": 6,
-        "watchers": 26364
+        "watchers": 26381
       }
     },
     "fetch-event-source": {
@@ -2286,16 +2286,16 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 6094027,
-        "stars": 22111,
-        "lastUpdate": "2026-07-02T16:44:49Z",
+        "stars": 22116,
+        "lastUpdate": "2026-07-04T14:03:03Z",
         "philosophy": "Yjs 是一个 CRDT 框架，提供了一系列共享数据类型，用于构建协作软件，支持实时协作编辑，包括富文本编辑器、离线编辑、版本快照、撤销 / 重做功能和共享光标等。",
         "ecosystem": "Growing",
         "npmVersion": "13.6.31",
         "language": "JavaScript",
-        "repoSize": 74078,
+        "repoSize": 74171,
         "forks": 783,
         "openIssues": 129,
-        "watchers": 22111
+        "watchers": 22116
       }
     },
     "turndown": {
@@ -2313,7 +2313,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 5919494,
-        "stars": 11299,
+        "stars": 11301,
         "lastUpdate": "2026-06-23T22:17:20Z",
         "philosophy": "Turndown 是一个用于将 HTML 转换为 Markdown 的库，支持 Node.js 和浏览器环境。",
         "ecosystem": "Growing",
@@ -2322,7 +2322,7 @@
         "repoSize": 4352,
         "forks": 991,
         "openIssues": 146,
-        "watchers": 11299
+        "watchers": 11301
       }
     },
     "ionicons": {
@@ -2340,7 +2340,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 685331,
-        "stars": 18099,
+        "stars": 18098,
         "lastUpdate": "2026-03-17T03:02:56Z",
         "philosophy": "Ionicons 是一套完全开源的图标库，包含 1,300 个专为 Web、iOS、Android 和桌面应用精心打造的图标。Ionicons 是专为 Ionic Framework（一种跨平台混合应用与渐进式 Web 应用框架）而设计的。",
         "ecosystem": "Growing",
@@ -2349,7 +2349,7 @@
         "repoSize": 28689,
         "forks": 2053,
         "openIssues": 71,
-        "watchers": 18099
+        "watchers": 18098
       }
     },
     "es-toolkit": {
@@ -2367,7 +2367,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 32107667,
-        "stars": 11187,
+        "stars": 11188,
         "lastUpdate": "2026-07-03T07:16:34Z",
         "philosophy": "es-toolkit 是一个先进的、高性能 JavaScript 工具库，具有极小的包体积（bundle size）和强大的类型注解。",
         "ecosystem": "Rich",
@@ -2376,7 +2376,7 @@
         "repoSize": 18965,
         "forks": 571,
         "openIssues": 107,
-        "watchers": 11187
+        "watchers": 11188
       }
     },
     "pako": {
@@ -2403,7 +2403,7 @@
         "language": "JavaScript",
         "repoSize": 3139,
         "forks": 803,
-        "openIssues": 0,
+        "openIssues": 1,
         "watchers": 6086
       }
     },
@@ -2449,7 +2449,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 14656,
-        "stars": 3073,
+        "stars": 3075,
         "lastUpdate": "2026-06-24T13:19:59Z",
         "philosophy": "mind-elixir 是一个开源的 JavaScript 思维导图核心库，支持与任何前端框架一起使用，提供了丰富的用户体验、性能优化、核心功能、导出与自定义选项。",
         "ecosystem": "Moderate",
@@ -2458,7 +2458,7 @@
         "repoSize": 5923,
         "forks": 407,
         "openIssues": 11,
-        "watchers": 3073
+        "watchers": 3075
       }
     },
     "alien-signals": {
@@ -2562,7 +2562,7 @@
         },
         "bundleSizeRating": "Light",
         "weeklyDownloads": 6133210,
-        "stars": 21699,
+        "stars": 21698,
         "lastUpdate": "2026-06-23T23:05:33Z",
         "philosophy": "Lit 是一个用于构建快速、轻量级 Web 组件的简单库。Lit 的核心是一个消除样板代码的组件基类，它提供了响应式状态、作用域样式以及一个轻量、快速且富有表现力的声明式模板系统。",
         "ecosystem": "Growing",
@@ -2571,7 +2571,7 @@
         "repoSize": 62548,
         "forks": 1087,
         "openIssues": 705,
-        "watchers": 21699
+        "watchers": 21698
       }
     },
     "icones": {
@@ -2589,7 +2589,7 @@
         },
         "bundleSizeRating": "Unknown",
         "weeklyDownloads": 87,
-        "stars": 7395,
+        "stars": 7399,
         "lastUpdate": "2026-06-03T04:03:41Z",
         "philosophy": "具有即时搜索功能的图标资源管理器，由 Iconify 提供支持",
         "ecosystem": "Moderate",
@@ -2598,7 +2598,7 @@
         "repoSize": 9136,
         "forks": 345,
         "openIssues": 31,
-        "watchers": 7395
+        "watchers": 7399
       }
     },
     "office-open-xml-viewer": {
@@ -2619,8 +2619,8 @@
         },
         "bundleSizeRating": "Unknown",
         "weeklyDownloads": 0,
-        "stars": 589,
-        "lastUpdate": "2026-07-03T20:18:15Z",
+        "stars": 588,
+        "lastUpdate": "2026-07-04T19:55:45Z",
         "philosophy": "基于浏览器的 Office Open XML 文档查看器，可呈现为 HTML Canvas 元素。",
         "ecosystem": "Small",
         "ecosystemPlugins": [
@@ -2628,10 +2628,10 @@
         ],
         "npmVersion": "N/A",
         "language": "TypeScript",
-        "repoSize": 90113,
+        "repoSize": 93156,
         "forks": 20,
-        "openIssues": 4,
-        "watchers": 589
+        "openIssues": 14,
+        "watchers": 588
       }
     },
     "motion": {
@@ -2650,7 +2650,7 @@
         },
         "bundleSizeRating": "Moderate",
         "weeklyDownloads": 14167697,
-        "stars": 32647,
+        "stars": 32653,
         "lastUpdate": "2026-07-01T08:38:21Z",
         "philosophy": "用于 React 和 JavaScript 的现代动画库",
         "ecosystem": "Rich",
@@ -2660,9 +2660,9 @@
         "npmVersion": "12.42.2",
         "language": "TypeScript",
         "repoSize": 1663915,
-        "forks": 1247,
+        "forks": 1249,
         "openIssues": 120,
-        "watchers": 32647
+        "watchers": 32653
       }
     }
   }
