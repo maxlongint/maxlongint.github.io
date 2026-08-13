@@ -29,9 +29,9 @@
             "textColor": "hsl(202.4, 66%, 27%)"
         },
         "__meta__": {
-            "lastColorIndex": 77,
-            "totalTags": 58,
-            "lastUpdated": "2026-06-23T10:00:58.235Z"
+            "lastColorIndex": 78,
+            "totalTags": 59,
+            "lastUpdated": "2026-08-13T07:14:54.433Z"
         },
         "实时协作": {
             "className": "",
@@ -356,6 +356,12 @@
             "color": "#a2ebc4",
             "backgroundColor": "hsl(147.5, 65%, 78%)",
             "textColor": "hsl(147.5, 80%, 28%)"
+        },
+        "PDF": {
+            "className": "",
+            "color": "#e7d3ee",
+            "backgroundColor": "hsl(285, 45%, 88%)",
+            "textColor": "hsl(285, 65%, 38%)"
         }
     },
     "bookmarks": [
@@ -1058,6 +1064,14 @@
             "tags": ["动画库", "动画效果"],
             "npmUrl": "https://www.npmjs.com/package/motion",
             "addedDate": "2026-06-23"
+        },
+        {
+            "title": "pdf.js",
+            "url": "https://github.com/mozilla/pdf.js",
+            "description": "PDF.js 是一个基于 HTML5 构建的便携式文档格式（PDF）库。一个通用的、基于 Web 标准的平台，用于解析和渲染 PDF 文档。",
+            "tags": ["PDF"],
+            "npmUrl": "https://www.npmjs.com/package/pdfjs-dist",
+            "addedDate": "2026-08-13"
         }
     ]
 }

@@ -997,8 +997,18 @@
       "sideEffects": false,
       "dependenciesCount": 2,
       "weeklyDownloads": 17582090
+    },
+    "pdfjs-dist": {
+      "node": ">=22.13.0 || >=24",
+      "typescript": true,
+      "browsers": null,
+      "license": "Apache-2.0",
+      "bundleSize": 34497725,
+      "sideEffects": null,
+      "dependenciesCount": 0,
+      "weeklyDownloads": 23013572
     }
   },
-  "lastUpdated": "2026-08-12T22:37:19.487Z",
-  "totalPackages": 96
+  "lastUpdated": "2026-08-13T07:14:57.215Z",
+  "totalPackages": 97
 }
